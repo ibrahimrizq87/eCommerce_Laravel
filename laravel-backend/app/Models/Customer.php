@@ -11,21 +11,9 @@ class Customer extends Model
 
 
     protected $fillable = [
-        'description', 'price_from', 'price_to', 'image', 'seller_id', 'owner_id', 'product_id'
+        'total_spent',
+        'phone',
+        'address',
+        'status',
     ];
-
-    public function seller()
-    {
-        return $this->belongsTo(User::class, 'seller_id');
-    }
-
-    public function owner()
-    {
-        return $this->belongsTo(User::class, 'owner_id');
-    }
-
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
 }
