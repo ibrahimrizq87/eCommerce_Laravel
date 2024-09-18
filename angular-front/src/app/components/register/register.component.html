@@ -1,115 +1,123 @@
-<div class="container register">
-    <div class="row">
-        <div class="col-md-3 register-left">
-            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
-            <h3>Welcome</h3>
-            <p>You are 30 seconds away from earning your own money!</p>
-           
-        </div>
-        <div class="col-md-9 register-right">
-            <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="home-tab" data-toggle="tab" routerLink="customer-register" role="tab" aria-controls="home" aria-selected="true">Employee</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="profile-tab" data-toggle="tab" routerLink="register" role="tab" aria-controls="profile" aria-selected="false">Hirer</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <h3 class="register-heading">Apply as a Employee</h3>
-                    <div class="row register-form">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="First Name *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Last Name *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Password *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control"  placeholder="Confirm Password *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <div class="maxl">
-                                    <label class="radio inline"> 
-                                        <input type="radio" name="gender" value="male" checked>
-                                        <span> Male </span> 
-                                    </label>
-                                    <label class="radio inline"> 
-                                        <input type="radio" name="gender" value="female">
-                                        <span>Female </span> 
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Your Email *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" minlength="10" maxlength="10" name="txtEmpPhone" class="form-control" placeholder="Your Phone *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option class="hidden"  selected disabled>Please select your Sequrity Question</option>
-                                    <option>What is your Birthdate?</option>
-                                    <option>What is Your old Phone Number</option>
-                                    <option>What is your Pet Name?</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter Your Answer *" value="" />
-                            </div>
-                            <input type="submit" class="btnRegister"  value="Register"/>
-                        </div>
+<div class="container my-5 w-50">
+    <div class="register-form shadow-lg" style="background-color: #f8eece;">
+        <h2 class="text-center mb-4" style="color: #b83807;">Create your account</h2>
+        <form method="post">
+
+            <div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="fname" placeholder="First Name">
+                        <label for="fname">First Name</label>
                     </div>
                 </div>
-                <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <h3  class="register-heading">Apply as a Hirer</h3>
-                    <div class="row register-form">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="First Name *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Last Name *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Email *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="text" maxlength="10" minlength="10" class="form-control" placeholder="Phone *" value="" />
-                            </div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="lname" placeholder="Last Name">
+                        <label for="lname">Last Name</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="password" class="form-control" id="password" placeholder="Your password">
+                        <label for="password">password</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="confpassword" class="form-control" id="confpassword"
+                            placeholder="Confirm password">
+                        <label for="confpassword">Confirm password</label>
+                    </div>
+                </div>
 
-
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Password *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Confirm Password *" value="" />
-                            </div>
-                            <div class="form-group">
-                                <select class="form-control">
-                                    <option class="hidden"  selected disabled>Please select your Sequrity Question</option>
-                                    <option>What is your Birthdate?</option>
-                                    <option>What is Your old Phone Number</option>
-                                    <option>What is your Pet Name?</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="`Answer *" value="" />
-                            </div>
-                            <input type="submit" class="btnRegister"  value="Register"/>
-                        </div>
+                <div class="my-3 d-flex justify-content-start">
+                    <span>Gender :</span>
+                    <div class="form-check px-5">
+                        <input type="radio" id="male" name="gender" class="form-check-input"
+                            style="border: 1px solid #b83807;">
+                        <label for="male" class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check px-5">
+                        <input type="radio" id="female" name="gender" class="form-check-input"
+                            style="border: 1px solid #b83807;">
+                        <label for="female" class="form-check-label">Female</label>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
+            <div class="my-3">
+                <div class="form-floating">
+                    <input type="tel" class="form-control" id="phone" placeholder="Phone">
+                    <label for="phone">Phone</label>
+                </div>
+            </div>
+            <div class="my-3">
+                <app-country-list />
+            </div>
+
+            <div class="my-3">
+                <app-city-list />
+            </div>
+
+            <div class="mb-3">
+                <div class="form-floating">
+                    <textarea class="form-control" id="address" placeholder="Your address"
+                        style="height: 50px;"></textarea>
+                    <label for="address">Address</label>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input type="file" name="img" id="img" class="file" style="color: #b83807;">
+            </div>
+
+            <div class="my-3 d-flex justify-content-start">
+                <span>I am a :</span>
+                <div class="form-check px-5">
+                    <input type="radio" id="customer" name="role" class="form-check-input"
+                        style="border: 1px solid #b83807;">
+                    <label for="customer" class="form-check-label" >Customer</label>
+                </div>
+                <div class="form-check px-5">
+                    <input type="radio" id="seller" name="role" class="form-check-input"
+                        style="border: 1px solid #b83807;">
+                    <label for="seller" class="form-check-label" >Seller</label>
+                </div>
+            </div>
+            <div >
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="shopname" placeholder="Shop Name"
+                            style="display:none">
+                        <label for="fname">Shop Name</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <textarea class="form-control" id="description" placeholder="Type a description"
+                            style="height: 50px; display:none"></textarea>
+                        <label for="sellerDescription">Description</label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="my-3">
+                <div class="form-check">
+                    <input type="checkbox" id="checkbox" class="form-check-input" style="border: 1px solid #b83807;">
+                    <label for="checkbox" class="form-check-label" style="font-size: 0.75rem;">I agree to the terms and
+                        conditions and privacy policy.</label>
+                </div>
+            </div>
+            <div class="text-center my-4">
+                <button type="submit" class="btn w-50 fw-bolder text-white">Register</button>
+            </div>
+
+            <div class="text-center">
+                <p class="text-center fw-bold">have an account?
+                    <a href="#">login</a>
+            </div>
+        </form>
+    </div>
 </div>
