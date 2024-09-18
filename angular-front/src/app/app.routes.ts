@@ -9,6 +9,8 @@ import { CategoryComponent } from './components/category/category.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { AddProductComponent } from './components/add-product/add-product.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -16,11 +18,13 @@ export const routes: Routes = [
     {path:"products", component:ProductListComponent},
     {path:"product/:id", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},
+    {path:"payment",component:PaymentComponent},
     {path:"order",component:OrderComponent},
     {path:"category",component:CategoryComponent},
     {path:"login",component:LoginComponent},
     {path:"register",component:RegisterComponent},   
     {path:"contact",component:ContactComponent},
+    {path:"add-product",component:AddProductComponent},
     {path:"**",component:ErrorComponent}
 ];
 
