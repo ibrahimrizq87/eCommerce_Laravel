@@ -12,6 +12,7 @@ class ProductResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    
     public function toArray(Request $request): array
     {
         // return parent::toArray($request);
@@ -25,6 +26,7 @@ class ProductResource extends JsonResource
             'stock' => $this->stock,
             'category' => new CategoryResource($this->whenLoaded('category')),
             'user' => new UserResource($this->whenLoaded('user')),
+            'deleted_at' => $this->deleted_at, // Add soft delete timestamp
             // 'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
             // 'cart_items' => CartItemResource::collection($this->whenLoaded('cartItems')),
             // 'order_items' => OrderItemResource::collection($this->whenLoaded('orderItems')),
