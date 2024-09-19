@@ -1,20 +1,43 @@
 <div class="container my-5 m-auto w-50">
     <div class="contact-form shadow-lg" style="background-color: #f8eece;">
         <h2 class="text-center mb-4" style="color: #b83807;">Login</h2>
-        <form>
+        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert alert-danger">
+            <ul>
+                <li *ngFor="let error of getErrorMessages()">{{ error }}</li>
+            </ul>
+        </div>
+        
+
+        <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm" >
+
+
 
             <div class="mb-3">
                 <div class="form-floating">
-                    <input type="text" class="form-control" id="username" placeholder="Your username">
-                    <label for="username">username</label>
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" required email
+                        ngModel>
+                    <label for="email">Email</label>
+                    <div *ngIf="submitted && loginForm.controls['email']?.invalid" class="text-danger">
+                        <div *ngIf="loginForm.controls['email']?.errors?.['required']">
+                            Email is required.
+                        </div>
+                        <div *ngIf="loginForm.controls['email']?.errors?.['email']">
+                            Please enter a valid email address.
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="mb-3">
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="password" placeholder="Your password">
-                    <label for="password">password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Your password"
+                        name="password" required ngModel>
+                    <label for="password">Password</label>
+                    <div *ngIf="submitted && loginForm.controls['password']?.invalid" class="text-danger">
+                        Password is required.
+                    </div>
                 </div>
             </div>
+
             <div class="my-3">
                 <div class="form-check">
                     <input type="checkbox" id="checkbox" class="form-check-input" style="border: 1px solid #b83807;">
@@ -28,7 +51,9 @@
 
             <div class="text-center">
                 <p class="text-center fw-bold">Don't have an account? 
-                <a href="#"> Create your account</a>
+                <!-- <a href="#"> Create your account</a> -->
+                <a routerLink="register" class="nav-link" aria-current="page">Create your account</a>
+
             </div>
         </form>
     </div>
