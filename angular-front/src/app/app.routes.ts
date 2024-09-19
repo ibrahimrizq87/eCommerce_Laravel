@@ -9,18 +9,26 @@ import { CategoryComponent } from './components/category/category.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { AddProductComponent } from './components/add-product/add-product.component';
+import { UpdateProductComponent } from './components/update-product/update-product.component';
+import { ReviewComponent } from './review/review.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     {path:"home",component:HomeComponent},
     {path:"products", component:ProductListComponent},
-    {path:"product/:id", component:ProductDetailsComponent},
+    {path:"product/3", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},
+    {path:"payment",component:PaymentComponent},
     {path:"order",component:OrderComponent},
     {path:"category",component:CategoryComponent},
     {path:"login",component:LoginComponent},
     {path:"register",component:RegisterComponent},   
     {path:"contact",component:ContactComponent},
+    {path:"add-product",component:AddProductComponent},
+    {path:"update-product",component:UpdateProductComponent},
+    {path:"review", component:ReviewComponent},
     {path:"**",component:ErrorComponent}
 ];
 
