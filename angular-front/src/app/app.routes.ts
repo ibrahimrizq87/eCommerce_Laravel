@@ -12,7 +12,11 @@ import { ContactComponent } from './components/contact/contact.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { UpdateProductComponent } from './components/update-product/update-product.component';
-import { ReviewComponent } from './review/review.component';
+import { ReviewComponent } from './components/product-details/review/review.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { CategoryDetailsComponent } from './components/category-details/category-details.component';
+import { CustomerPageComponent } from './components/customer-page/customer-page.component';
+import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -28,7 +32,9 @@ export const routes: Routes = [
     {path:"contact",component:ContactComponent},
     {path:"add-product",component:AddProductComponent},
     {path:"update-product",component:UpdateProductComponent},
-    {path:"review", component:ReviewComponent},
+    {path:"profile/edit", component:EditProfileComponent},
+    {path:"category/items", component:CategoryDetailsComponent},
+    {path:"customer/profile", component:CustomerProfileComponent},
     {path:"**",component:ErrorComponent}
 ];
 

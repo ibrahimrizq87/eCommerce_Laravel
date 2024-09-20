@@ -68,3 +68,10 @@ a{
 a:hover {
     color: #ffaf2c;
 }
+
+input:-webkit-autofill {
+    background-color: #face86 !important; /* Light grey background */
+    -webkit-box-shadow: 0 0 0 1000px #face86 inset; /* Ensure the background color applies */
+    color: #000 !important; /* Black text */
+}
+
