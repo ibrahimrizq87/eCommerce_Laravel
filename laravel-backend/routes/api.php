@@ -23,10 +23,11 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::post('/login', [UserController::class, 'login']);
+Route::post('users/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class, 'register']);
 
 
-Route::apiResource('users', UserController::class);
+Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class);
 Route::apiResource('categories', CategoryController::class);

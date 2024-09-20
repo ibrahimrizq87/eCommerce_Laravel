@@ -4,8 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Models\Customer;
+use App\Models\Seller;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
@@ -26,9 +32,12 @@ class UserController extends Controller
 
 
     public function login(Request $request) {
+        try {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:8',
+            'device_name' => 'required|string|max:255',
+
         ], [
             "email.required" => "Email is required.",
             "email.email" => "The email format you provided is invalid.",
@@ -45,25 +54,31 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user(); 
             return response()->json([
-                'token' => $user->createToken()->plainTextToken,
+
+                'token' => $user->createToken($request->device_name)->plainTextToken,
                 'user' => $user,
             ]);
         }
     
         return response()->json(['error' => 'Unauthorized'], 401);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
     }
     
 
     function register(Request $request) {
-
+        try {
         $std_validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'device_name' => 'required|string|max:255',
+
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'role' => 'required|string|max:50',
-            'gender' => 'nullable|string|in:male,female,other',
-            'last_name' => 'nullable|string|max:255',
+            'gender' => 'required|string|in:male,female,other',
+            'last_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15', 
             'shop_name' => 'nullable|string|max:255',
             'about' => 'nullable|string|max:255',
@@ -93,10 +108,11 @@ class UserController extends Controller
             return response()->json(['errors' => $std_validator->errors()],400);
         }
 
-        $my_path = '';
+        $my_path = 'text';
         if(request()->hasFile("image")){
             $image = request()->file("image");
             $my_path=$image->store('users','uploads');
+            $my_path= asset('uploads/' . $my_path); 
         }
 
 
@@ -127,12 +143,16 @@ class UserController extends Controller
             $seller->address = $request->address;
             $seller->status = 'active';
             $seller->about = $request->about; 
-            $seller->shop_name = $request->shop_name; 
+            $seller->shope_name = $request->shop_name; 
             $seller->save(); 
         }
 
+        $token = $user->createToken($request->device_name)->plainTextToken;
 
-        return $user->createToken()->plainTextToken;
+        return response()->json(['token' => $token , 'user' => new UserResource($user)], 201); 
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
     }
 
 
@@ -140,7 +160,11 @@ class UserController extends Controller
  
     public function show(User $user)
     {
-        return response()->json(['user' => $user]);
+ 
+        $user = auth()->user();
+
+
+        return new UserResource($user);
 
     }
 
