@@ -1,9 +1,21 @@
 <div class="container my-5 m-auto w-50">
+
+
+    <div *ngIf="sessionError">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Alert!</strong> You need to log in first.
+      </div>
+    </div>
+
+
     <div class="contact-form shadow-lg" style="background-color: #f8eece;">
         <h2 class="text-center mb-4" style="color: #b83807;">Login</h2>
         <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert alert-danger">
-            <ul>
+            <ul *ngIf="loginError == '' ">
                 <li *ngFor="let error of getErrorMessages()">{{ error }}</li>
+            </ul>
+            <ul *ngIf="loginError != '' ">
+                <li>{{ loginError }}</li>
             </ul>
         </div>
         
