@@ -32,9 +32,9 @@ export const routes: Routes = [
     {path:"contact",component:ContactComponent},
     {path:"add-product",component:AddProductComponent},
     {path:"update-product",component:UpdateProductComponent},
-    {path:"profile/edit", component:EditProfileComponent},
     {path:"category/items", component:CategoryDetailsComponent},
     {path:"customer/profile", component:CustomerProfileComponent},
+    {path:"edit-profile", component:EditProfileComponent},
     {path:"**",component:ErrorComponent}
 ];
 
