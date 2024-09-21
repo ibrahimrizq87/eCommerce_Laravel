@@ -25,9 +25,14 @@ Route::get('/user', function (Request $request) {
 
 Route::post('users/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
+Route::get('users/me', [UserController::class, 'getUser'])->middleware('auth:sanctum');
 
+Route::post('/users/logout',
+    [UserController::class, 'logoutFromOneDevice'])
+    ->middleware('auth:sanctum');
 
 Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
+
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class);
 Route::apiResource('categories', CategoryController::class);

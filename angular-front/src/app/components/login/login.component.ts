@@ -19,8 +19,11 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  sessionError:boolean  =false;
+  loginError :string ='';
   submitted: boolean = false;
   backendErrors: any = {};
+
   constructor(private userService: UserService ,   private router: Router) { }
   getErrorMessages(): string[] {
     const errorMessages: string[] = [];
@@ -33,7 +36,16 @@ export class LoginComponent {
     }
     return errorMessages;
   }
+  ngOnInit(): void {
+    if (sessionStorage.getItem('loginSession')){
+      sessionStorage.removeItem('loginSession');
+
+      this.sessionError = true;
+    }
+  }
   onSubmit(loginForm: any) {
+    // this.backendErrors = [];
+    this.loginError = '';
     this.submitted = true;
     if (loginForm.valid) {
       const formData = new FormData();
@@ -54,16 +66,23 @@ export class LoginComponent {
       this.userService.login(formData).subscribe(
         response => {
           const token = response.token;
-          console.log('login successful:', response);
-          console.log('tocken:', token);
+          // console.log('login successful:', response);
+          // console.log('tocken:', token);
+
           sessionStorage.setItem('authToken', token);
+          sessionStorage.setItem('logged', 'true');
+
+          // this.router.navigate(['/home']);
+          window.location.href = '/home';
+
 
           // this.router.navigate(['/home']);
 
         },
         error => {
-          if (error.status === 400 || error.status === 500) {
+          if (error.status === 400) {
             this.backendErrors = error.error.errors;
+
             console.error('Registration failed:', error);
             console.log('Error: ' + error.error.errors);
 
@@ -74,7 +93,12 @@ export class LoginComponent {
                 console.log('Error message:', message);
               });
             });
-          } else {
+          } else if(error.status === 401){
+            this.loginError = 'password is not correct, try again later';
+          } else if(error.status === 404){
+            this.loginError = 'email dose not exists, make suer to enter the correct email';
+
+          }else {
             console.error('An unexpected error occurred:', error);
           }
         }

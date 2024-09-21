@@ -10,19 +10,30 @@ export class UserService {
 
     constructor(private http: HttpClient) { }
 
-    getUser(id: string): Observable<any> {
+    getUser(): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
 
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${authToken}`
         });
-        return this.http.get(`${this.apiUrl}/${id}`, { headers });
+        return this.http.get(`${this.apiUrl}/me`, { headers });
     }
 
 
     login(userData: any): Observable<any> {
       return this.http.post(`${this.apiUrl}/login`, userData);
     }
+
+    logOut(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+    
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+    
+      return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
+    }
+    
 }
 
 
