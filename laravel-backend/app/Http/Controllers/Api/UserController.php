@@ -49,18 +49,23 @@ class UserController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
     
-        $credentials = $request->only('email', 'password');
     
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user(); 
-            return response()->json([
-
-                'token' => $user->createToken($request->device_name)->plainTextToken,
-                'user' => $user,
-            ]);
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return response()->json(['error' => 'Email not found.'], 404);
         }
     
-        return response()->json(['error' => 'Unauthorized'], 401);
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['error' => 'Invalid password.'], 401);
+        }
+
+    
+        return response()->json([
+            'token' => $user->createToken($request->device_name)->plainTextToken,
+            'user' => $user,
+        ]);
+    
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
@@ -154,11 +159,21 @@ class UserController extends Controller
         return response()->json(['error' => $e->getMessage()], 500);
     }
     }
+    public function show(User $user)
+    {}
 
-
+    function logoutFromOneDevice()
+    {
+        try {
+            auth()->user()->currentAccessToken()->delete();
+            return response()->json(['message' => 'Successfully logged out from this device'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error logging out from this device', 'error' => $e->getMessage()], 500);
+        }
+    }
 
  
-    public function show(User $user)
+    public function getUser(User $user)
     {
  
         $user = auth()->user();
