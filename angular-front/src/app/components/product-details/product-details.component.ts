@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { ItemInfoComponent } from "./item-info/item-info.component";
 import { SimilarItemsComponent } from "./similar-items/similar-items.component";
-import { ReviewComponent } from "../../review/review.component";
 import { ViewReviewsComponent } from "./view-reviews/view-reviews.component";
+import { ReviewComponent } from './review/review.component';
 
 @Component({
   selector: 'app-product-details',
