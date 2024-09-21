@@ -1,5 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideCacheableAnimationLoader, provideLottieOptions } from 'ngx-lottie';
+import player from 'lottie-web';
 
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
@@ -10,5 +12,11 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
      provideRouter(routes),
     provideHttpClient(),
-    provideAnimations(), provideAnimationsAsync('noop')]
+    provideAnimations(), provideAnimationsAsync('noop'),
+
+    provideLottieOptions({ player: () => player }),
+    provideCacheableAnimationLoader(),
+    provideRouter(routes)
+  ]
+  
 };
