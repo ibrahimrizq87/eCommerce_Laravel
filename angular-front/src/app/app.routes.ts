@@ -12,11 +12,11 @@ import { ContactComponent } from './components/contact/contact.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
 import { UpdateProductComponent } from './components/update-product/update-product.component';
-import { ReviewComponent } from './components/product-details/review/review.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
 import { CustomerPageComponent } from './components/customer-page/customer-page.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
+import { CustomerOverviewComponent } from './components/customer-profile/customer-overview/customer-overview.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
