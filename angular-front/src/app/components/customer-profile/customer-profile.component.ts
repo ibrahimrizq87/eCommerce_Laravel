@@ -16,10 +16,8 @@ import { MyWishlistPartComponent } from './my-wishlist-part/my-wishlist-part.com
   styleUrl: './customer-profile.component.css'
 })
 export class CustomerProfileComponent {
- // Variable to store which component should be displayed
- activeComponent: string = ''; // Initialize with empty to hide all
+ activeComponent: string = ''
 
- // This function is triggered when a link is clicked
  showComponent(component: string) {
    this.activeComponent = component;
  }
