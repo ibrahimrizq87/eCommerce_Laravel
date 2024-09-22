@@ -22,8 +22,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-
 Route::post('/login', [UserController::class, 'login']);
+
 
 
 Route::apiResource('users', UserController::class);
@@ -40,3 +40,11 @@ Route::apiResource('products', ProductController::class);
 Route::apiResource('reviews', ReviewController::class);
 Route::apiResource('sellers', SellerController::class);
 Route::apiResource('wish_lists', WishListController::class);
+
+
+Route::post('/register', [UserController::class, 'register']);
+
+
+
+Route::post('/products/restore/{id}', [ProductController::class, 'restore']);
+Route::delete('/products/{id}/force', [ProductController::class, 'forceDestroy']);
