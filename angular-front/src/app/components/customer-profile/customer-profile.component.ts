@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NgModel } from '@angular/forms';
 import { ListPartComponent } from './list-part/list-part.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import { CustomerOrdersComponent } from './customer-orders/customer-orders.component';

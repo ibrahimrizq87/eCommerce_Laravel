@@ -1,47 +1,10 @@
-
-<div class="container my-4">
-  <h2>Select Payment Method</h2>
-
-  <!-- Toggle buttons to switch between payment methods -->
-  <div class="btn-group mb-4" role="group" aria-label="Payment Method">
-    <input type="radio" class="btn-check" name="payment-method" id="credit-card" autocomplete="off" checked>
-    <label class="btn btn-outline-primary" for="credit-card" onclick="showPaymentMethod('credit')">Credit Card</label>
-
-    <input type="radio" class="btn-check" name="payment-method" id="paypal" autocomplete="off">
-    <label class="btn btn-outline-primary" for="paypal" onclick="showPaymentMethod('paypal')">PayPal</label>
+<div class="container m-auto ">
+  <div class="text center p-5 m-3">
+    <app-methods-list (linkClicked)="showComponent($event)"></app-methods-list>
   </div>
-
-  <!-- Credit Card Payment Form -->
-  <div id="credit-card-form" class="payment-form">
-    <h4>Credit Card Payment</h4>
-    <form>
-      <div class="mb-3">
-        <label for="cardNumber" class="form-label">Card Number</label>
-        <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9101 1121">
-      </div>
-      <div class="mb-3">
-        <label for="cardName" class="form-label">Name on Card</label>
-        <input type="text" class="form-control" id="cardName" placeholder="John Doe">
-      </div>
-      <div class="mb-3">
-        <label for="expiryDate" class="form-label">Expiry Date</label>
-        <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
-      </div>
-      <div class="mb-3">
-        <label for="cvv" class="form-label">CVV</label>
-        <input type="text" class="form-control" id="cvv" placeholder="123">
-      </div>
-      <button type="submit" class="btn btn-primary">Pay Now</button>
-    </form>
-  </div>
-
-  <!-- PayPal Payment Form (initially hidden) -->
-  <div id="paypal-form" class="payment-form" style="display: none;">
-    <h4>Pay with PayPal</h4>
-    <p>Proceed with your PayPal account to complete the payment.</p>
-    <button type="button" class="btn btn-primary">Pay with PayPal</button>
+  <div class="text center p-2 m-3">
+    <app-fawry *ngIf="activeComponent === 'fawry'"></app-fawry>
+    <app-instapay *ngIf="activeComponent === 'instapay'"></app-instapay>
+    <app-wallet *ngIf="activeComponent === 'wallet'"></app-wallet>
   </div>
 </div>
-
-
-

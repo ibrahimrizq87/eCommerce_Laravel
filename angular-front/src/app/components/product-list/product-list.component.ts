@@ -2,13 +2,15 @@ import { Component, NgModule } from '@angular/core';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
+import { RouterModule} from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
     ProductDetailsComponent,
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   providers: [ProductService],
   templateUrl: './product-list.component.html',
