@@ -1,4 +1,4 @@
-<div class="container-fluid shadow-lg">
+<!-- <div class="container-fluid shadow-lg">
     <div>
         <img src="images/payment/instapay.png" style="width: 200px; height:150px;" alt="">
     </div>
@@ -46,4 +46,16 @@
         </div>
     
     
+</div> -->
+
+<div class="container shadow-lg">
+    <div>
+        <app-payment-list (linkClicked)="showComponent($event)"></app-payment-list>
+    </div>
+    <div>
+        <app-mobile *ngIf="activeComponent === 'mobile'"></app-mobile>
+        <app-address *ngIf="activeComponent === 'address'"></app-address>
+        <app-bank *ngIf="activeComponent === 'bank'"></app-bank>
+        <app-card *ngIf="activeComponent === 'card'"></app-card>
+    </div>
 </div>
