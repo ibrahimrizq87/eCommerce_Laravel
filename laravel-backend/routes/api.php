@@ -39,7 +39,7 @@ Route::apiResource('categories', CategoryController::class);
 Route::apiResource('customers', CustomerController::class);
 Route::apiResource('custom-orders', CustomOrderController::class);
 Route::apiResource('offers', OfferController::class);
-Route::apiResource('orders', OrderController::class);
+Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
 Route::apiResource('order-items', OrderItemController::class);
 Route::apiResource('payment-requests', PaymentRequestController::class);
 Route::apiResource('products', ProductController::class);
@@ -49,7 +49,7 @@ Route::apiResource('wish_lists', WishListController::class);
 
 
 
-// GET|HEAD        / ............................................................................................................................. 
+// GET|HEAD        / .............................................................................................................................
 // GET|HEAD        api/added-offers .......................................................... added-offers.index › Api\AddedOfferController@index
 // POST            api/added-offers .......................................................... added-offers.store › Api\AddedOfferController@store
 // GET|HEAD        api/added-offers/{added_offer} .............................................. added-offers.show › Api\AddedOfferController@show
@@ -111,7 +111,7 @@ Route::apiResource('wish_lists', WishListController::class);
 // GET|HEAD        api/sellers/{seller} ................................................................. sellers.show › Api\SellerController@show
 // PUT|PATCH       api/sellers/{seller} ............................................................. sellers.update › Api\SellerController@update
 // DELETE          api/sellers/{seller} ........................................................... sellers.destroy › Api\SellerController@destroy
-// GET|HEAD        api/user ...................................................................................................................... 
+// GET|HEAD        api/user ......................................................................................................................
 // GET|HEAD        api/users .............................................................................. users.index › Api\UserController@index
 // POST            api/users .............................................................................. users.store › Api\UserController@store
 // POST            api/users/login ...................................................................................... Api\UserController@login
@@ -127,4 +127,4 @@ Route::apiResource('wish_lists', WishListController::class);
 // DELETE          api/wish_lists/{wish_list} ................................................ wish_lists.destroy › Api\WishListController@destroy
 // GET|HEAD        sanctum/csrf-cookie ......................................... sanctum.csrf-cookie › Laravel\Sanctum › CsrfCookieController@show
 // GET|HEAD        storage/{path} .................................................................................................. storage.local
-// GET|HEAD        up ............................................................................................................................ 
+// GET|HEAD        up ............................................................................................................................
