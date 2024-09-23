@@ -2,6 +2,8 @@ import { Component, NgModule } from '@angular/core';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
+import { RouterModule} from '@angular/router';
+
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 @Component({
@@ -9,7 +11,8 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     ProductDetailsComponent,
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
 
 

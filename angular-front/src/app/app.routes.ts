@@ -17,6 +17,7 @@ import { CategoryDetailsComponent } from './components/category-details/category
 import { CustomerPageComponent } from './components/customer-page/customer-page.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
 import { CustomerOverviewComponent } from './components/customer-profile/customer-overview/customer-overview.component';
+import { SellerProfileComponent } from './components/seller-profile/seller-profile.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -34,6 +35,7 @@ export const routes: Routes = [
     {path:"update-product",component:UpdateProductComponent},
     {path:"category/items", component:CategoryDetailsComponent},
     {path:"customer/profile", component:CustomerProfileComponent},
+    {path:"seller/profile", component:SellerProfileComponent},
     {path:"edit-profile", component:EditProfileComponent},
     {path:"**",component:ErrorComponent}
 ];
