@@ -10,9 +10,8 @@ class AddedOffer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'offer_id', 'product_id'
+        'offer_id', 'product_id', 'description', 'offer_name',
     ];
-
     public function offer()
     {
         return $this->belongsTo(Offer::class);

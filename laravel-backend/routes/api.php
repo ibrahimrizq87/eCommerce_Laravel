@@ -37,3 +37,7 @@ Route::apiResource('products', ProductController::class);
 Route::apiResource('reviews', ReviewController::class);
 Route::apiResource('sellers', SellerController::class);
 Route::apiResource('wish_lists', WishListController::class);
+// Route::apiResource('added-offers', AddedOfferController::class);
+
+
+
