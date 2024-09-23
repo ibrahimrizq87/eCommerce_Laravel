@@ -17,10 +17,10 @@ class OrderItemController extends Controller
     public function index(Request $request)
     { 
         // Check if user is admin and return all orders 
-        if ($request->user()->isAdmin()) {
-            $orderItems = OrderItem::all();
-            return response()->json($orderItems);
-        }
+        // if ($request->user()->isAdmin()) {
+        //     $orderItems = OrderItem::all();
+        //     return response()->json($orderItems);
+        // }
 
         // get only the user's order items
         $orderItems = OrderItem::where('order_id', Auth::id())->get();
@@ -100,9 +100,9 @@ class OrderItemController extends Controller
         }
 
         //the order belongs to the user
-        if (!Auth::user()->isAdmin() && $orderItem->order_id !== Auth::id()) {
-            return response()->json(['message' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
-        }
+        // if (!Auth::user()->isAdmin() && $orderItem->order_id !== Auth::id()) {
+        //     return response()->json(['message' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
+        // }
 
         $orderItem->delete();
 
