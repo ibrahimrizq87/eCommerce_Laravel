@@ -20,6 +20,7 @@ class CategoryResource extends JsonResource
             'category_name' => $this->category_name,
             'description' => $this->description,
             // 'products' => ProductResource::collection($this->whenLoaded('products')), 
+            'image'=> $this->image,
             'created_at' => $this->created_at->toDateTimeString(), 
             'updated_at' => $this->updated_at->toDateTimeString(), 
         ];
