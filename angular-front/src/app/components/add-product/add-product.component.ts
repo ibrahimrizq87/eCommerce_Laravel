@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-add-product',
   standalone: true,
@@ -8,5 +8,4 @@ import { Component } from '@angular/core';
   styleUrl: './add-product.component.css'
 })
 export class AddProductComponent {
-
 }

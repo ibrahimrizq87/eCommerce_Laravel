@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NgModel } from '@angular/forms';
 import { ListPartComponent } from './list-part/list-part.component';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import { CustomerOrdersComponent } from './customer-orders/customer-orders.component';
@@ -16,10 +15,8 @@ import { MyWishlistPartComponent } from './my-wishlist-part/my-wishlist-part.com
   styleUrl: './customer-profile.component.css'
 })
 export class CustomerProfileComponent {
- // Variable to store which component should be displayed
- activeComponent: string = ''; // Initialize with empty to hide all
+ activeComponent: string = ''
 
- // This function is triggered when a link is clicked
  showComponent(component: string) {
    this.activeComponent = component;
  }
