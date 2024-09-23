@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment'; 
 
 
 
@@ -8,7 +9,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CategoryService {
-    private apiUrl = 'http://0.0.0.0:8000/api/categories'; 
+  private apiUrl = environment.apiUrl+'/categories';
+
+    // private apiUrl = 'http://0.0.0.0:8000/api/categories'; 
     
     private selectedCategory: any;
 
@@ -19,6 +22,17 @@ export class CategoryService {
   
     getSelectedCategory() {
       return this.selectedCategory;
+    }
+
+    private allCategory: any [] = [];
+
+    setAllCategory(categorys: any) {
+      this.allCategory = categorys;
+
+    }
+  
+    getAllCategory() {
+      return this.allCategory;
     }
 
 

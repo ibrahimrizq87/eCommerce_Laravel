@@ -12,5 +12,8 @@ import { ReviewComponent } from './review/review.component';
   styleUrl: './product-details.component.css'
 })
 export class ProductDetailsComponent {
-
+  handleProductSelected(product: any) {
+    console.log('Product selected in parent:', product);
+    // this.someOtherFunction(product);
+  }
 }

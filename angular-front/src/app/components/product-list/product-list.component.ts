@@ -3,7 +3,7 @@ import { ProductDetailsComponent } from '../product-details/product-details.comp
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../services/category.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -20,13 +20,27 @@ import { CategoryService } from '../../services/category.service';
 export class ProductListComponent {
   products: any; 
   category :any;
-  constructor(private productService: ProductService ,private categoryService: CategoryService) { }
+  constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router) { }
+  
+  
+  onCategoryClick(category: any): void {
+    this.categoryService.setCategory(category);
+    this.router.navigate(['/products']);
+  }
+  
+  onProductClick (product:any)
+  {
+    this.productService.setProduct(product);
+    this.router.navigate(['/products/'+product.id]);
+
+  }
+  
   ngOnInit(): void {
     this.category =this.categoryService.getSelectedCategory();
 console.log('category: ',this.category);
     this.productService.getAllProducts().subscribe(
       response => {
-        this.products = response; 
+        this.products = response.data; 
         console.log('response' , response);
         console.log(response.data.email);
       },

@@ -11,7 +11,7 @@
             <app-review/>
             </div>
             <div class="col-md-4">
-            <app-similar-items/>
+            <app-similar-items (productSelected)="handleProductSelected($event)"></app-similar-items>/>
             </div>
         </div>
     </div>

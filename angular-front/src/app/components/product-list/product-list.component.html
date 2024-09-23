@@ -2,17 +2,20 @@
     <div class="container m-5">
         <h2>Welcome to our store Enjoy shopping!</h2>
     </div>
+
+
+
     <div class="row row-cols-1 row-cols-md-4 g-3 m-auto">
        
-        <div class="col-12 col-md-3">
+        <div class="col-12 col-md-3 " *ngFor="let element of products">
             <div class="card h-100">
-                <img src="images/logo.png" class="card-img-top" alt="...">
+                <img src="{{element.cover_image}}" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <h5 class="card-title">mobile phone</h5>
-                    <h6 class="price mb-0">price : $100</h6>
-                    <p class="card-text">hgh gs gjhgdj gjgh jshagshdg hsgdjh gasj</p>
-                    <h6>Category : mobile</h6>
-        
+                    <h5 class="card-title">{{element.product_name}}</h5>
+                    <h6 class="price mb-0">price : ${{element.price}}</h6>
+                    <p class="card-text">{{element.description}}</p>
+                    <h6>Category : {{element.category.category_name}}</h6>
+<!--         
                     <div class="d-flex justify-content-start align-items-center">
                         <ul class="list-unstyled list-inline mb-0">
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
@@ -21,7 +24,33 @@
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
                             <li class="list-inline-item mx-0"><i class="fas fa-star-half-alt"></i></li>
                         </ul>
-                        <span class="mx-2">4.5/5</span> <!-- Add rating next to stars -->
+                        <span class="mx-2">4.5/5</span> 
+                    </div>
+         -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <div>
+                            <button (click)="onProductClick(element)" class="btn text-white"
+                                style="background-color:#e9760b;">Details</button>
+                        </div>
+                        <div>
+                            <a class="btn text-white mx-3" style="background-color:#b83807;">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+<!--     
+                    <div class="d-flex justify-content-start align-items-center">
+                        <ul class="list-unstyled list-inline mb-0">
+                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
+                            <li class="list-inline-item mx-0"><i class="fas fa-star-half-alt"></i></li>
+                        </ul>
+                        <span class="mx-2">4.5/5</span> 
                     </div>
         
                     <div class="d-flex justify-content-center mt-3">
@@ -45,7 +74,6 @@
                     <p class="card-text">hgh gs gjhgdj gjgh jshagshdg hsgdjh gasj</p>
                     <h6>Category : mobile</h6>
         
-                    <!-- Align stars and rating in one line using d-flex -->
                     <div class="d-flex justify-content-start align-items-center">
                         <ul class="list-unstyled list-inline mb-0">
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
@@ -54,7 +82,7 @@
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
                             <li class="list-inline-item mx-0"><i class="fas fa-star-half-alt"></i></li>
                         </ul>
-                        <span class="mx-2">4.5/5</span> <!-- Add rating next to stars -->
+                        <span class="mx-2">4.5/5</span> 
                     </div>
         
                     <div class="d-flex justify-content-center mt-3">
@@ -78,7 +106,6 @@
                     <p class="card-text">hgh gs gjhgdj gjgh jshagshdg hsgdjh gasj</p>
                     <h6>Category : mobile</h6>
         
-                    <!-- Align stars and rating in one line using d-flex -->
                     <div class="d-flex justify-content-start align-items-center">
                         <ul class="list-unstyled list-inline mb-0">
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
@@ -87,7 +114,7 @@
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
                             <li class="list-inline-item mx-0"><i class="fas fa-star-half-alt"></i></li>
                         </ul>
-                        <span class="mx-2">4.5/5</span> <!-- Add rating next to stars -->
+                        <span class="mx-2">4.5/5</span> 
                     </div>
         
                     <div class="d-flex justify-content-center mt-3">
@@ -101,41 +128,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 col-md-3">
-            <div class="card h-100">
-                <img src="images/logo.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">mobile phone</h5>
-                    <h6 class="price mb-0">price : $100</h6>
-                    <p class="card-text">hgh gs gjhgdj gjgh jshagshdg hsgdjh gasj</p>
-                    <h6>Category : mobile</h6>
-        
-                    <!-- Align stars and rating in one line using d-flex -->
-                    <div class="d-flex justify-content-start align-items-center">
-                        <ul class="list-unstyled list-inline mb-0">
-                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
-                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
-                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
-                            <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
-                            <li class="list-inline-item mx-0"><i class="fas fa-star-half-alt"></i></li>
-                        </ul>
-                        <span class="mx-2">4.5/5</span> <!-- Add rating next to stars -->
-                    </div>
-        
-                    <div class="d-flex justify-content-center mt-3">
-                        <div>
-                            <a routerLink="['/product', product.id]" class="btn text-white"
-                                style="background-color:#e9760b;">Details</a>
-                        </div>
-                        <div>
-                            <a class="btn text-white mx-3" style="background-color:#b83807;">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+        </div> -->
+         
 
 
     </div>

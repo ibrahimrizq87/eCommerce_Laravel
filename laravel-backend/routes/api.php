@@ -42,10 +42,17 @@ Route::apiResource('offers', OfferController::class);
 Route::apiResource('orders', OrderController::class);
 Route::apiResource('order-items', OrderItemController::class);
 Route::apiResource('payment-requests', PaymentRequestController::class);
-Route::apiResource('products', ProductController::class);
-Route::apiResource('reviews', ReviewController::class);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('products', ProductController::class)->only(['store', 'update', 'destroy']);
+});
+Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+Route::get('products/byCategory/{category}', [ProductController::class, 'getProductsByCategory']);
+Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
+
+Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
 Route::apiResource('sellers', SellerController::class);
-Route::apiResource('wish_lists', WishListController::class);
+Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');
 
 
 
