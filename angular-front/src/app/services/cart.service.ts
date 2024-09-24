@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-    private apiUrl = 'http://0.0.0.0:8000/api/cart-items'; 
+  private apiUrl = environment.apiUrl+'/cart-items';
+
+    // private apiUrl = 'http://0.0.0.0:8000/api/cart-items'; 
 
     constructor(private http: HttpClient) { }
 

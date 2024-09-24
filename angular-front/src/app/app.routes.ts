@@ -20,11 +20,12 @@ import { SellerProfileComponent } from './components/seller-profile/seller-profi
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
 
+
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     {path:"home",component:HomeComponent},
     {path:"products", component:ProductListComponent},
-    {path:"product/3", component:ProductDetailsComponent},
+    {path:"products/:id", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},
     {path:"payment",component:PaymentComponent},
     {path:"order",component:OrderComponent},
