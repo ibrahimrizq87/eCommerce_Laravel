@@ -63,16 +63,17 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-        'products_image'=>[
+        'products'=>[
             'driver' => 'local',
-            'root' => public_path('uploads/products/images'),
+            'root' => public_path('uploads/products'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
-        'products_videos'=>[
+
+        'category_image'=>[
             'driver' => 'local',
-            'root' => public_path('uploads/products/videos'),
+            'root' => public_path('uploads/categories/'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,

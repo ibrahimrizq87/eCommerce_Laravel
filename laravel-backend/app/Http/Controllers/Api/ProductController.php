@@ -6,21 +6,40 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\ProductResource;
 
+use App\Models\ProductImage;
+
+use Illuminate\Http\Request;
+use App\Http\Resources\ProductResource;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function index()
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum')->only([ 'stor','update' , 'destroy']);
+        
+   
+    // }
+    
+    public function getProductsByCategory(Category $category)
     {
-     
-        $products = Product::with(['category', 'user'])->paginate(10);
+        // Fetch products that belong to the specified category
+        $products = Product::where('category_id', $category->id)->get();
+        
+        // Return the products as a resource collection
         return ProductResource::collection($products);
     }
     
+    public function index()
+    {
+        // $products = Product::with(['category', 'user','images'])->paginate(10);
+        $products = Product::with(['category', 'user' , 'images'])->get();
+        return ProductResource::collection($products);
+    }
     
+
     public function store(Request $request)
     {
         // dd($request->headers->all());
@@ -212,10 +231,12 @@ class ProductController extends Controller
   
     public function destroy(Product $product)
     {
-        
+
         $product->delete();
         return response()->json(['message' => 'Product soft deleted successfully.']);
     }
+    
+   
     public function restore($id)
     {
         // Find the soft-deleted product by its ID
@@ -230,16 +251,18 @@ class ProductController extends Controller
 
         // Return the restored product with ProductResource
         return new ProductResource($product->load('category', 'user'));
+
     }
+
     public function forceDestroy($id)
     {
-        $product = Product::withTrashed()->find($id); // البحث عن المنتج المحذوف
+        $product = Product::withTrashed()->find($id);
     
         if (!$product) {
             return response()->json(['message' => 'Product not found.'], 404);
         }
     
-        $product->forceDelete(); // حذف المنتج بشكل نهائي
+        $product->forceDelete();
         return response()->json(['message' => 'Product hard deleted successfully.']);
     }
     

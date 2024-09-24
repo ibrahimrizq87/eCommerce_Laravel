@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function login(Request $request) {
+        try {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|min:8',
+            'device_name' => 'required|string|max:255',
+
         ], [
             "email.required" => "Email is required.",
             "email.email" => "The email format you provided is invalid.",
@@ -28,28 +31,43 @@ class UserController extends Controller
             return response()->json(['errors' => $validator->errors()], 400);
         }
     
-        $credentials = $request->only('email', 'password');
     
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user(); 
-            return response()->json([
-                'token' => $user->createToken('Personal Access Token')->plainTextToken,
-                'user' => $user,
-            ]);
+
+        $user = User::where('email', $request->email)->first();
+    
+        if (!$user) {
+            return response()->json(['error' => 'Email not found.'], 404);
         }
     
-        return response()->json(['error' => 'Unauthorized'], 401);
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return response()->json(['error' => 'Invalid password.'], 401);
+        }
+
+    
+        return response()->json([
+            'token' => $user->createToken($request->device_name)->plainTextToken,
+            'user' => $user,
+        ]);
+    
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
     }
     
-    public function register(Request $request) {
+
+
+    function register(Request $request) {
+        try {
         $std_validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'device_name' => 'required|string|max:255',
+
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'role' => 'required|string|max:50',
-            'gender' => 'nullable|string|in:male,female,other',
-            'last_name' => 'nullable|string|max:255',
+            'gender' => 'required|string|in:male,female,other',
+            'last_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15', 
             'shope_name' => 'nullable|string|max:255',
             'about' => 'nullable|string|max:255',
@@ -77,10 +95,12 @@ class UserController extends Controller
             return response()->json(['errors' => $std_validator->errors()], 400);
         }
 
-        $my_path = '';
-        if($request->hasFile("image")){
-            $image = $request->file("image");
-            $my_path = $image->store('users', 'public');
+
+        $my_path = 'text';
+        if(request()->hasFile("image")){
+            $image = request()->file("image");
+            $my_path=$image->store('users','uploads');
+            $my_path= asset('uploads/' . $my_path); 
         }
 
         $user = new User();
@@ -109,16 +129,94 @@ class UserController extends Controller
             $seller->address = $request->address;
             $seller->status = 'active';
             $seller->about = $request->about; 
-            $seller->shope_name = $request->shope_name; 
+
+            $seller->shope_name = $request->shop_name; 
             $seller->save(); 
         }
 
-        return response()->json(['token' => $user->createToken('Personal Access Token')->plainTextToken]);
+        $token = $user->createToken($request->device_name)->plainTextToken;
+
+        return response()->json(['token' => $token , 'user' => new UserResource($user)], 201); 
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    }
+    public function show(User $user)
+    {}
+
+
+    function logoutFromOneDevice()
+    {
+        try {
+            auth()->user()->currentAccessToken()->delete();
+            return response()->json(['message' => 'Successfully logged out from this device'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error logging out from this device', 'error' => $e->getMessage()], 500);
+        }
     }
 
-    public function store(Request $request)
+ 
+    public function getUser(User $user)
     {
-        return $this->register($request);
+ 
+        $user = auth()->user();
+
+
+        return new UserResource($user);
+
+    }
+
+    public function updateUser(Request $request) {
+        $user = Auth::user(); 
+    
+        $validator = Validator::make($request->all(), [
+            'name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:15',
+            'gender' => 'nullable|string|in:male,female,other',
+            'address' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'shop_name' => 'nullable|string|max:255',
+            'about' => 'nullable|string|max:255',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+    
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $my_path = $image->store('users', 'uploads');
+            $user->image = $my_path;
+        }
+    
+        $user->name = $request->name ?? $user->name;
+        $user->last_name = $request->last_name ?? $user->last_name;
+        $user->email = $request->email ?? $user->email;
+        $user->gender = $request->gender ?? $user->gender;
+    
+        $user->save();
+    
+        if ($user->role === 'customer') {
+            $customer = Customer::where('user_id', $user->id)->first();
+            if ($customer) {
+                $customer->phone = $request->phone ?? $customer->phone;
+                $customer->address = $request->address ?? $customer->address;
+                $customer->save();
+            }
+        } elseif ($user->role === 'seller') {
+            $seller = Seller::where('user_id', $user->id)->first();
+            if ($seller) {
+                $seller->phone = $request->phone ?? $seller->phone;
+                $seller->address = $request->address ?? $seller->address;
+                $seller->shop_name = $request->shop_name ?? $seller->shop_name;
+                $seller->about = $request->about ?? $seller->about;
+                $seller->save();
+            }
+        }
+    
+        return response()->json(['message' => 'User updated successfully', 'user' => $user]);
     }
 
     public function index(Request $request)

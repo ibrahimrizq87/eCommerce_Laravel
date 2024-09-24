@@ -1,37 +1,115 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+import { environment } from '../../environments/environment'; 
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:8000/api/products';
+    // private apiUrl = 'http://0.0.0.0:8000/api/products'; 
+    private apiUrl = environment.apiUrl+'/products';
 
-  constructor(private http: HttpClient) { }
 
-  // الحصول على قائمة المنتجات
-  getProducts(): Observable<any> {
-    return this.http.get(this.apiUrl);
-  }
+    constructor(private http: HttpClient) { }
+    private selectedProduct: any;
 
-  // إضافة منتج جديد
-  addProduct(product: any): Observable<any> {
-    return this.http.post(this.apiUrl, product);
-  }
+    setProduct(product: any) {
+      this.selectedProduct = product;
 
-  // الحصول على تفاصيل منتج معين
-  getProduct(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
-  }
+    }
+  
+    getSelectedProduct() {
+      return this.selectedProduct;
+    }
 
-  // تحديث منتج
-  updateProduct(id: number, product: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, product);
-  }
+    private allProducts: any [] = [];
 
-  // حذف منتج
-  deleteProduct(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
+    setAllProduct(products: any) {
+      this.allProducts = products;
+
+    }
+  
+    getAllProduct() {
+      return this.allProducts;
+    }
+
+
+    getProduct(id: string): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+        return this.http.get(`${this.apiUrl}/${id}`, { headers });
+    }
+
+
+    getAllProducts(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(this.apiUrl, { headers });
+    }
+
+    getProductsByCategory(categotyId: string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(`${this.apiUrl}/byCategory/${categotyId}`, { headers });
+    }
+
+    getProductsRecent(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(`${this.apiUrl}/recent`, { headers });
+    }
+
+    deleteProduct(id: string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+    }
+
+
+   
+    addProduct(productData: any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.post(this.apiUrl,productData, { headers });
+      // return this.http.post(this.apiUrl,productData);
+
+    }
+
+    updateProduct(orderData: any , id: string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.patch(`${this.apiUrl}/${id}`,orderData, { headers });
+    }
+
 }
+
+
+

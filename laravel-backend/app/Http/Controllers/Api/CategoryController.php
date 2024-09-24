@@ -6,24 +6,24 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Resources\CategoryResource;
+
+
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        $categories = Category::all(); // لجلب جميع الفئات
-        return response()->json($categories, 200);
+
+        $categories = Category::all();
+        return CategoryResource::collection($categories);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+ 
     public function store(Request $request)
     {
-        // الفاليديشن
+
         $validator = Validator::make($request->all(), [
             'category_name' => 'required|string|max:255|unique:categories,category_name',
             'description' => 'nullable|string|max:500',
@@ -36,26 +36,26 @@ class CategoryController extends Controller
             'description.max' => 'Description may not be greater than 500 characters.',
         ]);
 
-        // التحقق من الفاليديشن
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        // استعادة البيانات
         $data = $validator->validated();
 
-        // إنشاء الفئة في الداتا بيز
         $category = Category::create($data);
 
         return response()->json(['message' => 'Category created successfully', 'category' => $category], 201);
+
     }
 
-    /**
-     * Display the specified resource.
-     */
+   
+
+    
     public function show(Category $category)
     {
-        return response()->json($category, 200); // عرض تفاصيل الفئة
+
+        return new CategoryResource($category);
+        
     }
 
     /**
@@ -63,7 +63,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        // الفاليديشن
         $validator = Validator::make($request->all(), [
             'category_name' => 'required|string|max:255|unique:categories,category_name,' . $category->id,
             'description' => 'nullable|string|max:500',
@@ -76,15 +75,12 @@ class CategoryController extends Controller
             'description.max' => 'Description may not be greater than 500 characters.',
         ]);
 
-        // التحقق من الفاليديشن
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
-        // استعادة البيانات
         $data = $validator->validated();
 
-        // تحديث الفئة
         $category->update($data);
 
         return response()->json(['message' => 'Category updated successfully', 'category' => $category], 200);

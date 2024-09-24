@@ -11,12 +11,19 @@ import { RegisterComponent } from './components/register/register.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { AddProductComponent } from './components/add-product/add-product.component';
+import { UpdateProductComponent } from './components/update-product/update-product.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { CategoryDetailsComponent } from './components/category-details/category-details.component';
+import { CustomerPageComponent } from './components/customer-page/customer-page.component';
+import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
+import { CustomerOverviewComponent } from './components/customer-profile/customer-overview/customer-overview.component';
+import { SellerProfileComponent } from './components/seller-profile/seller-profile.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     {path:"home",component:HomeComponent},
     {path:"products", component:ProductListComponent},
-    {path:"product/:id", component:ProductDetailsComponent},
+    {path:"products/:id", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},
     {path:"payment",component:PaymentComponent},
     {path:"order",component:OrderComponent},
@@ -25,6 +32,11 @@ export const routes: Routes = [
     {path:"register",component:RegisterComponent},   
     {path:"contact",component:ContactComponent},
     {path:"add-product",component:AddProductComponent},
+    {path:"update-product",component:UpdateProductComponent},
+    {path:"category/items", component:CategoryDetailsComponent},
+    {path:"customer/profile", component:CustomerProfileComponent},
+    {path:"seller/profile", component:SellerProfileComponent},
+    {path:"edit-profile", component:EditProfileComponent},
     {path:"**",component:ErrorComponent}
 ];
 
