@@ -1,95 +1,77 @@
-.register{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-    margin-top: 3%;
-    padding: 3%;
+.register-form {
+    margin: auto;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    background-color: #f9f9f9;
 }
-.register-left{
-    text-align: center;
-    color: #fff;
-    margin-top: 4%;
+.form-floating {
+    position: relative;
 }
-.register-left input{
-    border: none;
-    border-radius: 1.5rem;
-    padding: 2%;
-    width: 60%;
-    background: #f8f9fa;
-    font-weight: bold;
-    color: #383d41;
-    margin-top: 30%;
-    margin-bottom: 3%;
-    cursor: pointer;
+
+.form-floating label {
+    position: absolute;
+    top: 0;
+    left: 0.75rem;
+    padding: 0.75rem 0.75rem;
+    pointer-events: none;
+    transition: all 0.2s ease;
+    color: #231717;
 }
-.register-right{
-    background: #f8f9fa;
-    border-top-left-radius: 10% 50%;
-    border-bottom-left-radius: 10% 50%;
+.form-floating input:not(:placeholder-shown) ~ label,
+.form-floating textarea:not(:placeholder-shown) ~ label,
+.form-floating input:focus ~ label,
+.form-floating textarea:focus ~ label {
+    top: -0.75rem;
+    left: 0.75rem;
+    font-size: 1rem;
+    color:#b83807;
+   
 }
-.register-left img{
-    margin-top: 15%;
-    margin-bottom: 5%;
-    width: 25%;
-    -webkit-animation: mover 2s infinite  alternate;
-    animation: mover 1s infinite  alternate;
+.form-control {
+    border-radius: 0.25rem;
+    
 }
-@-webkit-keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
+
+.form-control:focus {
+    border-color: #b83807; /* border color */
+    outline: none; /* default outline */
+    box-shadow: 0 0 5px rgba(184, 56, 7, 0.5); /*shadow with a blur effect */
 }
-@keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
+
+.form-check-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(184, 56, 7, 0.5); /* Orange shadow on focus */
+    border: 1px solid #b83807; /* Orange border */
 }
-.register-left p{
-    font-weight: lighter;
-    padding: 12%;
-    margin-top: -9%;
+
+/* Style the checkbox when checked */
+.form-check-input:checked {
+    background-color: #b83807; /* Orange background when checked */
+    border-color: #b83807; /* Orange border when checked */
 }
-.register .register-form{
-    padding: 10%;
-    margin-top: 10%;
+
+
+.btn{
+    background-color: #b83807;
 }
-.btnRegister{
-    float: right;
-    margin-top: 10%;
-    border: none;
-    border-radius: 1.5rem;
-    padding: 2%;
-    background: #0062cc;
-    color: #fff;
-    font-weight: 600;
-    width: 50%;
-    cursor: pointer;
+
+.btn:hover{
+    background-color: #231717;
+    color: white;
 }
-.register .nav-tabs{
-    margin-top: 3%;
-    border: none;
-    background: #0062cc;
-    border-radius: 1.5rem;
-    width: 28%;
-    float: right;
+
+a{
+    color: #b83807;
 }
-.register .nav-tabs .nav-link{
-    padding: 2%;
-    height: 34px;
-    font-weight: 600;
-    color: #fff;
-    border-top-right-radius: 1.5rem;
-    border-bottom-right-radius: 1.5rem;
+
+a:hover {
+    color: #ffaf2c;
 }
-.register .nav-tabs .nav-link:hover{
-    border: none;
+
+input:-webkit-autofill {
+    background-color: #face86 !important; /* Light grey background */
+    -webkit-box-shadow: 0 0 0 1000px #face86 inset; /* Ensure the background color applies */
+    color: #000 !important; /* Black text */
 }
-.register .nav-tabs .nav-link.active{
-    width: 100px;
-    color: #0062cc;
-    border: 2px solid #0062cc;
-    border-top-left-radius: 1.5rem;
-    border-bottom-left-radius: 1.5rem;
-}
-.register-heading{
-    text-align: center;
-    margin-top: 8%;
-    margin-bottom: -15%;
-    color: #495057;
-}
+
