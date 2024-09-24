@@ -4,14 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'product_name', 'price', 'description', 'images', 'videos', 'stock', 'user_id', 'category_id'
+        'product_name', 'price', 'description', 'stock', 'user_id', 'category_id' ,'video'
     ];
+    protected $dates = ['deleted_at'];
 
     public function category()
     {
@@ -36,5 +38,9 @@ class Product extends Model
     public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
+    }
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
     }
 }

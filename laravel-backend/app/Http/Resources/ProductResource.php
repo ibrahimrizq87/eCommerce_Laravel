@@ -12,6 +12,7 @@ class ProductResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    
     public function toArray(Request $request): array
     {
         // return parent::toArray($request);
@@ -20,14 +21,16 @@ class ProductResource extends JsonResource
             'product_name' => $this->product_name,
             'price' => $this->price,
             'description' => $this->description,
-            'images' => $this->images,
-            'videos' => $this->videos,
             'stock' => $this->stock,
+            'cover_image' => $this->cover_image,
+            'size' => $this->size,
+            'video' => $this->video,
+            'material' => $this->material,
             'category' => new CategoryResource($this->whenLoaded('category')),
             'user' => new UserResource($this->whenLoaded('user')),
-            // 'reviews' => ReviewResource::collection($this->whenLoaded('reviews')),
-            // 'cart_items' => CartItemResource::collection($this->whenLoaded('cartItems')),
-            // 'order_items' => OrderItemResource::collection($this->whenLoaded('orderItems')),
+
+            'deleted_at' => $this->deleted_at, 
+            'images' => ProductImageResource::collection($this->whenLoaded('images')),
         ];
     }
 }
