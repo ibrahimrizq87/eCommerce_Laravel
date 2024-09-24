@@ -19,6 +19,7 @@ import { CustomerProfileComponent } from './components/customer-profile/customer
 import { SellerProfileComponent } from './components/seller-profile/seller-profile.component';
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
+import { WishlistComponent } from './components/wishlist/wishlist.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -41,6 +42,7 @@ export const routes: Routes = [
     {path:"guest-header", component:GuestHeaderComponent},
     {path:"customer/page", component:CustomerPageComponent},
     {path:"guest/page", component: GuestPageComponent},
+    {path:"wishlist", component:WishlistComponent},
     {path:"**",component:ErrorComponent}
 ];
 
