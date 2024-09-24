@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
     RouterModule
   ],
 
-  providers: [UserService],
+  // providers: [UserService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

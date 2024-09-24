@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 
 import { ProductService } from '../../services/product.service';
 
-import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-add-product',

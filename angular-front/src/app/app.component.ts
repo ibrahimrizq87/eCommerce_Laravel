@@ -6,7 +6,7 @@ import { CategoryService } from './services/category.service';
 import { ProductService } from './services/product.service';
 import { WishListService } from './services/wishlist.service';
 import { ReviewService } from './services/review.service';
-
+import { UserService } from './services/user.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -17,9 +17,12 @@ import { FormsModule } from '@angular/forms';
     FooterComponent,
     FormsModule
    ],
-  providers: [CategoryService ,ProductService
-    ,WishListService,
-    ReviewService
+  providers: [
+    CategoryService ,
+    ProductService ,
+    WishListService,
+    ReviewService,
+    UserService
   ],
 
   templateUrl: './app.component.html',
