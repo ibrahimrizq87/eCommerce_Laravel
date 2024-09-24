@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class UserService {
+
   private apiUrl = environment.apiUrl+'/users';
 
     // private apiUrl = 'http://0.0.0.0:8000/api/users'; 

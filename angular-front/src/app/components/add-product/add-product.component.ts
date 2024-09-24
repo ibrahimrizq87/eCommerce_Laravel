@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +21,7 @@ import { ProductService } from '../../services/product.service';
   styleUrls: ['./add-product.component.css']
 })
 export class AddProductComponent {
+
   categories: any[] = [];
   selectedFiles: File[] = []; 
   submitted = false;

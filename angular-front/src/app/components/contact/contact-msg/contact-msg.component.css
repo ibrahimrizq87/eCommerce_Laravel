@@ -1,4 +1,4 @@
-.register-form {
+.contact-form {
     margin: auto;
     padding: 2rem;
     border: 1px solid #ddd;
@@ -16,7 +16,7 @@
     padding: 0.75rem 0.75rem;
     pointer-events: none;
     transition: all 0.2s ease;
-    color: #231717;
+    color: #6c757d;
 }
 .form-floating input:not(:placeholder-shown) ~ label,
 .form-floating textarea:not(:placeholder-shown) ~ label,
@@ -24,7 +24,7 @@
 .form-floating textarea:focus ~ label {
     top: -0.75rem;
     left: 0.75rem;
-    font-size: 1rem;
+    font-size: 1.25rem;
     color:#b83807;
    
 }
@@ -39,18 +39,6 @@
     box-shadow: 0 0 5px rgba(184, 56, 7, 0.5); /*shadow with a blur effect */
 }
 
-.form-check-input:focus {
-    outline: none;
-    box-shadow: 0 0 5px rgba(184, 56, 7, 0.5); /* Orange shadow on focus */
-    border: 1px solid #b83807; /* Orange border */
-}
-
-/* Style the checkbox when checked */
-.form-check-input:checked {
-    background-color: #b83807; /* Orange background when checked */
-    border-color: #b83807; /* Orange border when checked */
-}
-
 
 .btn{
     background-color: #b83807;
@@ -61,18 +49,4 @@
     color: white;
 }
 
-a{
-    color: #b83807;
-}
-
-a:hover {
-    color: #D00000;
-    font-size: 18px;
-}
-
-input:-webkit-autofill {
-    background-color: #face86 !important; /* Light grey background */
-    -webkit-box-shadow: 0 0 0 1000px #face86 inset; /* Ensure the background color applies */
-    color: #000 !important; /* Black text */
-}
 

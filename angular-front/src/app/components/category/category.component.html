@@ -1,16 +1,17 @@
 
 <div class="container my-5">
-    <div class="row mt-3" *ngIf="categories !=null">
-        <div class="col-md-3 mt-5" *ngFor="let element of categories">
-           
-            <a (click)="onCategoryClick(element)" class="card text-bg-dark h-100 category-card">
-                <img src="{{element.image}}" class="card-img" alt="...">
-                <div class="card-img-overlay">
-                  <h5 class="card-title">{{element.category_name}}</h5>
-                  <p class="card-text">{{element.description}}</p>
-                </div>
-              </a>
-          
+  <div class="row mt-3" *ngIf="categories !=null">
+    <div class="col-md-3 mt-5" *ngFor="let element of categories">
+
+      <a (click)="onCategoryClick(element)" class="card text-bg-dark h-100 category-card">
+        <img src="{{element.image}}" class="card-img" alt="...">
+        <div class="card-img-overlay">
+          <h5 class="card-title">{{element.category_name}}</h5>
+          <p class="card-text">{{element.description}}</p>
         </div>
-      </div>
+      </a>
+
     </div>
+  </div>
+</div>
+

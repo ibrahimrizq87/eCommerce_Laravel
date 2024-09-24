@@ -16,8 +16,10 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
 import { CustomerPageComponent } from './components/customer-page/customer-page.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
-import { CustomerOverviewComponent } from './components/customer-profile/customer-overview/customer-overview.component';
 import { SellerProfileComponent } from './components/seller-profile/seller-profile.component';
+import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
+import { GuestPageComponent } from './components/guest-page/guest-page.component';
+
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -37,6 +39,9 @@ export const routes: Routes = [
     {path:"customer/profile", component:CustomerProfileComponent},
     {path:"seller/profile", component:SellerProfileComponent},
     {path:"edit-profile", component:EditProfileComponent},
+    {path:"guest-header", component:GuestHeaderComponent},
+    {path:"customer/page", component:CustomerPageComponent},
+    {path:"guest/page", component: GuestPageComponent},
     {path:"**",component:ErrorComponent}
 ];
 
