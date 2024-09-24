@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
+import { GuestHeaderComponent } from "../guest-header/guest-header.component";
 
 @Component({
   selector: 'app-login',
@@ -11,14 +14,38 @@ import { Router } from '@angular/router';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
-  ],
+    RouterModule,
+    LottieComponent,
+    GuestHeaderComponent
+],
 
   providers: [UserService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  private logInAnimationItem: AnimationItem | undefined;
+  private successAnimationItem: AnimationItem | undefined;
+
+  logInAnimationOptions: AnimationOptions = {
+     path: 'animations/craft.json',
+     loop: false,
+     autoplay: true
+   };
+ 
+  logInAnimationCreated(animationItem: AnimationItem): void {
+     this.logInAnimationItem = animationItem;
+   }
+ 
+   successAnimationOptions: AnimationOptions = {
+    path: 'animations/success.json', // Correct path
+    loop: false,
+    autoplay: true
+  };
+   successAnimationCreated(animationItem: AnimationItem): void {
+    this.successAnimationItem = animationItem;
+  }
+  
   sessionError:boolean  =false;
   loginError :string ='';
   submitted: boolean = false;
@@ -107,6 +134,20 @@ export class LoginComponent {
       console.error('Form is invalid');
     }
   }
+  openModal() {
+    const modal = document.getElementById("myModal");
+    if (modal != null) {
+      modal.style.display = "block";
+
+    }
+  }
+  closeModal(){
+    const modal = document.getElementById("myModal");
+    if (modal != null) {
+      modal.style.display = "none";
+  
+    }
+  }
 }
 function getDeviceName(): string {
   const userAgent = navigator.userAgent;
@@ -126,4 +167,6 @@ function getDeviceName(): string {
   } else {
     return 'Unknown Device';
   }
+
+  
 }
