@@ -19,7 +19,7 @@ import { GuestHeaderComponent } from "../guest-header/guest-header.component";
     GuestHeaderComponent
 ],
 
-  providers: [UserService],
+  // providers: [UserService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

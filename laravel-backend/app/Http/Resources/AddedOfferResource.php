@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+// use App\Http\Resources\AddedOffer;
 
 class AddedOfferResource extends JsonResource
 {
@@ -14,6 +15,8 @@ class AddedOfferResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        // $addedOffers = AddedOffer::with(['offer', 'product'])->get();
+
         // return parent::toArray($request);
         return [
             'id' => $this->id, 
@@ -29,5 +32,7 @@ class AddedOfferResource extends JsonResource
             'created_at' => $this->created_at->toDateTimeString(), 
             'updated_at' => $this->updated_at->toDateTimeString(), 
         ];
+        
     }
+    
 }
