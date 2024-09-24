@@ -12,7 +12,9 @@ use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
 use Illuminate\Support\Facades\Validator;
+
 use Illuminate\Support\Facades\Auth;
+
 
 class ProductController extends Controller
 {
@@ -34,6 +36,7 @@ class ProductController extends Controller
     
     public function index()
     {
+
         // $products = Product::with(['category', 'user','images'])->paginate(10);
         $products = Product::with(['category', 'user' , 'images'])->get();
         return ProductResource::collection($products);
@@ -227,6 +230,7 @@ class ProductController extends Controller
     //     return response()->json($category->products, 200);
     return new ProductResource($product->load('category', 'user'));
 
+
     }
   
     public function destroy(Product $product)
@@ -236,7 +240,7 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product soft deleted successfully.']);
     }
     
-   
+
     public function restore($id)
     {
         // Find the soft-deleted product by its ID
@@ -251,6 +255,7 @@ class ProductController extends Controller
 
         // Return the restored product with ProductResource
         return new ProductResource($product->load('category', 'user'));
+
 
     }
 
