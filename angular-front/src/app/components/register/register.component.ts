@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
+import { GuestHeaderComponent } from "../guest-header/guest-header.component";
 
 @Component({
   selector: 'app-register',
@@ -12,7 +15,9 @@ import { Router } from '@angular/router';
   imports: [
     CommonModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    LottieComponent,
+    GuestHeaderComponent
   ],
 
   providers: [AuthService],
@@ -28,13 +33,41 @@ import { Router } from '@angular/router';
   ]
 })
 export class RegisterComponent {
+  private animationItem: AnimationItem | undefined;
+  private successAnimationItem: AnimationItem | undefined;
+
+
+
+  registrationAnimationOptions: AnimationOptions = {
+    path: 'animations/registration.json',
+    loop: false,
+    autoplay: true
+  };
+
+  // Second animation options
+  successAnimationOptions: AnimationOptions = {
+    path: 'animations/registerSuccess.json',
+    loop: false,
+    autoplay: true
+  };
+
+  animationCreated(animationItem: AnimationItem): void {
+    this.animationItem = animationItem;
+  }
+
+  successAnimationCreated(animationItem: AnimationItem): void {
+    this.successAnimationItem = animationItem;
+
+  }
+
+
   isSeller: boolean = false;
   selectedFile: File | null = null;
   submitted: boolean = false;
   imageUploaded = false;
   backendErrors: any = {};
 
-  constructor(private authService: AuthService ,   private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
 
   onRoleChange(role: string) {
@@ -61,7 +94,7 @@ export class RegisterComponent {
     return errorMessages;
   }
 
-  
+
   onSubmit(registerForm: any) {
     this.submitted = true;
     if (registerForm.valid) {
@@ -116,10 +149,24 @@ export class RegisterComponent {
     }
   }
 
+  openModal() {
+    const modal = document.getElementById("myModal");
+    if (modal != null) {
+      modal.style.display = "block";
 
-
-
+    }
+  }
+  closeModal(){
+    const modal = document.getElementById("myModal");
+    if (modal != null) {
+      modal.style.display = "none";
+  
+    }
+  }
 }
+
+
+
 
 function getDeviceName(): string {
   const userAgent = navigator.userAgent;

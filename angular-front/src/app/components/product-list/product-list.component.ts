@@ -4,6 +4,8 @@ import { ProductDetailsComponent } from '../product-details/product-details.comp
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { RouterModule} from '@angular/router';
+import { CategoryService } from '../../services/category.service';
+
 
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
