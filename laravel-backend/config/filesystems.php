@@ -76,6 +76,14 @@ return [
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
+        ],
+
+        'category_image'=>[
+            'driver' => 'local',
+            'root' => public_path('uploads/categories/'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
         ]
 
 

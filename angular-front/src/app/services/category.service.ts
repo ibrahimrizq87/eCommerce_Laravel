@@ -1,0 +1,75 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class CategoryService {
+    private apiUrl = 'http://0.0.0.0:8000/api/categories'; 
+    
+    private selectedCategory: any;
+
+    setCategory(category: any) {
+      this.selectedCategory = category;
+
+    }
+  
+    getSelectedCategory() {
+      return this.selectedCategory;
+    }
+
+
+    constructor(private http: HttpClient) {
+      // console.log('CategoryService instance created');
+
+     }
+
+    getCategory(id: string): Observable<any> {
+        
+        return this.http.get(`${this.apiUrl}/${id}`);
+    }
+
+
+    getAllCategories(): Observable<any> {
+      return this.http.get(this.apiUrl);
+    }
+
+    deleteCategory(id: string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+    }
+
+
+   
+    addCategory(categoryData: any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.post(this.apiUrl,categoryData, { headers });
+    }
+
+    updateCategory(categoryData: any , id: string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.patch(`${this.apiUrl}/${id}`,categoryData, { headers });
+    }
+
+}
+
+
+

@@ -2,15 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RegisterComponent } from './components/register/register.component';
-// import { HttpClientModule } from '@angular/common/http'; 
-// import { MatIconModule } from '@angular/material/icon';
-// import { MatButtonModule } from '@angular/material/button';
-// import {
-//   MatDialogModule,
-//   MAT_DIALOG_DEFAULT_OPTIONS
-// } from '@angular/material/dialog';
+import { CategoryService } from './services/category.service';
+import { ProductService } from './services/product.service';
 
 @Component({
   selector: 'app-root',
@@ -18,13 +11,9 @@ import { RegisterComponent } from './components/register/register.component';
   imports: [RouterOutlet,
     HeaderComponent,
     FooterComponent,
-    // MatIconModule,
-    // MatButtonModule,
-    // MatDialogModule
-    // // BrowserAnimationsModule,
-    // HttpClientModule,
-    // RegisterComponent 
-  ],
+   ],
+  providers: [CategoryService ,ProductService],
+
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

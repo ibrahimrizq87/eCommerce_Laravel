@@ -75,3 +75,6 @@ input:-webkit-autofill {
     color: #000 !important; /* Black text */
 }
 
+.btn-close:hover{
+    background-color: #b83807;
+}
