@@ -6,31 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Customer;
 use App\Models\Seller;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-
     public function login(Request $request) {
         try {
         $validator = Validator::make($request->all(), [
@@ -50,6 +32,7 @@ class UserController extends Controller
         }
     
     
+
         $user = User::where('email', $request->email)->first();
     
         if (!$user) {
@@ -72,6 +55,7 @@ class UserController extends Controller
     }
     
 
+
     function register(Request $request) {
         try {
         $std_validator = Validator::make($request->all(), [
@@ -85,7 +69,7 @@ class UserController extends Controller
             'gender' => 'required|string|in:male,female,other',
             'last_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15', 
-            'shop_name' => 'nullable|string|max:255',
+            'shope_name' => 'nullable|string|max:255',
             'about' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
         ], [
@@ -97,7 +81,7 @@ class UserController extends Controller
             "image.max" => "The image size should not exceed 2MB.",
         ]);
     
-        $std_validator->sometimes('shop_name', 'required|string|max:255', function($input) {
+        $std_validator->sometimes('shope_name', 'required|string|max:255', function($input) {
             return $input->role === 'seller';
         });
         $std_validator->sometimes('about', 'required|string|max:255', function($input) {
@@ -106,12 +90,11 @@ class UserController extends Controller
         $std_validator->sometimes('address', 'required|string|max:255', function($input) {
             return $input->role === 'seller' || $input->role === 'customer';
         });
-    
 
-
-        if ($std_validator-> fails()) {
-            return response()->json(['errors' => $std_validator->errors()],400);
+        if ($std_validator->fails()) {
+            return response()->json(['errors' => $std_validator->errors()], 400);
         }
+
 
         $my_path = 'text';
         if(request()->hasFile("image")){
@@ -120,8 +103,6 @@ class UserController extends Controller
             $my_path= asset('uploads/' . $my_path); 
         }
 
-
-        
         $user = new User();
         $user->image = $my_path; 
         $user->email = $request->email;
@@ -148,6 +129,7 @@ class UserController extends Controller
             $seller->address = $request->address;
             $seller->status = 'active';
             $seller->about = $request->about; 
+
             $seller->shope_name = $request->shop_name; 
             $seller->save(); 
         }
@@ -161,6 +143,7 @@ class UserController extends Controller
     }
     public function show(User $user)
     {}
+
 
     function logoutFromOneDevice()
     {
@@ -236,11 +219,10 @@ class UserController extends Controller
         return response()->json(['message' => 'User updated successfully', 'user' => $user]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
+    public function index(Request $request)
     {
-        //
+        // جلب جميع المستخدمين أو أي منطق تريده هنا
+        $users = User::all();
+        return response()->json($users);
     }
 }

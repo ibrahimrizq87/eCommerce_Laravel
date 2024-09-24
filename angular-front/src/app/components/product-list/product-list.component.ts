@@ -1,3 +1,4 @@
+
 import { Component, NgModule } from '@angular/core';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { CommonModule } from '@angular/common';
@@ -18,8 +19,8 @@ import { Router } from '@angular/router';
 
   // providers: [ProductService ],
   templateUrl: './product-list.component.html',
-  styleUrl: './product-list.component.css'
 })
+
 export class ProductListComponent {
   products: any; 
   category :any;
@@ -57,3 +58,4 @@ console.log('category: ',this.category);
     );
   }
 }
+

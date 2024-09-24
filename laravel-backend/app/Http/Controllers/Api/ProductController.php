@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Category;
+
 use App\Models\ProductImage;
 
 use Illuminate\Http\Request;
@@ -148,46 +150,93 @@ class ProductController extends Controller
         }
         
         }
-   
-    public function show(Product $product)
+
+    public function update(Request $request, Product $product)
     {
-        return new ProductResource($product->load('category', 'user'));
+        
+        $validator = Validator::make($request->all(), [
+            'product_name' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'nullable|string',
+            'images' => 'nullable|array',
+            'images.*' => 'file|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'videos' => 'nullable|array',
+            'videos.*' => 'file|mimes:mp4,mkv,avi|max:102400',
+            'stock' => 'required|integer',
+            'category_id' => 'required|integer|exists:categories,id',
+          
+        ], [
+            'product_name.required' => 'Product name is required.',
+            'product_name.string' => 'Product name must be a string.',
+            'product_name.max' => 'Product name may not be greater than 255 characters.',
+            'price.required' => 'Price is required.',
+            'price.numeric' => 'Price must be a number.',
+            'description.string' => 'Description must be a string.',
+            'images.file' => 'Image must be a file.',
+            'images.image' => 'The file must be an image.',
+            'images.mimes' => 'Image must be of type: jpeg, png, jpg, or gif.',
+            'images.max' => 'Image may not be greater than 2 MB.',
+            'videos.file' => 'Video must be a file.',
+            'videos.mimes' => 'Video must be of type: mp4, mkv, or avi.',
+            'videos.max' => 'Video may not be greater than 40 MB.',
+            'stock.required' => 'Stock is required.',
+            'stock.integer' => 'Stock must be an integer.',
+            'category_id.required' => 'Category ID is required.',
+            'category_id.integer' => 'Category ID must be an integer.',
+            'category_id.exists' => 'Category ID does not exist.',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+    
+        $data = $validator->validated();
+        if ($request->hasFile('images')) {
+            $imagePaths = [];
+            Storage::disk('public')->makeDirectory('products');
+            foreach ($data['images'] as $image) {
+                $path = $image->store('products', 'public');
+                $imagePaths[] = $path;
+            }
+            $data['images'] = implode(',', $imagePaths);
+        }
+    
+        if ($request->hasFile('videos')) {
+            $videoPaths = [];
+            Storage::disk('public')->makeDirectory('videos');
+            foreach ($data['videos'] as $video) {
+                $path = $video->store('videos', 'public');
+                $videoPaths[] = $path;
+            }
+            $data['videos'] = implode(',', $videoPaths);
+        }
+   
+        $product->update($data);
+    
+        return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    // public function update(Request $request, Product $product)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'product_name' => 'sometimes|string|max:255',
-    //         'price' => 'sometimes|numeric',
-    //         'description' => 'nullable|string',
-    //         'stock' => 'sometimes|integer',
-    //         'category_id' => 'sometimes|exists:categories,id',
-    //         'user_id' => 'sometimes|exists:users,id',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json($validator->errors(), 422);
+    
+    public function show(Product $product)
+     {
+    //     $category = Category::with('products')->find($categoryId);
+    
+    //     if (!$category) {
+    //         return response()->json(['message' => 'Category not found'], 404);
     //     }
+    
+    //     return response()->json($category->products, 200);
+    return new ProductResource($product->load('category', 'user'));
 
-    //     $product->update($request->all());
-    //     return new ProductResource($product->load('category', 'user'));
-    // }
-
-    /**
-     * Remove the specified resource from storage.
-     */
+    }
+  
     public function destroy(Product $product)
     {
+
         $product->delete();
         return response()->json(['message' => 'Product soft deleted successfully.']);
     }
     
-    /**
-     * Restore the specified resource from storage.
-     */
+   
     public function restore($id)
     {
         // Find the soft-deleted product by its ID
@@ -202,5 +251,20 @@ class ProductController extends Controller
 
         // Return the restored product with ProductResource
         return new ProductResource($product->load('category', 'user'));
+
     }
+
+    public function forceDestroy($id)
+    {
+        $product = Product::withTrashed()->find($id);
+    
+        if (!$product) {
+            return response()->json(['message' => 'Product not found.'], 404);
+        }
+    
+        $product->forceDelete();
+        return response()->json(['message' => 'Product hard deleted successfully.']);
+    }
+    
 }
+

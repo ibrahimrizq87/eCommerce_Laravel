@@ -23,6 +23,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
+
 Route::post('users/login', [UserController::class, 'login']);
 Route::post('/register', [UserController::class, 'register']);
 Route::get('users/me', [UserController::class, 'getUser'])->middleware('auth:sanctum');
@@ -32,6 +33,7 @@ Route::post('/users/logout',
     ->middleware('auth:sanctum');
 
 Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
+
 
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class);
@@ -52,6 +54,7 @@ Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllRevi
 
 Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
 Route::apiResource('sellers', SellerController::class);
+
 Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');
 
 
