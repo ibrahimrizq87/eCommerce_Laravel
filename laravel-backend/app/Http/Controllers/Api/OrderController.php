@@ -4,15 +4,21 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
+
+use Response;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 
 class OrderController extends Controller
 {
     public function index()
     {
+
         $orders = Order::where('user_id', Auth::id())->with('orderItems')->get();
         return response()->json($orders);
+
     }
 
     public function store(Request $request)
