@@ -30,3 +30,8 @@ border-color: #b83807;
     color: #dd7230;
     border-color: #dd7230;
 }
+
+.form-control:focus {
+    border-color: #b83807 !important;  
+    box-shadow: 0 0 0 0.2rem rgb(221, 114, 48, 0.1) !important;
+}

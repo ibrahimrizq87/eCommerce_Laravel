@@ -23,6 +23,7 @@ import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { CustomerMAccountComponent } from './components/customer-m-account/customer-m-account.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { Cart1Component } from './components/cart1/cart1.component';
+import { ViewProductComponent } from './components/view-product/view-product.component';
 
 
 export const routes: Routes = [
@@ -50,6 +51,7 @@ export const routes: Routes = [
     {path:"manage/account", component:CustomerMAccountComponent},
     {path:"checkout", component:CheckoutComponent},
     {path:"cart/new",component:Cart1Component},
+    {path:"product/view", component:ViewProductComponent},
     {path:"**",component:ErrorComponent}
 ];
 
