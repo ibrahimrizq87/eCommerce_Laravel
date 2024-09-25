@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -96,7 +97,7 @@ class UserController extends Controller
         }
 
 
-        $my_path = 'text';
+        $my_path = '';
         if(request()->hasFile("image")){
             $image = request()->file("image");
             $my_path=$image->store('users','uploads');
@@ -121,6 +122,7 @@ class UserController extends Controller
             $customer->address = $request->address;
             $customer->status = 'active';
             $customer->save(); 
+
         } elseif ($request->role === 'seller') {
             $seller = new Seller();
             $seller->user_id = $user->id; 

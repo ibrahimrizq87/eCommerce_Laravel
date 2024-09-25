@@ -11,7 +11,6 @@ use App\Models\ProductImage;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
-use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\Auth;
 

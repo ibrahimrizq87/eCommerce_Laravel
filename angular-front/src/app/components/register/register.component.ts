@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component , Output, EventEmitter} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+
 import { Router } from '@angular/router';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
@@ -20,7 +21,6 @@ import { GuestHeaderComponent } from "../guest-header/guest-header.component";
     GuestHeaderComponent
   ],
 
-  providers: [AuthService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
   animations: [
@@ -36,6 +36,7 @@ export class RegisterComponent {
   private animationItem: AnimationItem | undefined;
   private successAnimationItem: AnimationItem | undefined;
 
+  @Output() messageEvent = new EventEmitter<string>();
 
 
   registrationAnimationOptions: AnimationOptions = {
@@ -44,7 +45,7 @@ export class RegisterComponent {
     autoplay: true
   };
 
-  // Second animation options
+
   successAnimationOptions: AnimationOptions = {
     path: 'animations/registerSuccess.json',
     loop: false,
@@ -67,7 +68,7 @@ export class RegisterComponent {
   imageUploaded = false;
   backendErrors: any = {};
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router) { }
 
 
   onRoleChange(role: string) {
@@ -116,14 +117,17 @@ export class RegisterComponent {
       }
 
       console.log(formData);
-      this.authService.register(formData).subscribe(
+      this.userService.register(formData).subscribe(
         response => {
           const token = response.token;
+          this.userService.setUser(response.user.data);
+          this.messageEvent.emit(response.user.data);
+
           console.log('Registration successful:', response);
           console.log('tocken:', token);
           sessionStorage.setItem('authToken', token);
-
-          this.router.navigate(['/home']);
+          this.openModal();
+          
 
         },
         error => {
@@ -160,7 +164,7 @@ export class RegisterComponent {
     const modal = document.getElementById("myModal");
     if (modal != null) {
       modal.style.display = "none";
-  
+      this.router.navigate(['/home']);
     }
   }
 }

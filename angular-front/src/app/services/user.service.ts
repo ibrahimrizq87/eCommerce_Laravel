@@ -13,10 +13,22 @@ export class UserService {
     // private apiUrl = 'http://0.0.0.0:8000/api/users'; 
 
     constructor(private http: HttpClient) { }
-    register(userData: any): Observable<any> {
-      return this.http.post(this.apiUrl, userData);
-    }
     
+    private currecntUser: any;
+
+    setUser(user: any) {
+      this.currecntUser = user;
+    }
+
+    getCurrentUser() {
+      return this.currecntUser;
+    }
+
+
+    register(userData: any): Observable<any> {
+      return this.http.post(this.apiUrl+"/register", userData);
+    }
+
     getUser(): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
 
