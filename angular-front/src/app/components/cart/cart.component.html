@@ -1,78 +1,119 @@
-<app-customer-header/>
+<app-customer-header />
 
 <div class="container mt-5">
     <!-- Header Row -->
     <div class="row shadow-lg text-center p-3">
-        <div class="col-3">
-            <p>Product</p>
+        <div class="col-3 d-flex justify-content-center align-items-center">
+            <p class="mb-0">Product</p>
         </div>
-        <div class="col-3">
-            <p>Price</p>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <p class="mb-0">Price</p>
         </div>
-        <div class="col-3">
-            <p>Quantity</p>
+        <div class="col-3 d-flex justify-content-center align-items-center">
+            <p class="mb-0">Quantity</p>
         </div>
-        <div class="col-3">
-            <p>SubTotal</p>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <p class="mb-0 ps-5">SubTotal</p>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <p class="mb-0">Action</p>
         </div>
     </div>
 
+    <!-- Product Row 1 -->
     <div class="row shadow-lg text-center p-3 mt-3 align-items-center">
         <div class="col-3 d-flex align-items-center justify-content-center">
             <img src="images/logo.png" style="height:75px; width:75px;" alt="">
             <span class="ms-2">Product</span>
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-center">
-            <p>$200</p>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            <p class="ps-2 mb-0">$200</p>
         </div>
         <div class="col-3 d-flex align-items-center justify-content-center">
-            <div data-mdb-input-init class="form-outline" style="width: 75px;">
-                <input min="1" type="number" id="typeNumber" class="form-control" />
+            <div class="d-flex quantity">
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-minus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <input id="form1" min="1" name="quantity" value="1" type="number" class="form-control" />
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-plus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                    <i class="fas fa-plus"></i>
+                </button>
             </div>
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-center">
-            <p>$200</p>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            <p class="ps-5 mb-0">$200</p>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
         </div>
     </div>
-    <div class="row shadow-lg text-center p-3 my-3 align-items-center">
+
+    <!-- Product Row 2 -->
+    <div class="row shadow-lg text-center p-3 mt-3 align-items-center">
         <div class="col-3 d-flex align-items-center justify-content-center">
             <img src="images/logo.png" style="height:75px; width:75px;" alt="">
             <span class="ms-2">Product</span>
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-center">
-            <p>$200</p>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            <p class="ps-2 mb-0">$200</p>
         </div>
         <div class="col-3 d-flex align-items-center justify-content-center">
-            <div data-mdb-input-init class="form-outline" style="width: 75px;">
-                <input min="0" type="number" id="typeNumber" class="form-control" />
+            <div class="d-flex quantity">
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-minus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <input id="form1" min="1" name="quantity" value="1" type="number" class="form-control" />
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-plus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                    <i class="fas fa-plus"></i>
+                </button>
             </div>
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-center">
-            <p>$200</p>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            <p class="ps-5 mb-0">$200</p>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
         </div>
     </div>
-    <div class="row shadow-lg text-center p-3 my-3 align-items-center">
+
+    <!-- Product Row 3 -->
+    <div class="row shadow-lg text-center p-3 mt-3 align-items-center">
         <div class="col-3 d-flex align-items-center justify-content-center">
             <img src="images/logo.png" style="height:75px; width:75px;" alt="">
             <span class="ms-2">Product</span>
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-center">
-            <p>$200</p>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            <p class="ps-2 mb-0">$200</p>
         </div>
         <div class="col-3 d-flex align-items-center justify-content-center">
-            <div data-mdb-input-init class="form-outline" style="width: 75px;">
-                <input min="0" type="number" id="typeNumber" class="form-control" />
+            <div class="d-flex quantity">
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-minus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <input id="form1" min="1" name="quantity" value="1" type="number" class="form-control" />
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-plus"
+                    onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                    <i class="fas fa-plus"></i>
+                </button>
             </div>
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-center">
-            <p>$200</p>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            <p class="ps-5 mb-0">$200</p>
+        </div>
+        <div class="col-2 d-flex justify-content-center align-items-center">
+            <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
         </div>
     </div>
 </div>
 
-<div class="container d-flex justify-content-between">
+
+<div class="container text-center my-5">
     <div><button class="btn shop" >return to shop</button></div>
-    <div><button class="btn update">update cart</button></div>
 </div>
 
 <div class="container w-25  mb-4" style="background-color: #fff; border: 2px solid  #b83807;">

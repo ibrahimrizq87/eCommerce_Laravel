@@ -11,7 +11,6 @@ use App\Models\ProductImage;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
-use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -147,77 +146,77 @@ class ProductController extends Controller
 
 
     
-            return response()->json(['message' => 'Product created successfully', 'product' => $product , 'product' => $video_path], 201);
+            return response()->json(['message' => 'Product created successfully', 'product' => $product], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
         
         }
 
-    public function update(Request $request, Product $product)
-    {
+    // public function update(Request $request, Product $product)
+    // {
         
-        $validator = Validator::make($request->all(), [
-            'product_name' => 'required|string|max:255',
-            'price' => 'required|numeric',
-            'description' => 'nullable|string',
-            'images' => 'nullable|array',
-            'images.*' => 'file|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'videos' => 'nullable|array',
-            'videos.*' => 'file|mimes:mp4,mkv,avi|max:102400',
-            'stock' => 'required|integer',
-            'category_id' => 'required|integer|exists:categories,id',
+    //     $validator = Validator::make($request->all(), [
+    //         'product_name' => 'required|string|max:255',
+    //         'price' => 'required|numeric',
+    //         'description' => 'nullable|string',
+    //         'images' => 'nullable|array',
+    //         'images.*' => 'file|image|mimes:jpeg,png,jpg,gif|max:2048',
+    //         'videos' => 'nullable|array',
+    //         'videos.*' => 'file|mimes:mp4,mkv,avi|max:102400',
+    //         'stock' => 'required|integer',
+    //         'category_id' => 'required|integer|exists:categories,id',
           
-        ], [
-            'product_name.required' => 'Product name is required.',
-            'product_name.string' => 'Product name must be a string.',
-            'product_name.max' => 'Product name may not be greater than 255 characters.',
-            'price.required' => 'Price is required.',
-            'price.numeric' => 'Price must be a number.',
-            'description.string' => 'Description must be a string.',
-            'images.file' => 'Image must be a file.',
-            'images.image' => 'The file must be an image.',
-            'images.mimes' => 'Image must be of type: jpeg, png, jpg, or gif.',
-            'images.max' => 'Image may not be greater than 2 MB.',
-            'videos.file' => 'Video must be a file.',
-            'videos.mimes' => 'Video must be of type: mp4, mkv, or avi.',
-            'videos.max' => 'Video may not be greater than 40 MB.',
-            'stock.required' => 'Stock is required.',
-            'stock.integer' => 'Stock must be an integer.',
-            'category_id.required' => 'Category ID is required.',
-            'category_id.integer' => 'Category ID must be an integer.',
-            'category_id.exists' => 'Category ID does not exist.',
-        ]);
+    //     ], [
+    //         'product_name.required' => 'Product name is required.',
+    //         'product_name.string' => 'Product name must be a string.',
+    //         'product_name.max' => 'Product name may not be greater than 255 characters.',
+    //         'price.required' => 'Price is required.',
+    //         'price.numeric' => 'Price must be a number.',
+    //         'description.string' => 'Description must be a string.',
+    //         'images.file' => 'Image must be a file.',
+    //         'images.image' => 'The file must be an image.',
+    //         'images.mimes' => 'Image must be of type: jpeg, png, jpg, or gif.',
+    //         'images.max' => 'Image may not be greater than 2 MB.',
+    //         'videos.file' => 'Video must be a file.',
+    //         'videos.mimes' => 'Video must be of type: mp4, mkv, or avi.',
+    //         'videos.max' => 'Video may not be greater than 40 MB.',
+    //         'stock.required' => 'Stock is required.',
+    //         'stock.integer' => 'Stock must be an integer.',
+    //         'category_id.required' => 'Category ID is required.',
+    //         'category_id.integer' => 'Category ID must be an integer.',
+    //         'category_id.exists' => 'Category ID does not exist.',
+    //     ]);
     
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
     
-        $data = $validator->validated();
-        if ($request->hasFile('images')) {
-            $imagePaths = [];
-            Storage::disk('public')->makeDirectory('products');
-            foreach ($data['images'] as $image) {
-                $path = $image->store('products', 'public');
-                $imagePaths[] = $path;
-            }
-            $data['images'] = implode(',', $imagePaths);
-        }
+    //     $data = $validator->validated();
+    //     if ($request->hasFile('images')) {
+    //         $imagePaths = [];
+    //         Storage::disk('public')->makeDirectory('products');
+    //         foreach ($data['images'] as $image) {
+    //             $path = $image->store('products', 'public');
+    //             $imagePaths[] = $path;
+    //         }
+    //         $data['images'] = implode(',', $imagePaths);
+    //     }
     
-        if ($request->hasFile('videos')) {
-            $videoPaths = [];
-            Storage::disk('public')->makeDirectory('videos');
-            foreach ($data['videos'] as $video) {
-                $path = $video->store('videos', 'public');
-                $videoPaths[] = $path;
-            }
-            $data['videos'] = implode(',', $videoPaths);
-        }
+    //     if ($request->hasFile('videos')) {
+    //         $videoPaths = [];
+    //         Storage::disk('public')->makeDirectory('videos');
+    //         foreach ($data['videos'] as $video) {
+    //             $path = $video->store('videos', 'public');
+    //             $videoPaths[] = $path;
+    //         }
+    //         $data['videos'] = implode(',', $videoPaths);
+    //     }
    
-        $product->update($data);
+    //     $product->update($data);
     
-        return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
-    }
+    //     return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+    // }
     
     public function show(Product $product)
      {

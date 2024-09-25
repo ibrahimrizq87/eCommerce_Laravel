@@ -36,3 +36,21 @@ border-color: #b83807;
     color: #dd7230;
     border-color: #dd7230;
 }
+
+.quantity{
+    width: 200px;
+}
+
+.btn-plus{ 
+    background-color: #ffffff;
+    color: #b83807;
+    border-radius: 0px;
+    font-size:18px
+} 
+.btn-minus{
+    background-color: #ffffff;
+    color: #b83807;
+    border-radius: 0px;
+    font-size:18px
+
+}
