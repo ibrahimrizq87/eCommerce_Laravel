@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 
 @Component({
-  selector: 'app-checkout',
+  selector: 'app-customer-m-account',
   standalone: true,
   imports: [CustomerHeaderComponent],
-  templateUrl: './checkout.component.html',
-  styleUrl: './checkout.component.css'
+  templateUrl: './customer-m-account.component.html',
+  styleUrl: './customer-m-account.component.css'
 })
-export class CheckoutComponent {
+export class CustomerMAccountComponent {
 
 }

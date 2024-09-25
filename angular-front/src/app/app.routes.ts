@@ -20,6 +20,9 @@ import { SellerProfileComponent } from './components/seller-profile/seller-profi
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
+import { CustomerMAccountComponent } from './components/customer-m-account/customer-m-account.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { Cart1Component } from './components/cart1/cart1.component';
 
 
 export const routes: Routes = [
@@ -44,6 +47,9 @@ export const routes: Routes = [
     {path:"customer/page", component:CustomerPageComponent},
     {path:"guest/page", component: GuestPageComponent},
     {path:"wishlist", component:WishlistComponent},
+    {path:"manage/account", component:CustomerMAccountComponent},
+    {path:"checkout", component:CheckoutComponent},
+    {path:"cart/new",component:Cart1Component},
     {path:"**",component:ErrorComponent}
 ];
 
