@@ -29,7 +29,7 @@ export class LoginComponent {
 
   logInAnimationOptions: AnimationOptions = {
      path: 'animations/craft.json',
-     loop: false,
+     loop: true,
      autoplay: true
    };
  
@@ -145,8 +145,8 @@ export class LoginComponent {
     const modal = document.getElementById("myModal");
     if (modal != null) {
       modal.style.display = "none";
-  
     }
+    
   }
 }
 function getDeviceName(): string {
