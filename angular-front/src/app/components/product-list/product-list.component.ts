@@ -6,14 +6,16 @@ import { ProductService } from '../../services/product.service';
 import { RouterModule} from '@angular/router';
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
+import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
     ProductDetailsComponent,
     CommonModule,
-    RouterModule
-  ],
+    RouterModule,
+    CustomerHeaderComponent
+],
 
 
   // providers: [ProductService ],
