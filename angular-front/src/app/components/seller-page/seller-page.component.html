@@ -1,14 +1,17 @@
-<div class="container-fluid">
+<div class="container-fluid my-3">
     <div class="row">
-        <div class="col-3" style="background-color:black; color:white; background-color:#231717;">
-            <app-seller-header/>
-    
-        </div>
-        <div class="col-12 col-md-9 container shadow-lg">
-            <app-my-products></app-my-products>
-            <app-add-product></app-add-product>
-            
-        </div>
+      <div class="col-3" style="background-color:black; color:white; background-color:#231717;">
+        <!-- Pass the event from SellerHeaderComponent to showComponent -->
+        <app-seller-header (linkClicked)="showComponent($event)"></app-seller-header>
+      </div>
+      <div class="col-12 col-md-9 container shadow-lg">
+        
+        <!-- Conditionally load components based on activeComponent value -->
+        <app-my-products *ngIf="activeComponent === 'my-products'"></app-my-products>
+        <app-add-product *ngIf="activeComponent === 'add-products'"></app-add-product>
+        <app-edit-profile *ngIf="activeComponent === 'edit'"></app-edit-profile>
+        <app-register *ngIf="activeComponent === 'register'"></app-register>
+      </div>
     </div>
-</div>
-
+  </div>
+  
