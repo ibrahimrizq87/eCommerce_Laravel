@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
   selector: 'app-customer-overview',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './customer-overview.component.html',
-  styleUrl: './customer-overview.component.css'
+  templateUrl: './customer-account.component.html',
+  styleUrl: './customer-account.component.css'
 })
 export class CustomerOverviewComponent {
 

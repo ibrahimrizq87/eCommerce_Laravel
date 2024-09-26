@@ -1,22 +1,46 @@
-<div class="container my-5 p-auto m-auto">
-    <div class="container m-5">
-        <h2>Welcome to our store Enjoy shopping!</h2>
-    </div>
-
-
-
+<app-customer-header />
+<div class="container shadow-lg   my-5 p-5 m-auto">
+ 
+    
     <div class="row row-cols-1 row-cols-md-4 g-3 m-auto">
-
-       
-        <div class="col-12 col-md-3 " *ngFor="let element of products">
-            <div class="card h-100">
-                <img src="{{element.cover_image}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">{{element.product_name}}</h5>
-                    <h6 class="price mb-0">price : ${{element.price}}</h6>
-                    <p class="card-text">{{element.description}}</p>
-                    <h6>Category : {{element.category.category_name}}</h6>
-<!--         
+        <div class="col" *ngFor="let element of products">
+            <div class="card card-item h-100">
+                <div class="card-img-container" style="background-color: #ffffff;">
+                    <!-- Wrapping the image in an anchor tag to make it clickable -->
+                    <a (click)="onProductClick(element)" style="display: block; cursor: pointer;">
+                        <img src="images/wedding.jpg" class="card-img-top img-cover w-100" style="height: 200px; object-fit: cover;" alt="...">
+                    </a>
+                    <!-- Discount badge -->
+                    <div style="position: absolute; top: 10px; left: 10px;">
+                        <p style="background-color: #ffc857; color: #000; padding: 3px 7px; border-radius: 5px; font-weight: bold; font-size: 14px;">
+                            30%
+                        </p>
+                    </div>
+                    <!-- Icons (heart and eye) -->
+                    <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 8px;">
+                        <a><i class="fa fa-heart fs-5" style="background-color: #fff; padding: 5px; border-radius: 50%;"></i></a>
+                        <a (click)="onProductClick(element)"><i class="fa-solid fa-eye fs-5" style="background-color: #fff; padding: 5px; border-radius: 50%;"></i></a>
+                    </div>
+                </div>
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <p class="card-title">{{ element.product_name.length > 35 ? (element.product_name | slice:0:35) + '...' : element.product_name }}</p>
+                    <div class="d-flex justify-content-around">
+                        <div><p class="price mb-1"><b>${{ element.price }}</b></p></div>
+                        <div><p class="price mb-1 text-decoration-line-through">$300</p></div>
+                    </div>
+                    <p class="card-text desc" style="font-size:14px">{{ element.description.length > 50 ? (element.description | slice:0:50) + '...' : element.description }}</p>
+                    <div class="d-flex justify-content-center mt-1">
+                        <a class="btn text-white mx-2" style="background-color: #b83807;">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+      
+        <!--         
                     <div class="d-flex justify-content-start align-items-center">
                         <ul class="list-unstyled list-inline mb-0">
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
@@ -28,22 +52,9 @@
                         <span class="mx-2">4.5/5</span> 
                     </div>
          -->
-                    <div class="d-flex justify-content-center mt-3">
-                        <div>
-
-                            <button (click)="onProductClick(element)" class="btn text-white"
-                                style="background-color:#e9760b;">Details</button>
-                        </div>
-                        <div>
-                            <a class="btn text-white mx-3" style="background-color:#b83807;">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
-<!--     
+        <!--     
                     <div class="d-flex justify-content-start align-items-center">
                         <ul class="list-unstyled list-inline mb-0">
                             <li class="list-inline-item mx-0"><i class="fas fa-star"></i></li>
@@ -134,8 +145,15 @@
                 </div>
             </div>
         </div> -->
-         
-
 
     </div>
-</div>
+
+    <!-- <div class="container">
+    <ul class="nav d-flex">
+        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+        <li><i class="fa-solid fa-star-half-stroke" style="color: #eea724;"></i></li>
+    </ul>
+</div> -->
