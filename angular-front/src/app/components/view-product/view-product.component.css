@@ -1,0 +1,90 @@
+.quantity{
+    height: 35px;
+    width: 40px;
+}
+
+.btn-plus{ 
+    background-color: #ffffff;
+    color: #dd7230;
+    border-radius: 0px;
+    border-color: #dd7230;
+
+} 
+.btn-minus{
+    background-color: #ffffff;
+    color: #dd7230;
+    border-radius: 0px;
+    border-color: #dd7230;
+
+}
+
+.btn-plus:hover{
+    background-color:#dd7230;
+    color: #000000;
+    border-radius: 0px;
+} 
+.btn-minus:hover{
+    background-color:#dd7230;
+    color: #000000;
+    border-radius: 0px;
+}
+
+.form-control{
+    border-radius: 0px ;
+    text-align: center;
+    width: 50px;
+}
+
+
+.form-control:focus {
+    border-color: #b83807 !important;  
+    box-shadow: 0 0 0 0.2rem rgb(221, 114, 48, 0.1) !important;
+}
+
+
+.buy{
+    background-color: #dd7230;
+}
+
+.buy:hover{
+    color: #b83807;
+    background-color: #ffffff;
+    font-weight:bolder;
+    border-color: #b83807;
+}
+
+.fa-heart:hover{
+    color: rgb(207, 11, 11);
+}
+
+.sm-img{
+    height: 80px; width: 80px;
+}
+
+.big-img{
+    height: 400px;
+    width:380px;
+}
+
+.video{
+    background-color: #ffc857;
+    width:fit-content;
+
+}
+
+a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.card-footer{
+    background-color: #000000d3;
+    color:#ffffff;
+    position: absolute;
+    bottom: 0; 
+    height: 35px;
+}
+
+.text-footer{
+    font-size: 14px;
+}

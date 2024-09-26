@@ -1,0 +1,237 @@
+<app-customer-header />
+
+<div class="container shadow-lg my-5 m-auto p-4">
+    <div class="container row">
+        <div class="col-md-6 d-flex">
+            <div class="col-md-2 ">
+                <img src="images/clay.jpg" class=" sm-img" alt="">
+                <img src="images/resin1.jpg" class="pt-2 sm-img" alt="">
+                <img src="images/toys.jpg" class="pt-2 sm-img" alt="">
+                <img src="images/mug1.jpg" class="pt-2 sm-img" alt="">
+                <img src="images/wedding.jpg" class="pt-2 sm-img" alt="">
+            </div>
+            <div class="col-md-4">
+                <img class="big-img" src="images/toys.jpg" alt="">
+            </div>
+        </div>
+        <div class="col-md-6 ps-4">
+            <p style="font-size: 18px;"><strong>Toys</strong></p>
+            <ul class="nav d-flex">
+                <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                <li><i class="fa-solid fa-star-half-stroke" style="color: #eea724;"></i></li>
+                <li><i class="fa-regular fa-star" style="color: #eea724;"></i></li>
+                <span style="font-size: 12px;" class="px-2">(20 reviews)</span>
+                <span style="font-size: 12px;" class="px-2">|</span>
+                <span style="font-size: 12px;"> In Stock</span>
+            </ul>
+            <p class="pt-3"><strong>$190.00</strong></p>
+            <p class="w-75" style="font-size: 14px;">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Delectus ipsa id repellat nulla laboriosam iste sapiente quod error nostrum accusamus architecto aliquam
+                magni praesentium temporibus,
+                dolores dolorum nesciunt eum atque.
+            </p>
+
+            <hr class="my-3">
+            <p>colors:</p>
+            <p>sizes:</p>
+            <div class="d-flex justify-content-evenly">
+                <div class="col-md-3 col-lg-3 col-xl-2 d-flex quantity pe-5">
+                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-minus"
+                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                        <i class="fas fa-minus"></i>
+                    </button>
+
+                    <input id="form1" min="1" name="quantity" value="1" type="number" class="form-control  " />
+
+                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-plus"
+                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div>
+                    <button class="btn px-2 mx-4 buy px-5 fw-bolder"> Buy now </button>
+                    <a><i class="me-1 fa fa-heart fa-lg pt-2"></i></a>
+                    <!-- <i class=" me-1 fa-regular fa-heart"></i> -->
+                </div>
+            </div>
+        </div>
+        <div class="text-center my-4">
+            <button class="btn mt-5 video" (click)="toggleVideo()"> Watch Video </button>
+            <button class="btn mt-5 video ms-4" (click)="toggleReview()"> view Reviews </button>
+        </div>
+        <div *ngIf="showVideo" class="video-container my-3 d-flex justify-content-center">
+            <video width="500" controls>
+                <source src="assets/sample-video.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div *ngIf="showReview">
+            <div class="container bg-white">
+                <div>
+                    <p class="px-5 pt-5" style="font-size: 18px;">Reviews</p>
+                </div>
+                <div class="container card border border-0">
+                    <div class="card-body" *ngFor="let review of reviews">
+                        <img [src]="review.user.image" class="rounded-circle" style="height:50; width:50px" alt="">
+                      <h5 class="card-title d-inline">{{review.user.name}}</h5>
+                      <h6 class="card-subtitle mb-2 text-body-secondary">{{review.user.last_name}}</h6>
+                      <div class="pt-3">
+                        <div class="d-flex flex-row my-3">
+                          <div class="text-warning mb-1 me-2">
+                              <i class="fa fa-star"  *ngFor="let item of [].constructor(review.rating); let i = index"></i>
+                              <!-- <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i>
+                              <i class="fa fa-star"></i> -->
+                              
+                              <i class="far fa-star" *ngFor="let item of [].constructor(5-review.rating); let i = index"></i>
+                              <span class="ms-1">
+                                  {{review.rating}}
+                              </span>
+                          </div>
+                      </div>
+                      <p class="card-text py-2">{{review.feedback}}</p>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class=" container m-4">
+        <p class="px-5 pt-5" style="font-size: 18px;" > Related Items</p>
+    </div>
+    <div class=" container mt-3 mb-5">
+        <div class="row mx-5 my-2">
+            <div class="col-md-3 my-5 ">
+                <div class="card mb-3" style="width: 200px; height: 200px; position: relative;">
+                    <div style="background-color: #ffffff;">
+                        <img src="images/logo.png" class="img-cover w-100" style="height: 150px; object-fit: fill;"
+                            alt="product">
+                        <div style="position: absolute; top: 10px; left: 10px; color: white; font-size: 14px;">
+                            <strong
+                                style="background-color: #ffc857;color:#000000; padding:5px 10px; border-radius: 5px;">30%</strong>
+                        </div>
+                        <div style="position: absolute; top: 10px; right: 10px; font-size: 18px;">
+                            <a><i class="fa fa-heart fs-5"></i></a>
+                            <a><i class="fa-solid fa-eye d-block pt-1"></i></a>
+                        </div>
+                        <div class="card-footer w-100">
+                            <a href="#">
+                                <p class="text-center text-footer" ><i class="fa-solid fa-cart-shopping text-white px-1"></i> Add to Cart</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <span class="ps-2"> product name</span>
+                <p class="ps-2">$200 <span class="text-decoration-line-through ps-3">$300</span></p>
+                <div class="container">
+                    <ul class="nav d-flex">
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star-half-stroke" style="color: #eea724;"></i></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-3 my-5 ">
+                <div class="card mb-3" style="width: 200px; height: 200px; position: relative;">
+                    <div style="background-color: #ffffff;">
+                        <img src="images/logo.png" class="img-cover w-100" style="height: 150px; object-fit: fill;"
+                            alt="product">
+                        <div style="position: absolute; top: 10px; left: 10px; color: white; font-size: 14px;">
+                            <strong
+                                style="background-color: #ffc857;color:#000000; padding:5px 10px; border-radius: 5px;">30%</strong>
+                        </div>
+                        <div style="position: absolute; top: 10px; right: 10px; font-size: 18px;">
+                            <a><i class="fa fa-heart fs-5"></i></a>
+                            <a><i class="fa-solid fa-eye d-block pt-1"></i></a>
+                        </div>
+                        <div class="card-footer w-100">
+                            <a href="#">
+                                <p class="text-center text-footer" ><i class="fa-solid fa-cart-shopping text-white px-1"></i> Add to Cart</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <span class="ps-2"> product name</span>
+                <p class="ps-2">$200 <span class="text-decoration-line-through ps-3">$300</span></p>
+                <div class="container">
+                    <ul class="nav d-flex">
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star-half-stroke" style="color: #eea724;"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3 my-5 ">
+                <div class="card mb-3" style="width: 200px; height: 200px; position: relative;">
+                    <div style="background-color: #ffffff;">
+                        <img src="images/logo.png" class="img-cover w-100" style="height: 150px; object-fit: fill;"
+                            alt="product">
+                        <div style="position: absolute; top: 10px; left: 10px; color: white; font-size: 14px;">
+                            <strong
+                                style="background-color: #ffc857;color:#000000; padding:5px 10px; border-radius: 5px;">30%</strong>
+                        </div>
+                        <div style="position: absolute; top: 10px; right: 10px; font-size: 18px;">
+                            <a><i class="fa fa-heart fs-5"></i></a>
+                            <a><i class="fa-solid fa-eye d-block pt-1"></i></a>
+                        </div>
+                        <div class="card-footer w-100">
+                            <a href="#">
+                                <p class="text-center text-footer" ><i class="fa-solid fa-cart-shopping text-white px-1"></i> Add to Cart</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <span class="ps-2"> product name</span>
+                <p class="ps-2">$200 <span class="text-decoration-line-through ps-3">$300</span></p>
+                <div class="container">
+                    <ul class="nav d-flex">
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star-half-stroke" style="color: #eea724;"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-3 my-5 ">
+                <div class="card mb-3" style="width: 200px; height: 200px; position: relative;">
+                    <div style="background-color: #ffffff;">
+                        <img src="images/logo.png" class="img-cover w-100" style="height: 150px; object-fit: fill;"
+                            alt="product">
+                        <div style="position: absolute; top: 10px; left: 10px; color: white; font-size: 14px;">
+                            <strong
+                                style="background-color: #ffc857;color:#000000; padding:5px 10px; border-radius: 5px;">30%</strong>
+                        </div>
+                        <div style="position: absolute; top: 10px; right: 10px; font-size: 18px;">
+                            <a><i class="fa fa-heart fs-5"></i></a>
+                            <a><i class="fa-solid fa-eye d-block pt-1"></i></a>
+                        </div>
+                        <div class="card-footer w-100">
+                            <a href="#">
+                                <p class="text-center text-footer" ><i class="fa-solid fa-cart-shopping text-white px-1"></i> Add to Cart</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <span class="ps-2"> product name</span>
+                <p class="ps-2">$200 <span class="text-decoration-line-through ps-3">$300</span></p>
+                <div class="container">
+                    <ul class="nav d-flex">
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star" style="color: #eea724;"></i></li>
+                        <li><i class="fa-solid fa-star-half-stroke" style="color: #eea724;"></i></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

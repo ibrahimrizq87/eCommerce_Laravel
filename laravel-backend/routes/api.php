@@ -57,9 +57,9 @@ Route::apiResource('order-items', OrderItemController::class);
 Route::apiResource('payment-requests', PaymentRequestController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('products', ProductController::class)->only(['store', 'update', 'destroy']);
+Route::apiResource('products', ProductController::class)->only([ 'update', 'destroy']);
 });
-Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+Route::apiResource('products', ProductController::class)->only(['store','index', 'show']);
 Route::get('products/byCategory/{category}', [ProductController::class, 'getProductsByCategory']);
 Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
 

@@ -1,0 +1,27 @@
+<div class="container m-auto my-5  w-50 shadow-lg py-5">
+    
+
+    <div class="container">
+        <div class="email-form" style="background-color: #ffffff;">
+            <h6 class="py-4 text-center">Send Email</h6>
+            <form action="">
+                <div class="form-floating">
+                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" required email
+                        ngModel>
+                    <label for="email">Email</label>
+                    <!-- <div *ngIf="submitted && registerForm.controls['email']?.invalid" style="color:#b83807">
+                <div *ngIf="registerForm.controls['email']?.errors?.['required']">
+                    Email is required.
+                </div>
+                <div *ngIf="registerForm.controls['email']?.errors?.['email']">
+                    Please enter a valid email address.
+                </div>
+            </div> -->
+                </div>
+                <div class="text-center my-4">
+                    <button class="btn"> Send Email </button>
+                </div>
+            </form>
+
+        </div>
+    </div>

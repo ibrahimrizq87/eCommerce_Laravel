@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 import { RouterModule } from '@angular/router';
 
-
 @Component({
-  selector: 'app-wishlist',
+  selector: 'app-cart1',
   standalone: true,
   imports: [CustomerHeaderComponent, RouterModule],
-  templateUrl: './wishlist.component.html',
-  styleUrl: './wishlist.component.css'
+  templateUrl: './cart1.component.html',
+  styleUrl: './cart1.component.css'
 })
-export class WishlistComponent {
+export class Cart1Component {
 
 }

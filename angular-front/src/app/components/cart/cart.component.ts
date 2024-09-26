@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
-import { Router } from '@angular/router';
-import { CartListComponent } from './cart-list/cart-list.component';
-import { CartContentComponent } from "./cart-content/cart-content.component";
-import { RouterOutlet } from '@angular/router';
+import {  Router,RouterModule } from '@angular/router';
+import { CustomerHeaderComponent } from '../customer-header/customer-header.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
-    CartListComponent,
-    CartContentComponent,
-    RouterOutlet
+   CustomerHeaderComponent,
+   RouterModule
 ],
 providers: [UserService],
   templateUrl: './cart.component.html',

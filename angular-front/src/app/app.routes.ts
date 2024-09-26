@@ -22,6 +22,14 @@ import { GuestPageComponent } from './components/guest-page/guest-page.component
 import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { NeedVarificationComponent } from './components/need-varification/need-varification.component';
 
+import { CustomerMAccountComponent } from './components/customer-m-account/customer-m-account.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { Cart1Component } from './components/cart1/cart1.component';
+import { ViewProductComponent } from './components/view-product/view-product.component';
+import { SellerPageComponent } from './components/seller-page/seller-page.component';
+import { SendEmailComponent } from './components/send-email/send-email.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -46,7 +54,14 @@ export const routes: Routes = [
     {path:"guest-header", component:GuestHeaderComponent},
     {path:"customer/page", component:CustomerPageComponent},
     {path:"guest/page", component: GuestPageComponent},
+    {path:"seller/page", component:SellerPageComponent},
     {path:"wishlist", component:WishlistComponent},
+    {path:"manage/account", component:CustomerMAccountComponent},
+    {path:"checkout", component:CheckoutComponent},
+    {path:"cart/new",component:Cart1Component},
+    {path:"product/view", component:ViewProductComponent},
+    {path:"send", component:SendEmailComponent},
+    {path:"reset", component:ResetPasswordComponent},
     {path:"**",component:ErrorComponent}
 ];
 
