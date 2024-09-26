@@ -17,12 +17,23 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\SellerController;
 use App\Http\Controllers\Api\WishListController;
+use App\Http\Controllers\Api\VerificationController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
 
+
+Route::post('forgot-password', [UserController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
+
+Route::post('users/email/resend', [VerificationController::class, 'resend'])
+    ->middleware('auth:sanctum');
 
 Route::post('users/login', [UserController::class, 'login']);
 Route::post('users/register', [UserController::class, 'register']);

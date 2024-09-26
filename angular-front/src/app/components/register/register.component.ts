@@ -164,7 +164,7 @@ export class RegisterComponent {
     const modal = document.getElementById("myModal");
     if (modal != null) {
       modal.style.display = "none";
-      this.router.navigate(['/home']);
+      this.router.navigate(['/varification']);
     }
   }
 }

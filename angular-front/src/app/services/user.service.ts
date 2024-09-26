@@ -52,6 +52,17 @@ export class UserService {
     
       return this.http.post(`${this.apiUrl}/logout`, {}, { headers });
     }
+
+    resendVarification(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+    
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+    
+      return this.http.post(`${this.apiUrl}/email/resend`, {}, { headers });
+    }
+
     
 }
 

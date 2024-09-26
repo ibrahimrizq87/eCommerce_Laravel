@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\CustomVerifyEmail;
+
+use App\Notifications\MyResetPasswordNotification;
+
 
 use Laravel\Sanctum\HasApiTokens; 
 
-class User extends Authenticatable
+class User extends Authenticatable  implements MustVerifyEmail
 {
     use HasFactory, Notifiable, HasApiTokens; 
 
@@ -62,5 +67,16 @@ class User extends Authenticatable
     public function wishLists()
     {
         return $this->hasMany(WishList::class);
+    }
+
+    // public function sendEmailVerificationNotification()
+    // {
+    //     $this->notify(new CustomVerifyEmail($this->generateVerificationToken()));
+    // }
+
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new MyResetPasswordNotification($token));
     }
 }

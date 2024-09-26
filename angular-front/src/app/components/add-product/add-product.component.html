@@ -127,9 +127,12 @@
             <div class="mb-3">
                 <div class="form-floating">
                     <input type="file" class="form-control" id="gallery" accept="image/*" multiple (change)="onFileSelect($event)" required>
-                    <label for="gallery">Product Gallery</label>
+                    <label for="gallery">Product Gallery <small>(max 5)</small></label>
                     <div *ngIf="submitted && selectedFiles?.length === 0" class="text-danger">
                         At least one product image is required.
+                    </div>
+                    <div *ngIf="fileLimitExceeded" class="text-danger">
+                        You can only upload a maximum of 5 images.
                     </div>
                 </div>
             </div>
