@@ -19,6 +19,8 @@ import { CustomerProfileComponent } from './components/customer-profile/customer
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
+import { NeedVarificationComponent } from './components/need-varification/need-varification.component';
+
 import { CustomerMAccountComponent } from './components/customer-m-account/customer-m-account.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { Cart1Component } from './components/cart1/cart1.component';
@@ -35,6 +37,8 @@ export const routes: Routes = [
     {path:"products", component:ProductListComponent},
     {path:"products/:id", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},
+    {path:"varification",component:NeedVarificationComponent},
+
     {path:"payment",component:PaymentComponent},
     {path:"order",component:OrderComponent},
     {path:"category",component:CategoryComponent},

@@ -20,6 +20,7 @@ import { ProductService } from '../../services/product.service';
   styleUrls: ['./add-product.component.css']
 })
 export class AddProductComponent {
+  fileLimitExceeded = false;
 
   categories: any[] = [];
   selectedFiles: File[] = []; 
@@ -58,9 +59,14 @@ export class AddProductComponent {
   }
   onFileSelect(event: any): void {
     if (event.target.files.length > 0) {
-      this.selectedFiles = Array.from(event.target.files); 
-      // console.log(this.selectedFiles);
-    }
+      // this.selectedFiles = Array.from(event.target.files); 
+      if (event.target.files.length > 5) {
+        this.fileLimitExceeded = true;
+        this.selectedFiles = [];
+      } else {
+        this.fileLimitExceeded = false;
+        this.selectedFiles = Array.from(event.target.files); 
+      }    }
   }
 
   getErrorMessages(): string[] {
@@ -78,7 +84,7 @@ export class AddProductComponent {
   onSubmit(form: any): void {
     this.submitted = true;
     
-    if (form.invalid || this.selectedFiles.length === 0) {
+    if (form.invalid || this.selectedFiles.length === 0 || this.selectedFiles.length > 5) {
       
     }else{
     

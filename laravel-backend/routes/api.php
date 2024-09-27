@@ -17,15 +17,26 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\SellerController;
 use App\Http\Controllers\Api\WishListController;
+use App\Http\Controllers\Api\VerificationController;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
 
+
+Route::post('forgot-password', [UserController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
+
+Route::post('users/email/resend', [VerificationController::class, 'resend'])
+    ->middleware('auth:sanctum');
 
 Route::post('users/login', [UserController::class, 'login']);
-Route::post('/register', [UserController::class, 'register']);
+Route::post('users/register', [UserController::class, 'register']);
 Route::get('users/me', [UserController::class, 'getUser'])->middleware('auth:sanctum');
 
 Route::post('/users/logout',
@@ -38,7 +49,7 @@ Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class);
 Route::apiResource('categories', CategoryController::class);
-Route::apiResource('customers', CustomerController::class);
+Route::apiResource('customers', CustomerController::class)->middleware('auth:sanctum');
 Route::apiResource('custom-orders', CustomOrderController::class);
 Route::apiResource('offers', OfferController::class);
 Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
@@ -53,7 +64,7 @@ Route::get('products/byCategory/{category}', [ProductController::class, 'getProd
 Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
 
 Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
-Route::apiResource('sellers', SellerController::class);
+Route::apiResource('sellers', SellerController::class)->middleware('auth:sanctum');
 
 
 Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');
