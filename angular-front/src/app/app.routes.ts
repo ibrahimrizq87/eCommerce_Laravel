@@ -29,6 +29,8 @@ import { SellerPageComponent } from './components/seller-page/seller-page.compon
 import { SendEmailComponent } from './components/send-email/send-email.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
+import { Component } from '@angular/core';
+import { ViewOrderComponent } from './components/cutomer-profile/view-order/view-order.component';
 
 
 export const routes: Routes = [
@@ -38,7 +40,6 @@ export const routes: Routes = [
     {path:"products/:id", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},
     {path:"varification",component:NeedVarificationComponent},
-
     {path:"payment",component:PaymentComponent},
     {path:"order",component:OrderComponent},
     {path:"category",component:CategoryComponent},
@@ -54,6 +55,7 @@ export const routes: Routes = [
     {path:"customer/page", component:CustomerPageComponent},
     {path:"guest/page", component: GuestPageComponent},
     {path:"seller/page", component:SellerPageComponent},
+    {path:"admin/page",component:AdminPageComponent},
     {path:"wishlist", component:WishlistComponent},
     {path:"manage/account", component:CustomerMAccountComponent},
     {path:"checkout", component:CheckoutComponent},
@@ -61,7 +63,7 @@ export const routes: Routes = [
     {path:"product/view", component:ViewProductComponent},
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
-    {path:"admin/page",component:AdminPageComponent},
+    {path:"order/view", component:ViewOrderComponent},
     {path:"**",component:ErrorComponent}
 ];
 
