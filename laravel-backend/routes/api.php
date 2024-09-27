@@ -50,7 +50,7 @@ Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class);
 Route::apiResource('categories', CategoryController::class);
-Route::apiResource('customers', CustomerController::class);
+Route::apiResource('customers', CustomerController::class)->middleware('auth:sanctum');
 Route::apiResource('custom-orders', CustomOrderController::class);
 Route::apiResource('offers', OfferController::class);
 Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
@@ -65,7 +65,7 @@ Route::get('products/byCategory/{category}', [ProductController::class, 'getProd
 Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
 
 Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
-Route::apiResource('sellers', SellerController::class);
+Route::apiResource('sellers', SellerController::class)->middleware('auth:sanctum');
 
 
 Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');

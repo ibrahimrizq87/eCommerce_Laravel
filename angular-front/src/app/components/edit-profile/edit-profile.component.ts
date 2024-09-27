@@ -6,6 +6,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-edit-profile',
   standalone: true,
@@ -51,7 +52,6 @@ export class EditProfileComponent {
     this.imageUploaded = event.target.files && event.target.files.length > 0;
 
   }
-
 
 
   getErrorMessages(): string[] {
@@ -120,10 +120,20 @@ export class EditProfileComponent {
       console.error('Form is invalid');
     }
   }
+  openModal() {
+    const modal = document.getElementById("myModal");
+    if (modal != null) {
+      modal.style.display = "block";
 
-
-
-
+    }
+  }
+  closeModal(){
+    const modal = document.getElementById("myModal");
+    if (modal != null) {
+      modal.style.display = "none";
+  
+    }
+  }
 }
 
 function getDeviceName(): string {

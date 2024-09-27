@@ -1,7 +1,7 @@
 
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, TemplateRef } from '@angular/core';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIfContext } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { RouterModule} from '@angular/router';
 import { CategoryService } from '../../services/category.service';
@@ -28,6 +28,7 @@ import { CustomerHeaderComponent } from "../customer-header/customer-header.comp
 export class ProductListComponent {
   products: Product[] = []; 
   category :any;
+  noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
   constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router) { }
   
   

@@ -16,7 +16,6 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
 import { CustomerPageComponent } from './components/customer-page/customer-page.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
-import { SellerProfileComponent } from './components/seller-profile/seller-profile.component';
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
@@ -29,6 +28,9 @@ import { ViewProductComponent } from './components/view-product/view-product.com
 import { SellerPageComponent } from './components/seller-page/seller-page.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
+import { Component } from '@angular/core';
+import { ViewOrderComponent } from './components/cutomer-profile/view-order/view-order.component';
 
 
 export const routes: Routes = [
@@ -38,7 +40,6 @@ export const routes: Routes = [
     {path:"products/:id", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},
     {path:"varification",component:NeedVarificationComponent},
-
     {path:"payment",component:PaymentComponent},
     {path:"order",component:OrderComponent},
     {path:"category",component:CategoryComponent},
@@ -49,12 +50,12 @@ export const routes: Routes = [
     {path:"update-product",component:UpdateProductComponent},
     {path:"category/items", component:CategoryDetailsComponent},
     {path:"customer/profile", component:CustomerProfileComponent},
-    {path:"seller/profile", component:SellerProfileComponent},
     {path:"edit-profile", component:EditProfileComponent},
     {path:"guest-header", component:GuestHeaderComponent},
     {path:"customer/page", component:CustomerPageComponent},
     {path:"guest/page", component: GuestPageComponent},
     {path:"seller/page", component:SellerPageComponent},
+    {path:"admin/page",component:AdminPageComponent},
     {path:"wishlist", component:WishlistComponent},
     {path:"manage/account", component:CustomerMAccountComponent},
     {path:"checkout", component:CheckoutComponent},
@@ -62,6 +63,7 @@ export const routes: Routes = [
     {path:"product/view", component:ViewProductComponent},
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
+    {path:"order/view", component:ViewOrderComponent},
     {path:"**",component:ErrorComponent}
 ];
 
