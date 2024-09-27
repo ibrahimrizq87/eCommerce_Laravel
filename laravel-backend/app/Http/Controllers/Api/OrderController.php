@@ -39,8 +39,9 @@ class OrderController extends Controller
             'address' => $request->address,
             'total' => $request->total,
             'user_id' => Auth::id(),
-            'payment_status' => 'not_payed',
+            'payment_status' => 'not_payed', 
         ]);
+        
 
         return response()->json($order, 201);
 
@@ -54,7 +55,6 @@ class OrderController extends Controller
 
     return response()->json($order);
 }
-
 public function update(Request $request, Order $order)
 {
     if ($order->user_id !== Auth::id()) {
@@ -65,11 +65,16 @@ public function update(Request $request, Order $order)
         'phone' => 'sometimes|required|string|max:15',
         'address' => 'sometimes|required|string|max:255',
         'total' => 'sometimes|required|integer|min:1',
-        'payment_status' => 'sometimes|required|in:payed,not_payed',
+        'payment_status' => 'sometimes|required|in:payed,not_payed,canceled',
     ]);
 
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()], 422);
+    }
+
+    // لا تسمح بإلغاء الطلب إذا كان بالفعل ملغى أو تم تسليمه
+    if ($order->payment_status === 'canceled' || $order->payment_status === 'delivered') {
+        return response()->json(['error' => 'Order cannot be canceled'], 422);
     }
 
     $order->update($request->only(['phone', 'address', 'total', 'payment_status']));

@@ -1,64 +1,61 @@
-import { Component } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../../services/order.service';
 import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { LoginAlertComponent } from '../login-alert/login-alert.component';
-
+import { CommonModule } from '@angular/common';
 @Component({
-  selector: 'app-order',
-  standalone: true,
-  imports: [],
-  providers: [UserService],
-
-  templateUrl: './order.component.html',
-  styleUrl: './order.component.css'
+    selector: 'app-order',
+    standalone: true,
+    templateUrl: './order.component.html',
+    styleUrls: ['./order.component.css'],
+    imports: [CommonModule]  
 })
-export class OrderComponent {
-  user: any;
-  constructor(private userService: UserService, private router: Router ,public dialog: MatDialog) { }
-  openAlertDialogAsync() {
-    setTimeout(() => {
-      this.dialog.open(LoginAlertComponent, {
-        data: {
-          icon: 'Check',
-          message: 'This Alert Dialog opened asynchronously'
-        }
-      });
-    }, 200);
-  }
 
-  ngOnInit(): void {
-    console.log(sessionStorage.getItem('authToken'));
-    if (sessionStorage.getItem('authToken')) {
+export class OrderComponent implements OnInit {
+    orders: any[] = [];
 
+    constructor(private orderService: OrderService, private router: Router) { }
 
-      this.userService.getUser().subscribe(
-        response => {
-
-
-        },
-        error => {
-          if (error.status === 400 || error.status === 500) {
-            console.error('A specific error occurred:', error);
-          } else if (error.status === 401) {
-            sessionStorage.removeItem('authToken');
-            // alert('need to log in first');
-            sessionStorage.setItem('loginSession', 'true');
-
-            this.router.navigate(['/login']);
-          } else {
-            console.error('An unexpected error occurred:', error);
-          }
-        }
-      );
-    } else {
-      // alert('need to log in first');
-      sessionStorage.setItem('loginSession', 'true');
-
-      this.router.navigate(['/login']);
-
+    ngOnInit(): void {
+        this.fetchOrders();
     }
 
+    fetchOrders(): void {
+        this.orderService.getAllOrders().subscribe(
+            (response) => {
+                this.orders = response; 
+            },
+            (error) => {
+                console.error('Error fetching orders:', error);
+            }
+        );
+    }
 
-  }
+    viewOrder(orderId: string): void {
+        this.router.navigate(['/order-details', orderId]);
+    }
+
+    editOrder(orderId: string): void {
+        this.router.navigate(['/edit-order', orderId]);
+    }
+    cancelOrder(orderId: string): void {
+       
+        const order = this.orders.find(order => order.id === orderId);
+        if (order.payment_status === 'canceled' || order.payment_status === 'delivered') {
+            alert('Cannot cancel this order as it is already canceled or delivered.');
+            return;
+        }
+    
+        this.orderService.cancelOrder(orderId).subscribe(
+            () => {
+                alert('Order canceled successfully!');
+                this.fetchOrders(); // تحديث قائمة الطلبات بعد الإلغاء
+            },
+            (error) => {
+                console.error('Error canceling order:', error);
+                alert('Failed to cancel order: ' + (error.error.message || error.message));
+            }
+        );
+    }
+    
+    
 }

@@ -1,68 +1,36 @@
-<div class="container my-5">
-    <h2> Track your Order </h2>
-    <div >
-        <span id="heading" class="px-3">Order No.</span>
-        <span id="details" class="px-3">012j1gvs356c</span>
-    </div>
+<div class="container shadow-lg">
+    <h3 class="p-4">Order History</h3>
+    <div class="container">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    
+                    <th scope="col">Amount</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders">
+                  
+                    <td>{{ order.total | currency }}</td>
+                    <td>{{ order.created_at | date:'dd/MM/yyyy' }}</td>
 
-    <div class="progress-track">
-        <ul id="progressbar">
-            <li class="step0 active " id="step1">Ordered</li>
-            <li class="step0 active text-center" id="step2">Shipped</li>
-            <li class="step0 active text-right" id="step3">On the way</li>
-            <li class="step0 text-right" id="step4">Delivered</li>
-        </ul>
-    </div>
-</div>
 
 
+                    <td>{{ order.payment_status }}</td>
+                    <td>
+                        <button type="button" class="btn me-1" style="background-color: #b83807; color:white" (click)="viewOrder(order.id)">View</button>
+                       
+                     <button type="button" class="btn me-1" style="background-color: #e9760b;" (click)="editOrder(order.id)"[disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'">Edit</button>
 
+                        <button type="button" class="btn me-1" style="background-color: #ffaf2c;" (click)="cancelOrder(order.id)" [disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'">Cancel</button>
+                        <button type="button" class="btn me-1" style="background-color: #e6b260;" (click)="cancelOrder(order.id)" [disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'">Pay</button>
 
-<div class="card">
-    <div class="title">Purchase Reciept</div>
-    <div class="info">
-        <div class="row">
-            <div class="col-7">
-                <span id="heading">Date</span><br>
-                <span id="details">10 October 2018</span>
-            </div>
-
-        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="pricing">
-        <div class="row">
-            <div class="col-9">
-                <span id="name">BEATS Solo 3 Wireless Headphones</span>
-            </div>
-            <div class="col-3">
-                <span id="price">&pound;299.99</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-9">
-                <span id="name">Shipping</span>
-            </div>
-            <div class="col-3">
-                <span id="price">&pound;33.00</span>
-            </div>
-        </div>
-    </div>
-    <div class="total">
-        <div class="row">
-            <div class="col-9"></div>
-            <div class="col-3"><strong>&pound;262.99</strong></div>
-        </div>
-    </div>
-    <div class="tracking">
-        <div class="title">Tracking Order</div>
-    </div>
-    <div class="progress-track">
-        <ul id="progressbar">
-            <li class="step0 active " id="step1">Ordered</li>
-            <li class="step0 active text-center" id="step2">Shipped</li>
-            <li class="step0 active text-right" id="step3">On the way</li>
-            <li class="step0 text-right" id="step4">Delivered</li>
-        </ul>
-    </div>
-
 </div>
