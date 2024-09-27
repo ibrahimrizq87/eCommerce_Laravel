@@ -11,13 +11,12 @@ import { SellerHeaderComponent } from './seller-header/seller-header.component';
   standalone: true,
   imports: [CommonModule, SellerHeaderComponent, MyProductsComponent, AddProductComponent, EditProfileComponent, RegisterComponent],
   templateUrl: './seller-page.component.html',
-  styleUrls: ['./seller-page.component.css']  // Fixed typo to styleUrls
+  styleUrls: ['./seller-page.component.css']  
 })
 export class SellerPageComponent {
   activeComponent: string = 'my-products';
 
   showComponent(component: string) {
-    console.log('Active Component:', component);  // Debugging: check what component is being set
     this.activeComponent = component;
   }
   

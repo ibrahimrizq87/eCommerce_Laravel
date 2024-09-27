@@ -26,6 +26,7 @@ import { ViewProductComponent } from './components/view-product/view-product.com
 import { SellerPageComponent } from './components/seller-page/seller-page.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
 
 
 export const routes: Routes = [
@@ -56,6 +57,7 @@ export const routes: Routes = [
     {path:"product/view", component:ViewProductComponent},
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
+    {path:"admin/page",component:AdminPageComponent},
     {path:"**",component:ErrorComponent}
 ];
 
