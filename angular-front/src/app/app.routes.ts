@@ -30,7 +30,7 @@ import { SendEmailComponent } from './components/send-email/send-email.component
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { Component } from '@angular/core';
-import { ViewOrderComponent } from './components/customer-profile/view-order/view-order.component';
+import { ViewOrderComponent } from './components/cutomer-profile/view-order/view-order.component';
 
 
 export const routes: Routes = [

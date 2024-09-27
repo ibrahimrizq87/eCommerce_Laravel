@@ -1,11 +1,13 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { ViewOrderComponent } from '../../cutomer-profile/view-order/view-order.component';
 
 
 @Component({
   selector: 'app-customer-orders',
   standalone: true,
-  imports: [RouterModule ],
+  imports: [RouterModule,ViewOrderComponent, CommonModule],
   templateUrl: './customer-orders.component.html',
   styleUrl: './customer-orders.component.css'
 })
