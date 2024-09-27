@@ -1,16 +1,18 @@
 <div class="container-fluid">
   <div class="row m-4">
-    <div class="col-12 col-md-4 my-5">
+    <div class="col-12 col-md-3 my-5">
       <app-list-part (linkClicked)="showComponent($event)"></app-list-part>
     </div>
 
     
-    <div class="col-12 col-md-8 my-5">
-      <!-- <app-customer-overview *ngIf="activeComponent === 'account'"></app-customer-overview> -->
-      <app-customer-orders *ngIf="activeComponent === 'new-orders'"></app-customer-orders>
-      <!-- <app-customer-orders-history *ngIf="activeComponent === 'orders-history'"></app-customer-orders-history> -->
-      <app-my-wishlist-part *ngIf="activeComponent === 'wishlist'"></app-my-wishlist-part>
-      <app-customer-info *ngIf="activeComponent === 'profile'"></app-customer-info>
+    <div class="col-12 col-md-9 my-5">
+      <app-customer-orders *ngIf="activeComponent === 'new-orders'">
+      </app-customer-orders>
+      <app-wishlist *ngIf="activeComponent === 'wishlist'"></app-wishlist>
+      <app-edit-profile *ngIf="activeComponent === 'edit-profile'"></app-edit-profile>
+      <!-- <app-my-returns  *ngIf="activeComponent === 'my-returns'"></app-my-returns> -->
+      <app-my-cancellations   *ngIf="activeComponent === 'my-cancellations'"></app-my-cancellations>
+
     </div>
   </div>
 </div>
