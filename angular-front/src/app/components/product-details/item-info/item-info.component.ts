@@ -48,6 +48,8 @@ export class ItemInfoComponent {
     console.log('Quantity changed:', value);
   }
   addToCart(){}
+
+
   addToWishList(){
     const formData = new FormData();
 
@@ -83,7 +85,6 @@ this.wishListService.addItem(formData).subscribe(
       this.product =this.productService.getSelectedProduct();
       console.log('product: ',this.product);
       this.coverImage = this.product.cover_image;
-
     }else{
       this.router.navigate(['/products']);
 

@@ -27,8 +27,9 @@ class ProductController extends Controller
     public function getProductsByCategory(Category $category)
     {
         // Fetch products that belong to the specified category
-        $products = Product::where('category_id', $category->id)->get();
-        
+        $products = Product::where('category_id', $category->id)
+        ->with(['category', 'user', 'images', 'addedOffers'])
+        ->get();        
         // Return the products as a resource collection
         return ProductResource::collection($products);
     }
@@ -37,7 +38,7 @@ class ProductController extends Controller
     {
 
         // $products = Product::with(['category', 'user','images'])->paginate(10);
-        $products = Product::with(['category', 'user' , 'images'])->get();
+        $products = Product::with(['category', 'user' , 'images' , 'addedOffers'])->get();
         return ProductResource::collection($products);
     }
     

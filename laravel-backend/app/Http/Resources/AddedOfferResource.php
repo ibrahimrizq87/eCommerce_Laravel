@@ -22,7 +22,7 @@ class AddedOfferResource extends JsonResource
             'id' => $this->id, 
             'offer_id' => $this->offer_id,
             'product_id' => $this->product_id,
-            'offer' => new OfferResource($this->whenLoaded('offer')), 
+            'offer' => new OfferResource($this->offer), 
             'product' => new ProductResource($this->whenLoaded('product')), 
             //==>
             //whenLoaded checks if a specified relationship has been loaded. If it has, 

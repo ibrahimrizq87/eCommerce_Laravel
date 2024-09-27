@@ -66,11 +66,6 @@ export class AppComponent {
     }
       
         
-    
-
-
-
-
 
     this.categoryService.getAllCategories().subscribe(response => {
       console.log(response);
