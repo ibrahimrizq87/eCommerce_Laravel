@@ -15,7 +15,7 @@ import { ViewReviewsComponent } from "../view-reviews/view-reviews.component";
 export class ViewProductComponent {
   // for watch video
   showVideo = false;
-reviews: any;
+  reviews: any;
 
   toggleVideo() {
     this.showVideo = !this.showVideo;

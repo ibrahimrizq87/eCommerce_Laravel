@@ -25,6 +25,7 @@ import { CustomerHeaderComponent } from "../customer-header/customer-header.comp
 export class ProductListComponent {
   products: any; 
   category :any;
+noProductsTemplate: TemplateRef<NgIfContext<any>>|null;
   constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router) { }
   
   

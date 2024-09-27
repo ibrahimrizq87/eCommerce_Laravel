@@ -1,0 +1,22 @@
+li{
+    list-style-type: none;
+    padding-right: 30px;
+    cursor: pointer;
+   }
+   
+   li:hover{
+    background-color: #fff;
+       color:#b83807;
+       font-size: 20px;
+   }
+   
+   a{
+       text-decoration: none;
+       color:white;
+       cursor: pointer;
+   }
+   
+   .balance{
+       font-weight: bolder;
+       font-size: 18px;
+   }

@@ -16,7 +16,6 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
 import { CustomerPageComponent } from './components/customer-page/customer-page.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
-import { SellerProfileComponent } from './components/seller-profile/seller-profile.component';
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
@@ -29,6 +28,7 @@ import { ViewProductComponent } from './components/view-product/view-product.com
 import { SellerPageComponent } from './components/seller-page/seller-page.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
 
 
 export const routes: Routes = [
@@ -49,7 +49,6 @@ export const routes: Routes = [
     {path:"update-product",component:UpdateProductComponent},
     {path:"category/items", component:CategoryDetailsComponent},
     {path:"customer/profile", component:CustomerProfileComponent},
-    {path:"seller/profile", component:SellerProfileComponent},
     {path:"edit-profile", component:EditProfileComponent},
     {path:"guest-header", component:GuestHeaderComponent},
     {path:"customer/page", component:CustomerPageComponent},
@@ -62,6 +61,7 @@ export const routes: Routes = [
     {path:"product/view", component:ViewProductComponent},
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
+    {path:"admin/page",component:AdminPageComponent},
     {path:"**",component:ErrorComponent}
 ];
 

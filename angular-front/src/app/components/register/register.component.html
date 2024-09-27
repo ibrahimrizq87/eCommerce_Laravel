@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+
+=======
 <!-- <app-guest-header /> -->
+>>>>>>> 8342e09469728f4a7489a58893118f1c8147b537
 <div class="container my-5 ">
     <div class="register-form shadow-lg" style="background-color: #ffffff;">
         <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert text-danger">
@@ -8,7 +12,7 @@
         </div>
         <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm" enctype="multipart/form-data">
             <div class="my-4">
-                <h6 class="text-center py-3" style="color: #b83807;">Create your account</h6>
+                <h6  style="color: #b83807;">Create your account</h6>
 
             </div>
             <div class="row">
@@ -65,19 +69,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="city" placeholder="Your city" name="city"
-                                style="height: 50px;" ngModel required />
-                            <label for="city">City</label>
-                            <div *ngIf="submitted && registerForm.controls['city']?.invalid" style="color:#b83807">
-                                City is required.
-                            </div>
-                        </div>
-                    </div>
+                   
                     <div class="my-3 d-flex">
                         <span>I am a:</span>
-                        <div class="form-check px-5">
+                        <div class="form-check px-4">
                             <input type="radio" id="customer" name="role" value="customer" class="form-check-input"
                                 (change)="onRoleChange('customer')" ngModel required>
                             <label for="customer" class="form-check-label">Customer</label>
@@ -131,16 +126,7 @@
                     <div *ngIf="submitted && registerForm.controls['gender']?.invalid" style="color:#b83807">
                         Gender is required.
                     </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="country" placeholder="Your country"
-                                name="country" style="height: 50px;" ngModel required />
-                            <label for="country">Country</label>
-                            <div *ngIf="submitted && registerForm.controls['country']?.invalid" style="color:#b83807">
-                                Country is required.
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="mb-3">
                         <div class="form-floating">
                             <textarea class="form-control" id="address" placeholder="Your address" name="address"
