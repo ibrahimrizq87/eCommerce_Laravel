@@ -53,10 +53,8 @@ export class ItemInfoComponent {
   addToWishList(){
     const formData = new FormData();
 
-    // formData.append('product_name', form.value.title);
 
       formData.append('product_id', this.product.id);
-      // console.log(formDa)
 
     
 this.wishListService.addItem(formData).subscribe(

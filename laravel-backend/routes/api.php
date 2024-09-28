@@ -76,6 +76,9 @@ Route::post('/payment/handel', [PaymentController::class, 'handlePayment'])->mid
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
 Route::get('/payment/success/{orderId}', [PaymentController::class, 'success'])->name('success');
 
+Route::post('wish_lists/myWish', [WishListController::class , 'inWishlist'])->middleware('auth:sanctum');
+
+
 // GET|HEAD        / .............................................................................................................................
 // GET|HEAD        api/added-offers .......................................................... added-offers.index › Api\AddedOfferController@index
 // POST            api/added-offers .......................................................... added-offers.store › Api\AddedOfferController@store

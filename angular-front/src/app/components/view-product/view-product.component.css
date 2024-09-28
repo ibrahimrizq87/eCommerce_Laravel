@@ -56,6 +56,10 @@
 .fa-heart:hover{
     color: rgb(207, 11, 11);
 }
+.fa-heart-selected{
+    
+    color: rgb(207, 11, 11);
+}
 
 
 .big-img{

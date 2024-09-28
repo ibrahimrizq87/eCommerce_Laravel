@@ -26,11 +26,13 @@ import { UserService } from '../../services/user.service';
   styleUrl: './view-product.component.css'
 })
 export class ViewProductComponent {
+
+
   showVideo = false;
   submitted = false;
   stars: number = 0;
+  addToWish :Boolean=false;
   products: Product[]=[]; 
-
   ratingStars: number = 0;
   user:any;
   reviews: Feedback[] = [];
@@ -40,6 +42,10 @@ export class ViewProductComponent {
   quantity: number = 1;
   coverImage: string = '';
   selectedImage: string = '';
+
+
+
+
   constructor(private productService: ProductService,
     private userService: UserService,
     private router: Router,
@@ -86,7 +92,8 @@ export class ViewProductComponent {
     this.wishListService.addItem(formData).subscribe(
       response => {
         console.log(response);
-        alert('add successfully');
+        this.addToWish = true;
+        alert('added successfully to wishlist');
       },
       error => {
         if (error.status === 401) {
@@ -106,77 +113,95 @@ export class ViewProductComponent {
 
 
   ngOnInit(): void {
-    if (this.productService.getSelectedProduct()) {
-      this.product = this.productService.getSelectedProduct();
-      this.addedOffer = this.product.addedOffers;
-      this.addedOffer.forEach(addedOffer => {
-        this.offers.push(addedOffer.offer);
-      })
-      this.offers
-      console.log('product: ', this.product);
-      this.coverImage = this.product.cover_image;
 
-
-
-      this.productService.getProductsByCategory(this.product.category.id).subscribe(
-        response => {
-          this.products = response.data; 
-          this.products.forEach(product=>{
-            product.priceAfterOffers = product.price;
-            product.totalOffers=0;  
-            
-          product.addedOffers.forEach(offerAdded => {
-            console.log('discount:', offerAdded.offer.discount);
-            const endDate = new Date(offerAdded.offer.end_date); 
-            const today = new Date(); 
-            today.setHours(0, 0, 0, 0); 
-    
-    if (endDate.getTime() >= today.getTime()) { 
-      product.totalOffers +=offerAdded.offer.discount;
-      product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
-    }
-    
-          });
-        });
-          console.log(response.data.email);
-        },
-        error => {
-          if (error.status === 400 || error.status === 500) {
-            console.error('A specific error occurred:', error);
-          } else {
-            console.error('An unexpected error occurred:', error);
-          }
-        }
-      );
-
-    } else {
-      this.router.navigate(['/products']);
-
-    }
-
-    this.updateReview();
-    if (sessionStorage.getItem('authToken')) {
-      if (this.userService.getCurrentUser()) {
-        this.user = this.userService.getCurrentUser();
-
-      } else {
-        this.userService.getUser().subscribe(
-          response => {
-
-            this.user = response.data;
-           
-
-          },
-          error => {
-           
-          }
-        );
-      }
-    }
-   
+    this.componentDataRefresh();
+  }
+  onproductClick(product:any){
+    this.productService.setProduct(product);
+    this.componentDataRefresh();
   }
 
+componentDataRefresh(){
+  console.log('staaaaaaaaaaaaaaaaaaaaaaaaaaaaaars',this.stars);
 
+  if (this.productService.getSelectedProduct()) {
+    this.product = this.productService.getSelectedProduct();
+    this.addedOffer = this.product.addedOffers;
+    this.offers =[];
+    this.addedOffer.forEach(addedOffer => {
+      this.offers.push(addedOffer.offer);
+    })
+    this.offers
+    console.log('product: ', this.product);
+    this.coverImage = this.product.cover_image;
+
+
+
+    this.productService.getProductsByCategory(this.product.category.id).subscribe(
+      response => {
+        this.products = response.data; 
+        this.products.forEach(product=>{
+          product.priceAfterOffers = product.price;
+          product.totalOffers=0;  
+          
+        product.addedOffers.forEach(offerAdded => {
+          console.log('discount:', offerAdded.offer.discount);
+          const endDate = new Date(offerAdded.offer.end_date); 
+          const today = new Date(); 
+          today.setHours(0, 0, 0, 0); 
+  
+  if (endDate.getTime() >= today.getTime()) { 
+    product.totalOffers +=offerAdded.offer.discount;
+    product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+  }
+  
+        });
+      });
+        console.log(response.data.email);
+      },
+      error => {
+        if (error.status === 400 || error.status === 500) {
+          console.error('A specific error occurred:', error);
+        } else {
+          console.error('An unexpected error occurred:', error);
+        }
+      }
+    );
+
+  } else {
+    this.router.navigate(['/products']);
+
+  }
+
+  this.updateReview();
+  if (sessionStorage.getItem('authToken')) {
+    if (this.userService.getCurrentUser()) {
+      this.user = this.userService.getCurrentUser();
+
+    } else {
+      this.userService.getUser().subscribe(
+        response => {
+
+          this.user = response.data;
+         
+
+        },
+        error => {
+         
+        }
+      );
+    }
+this.wishListService.isInMyWishlist({'product_id':this.product.id}).subscribe(
+response=>{
+  this.addToWish=response.message;
+console.log('in my wish list?????',response.message);
+},error=>{
+  console.log('error happend in wishlist data:: ',error);
+}
+);
+
+  }
+}
   deleteReview(review:any){
     this.updateUser(review);
 // console.log(review);
@@ -187,12 +212,20 @@ export class ViewProductComponent {
     this.reviewService.getAllReviews(this.product.id).subscribe(
       response => {
         this.reviews = response.data;
+        this.stars=0;
+
         this.reviews.forEach(review => {
+          console.log('raatdgasdbjas::::::',review.rating);
           this.stars += review.rating;
 
         });
-        this.stars = Math.floor(this.stars / this.reviews.length);
+if (this.reviews.length > 0) {
+  this.stars = Math.floor(this.stars / this.reviews.length);
 
+}else{
+this.stars = 0;
+}
+  
 
       }, error => {
 
@@ -295,6 +328,9 @@ export class ViewProductComponent {
       this.router.navigate(['/login']);
     }
   }
+
+
+
 
 }
 

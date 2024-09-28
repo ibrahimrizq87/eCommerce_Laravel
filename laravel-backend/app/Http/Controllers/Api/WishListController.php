@@ -19,9 +19,32 @@ class WishListController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    
+
+
+    public function inWishlist(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'product_id' => 'required|integer|exists:products,id',
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+
+            if (WishList::where('product_id', $request->input('product_id'))
+            ->where('user_id', Auth::id())->exists()) {
+            return response()->json(['message' => true], 200); 
+        }
+            return response()->json(['message' => false], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
+
     public function store(Request $request)
     {
         try {
