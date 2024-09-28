@@ -37,6 +37,7 @@ Route::post('users/email/resend', [VerificationController::class, 'resend'])
     ->middleware('auth:sanctum');
 
 Route::post('users/login', [UserController::class, 'login']);
+
 Route::post('users/register', [UserController::class, 'register']);
 Route::get('users/me', [UserController::class, 'getUser'])->middleware('auth:sanctum');
 

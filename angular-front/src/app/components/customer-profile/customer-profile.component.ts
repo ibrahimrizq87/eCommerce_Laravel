@@ -18,12 +18,12 @@ import { ViewOrderComponent } from '../cutomer-profile/view-order/view-order.com
     CustomerOverviewComponent, MyWishlistPartComponent, CustomerHeaderComponent, EditProfileComponent,
     WishlistComponent, MyCancellationsComponent, ViewOrderComponent],
   templateUrl: './customer-profile.component.html',
-  styleUrl: './customer-profile.component.css'
+  styleUrls: ['./customer-profile.component.css'] // لاحظي اسم الخاصية الصحيح
 })
 export class CustomerProfileComponent {
  activeComponent: string = 'edit-profile'
 
- showComponent(component: string) {
-   this.activeComponent = component;
- }
+  showComponent(component: string) {
+    this.activeComponent = component;
+  }
 }
