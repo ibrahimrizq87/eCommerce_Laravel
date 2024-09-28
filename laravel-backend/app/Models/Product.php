@@ -43,4 +43,13 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+    public function addedOffers()
+    {
+        return $this->hasMany(AddedOffer::class);
+    }
+
+    public function wishlistItems()
+    {
+        return $this->hasMany(WishList::class);
+    }
 }

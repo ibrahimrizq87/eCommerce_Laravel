@@ -30,7 +30,7 @@ class ReviewController extends Controller
             $validator = Validator::make($request->all(), [
                 'product_id' => 'required|integer|exists:products,id',
                 'feedback' => 'required|string|max:255',
-                'rating' => 'required|integer|in:1,2,3,4,5',
+                'rating' => 'required|integer|in:0,1,2,3,4,5',
 
             ]);
             
@@ -78,6 +78,11 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        try{
+        $review->delete();
+        return response()->json(['message' => 'review deleted successfully'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
     }
 }

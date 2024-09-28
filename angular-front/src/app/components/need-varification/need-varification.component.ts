@@ -37,8 +37,6 @@ alert(response.message);
   ngOnInit(): void {
 
     this.updateUser();
- 
-
   }
   reloadPage(): void {
 

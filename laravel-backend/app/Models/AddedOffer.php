@@ -21,4 +21,11 @@ class AddedOffer extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    
+    public function getDiscountAmount()
+    {
+        $offer = $this->offer; 
+        return $offer ? $offer->discount : 0; 
+    }
+
 }
