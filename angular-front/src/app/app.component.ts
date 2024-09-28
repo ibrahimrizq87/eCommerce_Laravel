@@ -22,7 +22,7 @@ import { FormsModule } from '@angular/forms';
     ProductService,
     WishListService,
     ReviewService,
-    UserService
+    UserService,
   ],
 
   templateUrl: './app.component.html',

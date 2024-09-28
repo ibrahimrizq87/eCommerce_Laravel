@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\WishList;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -92,8 +93,35 @@ class WishListController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WishList $wishList)
+    public function destroy(Product $product)
     {
-        //
+        // return response()->json(['message' => $product], 200);
+
+        // $wishlist = WishList::where('product_id',$product->id)->first();
+        // if (!$wishlist) {
+        //     return response()->json(['message' => 'Product not found.'], 404);
+        // }
+
+        // $wishlist->destroy();
+        // return response()->json(['message' => 'All done.'], 200);
+        
     }
+
+    public function removeWishlist($product_id)
+    {
+
+        $wishlist = WishList::where('product_id',$product_id)->first();
+        if (!$wishlist) {
+            return response()->json(['message' => 'Product not found.'], 404);
+        }
+        // return response()->json(['message' =>  $wishlist], 200);
+
+
+        $wishlist->delete();
+        return response()->json(['message' => 'All done.'], 200);
+        
+    }
+
+
+    
 }

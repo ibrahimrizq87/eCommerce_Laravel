@@ -204,7 +204,6 @@ console.log('in my wish list?????',response.message);
 }
   deleteReview(review:any){
     this.updateUser(review);
-// console.log(review);
   }
 
 
@@ -215,7 +214,6 @@ console.log('in my wish list?????',response.message);
         this.stars=0;
 
         this.reviews.forEach(review => {
-          console.log('raatdgasdbjas::::::',review.rating);
           this.stars += review.rating;
 
         });

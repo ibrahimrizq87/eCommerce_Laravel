@@ -21,7 +21,6 @@ import { CustomerHeaderComponent } from "../customer-header/customer-header.comp
 
 
 
-  // providers: [ProductService ],
   templateUrl: './product-list.component.html',
 })
 
@@ -31,11 +30,7 @@ export class ProductListComponent {
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
   constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router) { }
   
-  
-  // onCategoryClick(category: any): void {
-  //   this.categoryService.setCategory(category);
-  //   this.router.navigate(['/products']);
-  // }
+
   moveToCategory(){
     this.router.navigate(['/category']);
 
@@ -53,7 +48,23 @@ if(this.category){
   this.productService.getProductsByCategory(this.category.id).subscribe(
     response => {
       this.products = response.data;
-      
+      this.products = response.data; 
+      this.products.forEach(product=>{
+        product.priceAfterOffers = product.price;
+        product.totalOffers=0;  
+        
+      product.addedOffers.forEach(offerAdded => {
+        const endDate = new Date(offerAdded.offer.end_date); 
+        const today = new Date(); 
+        today.setHours(0, 0, 0, 0); 
+
+if (endDate.getTime() >= today.getTime()) { 
+  product.totalOffers +=offerAdded.offer.discount;
+  product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+}
+
+      });
+    });
       // console.log('addedOffers:', this.products.addedOffers);
       // console.log('offer:', this.products.addedOffers.offer);
 
@@ -80,15 +91,11 @@ if(this.category){
   this.productService.getAllProducts().subscribe(
     response => {
       this.products = response.data; 
-
-
-      console.log('products:', this.products);
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
         
       product.addedOffers.forEach(offerAdded => {
-        console.log('discount:', offerAdded.offer.discount);
         const endDate = new Date(offerAdded.offer.end_date); 
         const today = new Date(); 
         today.setHours(0, 0, 0, 0); 

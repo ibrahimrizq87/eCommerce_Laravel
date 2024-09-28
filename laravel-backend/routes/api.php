@@ -77,7 +77,10 @@ Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cance
 Route::get('/payment/success/{orderId}', [PaymentController::class, 'success'])->name('success');
 
 Route::post('wish_lists/myWish', [WishListController::class , 'inWishlist'])->middleware('auth:sanctum');
+Route::get('/products/wishlist/all', [ProductController::class , 'productsInWishlist'])->middleware('auth:sanctum');
+Route::delete('wish_lists/remove/{product_id}', [WishListController::class , 'removeWishlist'])->middleware('auth:sanctum');
 
+// products/wishlist
 
 // GET|HEAD        / .............................................................................................................................
 // GET|HEAD        api/added-offers .......................................................... added-offers.index › Api\AddedOfferController@index

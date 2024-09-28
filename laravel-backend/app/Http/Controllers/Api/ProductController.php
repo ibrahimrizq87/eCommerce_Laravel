@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\WishList;
+
 use App\Models\Category;
 
 use App\Models\ProductImage;
@@ -39,6 +41,21 @@ class ProductController extends Controller
 
         // $products = Product::with(['category', 'user','images'])->paginate(10);
         $products = Product::with(['category', 'user' , 'images' , 'addedOffers'])->get();
+        return ProductResource::collection($products);
+    }
+    
+
+    public function productsInWishlist()
+    {
+
+        $wishlistItems = WishList::where('user_id',Auth::id())->get()->pluck('product_id');
+        // return response()->json(['data' => $wishlistItems],200);
+ 
+        $products = Product::with(['category', 'user', 'images', 'addedOffers'])
+        ->whereIn('id', $wishlistItems)
+        ->get();
+
+        // $products = Product::with(['category', 'user' , 'images' , 'addedOffers'])->get();
         return ProductResource::collection($products);
     }
     
