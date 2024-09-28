@@ -3,6 +3,9 @@ import { HomeContentComponent } from '../home-content/home-content.component';
 import { BannerComponent } from '../banner/banner.component';
 import { LatestProductsComponent } from '../latest-products/latest-products.component';
 import { RouterModule } from '@angular/router';
+import { CarouselComponent } from "../../carousel/carousel.component";
+import { CategoryCarouselComponent } from "../../../home/category-carousel/category-carousel.component";
+import { ProductCarouselComponent } from "../../../home/product-carousel/product-carousel.component";
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -11,8 +14,11 @@ import { RouterModule } from '@angular/router';
     HomeContentComponent,
     BannerComponent,
     LatestProductsComponent,
-    RouterModule
-  ],
+    RouterModule,
+    CarouselComponent,
+    CategoryCarouselComponent,
+    ProductCarouselComponent
+],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

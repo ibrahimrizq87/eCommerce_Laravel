@@ -14,7 +14,6 @@ import { AddProductComponent } from './components/add-product/add-product.compon
 import { UpdateProductComponent } from './components/update-product/update-product.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
-import { CustomerPageComponent } from './components/customer-page/customer-page.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
@@ -52,7 +51,6 @@ export const routes: Routes = [
     {path:"customer/profile", component:CustomerProfileComponent},
     {path:"edit-profile", component:EditProfileComponent},
     {path:"guest-header", component:GuestHeaderComponent},
-    {path:"customer/page", component:CustomerPageComponent},
     {path:"guest/page", component: GuestPageComponent},
     {path:"seller/page", component:SellerPageComponent},
     {path:"admin/page",component:AdminPageComponent},

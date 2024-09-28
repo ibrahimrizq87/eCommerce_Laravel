@@ -2,5 +2,11 @@ button:hover{
     color:#b83807;
 }
 td {
-    vertical-align: middle; /* Vertically center the content */
+    vertical-align: middle;
 }
+
+a{
+    text-decoration: none;
+       color: #b83807;
+   }
+   
