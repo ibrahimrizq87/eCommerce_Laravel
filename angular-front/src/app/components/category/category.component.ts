@@ -4,11 +4,12 @@
   import { RouterModule } from '@angular/router';
   import { CommonModule } from '@angular/common';
   import { Router } from '@angular/router';
+import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 
   @Component({
     selector: 'app-category',
     standalone: true,
-    imports: [    CommonModule, RouterModule,   ],
+    imports: [CommonModule, RouterModule, CustomerHeaderComponent],
 
 
     templateUrl: './category.component.html',

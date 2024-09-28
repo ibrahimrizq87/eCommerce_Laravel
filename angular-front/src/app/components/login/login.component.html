@@ -1,4 +1,4 @@
-<app-guest-header />
+<!-- <app-guest-header /> -->
 <div class=" container w-50 my-5 ">
     <div class="login-form shadow-lg" style="background-color: #ffffff;">
 
@@ -51,24 +51,28 @@
                 </div>
             </div>
 
-            <div class="my-3">
-                <div class="form-check">
-                    <input type="checkbox" id="checkbox" class="form-check-input" style="border: 1px solid #b83807;">
-                    <label for="checkbox" class="form-check-label fw-bold">Remember Me</label>
-                </div>
-            </div>                
+
+                       
             </div>
         </div>
 
 
             <div class="text-center my-4">
-                <button type="submit" class="btn w-50 fw-bolder text-white" data-bs-toggle="modal"
-                data-bs-target="#myModal" (click)="openModal()">Login</button>
+                <button type="submit" class="btn w-50 fw-bolder text-white">Login</button>
+            </div>
+
+
+            <div class="text-center">
+                <p class="text-center fw-bold">Want to restore your email?
+                    <a routerLink="/send" class="nav-link" aria-current="page">Forgot Password</a>
+                </p>
+
             </div>
 
             <div class="text-center">
                 <p class="text-center fw-bold">Don't have an account?
                     <a routerLink="/register" class="nav-link" aria-current="page">Create your account</a>
+                    </p>
 
             </div>
 
@@ -76,7 +80,6 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
 
-                        <!-- Modal body -->
                         <div class="modal-body">
                             <ng-lottie 
                             [options]="successAnimationOptions"

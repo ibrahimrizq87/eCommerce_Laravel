@@ -30,20 +30,55 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  user: any;
+  isLogged: Boolean = false; 
+
   title = 'angular-front';
 
-  categories: any[] | null = [];
-
-  constructor(private categoryService: CategoryService) {}
+  categories: any[] | null[] = [];
+  constructor( private userService: UserService,
+    private categoryService: CategoryService) { }
 
   ngOnInit(): void {
+
+
+
+
+    if(sessionStorage.getItem('authToken')){
+      this.isLogged = true;
+      this.userService.getUser().subscribe(
+        response => {
+    
+          this.user = response.data;
+          this.userService.setUser(this.user);
+          
+        },
+        error => {
+          if (error.status === 400 || error.status === 500) {
+            console.error('A specific error occurred:', error);
+          } else if (error.status === 401) {
+            sessionStorage.removeItem('authToken');
+            this.isLogged = false;
+          } else {
+            console.error('An unexpected error occurred:', error);
+          }
+        }
+      );
+    }
+      
+        
+
     this.categoryService.getAllCategories().subscribe(response => {
       console.log(response);
       this.categories = response.data;
       this.categoryService.setAllCategory(this.categories);
     },
-    error => {
-      console.error('Error fetching categories:', error);
-    });
+      error => {
+
+        console.error('Registration failed:', error);
+        console.log('Error: ' + error.error);
+
+      });
   }
 }
+

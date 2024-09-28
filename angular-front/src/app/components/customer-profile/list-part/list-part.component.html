@@ -1,23 +1,36 @@
-<div class="container shadow-lg text-center">
-    
-    <div class="">
+<div class="container ">
+   
+    <div class="mt-5">
         <ul class="list-group">
-            <!-- Emit the appropriate value when each link is clicked -->
-            <!-- <a  (click)="onLinkClick('account')">
-                <li class="my-1 py-3">Account</li>
-            </a> -->
-            <a  (click)="onLinkClick('new-orders')">
-                <li class="my-1 py-3">My Orders</li>
-            </a>
-            <!-- <a  (click)="onLinkClick('orders-history')">
-                <li class="my-1 py-3">Orders History</li>
-            </a> -->
-            <a  (click)="onLinkClick('wishlist')">
-                <li class="my-1 py-3">My Wishlist</li>
-            </a>
-            <a  (click)="onLinkClick('profile')">
-                <li class="my-1 py-3">My Profile</li>
-            </a>
+           
+            <ul class="my-1 pt-3 text-center"> 
+                <div >   
+                <img src="images/resin1.jpg" class="rounded-circle my-3" style="height:100px; width:100px;" alt="">
+                </div>
+                <li class="no-Link pt-3" style="cursor: default !important;"><strong>Manage My Account</strong></li>
+                <a  (click)="onLinkClick('edit-profile')">
+                    <li class="my-1 pb-3 link">My Profile</li>
+                </a>
+            </ul>
+
+            <ul class="my-1 pb-3 text-center">
+                <li class="no-Link" style="cursor: default !important;"><strong> My Orders</strong></li>
+                <a  (click)="onLinkClick('new-orders')">
+                    <li class="my-1  link">Order History</li>
+                </a>
+                <!-- <a  (click)="onLinkClick('my-returns')">
+                    <li class="my-1  link">My returns</li>
+                </a> -->
+                <a  (click)="onLinkClick('my-cancellations')">
+                    <li class="my-1 link">My Cancellations</li>
+                </a>
+            </ul>
+            <div class="text-center">
+                <a  routerLink="/wishlist">
+                 <li class="my-1 ps-4 link"><strong>My Wishlist</strong></li>
+                </a>
+            </div>
+            
         </ul>
     </div>
 </div>

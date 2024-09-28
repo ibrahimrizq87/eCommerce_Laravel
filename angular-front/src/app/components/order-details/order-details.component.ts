@@ -43,12 +43,9 @@ export class OrderDetailsComponent implements OnInit {
     if (!orderItems) {
       return 0;
     }
-    console.log(orderItems);
     return orderItems.reduce((total, item) => {
-      console.log(`Calculating: ${item.quantity} * ${item.product.price}`); // طباعة الكمية والسعر
-      return total + (item.quantity * item.products.price);
+      console.log(`Calculating: ${item.quantity} * ${item.product.price}`); 
+      return total + (item.quantity * item.product.price); // Fixed typo here, "products" -> "product"
     }, 0);
   }
-  
-  
 }

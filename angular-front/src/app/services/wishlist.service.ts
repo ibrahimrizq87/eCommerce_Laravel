@@ -22,6 +22,17 @@ export class WishListService {
     
       return this.http.post(`${this.apiUrl}`, data, { headers });
     }
+
+
+    isInMyWishlist(data:any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+    
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+    
+      return this.http.post(`${this.apiUrl}/myWish`, data, { headers });
+    }
     
 }
 

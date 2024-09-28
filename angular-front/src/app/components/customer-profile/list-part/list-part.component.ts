@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-list-part',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule,],
   templateUrl: './list-part.component.html',
   styleUrl: './list-part.component.css'
 })

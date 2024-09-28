@@ -1,0 +1,45 @@
+<div class="container my-5 ">
+    <div class="offer-form shadow-lg w-50" style="background-color: #ffffff;">
+        <div class="my-2">
+            <h6 style="color: #b83807;">Add an offer</h6>
+        </div>
+        <div class="mb-3 text-center">
+            <form (ngSubmit)="submitDates()" #dateForm="ngForm">
+
+                <div class="form-group my-3">
+                    <label for="startDate">Start Date:</label>
+                    <input type="date" id="startDate" class="form-control" [(ngModel)]="startDate" name="startDate"
+                        required (change)="onStartDateChange()" />
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="endDate">End Date:</label>
+                    <input type="date" id="endDate" class="form-control" [(ngModel)]="endDate" name="endDate" required
+                        [min]="minEndDate" />
+                </div>
+                
+                <div class="my-3">
+                    <label for="discount">Discount</label>
+                    <input type="number" class="form-control" name="discount" id="discount">    
+                </div>
+                
+            </form>
+        </div>
+
+        
+        <div class="text-center fw-bolder">
+            <p *ngIf="startDate && endDate">The Offer will start at: {{ startDate | date: 'fullDate' }}</p>
+            <p *ngIf="endDate"> And will end at: {{ endDate | date: 'fullDate' }}</p>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary my-3 text-center" [disabled]="!dateForm.form.valid">Submit</button>
+        </div>
+
+
+    </div>
+
+
+</div>

@@ -17,11 +17,24 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\SellerController;
 use App\Http\Controllers\Api\WishListController;
+use App\Http\Controllers\Api\VerificationController;
+
+use App\Http\Controllers\Api\PaymentController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed'])
+    ->name('verification.verify');
+
+
+Route::post('users/reset-password', [UserController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('users/reset', [UserController::class, 'resetPassword'])->name('password.reset');
+
+Route::post('users/email/resend', [VerificationController::class, 'resend'])
+    ->middleware('auth:sanctum');
 
 Route::post('users/login', [UserController::class, 'login']);
 
@@ -38,7 +51,7 @@ Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class);
 Route::apiResource('categories', CategoryController::class);
-Route::apiResource('customers', CustomerController::class);
+Route::apiResource('customers', CustomerController::class)->middleware('auth:sanctum');
 Route::apiResource('custom-orders', CustomOrderController::class);
 Route::apiResource('offers', OfferController::class);
 Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
@@ -46,19 +59,25 @@ Route::apiResource('order-items', OrderItemController::class);
 Route::apiResource('payment-requests', PaymentRequestController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('products', ProductController::class)->only(['store', 'update', 'destroy']);
+Route::apiResource('products', ProductController::class)->only([ 'store','update', 'destroy']);
 });
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 Route::get('products/byCategory/{category}', [ProductController::class, 'getProductsByCategory']);
 Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
 
 Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
-Route::apiResource('sellers', SellerController::class);
-Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::apiResource('sellers', SellerController::class)->middleware('auth:sanctum');
 
 
 Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');
 
+
+Route::post('/payment/handel', [PaymentController::class, 'handlePayment'])->middleware('auth:sanctum');
+
+Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+Route::get('/payment/success/{orderId}', [PaymentController::class, 'success'])->name('success');
+
+Route::post('wish_lists/myWish', [WishListController::class , 'inWishlist'])->middleware('auth:sanctum');
 
 
 // GET|HEAD        / .............................................................................................................................

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -55,6 +57,76 @@ class UserController extends Controller
     }
     }
     
+    
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json([
+                "message"=>"Email does not exist in our records."
+            ], 404);
+        }
+
+        $status = Password::sendResetLink(
+            $request->only(keys: 'email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+
+            return response()->json([
+                "message"=>"Password reset link sent!"
+            ], 200);
+
+        } elseif ($status === Password::RESET_THROTTLED) {
+
+            return response()->json([
+                "message"=>"Password reset link sent!"
+            ], 200);
+        } else {
+
+            return response()->json([
+                "message"=>"Unable to send reset link to the provided email."
+            ], 500);
+
+        }
+    }
+    public function resetPassword(Request $request)
+    {
+        
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8',
+        ]);
+
+        $resetPassword = DB::table('password_reset_tokens')->where('email',$request->email)->first();
+        if (Hash::check($request->token,$resetPassword->token )) {
+            $status = Password::reset(
+                $request->only('email', 'password', 'password_confirmation', 'token'),
+                function ($user, $password) {
+                    $user->password = Hash::make($password);
+                    $user->save();
+                }
+            );
+        } else {
+            return response()->json(['message' => 'Invalid token.'], 401);
+        }
+
+        if ($status === Password::PASSWORD_RESET) {
+        
+            return response()->json([
+                "message"=>"Password reset successful!"
+            ] , 200);
+        } else {
+        
+            return response()->json([
+                "message"=>"Invalid token or email."
+            ] , 404);
+        }
+    }
 
 
     function register(Request $request) {
@@ -91,7 +163,9 @@ class UserController extends Controller
         $std_validator->sometimes('address', 'required|string|max:255', function($input) {
             return $input->role === 'seller' || $input->role === 'customer';
         });
-
+        $std_validator->sometimes('phone', 'required|string|max:255', function($input) {
+            return $input->role === 'seller' || $input->role === 'customer';
+        });
         if ($std_validator->fails()) {
             return response()->json(['errors' => $std_validator->errors()], 400);
         }
@@ -137,6 +211,7 @@ class UserController extends Controller
         }
 
         $token = $user->createToken($request->device_name)->plainTextToken;
+        $user->sendEmailVerificationNotification();
 
         return response()->json(['token' => $token , 'user' => new UserResource($user)], 201); 
     } catch (\Exception $e) {
