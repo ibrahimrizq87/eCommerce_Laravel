@@ -55,6 +55,8 @@ class OrderController extends Controller
 
     return response()->json($order);
 }
+
+
 public function update(Request $request, Order $order)
 {
     if ($order->user_id !== Auth::id()) {

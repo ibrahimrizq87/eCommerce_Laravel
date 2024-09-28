@@ -54,6 +54,7 @@ Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllRevi
 
 Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
 Route::apiResource('sellers', SellerController::class);
+Route::get('/products/{id}', [ProductController::class, 'show']);
 
 
 Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');

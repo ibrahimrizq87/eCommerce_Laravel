@@ -20,9 +20,9 @@ import { SellerProfileComponent } from './components/seller-profile/seller-profi
 import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
 import { GuestPageComponent } from './components/guest-page/guest-page.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
-import { CheckoutComponent } from './components/checkout/checkout.component'; 
-// import { OrderDetailsComponent } from './components/order-details/order-details.component'; 
+// import { CheckoutComponent } from './components/checkout/checkout.component'; 
 // import {EditOrderComponent} from './components/edit-order/edit-order.component'; 
+import { OrderDetailsComponent } from './components/order-details/order-details.component'; 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     {path:"home",component:HomeComponent},
@@ -45,10 +45,10 @@ export const routes: Routes = [
     {path:"customer/page", component:CustomerPageComponent},
     {path:"guest/page", component: GuestPageComponent},
     {path:"wishlist", component:WishlistComponent},
-    { path: 'checkout', component: CheckoutComponent },
+    // { path: 'checkout', component: CheckoutComponent },
         { path: 'orders', component: OrderComponent },
-        // { path: 'order-details/:id', component: OrderDetailsComponent },
         // { path: 'edit-order/:id', component:EditOrderComponent } ,
-    {path:"**",component:ErrorComponent}
+          { path: 'order-details/:id', component: OrderDetailsComponent },
+      {path:"**",component:ErrorComponent}
 ];
 
