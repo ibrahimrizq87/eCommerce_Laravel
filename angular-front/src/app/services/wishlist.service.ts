@@ -22,7 +22,32 @@ export class WishListService {
     
       return this.http.post(`${this.apiUrl}`, data, { headers });
     }
+
+
+    isInMyWishlist(data:any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
     
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+    
+      return this.http.post(`${this.apiUrl}/myWish`, data, { headers });
+    }
+    
+
+
+
+    // Route::post('wish_lists/remove/{product_id}', [WishListController::class , 'removeWishlist'])->middleware('auth:sanctum');
+
+    deleteWishlistItem(id:string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+    
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+    
+      return this.http.delete(`${this.apiUrl}/remove/${id}` , { headers });
+    }
 }
 
 

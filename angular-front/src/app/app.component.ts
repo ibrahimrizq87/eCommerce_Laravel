@@ -22,7 +22,7 @@ import { FormsModule } from '@angular/forms';
     ProductService,
     WishListService,
     ReviewService,
-    UserService
+    UserService,
   ],
 
   templateUrl: './app.component.html',
@@ -66,11 +66,6 @@ export class AppComponent {
     }
       
         
-    
-
-
-
-
 
     this.categoryService.getAllCategories().subscribe(response => {
       console.log(response);

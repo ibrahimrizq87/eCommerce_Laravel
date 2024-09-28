@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\SellerController;
 use App\Http\Controllers\Api\WishListController;
 use App\Http\Controllers\Api\VerificationController;
 
+use App\Http\Controllers\Api\PaymentController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -29,8 +30,8 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
     ->name('verification.verify');
 
 
-Route::post('forgot-password', [UserController::class, 'sendResetLinkEmail'])->name('password.email');
-Route::post('reset-password', [UserController::class, 'resetPassword'])->name('password.reset');
+Route::post('users/reset-password', [UserController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::post('users/reset', [UserController::class, 'resetPassword'])->name('password.reset');
 
 Route::post('users/email/resend', [VerificationController::class, 'resend'])
     ->middleware('auth:sanctum');
@@ -57,9 +58,9 @@ Route::apiResource('order-items', OrderItemController::class);
 Route::apiResource('payment-requests', PaymentRequestController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
-Route::apiResource('products', ProductController::class)->only([ 'update', 'destroy']);
+Route::apiResource('products', ProductController::class)->only([ 'store','update', 'destroy']);
 });
-Route::apiResource('products', ProductController::class)->only(['store','index', 'show']);
+Route::apiResource('products', ProductController::class)->only(['index', 'show']);
 Route::get('products/byCategory/{category}', [ProductController::class, 'getProductsByCategory']);
 Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
 
@@ -70,6 +71,16 @@ Route::apiResource('sellers', SellerController::class)->middleware('auth:sanctum
 Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');
 
 
+Route::post('/payment/handel', [PaymentController::class, 'handlePayment'])->middleware('auth:sanctum');
+
+Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+Route::get('/payment/success/{orderId}', [PaymentController::class, 'success'])->name('success');
+
+Route::post('wish_lists/myWish', [WishListController::class , 'inWishlist'])->middleware('auth:sanctum');
+Route::get('/products/wishlist/all', [ProductController::class , 'productsInWishlist'])->middleware('auth:sanctum');
+Route::delete('wish_lists/remove/{product_id}', [WishListController::class , 'removeWishlist'])->middleware('auth:sanctum');
+
+// products/wishlist
 
 // GET|HEAD        / .............................................................................................................................
 // GET|HEAD        api/added-offers .......................................................... added-offers.index › Api\AddedOfferController@index

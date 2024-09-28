@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -101,25 +102,29 @@ class UserController extends Controller
             'password' => 'required|min:8',
         ]);
 
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user, $password) {
-        
-                $user->password = Hash::make($password);
-                $user->save();
-            }
-        );
+        $resetPassword = DB::table('password_reset_tokens')->where('email',$request->email)->first();
+        if (Hash::check($request->token,$resetPassword->token )) {
+            $status = Password::reset(
+                $request->only('email', 'password', 'password_confirmation', 'token'),
+                function ($user, $password) {
+                    $user->password = Hash::make($password);
+                    $user->save();
+                }
+            );
+        } else {
+            return response()->json(['message' => 'Invalid token.'], 401);
+        }
 
         if ($status === Password::PASSWORD_RESET) {
         
             return response()->json([
                 "message"=>"Password reset successful!"
-            ]);
+            ] , 200);
         } else {
         
             return response()->json([
                 "message"=>"Invalid token or email."
-            ]);
+            ] , 404);
         }
     }
 

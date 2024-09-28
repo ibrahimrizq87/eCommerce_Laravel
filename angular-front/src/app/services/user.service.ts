@@ -64,6 +64,13 @@ export class UserService {
     }
 
     
+    resetSendEmail(userData: any): Observable<any> {
+      return this.http.post(this.apiUrl+"/reset-password", userData);
+    }
+    resetPassword(userData: any): Observable<any> {
+      return this.http.post(this.apiUrl+"/reset", userData);
+    }
+
 }
 
 

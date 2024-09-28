@@ -47,6 +47,16 @@ export class ProductService {
         return this.http.get(`${this.apiUrl}/${id}`, { headers });
     }
 
+    getProductsInWishlist(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.get(`${this.apiUrl}/wishlist/all`, { headers });
+  }
+
+    
 
     getAllProducts(): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');
