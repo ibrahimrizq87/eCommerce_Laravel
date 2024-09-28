@@ -33,4 +33,30 @@ export class CategoryCarouselComponent {
     dots: true      
   };
 
+categories:any [] |null [] =[];
+    constructor(private categoryService: CategoryService ,private router: Router) { }
+
+
+    onCategoryClick(category: any): void {
+      this.categoryService.setCategory(category);
+      this.router.navigate(['/products']);
+    }
+    
+    
+    ngOnInit(): void {
+      this.categoryService.getAllCategories().subscribe(response => {
+        console.log(response);
+        this.categories = response.data;
+        this.categories.forEach(element => {
+          console.log(element.image);
+        });
+
+      },
+      error => {
+        
+        console.error('Registration failed:', error);
+        console.log('Error: ' + error.error);
+
+      });
+    }
 }
