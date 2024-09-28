@@ -1,4 +1,4 @@
-<div class="container-fluid my-3">
+<div class="container-fluid">
     <div class="row">
       <div class="col-md-3" style="background-color:black; color:white; background-color:#231717;">
         <!-- Pass the event from SellerHeaderComponent to showComponent -->
@@ -12,8 +12,9 @@
         <app-edit-profile *ngIf="activeComponent === 'edit'"></app-edit-profile>
         <app-register *ngIf="activeComponent === 'register'"></app-register>
         <app-add-offer  *ngIf="activeComponent === 'add-offer'"></app-add-offer>
-        <app-all-offers *ngIf="activeComponent === 'all-offers'"></app-all-offers>
-        <app-offered-products  *ngIf="activeComponent === 'offered-products'"></app-offered-products>
+        <app-product-offers  *ngIf="activeComponent === 'product-offers'"></app-product-offers>
+        <app-all-seller-offers *ngIf="activeComponent === 'all-seller-offers'"></app-all-seller-offers>
+       
 
 
       </div>
