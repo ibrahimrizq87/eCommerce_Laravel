@@ -30,6 +30,7 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { Component } from '@angular/core';
 import { ViewOrderComponent } from './components/cutomer-profile/view-order/view-order.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 export const routes: Routes = [
@@ -62,6 +63,7 @@ export const routes: Routes = [
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
     {path:"order/view", component:ViewOrderComponent},
+    {path:"loading", component:LoadingComponent},
     {path:"**",component:ErrorComponent}
 ];
 
