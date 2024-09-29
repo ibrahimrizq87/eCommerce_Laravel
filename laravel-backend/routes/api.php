@@ -47,6 +47,13 @@ Route::post('/users/logout',
 Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
 
 
+Route::get('/products/deleted',
+    [ProductController::class, 'getAlldeleted'])
+    ->middleware('auth:sanctum');
+Route::get('/products/restore/{product_id}',
+    [ProductController::class, 'restore'])
+    ->middleware('auth:sanctum');
+
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class);
 Route::apiResource('categories', CategoryController::class);

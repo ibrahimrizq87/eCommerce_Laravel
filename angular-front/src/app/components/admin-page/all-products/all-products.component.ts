@@ -16,17 +16,21 @@ export class AllProductsComponent {
 
   constructor(private productService: ProductService) { }
 
-  activeComponent: string = 'all-products'; // Default view is the product table
+  activeComponent: string = 'all-products'; 
 
   updateProduct() {
-    this.activeComponent = 'update-product'; // Swap to the update product view
+    this.activeComponent = 'update-product'; 
   }
   deleteProduct(product:any){
     this.productService.deleteProduct(product.id).subscribe(
       response=>{
+        alert('deleted sucessfully ');
+        this.updateProducts();  
 
       },error=>{
-        
+        alert('some error happend ');
+        console.log('error happend:::',error );
+
       }
     )
   }

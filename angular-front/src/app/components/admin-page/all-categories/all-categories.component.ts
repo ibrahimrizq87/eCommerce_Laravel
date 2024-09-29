@@ -1,12 +1,39 @@
+
 import { Component } from '@angular/core';
+import { CategoryService } from '../../../services/category.service';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-categories',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterModule],
   templateUrl: './all-categories.component.html',
   styleUrl: './all-categories.component.css'
 })
 export class AllCategoriesComponent {
+  categories:any [] |null [] =[];
+  constructor(private categoryService: CategoryService ,private router: Router) { }
+
+  ngOnInit(): void {
+    this.categoryService.getAllCategories().subscribe(response => {
+      console.log(response);
+      this.categories = response.data;
+      this.categories.forEach(element => {
+        console.log(element.image);
+      });
+
+    },
+    error => {
+      
+      console.error('some error happend:', error);
+      // console.log('Error: ' + error.error);
+
+    });
+  }
+
+  updateCategory(category:any){}
+  deleteCategory(category:any){}
 
 }

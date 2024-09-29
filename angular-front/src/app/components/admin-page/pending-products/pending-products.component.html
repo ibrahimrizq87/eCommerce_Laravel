@@ -2,40 +2,34 @@
     <div class="container mt-5 ms-3" style="color:#b83807;"><h6>Pending Products</h6></div>
 
     <div class="container mt-2">
-        <table class="table text-center">
-            <thead>
-              <tr>
-                <th scope="col">No.</th>
-                <th scope="col">Image</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Price</th>
-                <th scope="col">Offers</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td scope="col">1</td>
-                <td scope="col">
-                 <img src="images/bouquet.jpg" style="height:50px;width:50px;" alt="">
-                </td>
-                <td style="font-size: 14px;"><a class="product" routerLink="/product/view">Product Name</a></td>
-                <td style="font-size: 14px;">Description</td>
-                <td>$100</td>
-                <td>$80</td>
-                <td>20</td>   
-                <td>
-                    <a ><i class="fa-solid fa-circle-check px-2 fs-3" style="color:#027014"></i></a>
-                    <i class="fa-solid fa-circle-xmark px-2 fs-3" style="color:rgb(173, 4, 4)"></i>
-                    
-
-                  <!-- <button type="button" class="btn me-1">Delete</button> -->
-                </td>
-              </tr>
-            </tbody>
-          </table>
-    </div>
-    
+      <table class="table text-center">
+          <thead>
+            <tr>
+              <th scope="col">Image</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">price after discount</th>
+              <th scope="col">Price</th>
+              <th scope="col">Offers</th>
+              <th scope="col">Stock</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of products">
+              <td scope="col">
+               <img [src]="product.cover_image" style="height:50px;width:50px;" alt="">
+              </td>
+              <td style="font-size: 14px;"><a class="product">{{product.product_name}}</a></td>
+              <td style="font-size: 14px;">{{product.priceAfterOffers}}</td>
+              <td>${{product.price}}</td>
+              <td>{{product.totalOffers}}%</td>
+              <td>{{product.stock}}</td>   
+              <td>
+                <button (click)="restoreProduct(product)" class="btn btn-success ms-2">restor</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+       
+  </div>
 </div>

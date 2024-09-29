@@ -257,23 +257,21 @@ class ProductController extends Controller
         return response()->json(['message' => 'Product soft deleted successfully.']);
     }
     
-
-    public function restore($id)
+    
+    public function getAlldeleted()
     {
-        // Find the soft-deleted product by its ID
-        $product = Product::withTrashed()->find($id);
-        
+  $products = Product::onlyTrashed()->with(['category', 'user', 'images', 'addedOffers'])->get();    
+  return ProductResource::collection($products);
+    }
+    
+    public function restore($product_id)
+    {
+        $product = Product::withTrashed()->find($product_id);
         if (!$product) {
             return response()->json(['message' => 'Product not found.'], 404);
         }
-
-        // Restore the product
         $product->restore();
-
-        // Return the restored product with ProductResource
-        return new ProductResource($product->load('category', 'user'));
-
-
+        return response()->json(['message' => 'done suuccessfully.'], 200);
     }
 
     public function forceDestroy($id)
