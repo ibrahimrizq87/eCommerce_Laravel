@@ -1,0 +1,82 @@
+<p>admin-view-product works!</p>
+<div class="container shadow-lg m-auto w-75">
+    <div class="row my-5 mx-3 py-4">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-2">
+                    <img src="images/clay.jpg" class=" mb-1" style="height:100px;width:100px" alt="">
+                    <img src="images/clay.jpg" class=" mb-1" style="height:100px;width:100px" alt="">
+                    <img src="images/clay.jpg" class=" mb-1" style="height:100px;width:100px" alt="">
+                    <img src="images/clay.jpg" class=" mb-1" style="height:100px;width:100px" alt="">
+                </div>
+                <div class="col-md-10">
+                    <img src="images/clay.jpg" class=" ms-4" style="height:410px;width:350px" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h5>Product Name</h5>
+            <p>Rating <span> | 10 In Stock</span></p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id repellat cum, asperiores, reprehenderit delectus modi corporis veritatis vitae iusto, vero quas quia voluptatum similique minus facilis ratione ab quidem nihil.</p>
+            <p><strong>Color:</strong> <span class="ms-2">[Color]</span></p>
+            <p><strong>Size:</strong> <span class="ms-2">[Size]</span></p>
+            <p><strong>Materials:</strong> <span class="ms-2">[Materials]</span></p>
+            <p><strong>Pattern:</strong> <span class="ms-2">[Pattern]</span></p>
+            <p class="py-2"><strong>Seller:</strong> <span class="ms-2">Asmaa</span></p>
+
+        </div>
+    </div>
+    
+
+    <div class="container my-5">
+        <h6 class="py-2">All reviews</h6>
+        <!-- <div class="container card border border-0">
+            <div class="card-body" *ngFor="let review of reviews">
+                <img [src]="review.user.image" class="rounded-circle" style="height:50; width:50px" alt="">
+              <h5 class="card-title d-inline">{{review.user.name}}</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">{{review.user.last_name}}</h6>
+              <div class="pt-3">
+                <div class="d-flex flex-row my-3">
+                  <div class="text-warning mb-1 me-2">
+                      <i class="fa fa-star"  *ngFor="let item of [].constructor(review.rating); let i = index"></i>
+                      <!-- <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i> -->
+
+        <!-- <i class="far fa-star" *ngFor="let item of [].constructor(5-review.rating); let i = index"></i>
+                      <span class="ms-1">
+                          {{review.rating}}
+                      </span>
+                  </div>
+              </div>
+              <p class="card-text py-2">{{review.feedback}}</p>
+            </div>
+            <hr>
+        </div>
+    </div> -->
+        <div class="container w-75 border border-1 p-4">
+
+            <div class="card-body">
+                <img src="images/" class="rounded-circle" style="height:50; width:50px" alt="">
+                <h6 class="card-title d-inline">username</h6>
+                <p class="card-subtitle mb-1 text-body-secondary">review</p>
+                <div class="pt-1">
+                    <div class="d-flex flex-row my-3">
+                        <div class="text-warning mb-1 me-2">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="far fa-star"></i>
+
+                            <span class="ms-1">
+                                rating
+                            </span>
+                        </div>
+                    </div>
+                    <p class="card-text py-2">feedback</p>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
