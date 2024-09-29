@@ -49,6 +49,7 @@ export class LoginComponent {
   sessionError:boolean  =false;
   loginError :string ='';
   submitted: boolean = false;
+  user:any;
   backendErrors: any = {};
 
   constructor(private userService: UserService ,   private router: Router) { }
@@ -69,7 +70,64 @@ export class LoginComponent {
 
       this.sessionError = true;
     }
+
+
+    if (localStorage.getItem('needVarification')){
+      window.location.href = '/varification';
+
+    }else{
+      this.updateUser();
+    }
   }
+
+
+  updateUser() {
+
+    if (sessionStorage.getItem('authToken')) {
+      if (this.userService.getCurrentUser()) {
+        this.user = this.userService.getCurrentUser();
+        if (this.user.email_verified_at){
+          window.location.href = '/home';
+        }else{
+          window.location.href = '/varification';
+
+        }
+
+      } else {
+        this.userService.getUser().subscribe(
+          response => {
+
+            this.user = response.data;
+            console.log(this.user)
+            if (this.user.email_verified_at){
+              window.location.href = '/home';
+            }else{
+              window.location.href = '/varification';
+
+            }
+
+          },
+          error => {
+            if (error.status === 400 || error.status === 500) {
+              console.error('A specific error occurred:', error);
+            } else if (error.status === 401) {
+
+              sessionStorage.removeItem('authToken');
+              sessionStorage.setItem('loginSession', 'true');
+              
+
+            } else {
+              console.error('An unexpected error occurred:', error);
+            }
+          }
+        );
+      }
+    } else {
+      sessionStorage.removeItem('authToken');
+       }
+       
+  }
+
   onSubmit(loginForm: any) {
     // this.backendErrors = [];
     this.loginError = '';
@@ -93,17 +151,24 @@ export class LoginComponent {
       this.userService.login(formData).subscribe(
         response => {
           const token = response.token;
-          // console.log('login successful:', response);
-          // console.log('tocken:', token);
 
-          sessionStorage.setItem('authToken', token);
-          sessionStorage.setItem('logged', 'true');
+          if(response.user.email_verified_at){
+            sessionStorage.setItem('authToken', token);
+            sessionStorage.setItem('logged', 'true');
+            localStorage.removeItem('needVarification');
+            localStorage.removeItem('tockenForVarification');
 
-          // this.router.navigate(['/home']);
-          window.location.href = '/home';
+            window.location.href = '/home';
+  
+          }else{
+            localStorage.setItem('needVarification', 'true');
+            localStorage.setItem('tockenForVarification', token);
 
+            window.location.href = '/varification';
 
-          // this.router.navigate(['/home']);
+          }
+          
+
 
         },
         error => {

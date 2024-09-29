@@ -67,6 +67,17 @@ export class ProductService {
       return this.http.get(this.apiUrl, { headers });
     }
 
+    getDeletedProducts(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(this.apiUrl+"/deleted", { headers });
+    }
+
+    
+
     getProductsByCategory(categotyId: string): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');
 
@@ -93,6 +104,16 @@ export class ProductService {
       });
 
       return this.http.delete(`${this.apiUrl}/${id}`, { headers });
+    }
+
+    restoreProduct(id: string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.get(`${this.apiUrl}/restore/${id}`, { headers });
     }
 
 

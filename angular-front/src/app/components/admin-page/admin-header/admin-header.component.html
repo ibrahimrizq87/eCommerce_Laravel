@@ -1,20 +1,13 @@
 <div class="container my-5 m-auto text-center">
-  <img src="images/resin1.jpg" class="rounded-circle" style="height:100px; width:100px;" alt="">
+  <img [src]="user.image" class="rounded-circle" style="height:100px; width:100px;" alt="">
   <div>
-    <p class="pt-4 ps-2 balance"> Your Balance: <span id="balance">0</span></p>
   </div>
   <ul>
     <a>
       <li class="my-4" (click)="onLinkClick('all-products')">All Products</li>
     </a>
     <a>
-      <li class="mt-4 mb-4" (click)="onLinkClick('pending-products')">Pending Products</li>
-    </a>
-    <a>
-      <li class="my-4" (click)="onLinkClick('offered-products')">Offered Products</li>
-    </a>
-    <a>
-      <li class="my-4" (click)="onLinkClick('rejected-products')">Rejected Products</li>
+      <li class="mt-4 mb-4" (click)="onLinkClick('pending-products')">Deleted Products</li>
     </a>
     <a>
       <li class="my-4" (click)="onLinkClick('all-categories')">All Categories</li>
@@ -40,7 +33,7 @@
     </a>
 
     <a>
-      <li class="my-4">Log-out</li>
+      <li (click)="logout()" class="my-4">Log-out</li>
     </a>
   </ul>
 </div>

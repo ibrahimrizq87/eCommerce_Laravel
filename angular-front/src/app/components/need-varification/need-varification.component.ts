@@ -18,9 +18,9 @@ export class NeedVarificationComponent {
   ) { }
 
   resendVerificationEmail() {
-    this.userService.resendVarification().subscribe(
+    this.userService.resendVarification(localStorage.getItem('tockenForVarification')).subscribe(
       response => {
-alert(response.message);
+        alert(response.message);
         
     console.log(response);
         },error => {    
@@ -36,11 +36,22 @@ alert(response.message);
 
   ngOnInit(): void {
 
-    this.updateUser();
+    if (localStorage.getItem('needVarification')){
+
+    }else{
+      this.updateUser();
+    }
+
   }
+
   reloadPage(): void {
 
-    window.location.reload();  
+    // window.location.reload();  
+    localStorage.removeItem('needVarification');
+    localStorage.removeItem('tockenForVarification');
+
+    this.router.navigate(['/login']);
+
 
   }
   updateUser() {
@@ -58,7 +69,8 @@ alert(response.message);
             this.user = response.data;
             console.log(this.user)
             if (this.user.email_verified_at){
-              this.router.navigate(['/home']);
+              this.router.navigate(['/login']);
+              localStorage.removeItem('needVarification');
         
             }
 
