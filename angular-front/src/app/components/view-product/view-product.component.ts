@@ -89,6 +89,29 @@ export class ViewProductComponent {
   addToWishList() {
     const formData = new FormData();
     formData.append('product_id', this.product.id);
+
+    if (this.addToWish){
+      this.wishListService.deleteWishlistItem(this.product.id).subscribe(
+        response => {
+          alert('removesd from wishlist successfully');
+          this.addToWish = false;
+
+        }, error => {
+          alert('some error happend');
+          if (error.status === 400 || error.status === 500) {
+            console.error('A specific error occurred:', error);
+          } else if (error.status === 401) {
+            sessionStorage.removeItem('authToken');
+            sessionStorage.setItem('loginSession', 'true');
+  
+            this.router.navigate(['/login']);
+          } else {
+            console.error('An unexpected error occurred:', error);
+          }
+  
+        }
+      );
+    }else{
     this.wishListService.addItem(formData).subscribe(
       response => {
         console.log(response);
@@ -108,6 +131,7 @@ export class ViewProductComponent {
         }
       }
     );
+  }
   }
 
 

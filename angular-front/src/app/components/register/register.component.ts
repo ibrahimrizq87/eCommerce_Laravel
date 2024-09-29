@@ -66,6 +66,7 @@ export class RegisterComponent {
   selectedFile: File | null = null;
   submitted: boolean = false;
   imageUploaded = false;
+  user:any;
   backendErrors: any = {};
 
   constructor(private userService: UserService, private router: Router) { }
@@ -124,8 +125,10 @@ export class RegisterComponent {
           this.messageEvent.emit(response.user.data);
 
           console.log('Registration successful:', response);
-          console.log('tocken:', token);
-          sessionStorage.setItem('authToken', token);
+          localStorage.setItem('needVarification', 'true');
+          localStorage.setItem('tockenForVarification', token);
+
+
           this.openModal();
           
 
@@ -167,6 +170,62 @@ export class RegisterComponent {
       this.router.navigate(['/varification']);
     }
   }
+  ngOnInit(): void {
+    if (localStorage.getItem('needVarification')){
+      window.location.href = '/varification';
+
+    }else{
+      this.updateUser();
+    }
+  }
+
+  updateUser() {
+
+    if (sessionStorage.getItem('authToken')) {
+      if (this.userService.getCurrentUser()) {
+        this.user = this.userService.getCurrentUser();
+        if (this.user.email_verified_at){
+          window.location.href = '/home';
+        }else{
+          window.location.href = '/varification';
+
+        }
+
+      } else {
+        this.userService.getUser().subscribe(
+          response => {
+
+            this.user = response.data;
+            console.log(this.user)
+            if (this.user.email_verified_at){
+              window.location.href = '/home';
+            }else{
+              window.location.href = '/varification';
+
+            }
+
+          },
+          error => {
+            if (error.status === 400 || error.status === 500) {
+              console.error('A specific error occurred:', error);
+            } else if (error.status === 401) {
+
+              sessionStorage.removeItem('authToken');
+              sessionStorage.setItem('loginSession', 'true');
+              
+
+            } else {
+              console.error('An unexpected error occurred:', error);
+            }
+          }
+        );
+      }
+    } else {
+      sessionStorage.removeItem('authToken');
+       }
+       
+  }
+
 }
 
 

@@ -129,7 +129,6 @@ if (endDate.getTime() >= today.getTime()) {
   }
 }
 
-// Interface for Offer data
 interface Offer {
   id: number;
   discount: number;
@@ -137,7 +136,6 @@ interface Offer {
   end_date: string;
 }
 
-// Interface for each item in addedOffers
 interface OfferItem {
   id: number;
   offer_id: number;
@@ -147,7 +145,6 @@ interface OfferItem {
   offer: Offer;
 }
 
-// Interface for the Product User
 interface User {
   id: number;
   name: string;
@@ -156,7 +153,6 @@ interface User {
   role: string;
 }
 
-// Interface for the Product
 interface Product {
   id: number;
   product_name: string;

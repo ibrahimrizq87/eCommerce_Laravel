@@ -13,6 +13,7 @@ import { RejectedProductsComponent } from './rejected-products/rejected-products
 import { BannedSellersComponent } from './banned-sellers/banned-sellers.component';
 import { CommonModule } from '@angular/common';
 import { PendingProductsComponent } from './pending-products/pending-products.component';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -37,10 +38,32 @@ import { PendingProductsComponent } from './pending-products/pending-products.co
   styleUrls: ['./admin-page.component.css']
 })
 export class AdminPageComponent {
-  activeComponent: string = 'all-products';  // Default component to show
+  activeComponent: string = 'all-products';  
+  constructor(
+    private userService: UserService,
+  ) { }
 
   showComponent(component: string) {
-    console.log('Switching to component:', component);  // Debugging: log which component is being shown
+    console.log('Switching to component:', component);  
     this.activeComponent = component;
+  }
+
+  logout(): void {
+
+    this.userService.logOut().subscribe(
+      response => {
+        sessionStorage.removeItem('authToken');
+        window.location.reload();
+      },
+      error => {
+        if (error.status === 400 || error.status === 500) {
+          console.error('A specific error occurred:', error);
+        } else {
+          console.error('An unexpected error occurred:', error);
+        }
+      }
+    );
+
+
   }
 }

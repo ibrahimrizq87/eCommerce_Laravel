@@ -1,7 +1,6 @@
 <div class="container my-5 m-auto text-center">
-  <img src="images/resin1.jpg" class="rounded-circle" style="height:100px; width:100px;" alt="">
+  <img [src]="user.image" class="rounded-circle" style="height:100px; width:100px;" alt="">
   <div>
-    <p class="pt-4 ps-2 balance"> Your Balance: <span id="balance">0</span></p>
   </div>
   <ul>
     <a>
@@ -40,7 +39,7 @@
     </a>
 
     <a>
-      <li class="my-4">Log-out</li>
+      <li (click)="logout()" class="my-4">Log-out</li>
     </a>
   </ul>
 </div>
