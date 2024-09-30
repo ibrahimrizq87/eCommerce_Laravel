@@ -1,9 +1,9 @@
 <div class="container-fluid" style="background-color: #fff;">
   <div class="row">
-    <div class="col-md-3" style="color:white; background-color:#231717;">
+    <div class="col-md-2" style="color:white; background-color:#231717;">
       <app-admin-header (linkClicked)="showComponent($event)"></app-admin-header>
     </div>
-    <div class="col-12 col-md-9 container-fluid shadow-lg"  style="background-color: #fff;">
+    <div class="col-12 col-md-10 container-fluid shadow-lg"  style="background-color: #fff;">
 
       <app-pending-products *ngIf="activeComponent === 'pending-products'"></app-pending-products>
       <app-all-categories *ngIf="activeComponent === 'all-categories'"></app-all-categories>
