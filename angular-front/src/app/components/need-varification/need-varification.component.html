@@ -1,13 +1,22 @@
-<div class="container m-auto w-50 shadow-lg my-4 p-5">
-  <div class="message-box">
-      <h3 class="text-center">Thank you for registering!</h3>
-      <h4>Verify your E-mail Address</h4>
-      <p> Please check your email and click on the verification link we have sent you.</p>
-      <p> You might need to ckeck your spam folder.</p>
-      <p>Still didn’t receive the email? <button class="btn btn-info p-3 ms-3" (click)="resendVerificationEmail()">Resend verification email</button></p>
-      <button class="reload-btn" (click)="reloadPage()">Verified let's Login </button>
+<div class="container m-auto w-50 shadow-lg my-4">
+  <div class=" text-center">
 
-      <button class="btn btn-outline-info p-3 ms-3" (click)="reloadPage()">try login with other email</button>
+      <div class=" m-auto" style="width: 250px; height: 250px;">
+        <ng-lottie 
+          [options]="successAnimationOptions"
+          (animationCreated)="successAnimationCreated($event)"
+          style="height: 100%; width: 100%; display: block;">
+        </ng-lottie>
+      </div>
+      
+      <h6>Verify your E-mail Address</h6>
+        <span class="px-3 span d-block"> Please check your email and click on the verification link we have sent you.</span>
+        <p class="pb-2"> You might need to ckeck your spam folder.</p> 
+      
+      <p>Still didn’t receive the email? <button class="btn ms-3 resend" (click)="resendVerificationEmail()">Resend verification email</button></p>
+      <button class="reload-btn btn verified" (click)="reloadPage()">Verified let's Login </button>
+
+      <button class="btn other-email my-4 ms-3" (click)="reloadPage()">Try login with other email</button>
 
   </div>
 

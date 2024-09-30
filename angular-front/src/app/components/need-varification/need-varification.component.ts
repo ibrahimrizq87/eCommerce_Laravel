@@ -1,15 +1,29 @@
 import { Component } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
 
 @Component({
   selector: 'app-need-varification',
   standalone: true,
-  imports: [],
+  imports: [LottieComponent],
   templateUrl: './need-varification.component.html',
   styleUrl: './need-varification.component.css'
 })
 export class NeedVarificationComponent {
+  private successAnimationItem: AnimationItem | undefined;
+
+  successAnimationOptions: AnimationOptions = {
+    path: 'animations/confirmation.json',
+    loop: true,
+    autoplay: true
+  };
+
+  successAnimationCreated(animationItem: AnimationItem): void {
+    this.successAnimationItem = animationItem;
+  }
+
   user: any;
   isLogged: Boolean = false;
   constructor(
@@ -100,5 +114,7 @@ export class NeedVarificationComponent {
       this.router.navigate(['/login']);
     }
   }
+
+
 
 }

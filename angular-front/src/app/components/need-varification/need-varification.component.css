@@ -69,3 +69,25 @@ a:hover {
 .reload-btn:hover {
     background-color: #218838;
 } */
+
+.resend{
+    background-color: #b83807; color:#fff;
+}
+.resend:hover{
+    background-color: #140000; color:#fff;
+}
+
+
+.other-email{
+    color:black;
+    border: 1px solid #140000;
+}
+
+.other-email:hover{
+    color:#fff;
+    background-color: #140000;
+}
+
+.verified{
+    background-color: rgb(0, 65, 0); color:#fff;
+}
