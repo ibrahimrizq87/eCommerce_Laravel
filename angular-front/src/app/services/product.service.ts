@@ -12,8 +12,6 @@ import { environment } from '../../environments/environment';
 export class ProductService {
     // private apiUrl = 'http://0.0.0.0:8000/api/products'; 
     private apiUrl = environment.apiUrl+'/products';
-
-
     constructor(private http: HttpClient) { }
     private selectedProduct: any;
 
