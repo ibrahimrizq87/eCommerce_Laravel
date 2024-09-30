@@ -5,18 +5,64 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Http\Resources\CustomerResource;
+
 use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
-    // Retrieve a list of all customers
-    public function index(Request $request)
+
+    public function index()
     {
-        $customers = Customer::all();  // Fetch all customers
-        return response()->json($customers);
+        $customers = Customer::where('status','active')->get();  
+        return CustomerResource::collection($customers);
     }
 
-    // Create a new customer
+    public function getBanned()
+    {
+        $customers = Customer::where('status','banned')->get();  
+        return CustomerResource::collection($customers);
+    }
+
+    public function banCustomer($id)
+    {
+
+        try{
+        $customer = Customer::find($id);
+        if (!$customer){
+            return response()->json(['errors' => 'user not found'], 404);
+ 
+        }  
+        $customer->status = 'banned';
+        $customer->save();
+
+        return response()->json(['message' => 'banned successfully'], 200);
+    }catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+
+}
+public function unBanCustomer($id)
+{
+
+    try{
+    $customer = Customer::find($id);
+    if (!$customer){
+        return response()->json(['errors' => 'user not found'], 404);
+
+    }  
+    $customer->status = 'active';
+    $customer->save();
+
+    return response()->json(['message' => 'activated successfully'], 200);
+}catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+
+}
+
+    
+
     public function store(Request $request)
 {
     $validator = Validator::make($request->all(), [
@@ -47,13 +93,13 @@ class CustomerController extends Controller
 }
 
 
-    // Show details of a specific customer
-    public function show(Customer $customer)
+
+public function show(Customer $customer)
     {
-        return response()->json($customer);
+        return new ProductResource($customer);
     }
 
-    // Update an existing customer
+
     public function update(Request $request, Customer $customer)
     {
         $validator = Validator::make($request->all(), [
@@ -80,7 +126,7 @@ class CustomerController extends Controller
         }
     }
 
-    // Delete a customer
+
     public function destroy(Customer $customer)
     {
         try {

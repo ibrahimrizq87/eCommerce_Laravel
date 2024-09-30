@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\SellerResource;
 
 class SellerController extends Controller
 {
@@ -15,12 +16,61 @@ class SellerController extends Controller
     public function index()
     {
         try {
-            $sellers = Seller::with(relations: 'user')->get();
-            return response()->json($sellers, 200);
+            // $sellers = Seller::with(relations: 'user')->get();
+            $sellers = Seller::with(relations: 'user')->where('status','active')->get();  
+            return SellerResource::collection($sellers);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Failed to retrieve sellers: ' . $e->getMessage()], 500);
         }
     }
+
+
+
+    public function getBanned()
+    {
+        $sellers = Seller::with(relations: 'user')->where('status','banned')->get();  
+        return SellerResource::collection($sellers);
+    }
+
+    public function banSeller($id)
+    {
+
+        try{
+        $seller = Seller::find($id);
+        if (!$seller){
+            return response()->json(['errors' => 'user not found'], 404);
+ 
+        }  
+        $seller->status = 'banned';
+        $seller->save();
+
+        return response()->json(['message' => 'banned successfully'], 200);
+    }catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+
+}
+public function unBanSeller($id)
+{
+
+    try{
+    $seller = Seller::find($id);
+    if (!$seller){
+        return response()->json(['errors' => 'user not found'], 404);
+
+    }  
+    $seller->status = 'active';
+    $seller->save();
+
+    return response()->json(['message' => 'activated successfully'], 200);
+}catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+
+}
+
+  
+
 
     /**
      * Store a newly created seller in storage.

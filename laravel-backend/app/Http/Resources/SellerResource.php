@@ -19,7 +19,7 @@ class SellerResource extends JsonResource
             'id' => $this->id,
             'phone' => $this->phone,
             'address' => $this->address,
-            'shop_name' => $this->shop_name,
+            'shop_name' => $this->shope_name,
             'about' => $this->about,
             'total_sales' => $this->total_sales,
             'status' => $this->status,

@@ -17,23 +17,36 @@ export class AllCategoriesComponent {
   constructor(private categoryService: CategoryService ,private router: Router) { }
 
   ngOnInit(): void {
-    this.categoryService.getAllCategories().subscribe(response => {
-      console.log(response);
-      this.categories = response.data;
-      this.categories.forEach(element => {
-        console.log(element.image);
-      });
-
-    },
-    error => {
-      
-      console.error('some error happend:', error);
-      // console.log('Error: ' + error.error);
-
-    });
+  this.updateCategories();
   }
+updateCategories(){
+  this.categoryService.getAllCategories().subscribe(response => {
+    console.log(response);
+    this.categories = response.data;
+    this.categories.forEach(element => {
+      console.log(element.image);
+    });
 
+  },
+  error => {
+    
+    console.error('some error happend:', error);
+    // console.log('Error: ' + error.error);
+
+  });
+}
   updateCategory(category:any){}
-  deleteCategory(category:any){}
+  deleteCategory(category:any){
+    this.categoryService.deleteCategory(category.id).subscribe(
+response=>{
+  this.updateCategories();
+  alert('deleted successfully');
+
+},error=>{
+console.log('error happened::' , error)
+  alert('some error happened during deleting');
+}
+    );
+  }
 
 }

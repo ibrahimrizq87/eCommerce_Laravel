@@ -74,6 +74,10 @@ class User extends Authenticatable  implements MustVerifyEmail
     //     $this->notify(new CustomVerifyEmail($this->generateVerificationToken()));
     // }
 
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 
     public function sendPasswordResetNotification($token)
     {

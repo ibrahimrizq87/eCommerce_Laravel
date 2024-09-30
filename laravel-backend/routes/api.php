@@ -30,6 +30,16 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
     ->name('verification.verify');
 
 
+    
+    Route::get('/customers/ban/{id}', [CustomerController::class, 'banCustomer'])->middleware('auth:sanctum');
+    Route::get('/customers/unBan/{id}', [CustomerController::class, 'unBanCustomer'])->middleware('auth:sanctum');
+    Route::get('/customers/banned', [CustomerController::class, 'getBanned'])->middleware('auth:sanctum');
+    
+    Route::get('/sellers/ban/{id}', [SellerController::class, 'banSeller'])->middleware('auth:sanctum');
+    Route::get('/sellers/unBan/{id}', [SellerController::class, 'unBanSeller'])->middleware('auth:sanctum');
+    Route::get('/sellers/banned', [SellerController::class, 'getBanned'])->middleware('auth:sanctum');
+    
+
 Route::post('users/reset-password', [UserController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::post('users/reset', [UserController::class, 'resetPassword'])->name('password.reset');
 
