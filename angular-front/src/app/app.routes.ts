@@ -67,17 +67,10 @@ export const routes: Routes = [
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
     {path:"order/view", component:ViewOrderComponent},
-<<<<<<< HEAD
     {path:"admin/category/add", component:AddCategoryComponent},
     {path:"admin/category/update", component:UpdateCategoryComponent},
     {path:"admin/product/view", component:AdminViewProductComponent},
     {path:"admin/order/view", component:AdminViewOrderComponent},
-=======
-    // {path:"admin/category/add", component:AddCategoryComponent},
-    // {path:"admin/category/update", component:UpdateCategoryComponent},
-    // {path:"admin/product/view", component:AdminViewProductComponent},
-
->>>>>>> ba082a51d512b5087a55176b47f60ec8f227915c
     {path:"loading", component:LoadingComponent},
     {path:"**",component:ErrorComponent}
 ];
