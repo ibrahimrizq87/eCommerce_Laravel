@@ -7,15 +7,18 @@
       <div class="col-12 col-md-9 container shadow-lg">
         
         <!-- Conditionally load components based on activeComponent value -->
-        <app-my-products *ngIf="activeComponent === 'my-products'"></app-my-products>
-        <app-add-product *ngIf="activeComponent === 'add-products'"></app-add-product>
+        <app-my-products *ngIf="activeComponent === 'my-products'" (linkClicked)="showComponent($event)"></app-my-products>
+        <!-- <app-add-product *ngIf="activeComponent === 'add-products'"></app-add-product> -->
         <app-edit-profile *ngIf="activeComponent === 'edit'"></app-edit-profile>
         <app-register *ngIf="activeComponent === 'register'"></app-register>
-        <app-add-offer  *ngIf="activeComponent === 'add-offer'"></app-add-offer>
-        <app-product-offers  *ngIf="activeComponent === 'product-offers'"></app-product-offers>
-        <app-all-seller-offers *ngIf="activeComponent === 'all-seller-offers'"></app-all-seller-offers>
-       
-
+        <app-product-offers  *ngIf="activeComponent === 'product-offers'"  (linkClicked)="showComponent($event)"></app-product-offers>
+        <app-all-seller-offers *ngIf="activeComponent === 'all-seller-offers'"  (linkClicked)="showComponent($event)"></app-all-seller-offers>
+        <app-update-product *ngIf="activeComponent === 'update-product'" (linkClicked)="showComponent($event)"></app-update-product>
+        <app-admin-view-product *ngIf="activeComponent === 'view-product'" ></app-admin-view-product>
+        <app-add-product *ngIf="activeComponent === 'add-product'" (linkClicked)="showComponent($event)" ></app-add-product>
+        <app-add-offer *ngIf="activeComponent === 'add-offer'" (linkClicked)="showComponent($event)"></app-add-offer>
+        <app-products-in-offer *ngIf="activeComponent === 'product-in-offer'"></app-products-in-offer>
+        <app-seller-profile *ngIf="activeComponent === 'profile'"></app-seller-profile>
 
       </div>
     </div>

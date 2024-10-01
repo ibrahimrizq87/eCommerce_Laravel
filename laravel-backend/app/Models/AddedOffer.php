@@ -10,7 +10,7 @@ class AddedOffer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'offer_id', 'product_id', 'description', 'offer_name',
+        'offer_id', 'product_id'
     ];
     public function offer()
     {

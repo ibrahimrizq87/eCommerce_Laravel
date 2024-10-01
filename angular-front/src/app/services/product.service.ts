@@ -130,15 +130,40 @@ export class ProductService {
 
     }
 
-    updateProduct(orderData: any , id: string): Observable<any> {
+
+    getMyProducts(): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');
 
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${authToken}`
       });
 
-      return this.http.patch(`${this.apiUrl}/${id}`,orderData, { headers });
+      return this.http.get(this.apiUrl+'/myProduct', { headers });
+
     }
+
+    updateProduct(productData: any ): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.post(`${this.apiUrl}/update`,productData, { headers });
+    }
+
+    getProductsByOffer(offer_id: string ): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.get(`${this.apiUrl}/byOffer/${offer_id}`, { headers });
+    }
+
+
+    
 
 }
 

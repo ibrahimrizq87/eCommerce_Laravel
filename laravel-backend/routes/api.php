@@ -21,6 +21,16 @@ use App\Http\Controllers\Api\VerificationController;
 
 use App\Http\Controllers\Api\PaymentController;
 
+
+Route::post('/offers/remove-product-from-offer', [ProductController::class , 'removeProductOffer'])->middleware('auth:sanctum');
+
+Route::get('/products/byOffer/{offer_id}', [ProductController::class , 'getProductsByOffer'])->middleware('auth:sanctum');
+
+Route::post('/offers/add-offer-to-products', [OfferController::class , 'addOfferToProducts'])->middleware('auth:sanctum');
+Route::get('/offers/getMyOffers', [OfferController::class , 'getMyOffers'])->middleware('auth:sanctum');
+Route::get('/products/myProduct', [ProductController::class , 'getMyProduct'])->middleware('auth:sanctum');
+Route::post('/products/update', [ProductController::class , 'updateProduct'])->middleware('auth:sanctum');
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -70,7 +80,7 @@ Route::apiResource('cart-items', CartItemController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('customers', CustomerController::class)->middleware('auth:sanctum');
 Route::apiResource('custom-orders', CustomOrderController::class);
-Route::apiResource('offers', OfferController::class);
+Route::apiResource('offers', OfferController::class)->middleware('auth:sanctum');
 Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
 Route::apiResource('order-items', OrderItemController::class);
 Route::apiResource('payment-requests', PaymentRequestController::class);
@@ -90,6 +100,7 @@ Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sa
 
 
 Route::post('/payment/handel', [PaymentController::class, 'handlePayment'])->middleware('auth:sanctum');
+Route::post('/categories/update', [CategoryController::class, 'updateCategory']);
 
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
 Route::get('/payment/success/{orderId}', [PaymentController::class, 'success'])->name('success');
@@ -97,6 +108,9 @@ Route::get('/payment/success/{orderId}', [PaymentController::class, 'success'])-
 Route::post('wish_lists/myWish', [WishListController::class , 'inWishlist'])->middleware('auth:sanctum');
 Route::get('/products/wishlist/all', [ProductController::class , 'productsInWishlist'])->middleware('auth:sanctum');
 Route::delete('wish_lists/remove/{product_id}', [WishListController::class , 'removeWishlist'])->middleware('auth:sanctum');
+Route::get('/sellers/get/me', [SellerController::class , 'getSeller'])->middleware('auth:sanctum');
+
+
 
 // products/wishlist
 

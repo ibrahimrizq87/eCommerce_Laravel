@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 })
 export class AllCategoriesComponent {
   categories:any [] |null [] =[];
+  @Output() linkClicked = new EventEmitter<string>();
+
   constructor(private categoryService: CategoryService ,private router: Router) { }
 
   ngOnInit(): void {
@@ -35,7 +37,15 @@ updateCategories(){
 
   });
 }
-  updateCategory(category:any){}
+  updateCategory(category:any){
+    this.categoryService.setCategory(category);
+    this.linkClicked.emit('update-category');
+
+  }
+  addCategory(){
+    this.linkClicked.emit('add-category');
+
+  }
   deleteCategory(category:any){
     this.categoryService.deleteCategory(category.id).subscribe(
 response=>{

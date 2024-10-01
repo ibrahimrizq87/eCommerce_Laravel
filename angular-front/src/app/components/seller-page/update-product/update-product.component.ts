@@ -1,43 +1,60 @@
-import { Component } from '@angular/core';
-
-import { CategoryService } from '../../services/category.service';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common'; 
-
-import { ProductService } from '../../services/product.service';
-
+import { Component, Output, EventEmitter } from '@angular/core';
+import { ProductService } from '../../../services/product.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ValueChangeEvent } from '@angular/forms';
+import { CategoryService } from '../../../services/category.service';
 
 @Component({
-  selector: 'app-add-product',
-
-  imports: [FormsModule
-    ,CommonModule
-  ],
+  selector: 'app-update-product',
   standalone: true,
-
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.css']
+  imports: [
+ 
+    CommonModule,
+    FormsModule
+  ],
+  templateUrl: './update-product.component.html',
+  styleUrl: './update-product.component.css'
 })
-export class AddProductComponent {
-  fileLimitExceeded = false;
+export class UpdateProductComponent {
+product:any;
+submitted:boolean = false;
+categories: any[] = [];
+selectedVideo: File | null = null; 
+imageUploaded = false;
+selectedFile: File | null = null;
+fileLimitExceeded = false;
+selectedFiles: File[] = []; 
 
-  categories: any[] = [];
-  selectedFiles: File[] = []; 
-  submitted = false;
-  backendErrors: any = {};
-  selectedVideo: File | null = null; 
-  imageUploaded = false;
+backendErrors: any = {};
 
-  selectedFile: File | null = null;
-
-  constructor(private categoryService: CategoryService,private productService: ProductService, private router: Router) { }
-
+coverImage:string='';
+selectedImage: string = '';
+getErrorMessages(): string[] {
+  const errorMessages: string[] = [];
+  if (this.backendErrors) {
+    Object.keys(this.backendErrors).forEach(key => {
+      this.backendErrors[key].forEach((message: string) => {
+        errorMessages.push(`${key}: ${message}`);
+      });
+    });
+  }
+  return errorMessages;
+}
+@Output() linkClicked = new EventEmitter<string>();
+  constructor( private categoryService: CategoryService,
+    private productService: ProductService  ) {}
   ngOnInit(): void {
+    this.updateProduct();
+    this. updateCategories();
+  }
+  updateCategories(){
     this.categories = this.categoryService.getAllCategory();
+    console.log('categories:: ', this.categories);
+
     if (this.categories.length < 1) {
       this.categoryService.getAllCategories().subscribe(response => {
         this.categories = response.data;
+        console.log('categories:: ', this.categories);
       }, error => {
         console.log('failure is: ', error);
       });
@@ -69,22 +86,24 @@ export class AddProductComponent {
       }    }
   }
 
-  getErrorMessages(): string[] {
-    const errorMessages: string[] = [];
-    if (this.backendErrors) {
-      Object.keys(this.backendErrors).forEach(key => {
-        this.backendErrors[key].forEach((message: string) => {
-          errorMessages.push(`${key}: ${message}`);
-        });
-      });
+  updateProduct(){
+    if(this.productService.getSelectedProduct()){
+this.product = this.productService.getSelectedProduct();
+    }else{
+      this.linkClicked.emit('my-products'); 
+
     }
-    return errorMessages;
+    this.coverImage = this.product.cover_image;
   }
 
+  onImageClick(image:string){
+    this.coverImage =image;
+    this.selectedImage = image;
+  }
   onSubmit(form: any): void {
     this.submitted = true;
     
-    if (form.invalid || this.selectedFiles.length === 0 || this.selectedFiles.length > 5) {
+    if (form.invalid  || this.selectedFiles.length > 5) {
       
     }else{
     
@@ -96,10 +115,9 @@ export class AddProductComponent {
     formData.append('stock', form.value.stock);
     formData.append('size', form.value.size);
     formData.append('material', form.value.material);
+    formData.append('id', this.product.id);
 
-    // this.selectedFiles.forEach((file, index) => {
-    //   formData.append(`image${index}`, file);  
-    // });
+ 
     if (this.selectedFile) {
       formData.append('cover_image', this.selectedFile);
     }
@@ -110,22 +128,23 @@ export class AddProductComponent {
       formData.append('video', this.selectedVideo);
     }
 
-    // if (form.value.video) {
-    //   formData.append('videos', form.value.video);
-    // }
+  
 
     formData.forEach((value, key) => {
       console.log(key, value);
     });
 
-    this.productService.addProduct(formData).subscribe(
+    this.productService.updateProduct(formData).subscribe(
 
       response => {
           console.log(response);
-          this.router.navigate(['/products']);
+          this.linkClicked.emit('my-products'); 
+
 
         }, error => {
           this.backendErrors = error.error.errors;
+          console.log('error happend::' ,error);
+          alert("error happend:");
           if (error.status === 400) {
             this.backendErrors = error.error.errors;
 
@@ -147,18 +166,5 @@ export class AddProductComponent {
   
     }
   }
-  openModal() {
-    const modal = document.getElementById("myModal");
-    if (modal != null) {
-      modal.style.display = "block";
 
-    }
-  }
-  closeModal(){
-    const modal = document.getElementById("myModal");
-    if (modal != null) {
-      modal.style.display = "none";
-  
-    }
-  }
 }

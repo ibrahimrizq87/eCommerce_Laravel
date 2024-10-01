@@ -7,6 +7,7 @@ use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\SellerResource;
+use Illuminate\Support\Facades\Auth;
 
 class SellerController extends Controller
 {
@@ -111,15 +112,37 @@ public function unBanSeller($id)
     /**
      * Display the specified seller.
      */
-    public function show(Seller $seller)
+    public function show($seller)
     {
         try {
-            // Return the seller with the associated user
-            return response()->json($seller->load('user'), 200);
+            $mySeller = Seller::with('user')->
+            where('user_id' , $seller)->first();
+            return new SellerResource($seller);  //response()->json($seller->load('user'), 200);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Seller not found: ' . $e->getMessage()], 404);
         }
     }
+
+
+    public function getSeller()
+    {
+        try {
+            $mySeller = Seller::with('user')
+                ->where('user_id', Auth::id())
+                ->first();
+    
+            if (!$mySeller) {
+                return response()->json(['error' => 'Seller not found'], 404);
+            }
+    
+            return new SellerResource($mySeller);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Some error happened: ' . $e->getMessage()], 500);
+        }
+    }
+    
+
+    
 
     /**
      * Update the specified seller in storage.

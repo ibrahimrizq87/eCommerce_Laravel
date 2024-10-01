@@ -73,14 +73,15 @@ export class CategoryService {
       return this.http.post(this.apiUrl,categoryData, { headers });
     }
 
-    updateCategory(categoryData: any , id: string): Observable<any> {
-      const authToken = sessionStorage.getItem('authToken');
 
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${authToken}`
+    
+    updateCategory(categoryData: FormData, id: string): Observable<any> {
+
+console.log('form service')
+      categoryData.forEach((value, key) => {
+        console.log(`Key: ${key}, Value: ${value}`);
       });
-
-      return this.http.patch(`${this.apiUrl}/${id}`,categoryData, { headers });
+      return this.http.post(`${this.apiUrl}/update`, categoryData);
     }
 
 }

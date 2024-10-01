@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UpdateProductComponent } from '../../update-product/update-product.component';
+import { UpdateProductComponent } from '../../seller-page/update-product/update-product.component';
 import { CommonModule } from '@angular/common';
 import { OfferService } from '../../../services/offer.service';
 

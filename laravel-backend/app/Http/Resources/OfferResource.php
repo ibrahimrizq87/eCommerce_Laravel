@@ -21,7 +21,9 @@ class OfferResource extends JsonResource
             'end_date' => $this->end_date,
             'discount' => $this->discount,
             'created_at' => $this->created_at->toDateTimeString(), 
-            'updated_at' => $this->updated_at->toDateTimeString(), 
+            'updated_at' => $this->updated_at->toDateTimeString(),
+            'user'=>$this->user,
+
             // 'added_offers' => AddedOfferResource::collection($this->whenLoaded('addedOffers')),
         ];
     }

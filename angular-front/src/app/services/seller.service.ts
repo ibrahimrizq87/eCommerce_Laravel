@@ -17,9 +17,27 @@ export class SellerService {
 
      }
 
-     getSeller(id: string): Observable<any> {
+
+     private currentSeller: any;
+
+     setCurrentSeller(seller: any) {
+       this.currentSeller = seller;
+ 
+     }
+   
+     getCurrentSelller() {
+       return this.currentSeller;
+     }
+ 
+
+     getSeller(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
         
-        return this.http.get(`${this.apiUrl}/${id}`);
+        return this.http.get(`${this.apiUrl}/get/me` , { headers } );
     }
 
 
