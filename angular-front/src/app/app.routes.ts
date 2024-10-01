@@ -34,6 +34,7 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { AdminViewProductComponent } from './components/admin-page/admin-view-product/admin-view-product.component';
 import { AddCategoryComponent } from './components/admin-page/add-category/add-category.component';
 import { UpdateCategoryComponent } from './components/admin-page/update-category/update-category.component';
+import { AdminViewOrderComponent } from './components/admin-page/admin-view-order/admin-view-order.component';
 
 
 export const routes: Routes = [
@@ -66,10 +67,10 @@ export const routes: Routes = [
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
     {path:"order/view", component:ViewOrderComponent},
-    // {path:"admin/category/add", component:AddCategoryComponent},
-    // {path:"admin/category/update", component:UpdateCategoryComponent},
-    // {path:"admin/product/view", component:AdminViewProductComponent},
-
+    {path:"admin/category/add", component:AddCategoryComponent},
+    {path:"admin/category/update", component:UpdateCategoryComponent},
+    {path:"admin/product/view", component:AdminViewProductComponent},
+    {path:"admin/order/view", component:AdminViewOrderComponent},
     {path:"loading", component:LoadingComponent},
     {path:"**",component:ErrorComponent}
 ];

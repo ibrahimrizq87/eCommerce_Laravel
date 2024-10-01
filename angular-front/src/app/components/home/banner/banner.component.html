@@ -1,8 +1,13 @@
-<section class="banner">
-    <img src="/images/crafts-advertisment.jpg" style="height:500px; width:100%" alt="Image" class="img-fluid" />
-    <div class="display-4 position-absolute top-50 start-50 translate-middle text-center fs-2 ;"
-        style="color: #231717; font-weight: bolder;">
-
-        <button (click)="showNow()" class="btn text-white mx-3" >Shop Now</button>
+<section class="banner position-relative">
+    <img src="/images/crafts-advertisment.jpg" style="background-color: rgb(255, 255, 255,0.5); height:600px; width:100%" alt="Image" class="img-fluid" />
+    
+    <!-- Overlay container -->
+    <div class="overlay position-absolute top-50 start-50 translate-middle text-center">
+        <div>
+         <h3 class="text-white"> Welcome to Craftopia world</h3>
+        </div>
+        <div>
+            <button (click)="showNow()" class="btn">Shop Now</button>
+        </div>
     </div>
 </section>

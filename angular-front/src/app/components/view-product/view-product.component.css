@@ -137,12 +137,11 @@ video {
 
 
 .review-form {
-    max-width: 100%;
+   
     margin: auto;
     padding: 0.5rem;
-    border: 1px solid #ddd;
+   
     border-radius: 0.5rem;
-    background-color: #f9f9f9;
 }
 .form-floating {
     position: relative;

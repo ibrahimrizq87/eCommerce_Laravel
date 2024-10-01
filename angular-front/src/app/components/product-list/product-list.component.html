@@ -4,8 +4,8 @@
     </div>
 
     <div *ngIf="products && products.length > 0; else noProductsTemplate">
-        <div class="container shadow-lg   my-5 p-5 m-auto">
-            <div class="row row-cols-1 row-cols-md-4 g-3 m-auto">
+        <div class="container shadow-lg my-5 p-5 m-auto">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 m-auto">
                 <div class="col" *ngFor="let element of products">
                     <div class="card card-item h-100">
                         <div class="card-img-container" style="background-color: #ffffff;">
