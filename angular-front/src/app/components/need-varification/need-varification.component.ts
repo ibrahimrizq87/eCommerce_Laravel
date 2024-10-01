@@ -15,7 +15,7 @@ export class NeedVarificationComponent {
   private successAnimationItem: AnimationItem | undefined;
 
   successAnimationOptions: AnimationOptions = {
-    path: 'animations/confirmation.json',
+    path: 'animations/email.json',
     loop: true,
     autoplay: true
   };
