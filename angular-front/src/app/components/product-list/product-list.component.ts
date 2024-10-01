@@ -7,6 +7,8 @@ import { RouterModule} from '@angular/router';
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
+import { WishListService } from '../../services/wishlist.service';
+
 // import { Product } from "../../models/product.model";
 
 @Component({
@@ -28,7 +30,7 @@ export class ProductListComponent {
   products: Product[] = []; 
   category :any;
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
-  constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router) { }
+  constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router,private wishListService: WishListService) { }
   
 
   moveToCategory(){
@@ -122,8 +124,8 @@ if (endDate.getTime() >= today.getTime()) {
       }
     }
   );
-
-
+  
+  
 }
 
   }

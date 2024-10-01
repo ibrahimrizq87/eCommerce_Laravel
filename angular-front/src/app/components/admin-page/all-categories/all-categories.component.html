@@ -13,7 +13,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let category of categories">
+              <tr *ngFor="let category of categories | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
                 <td scope="col">
                  <img [src]="category.image" style="height:50px;width:50px;" alt="">
                 </td>
@@ -29,6 +29,9 @@
             </tbody>
           </table>
          
+    </div>
+    <div class="d-flex justify-content-center my-2">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
     
 </div>

@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let customer of customers">
+              <tr *ngFor="let customer of customers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
                 <!-- <td scope="col">{{customer.id}}</td> -->
                  <td>  <img [src]="customer.user.image" class="rounded-circle" style="height:70px; width:70px;" alt="">
                  </td>
@@ -38,6 +38,9 @@
             </tbody>
           </table>
          
+          <div class="d-flex justify-content-center my-4 ">
+            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+          </div>
     </div>
     
 </div>

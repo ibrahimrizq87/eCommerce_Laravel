@@ -2,15 +2,19 @@ import { Component } from '@angular/core';
 import { SellerService } from '../../../services/seller.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @Component({
   selector: 'app-all-sellers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './all-sellers.component.html',
   styleUrl: './all-sellers.component.css'
 })
 export class AllSellersComponent {
   sellers:any [] |null [] =[];
+  page: number = 1;              
+  itemsPerPage: number = 10; 
   constructor(private sellerService: SellerService ) { }
 
   ngOnInit(): void {

@@ -2,15 +2,19 @@ import { Component } from '@angular/core';
 import { CustomerService } from '../../../services/customer.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @Component({
   selector: 'app-all-customers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './all-customers.component.html',
   styleUrl: './all-customers.component.css'
 })
 export class AllCustomersComponent {
   customers:any [] |null [] =[];
+  page: number = 1;              
+  itemsPerPage: number = 10; 
   constructor(private customerService: CustomerService ) { }
   ngOnInit(): void {
     this.updateCustomers();
