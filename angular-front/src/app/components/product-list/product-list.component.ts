@@ -8,6 +8,8 @@ import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 import { WishListService } from '../../services/wishlist.service';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 // import { Product } from "../../models/product.model";
 
@@ -18,7 +20,8 @@ import { WishListService } from '../../services/wishlist.service';
     ProductDetailsComponent,
     CommonModule,
     RouterModule,
-    CustomerHeaderComponent
+    CustomerHeaderComponent,
+    NgxPaginationModule
 ],
 
 
@@ -28,6 +31,8 @@ import { WishListService } from '../../services/wishlist.service';
 
 export class ProductListComponent {
   products: Product[] = []; 
+  page: number = 1;              
+  itemsPerPage: number = 20; 
   category :any;
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
   constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router,private wishListService: WishListService) { }

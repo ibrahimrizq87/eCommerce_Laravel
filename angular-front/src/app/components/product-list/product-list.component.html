@@ -1,11 +1,10 @@
 <div class="container my-5 p-auto m-auto">
  
 
-    <div *ngIf="products && products.length > 0; else noProductsTemplate">
+    <div *ngIf="products && products.length > 0;  else noProductsTemplate">
         <div class="container shadow-lg my-5 p-5 m-auto">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 m-auto">
-                <div class="col" *ngFor="let element of products">
-                    <div class="card card-item h-100">
+                <div class="col" *ngFor="let element of products | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">                    <div class="card card-item h-100">
                         <!--Images-->
                         <div class="card-img-container" style="background-color: #ffffff;">
                             <!-- image in an anchor tag to make it clickable -->
@@ -55,6 +54,9 @@
 
         </div>
 
+    </div>
+    <div class="d-flex justify-content-center my-4 ">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
 
     <ng-template #noProductsTemplate>
