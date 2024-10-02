@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { OrderPaymentService } from '../../../services/order-payment.service';
 import {  Router,RouterModule } from '@angular/router';
+import { CarouselComponent } from "../../carousel/carousel.component";
 @Component({
   selector: 'app-banner',
   standalone: true,
   imports: [
-    RouterModule
-  ],
+    RouterModule,
+    CarouselComponent
+],
   providers: [OrderPaymentService],
   templateUrl: './banner.component.html',
   styleUrl: './banner.component.css'

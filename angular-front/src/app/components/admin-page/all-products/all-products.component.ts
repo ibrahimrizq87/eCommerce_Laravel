@@ -3,11 +3,12 @@ import { RouterModule } from '@angular/router';
 import { UpdateProductComponent } from '../../seller-page/update-product/update-product.component';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-all-products',
   standalone: true,
-  imports: [RouterModule, UpdateProductComponent, CommonModule],
+  imports: [RouterModule, UpdateProductComponent, CommonModule, NgxPaginationModule],
   templateUrl: './all-products.component.html',
   styleUrl: './all-products.component.css'
 })
@@ -15,6 +16,8 @@ export class AllProductsComponent {
   @Output() linkClicked = new EventEmitter<string>();
 
   products: Product[] = []; 
+  page: number = 1;              
+  itemsPerPage: number = 10;     
 
   constructor(private productService: ProductService) { }
 

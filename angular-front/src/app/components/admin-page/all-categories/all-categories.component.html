@@ -14,22 +14,25 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let category of categories">
+              <tr *ngFor="let category of categories | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
                 <td scope="col">
                  <img [src]="category.image" style="height:50px;width:50px;" alt="">
                 </td>
                 <td style="font-size: 14px;"><p class="product"><strong>{{category.category_name}}</strong></p></td>
                 <td>${{category.description}}</td> 
                 <td>
-                    <a (click)="deleteCategory(category)" style="cursor:pointer;">
-                    <i class="fa-solid fa-trash px-2 fs-5" style="color:rgb(173, 4, 4)"></i>
+                  <button (click)="updateCategory(category)" class="border-0 bg-transparent"><i class="fa-solid fa-pen-to-square fs-5"  style="cursor: pointer; color:#ce8d00"></i></button>
+                 <a (click)="deleteCategory(category)" style="cursor:pointer;">
+                    <i class="fa-solid fa-trash px-3 fs-5" style="color:rgb(173, 4, 4)"></i>
                   </a>
-                  <button (click)="updateCategory(category)" class="btn btn-success ms-2">edit</button>
                 </td>
               </tr>
             </tbody>
           </table>
          
+    </div>
+    <div class="d-flex justify-content-center my-2">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
     
 </div>

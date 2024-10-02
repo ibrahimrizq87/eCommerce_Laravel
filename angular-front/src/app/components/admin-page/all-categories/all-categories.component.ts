@@ -4,11 +4,13 @@ import { CategoryService } from '../../../services/category.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-all-categories',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, NgxPaginationModule],
   templateUrl: './all-categories.component.html',
   styleUrl: './all-categories.component.css'
 })
@@ -16,6 +18,8 @@ export class AllCategoriesComponent {
   categories:any [] |null [] =[];
   @Output() linkClicked = new EventEmitter<string>();
 
+  page: number = 1;              
+  itemsPerPage: number = 10;  
   constructor(private categoryService: CategoryService ,private router: Router) { }
 
   ngOnInit(): void {

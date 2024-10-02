@@ -2,16 +2,20 @@ import { Component } from '@angular/core';
 import { CustomerService } from '../../../services/customer.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @Component({
   selector: 'app-banned-customers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './banned-customers.component.html',
   styleUrl: './banned-customers.component.css'
 })
 export class BannedCustomersComponent {
 
   customers:any [] |null [] =[];
+  page: number = 1;              
+  itemsPerPage: number = 10; 
   constructor(private customerService: CustomerService ) { }
   ngOnInit(): void {
     this.updateCustomers();

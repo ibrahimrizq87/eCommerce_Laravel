@@ -26,6 +26,7 @@
     "lottie-web": "^5.12.2",
     "ngx-lottie": "^12.0.0",
     "ngx-owl-carousel-o": "^18.0.0",
+    "ngx-pagination": "^6.0.3",
     "owl.carousel": "^2.3.4",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.14.1",
