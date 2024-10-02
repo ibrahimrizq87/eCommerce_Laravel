@@ -59,7 +59,22 @@ export class SellerService {
       return this.http.get(this.apiUrl+'/banned', { headers });
     }
 
+
+
+
+    updateSelller(data:any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.post(this.apiUrl+'/update/seller',data, { headers });
+    }
+    
+
     banSeller(id: string): Observable<any> {
+
+
       const authToken = sessionStorage.getItem('authToken');
 
       const headers = new HttpHeaders({

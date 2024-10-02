@@ -14,6 +14,7 @@ import { UpdateProductComponent } from './update-product/update-product.componen
 import { AdminViewProductComponent } from './admin-view-product/admin-view-product.component';
 import { ProductsInOfferComponent } from './products-in-offer/products-in-offer.component';
 import { SellerProfileComponent } from './seller-profile/seller-profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 
@@ -33,7 +34,8 @@ import { SellerProfileComponent } from './seller-profile/seller-profile.componen
       ProductOffersComponent, 
       AllSellerOffersComponent,
       ProductsInOfferComponent,
-    SellerProfileComponent],
+    SellerProfileComponent,
+    ChangePasswordComponent],
   templateUrl: './seller-page.component.html',
   styleUrls: ['./seller-page.component.css']  
 })
