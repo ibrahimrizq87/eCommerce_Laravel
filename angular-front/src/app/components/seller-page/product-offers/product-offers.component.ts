@@ -108,9 +108,13 @@ addProducts(){
 
   this.offerService.addOfferToProducts(data).subscribe(
     response => {
-      console.log('Offer added successfully', response);
+      console.log('Offer added successfully', response);   
+      alert('Offer added successfully');
+      this.linkClicked.emit('all-seller-offers');
+
     },
     error => {
+      alert('some error happend.')
       console.log('Error adding offer', error);
     }
   );

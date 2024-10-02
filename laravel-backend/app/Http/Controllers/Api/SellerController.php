@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Seller;
+use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\SellerResource;
@@ -144,9 +146,73 @@ public function unBanSeller($id)
 
     
 
-    /**
-     * Update the specified seller in storage.
-     */
+    
+
+    public function updateSeller(Request $request)
+    {
+        try {
+            
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:150',
+                'last_name' => 'required|string|max:150',
+                'phone' => 'required|string|max:150',
+                'address' => 'required|string|max:255',
+                'shop_name' => 'required|string|max:255',
+                'about' => 'required|string|max:255',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+
+
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+            // $data = $request->all();
+
+            $user = Auth::user();
+            $seller = Seller::where('user_id',$user->id)->first();
+            if(!$seller){
+                return response()->json(['errors' => 'some error happend'], 404);
+            } 
+            $my_path = $user->image ;
+        if(request()->hasFile("image")){
+
+            $url = $user->image;
+
+            $relativePath = str_replace(url('uploads/').'/' , '', $url);
+            
+            if (Storage::disk('uploads')->exists($relativePath)) {
+                Storage::disk('uploads')->delete($relativePath);
+            }
+
+        
+            $image = request()->file("image");
+            $my_path=$image->store('users','uploads');
+            $my_path= asset('uploads/' . $my_path); 
+        }
+
+
+            $user->name = $request->name;
+            $user->last_name = $request->last_name;
+            $user->image = $my_path;
+
+            
+            $seller->phone = $request->phone;
+            $seller->address = $request->address;
+            $seller->shope_name = $request->shop_name;
+            $seller->about = $request->about;
+            $user->save();
+            $seller->save();
+            // return response()->json(['error' => $seller->user_id], 500);
+
+
+            return new SellerResource($seller->load('user'));
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update seller: ' . $e->getMessage()], 500);
+        }
+    }
+
     public function update(Request $request, Seller $seller)
     {
         try {

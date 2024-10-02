@@ -22,6 +22,12 @@ use App\Http\Controllers\Api\VerificationController;
 use App\Http\Controllers\Api\PaymentController;
 
 
+
+
+Route::post('users/update-password', [UserController::class , 'updatePassword'])->middleware('auth:sanctum');
+
+Route::post('sellers/update/seller', [SellerController::class , 'updateSeller'])->middleware('auth:sanctum');
+
 Route::post('/offers/remove-product-from-offer', [ProductController::class , 'removeProductOffer'])->middleware('auth:sanctum');
 
 Route::get('/products/byOffer/{offer_id}', [ProductController::class , 'getProductsByOffer'])->middleware('auth:sanctum');

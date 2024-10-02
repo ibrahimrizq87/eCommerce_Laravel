@@ -14,6 +14,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\DB;
 
+
 class UserController extends Controller
 {
     public function login(Request $request) {
@@ -127,6 +128,35 @@ class UserController extends Controller
             ] , 404);
         }
     }
+
+
+
+    public function updatePassword(Request $request)
+{
+
+    $std_validator = Validator::make($request->all(), [
+        'currentPassword' => 'required',
+        'newPassword' => 'required|min:8',
+        'password_confirmation' => 'required|same:newPassword',
+    ]);
+
+    if ($std_validator->fails()) {
+        return response()->json(['errors' => $std_validator->errors()], 400);
+    }
+
+
+    if (!Hash::check($request->currentPassword, Auth::user()->password)) {
+        return response()->json(['error' => 'Invalid current password.'], 401);
+    }
+
+
+    $user = Auth::user();
+    $user->password = Hash::make($request->newPassword);
+    $user->save();
+
+    return response()->json(['message' => 'Password updated successfully.'], 200);
+
+}
 
 
     function register(Request $request) {

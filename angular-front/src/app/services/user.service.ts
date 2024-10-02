@@ -9,9 +9,6 @@ import { environment } from '../../environments/environment';
 export class UserService {
 
   private apiUrl = environment.apiUrl+'/users';
-
-    // private apiUrl = 'http://0.0.0.0:8000/api/users'; 
-
     constructor(private http: HttpClient) { }
     
     private currecntUser: any;
@@ -37,6 +34,17 @@ export class UserService {
         });
         return this.http.get(`${this.apiUrl}/me`, { headers });
     }
+
+
+    updatePassword(data:any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.post(`${this.apiUrl}/update-password`,data, { headers });
+  }
+
 
 
     login(userData: any): Observable<any> {

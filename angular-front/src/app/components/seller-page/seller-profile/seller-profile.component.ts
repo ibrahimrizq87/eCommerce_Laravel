@@ -20,11 +20,17 @@ export class SellerProfileComponent {
     this.sellerData();
     }
 
-    updateProfile(){}
+    updateProfile(){
+      this.sellerService.setCurrentSeller(this.seller);
+      this.linkClicked.emit('edit'); 
 
+    }
+    
     sellerData(){
       if(this.sellerService.getCurrentSelller()){
         this.seller =  this.sellerService.getCurrentSelller();
+        console.log('seller' , this.seller)
+
       }else{
       this.sellerService.getSeller().subscribe(
           response=>{
