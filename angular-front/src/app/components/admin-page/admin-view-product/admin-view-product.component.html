@@ -3,12 +3,13 @@
         <div class="col-xl-6 d-flex">
             <div class="col-md-2">
                 <a class="mt-2 sm-img item-thumb" (click)="onImageClick(product.cover_image)">
-                    <img width="70" height="70" class="rounded-2 object-fit-cover" [src]="product.cover_image" style="object-fit: cover;"
+                    <img width="70" height="70" class="rounded-2 object-fit-cover" [src]="product.cover_image"
+                        style="object-fit: cover;"
                         [ngClass]="{'border border-primary': selectedImage === product.cover_image, 'selected-image': selectedImage === product.cover_image}" />
                 </a>
-                <a *ngFor="let image of product.images" class=" pb-3 sm-img item-thumb"
+                <a *ngFor="let image of product.images" class="sm-img item-thumb"
                     (click)="onImageClick(image.image)">
-                    <img class="rounded-2" [src]="image.image" style="object-fit: cover; width:70px; height:70px;"
+                    <img class="rounded-2" [src]="image.image" style="object-fit: cover; width:70px; height:70px; margin-top: 10px;"
                         [ngClass]="{'border border-primary': selectedImage === image.image, 'selected-image': selectedImage === image.image}" />
                 </a>
                 <!--image cover-->
