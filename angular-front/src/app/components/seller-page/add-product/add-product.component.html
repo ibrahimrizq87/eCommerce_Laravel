@@ -3,9 +3,9 @@
 
         <h6 class="mb-4" style="color: #b83807;">Add Your Product</h6>
 
-        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert alert-danger">
+        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger text-center">
             <ul>
-                <li *ngFor="let error of getErrorMessages()">{{ error }}</li>
+                <li class="list-unstyled" *ngFor="let error of getErrorMessages()">{{ error }}</li>
             </ul>
         </div>
 

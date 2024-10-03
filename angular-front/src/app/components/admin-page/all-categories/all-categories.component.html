@@ -1,6 +1,21 @@
 <div class="container my-3 mx-2">
-    <div class="container mt-5 ms-3" style="color:#b83807;"><h6>All Categories</h6></div>
-    <div><button class="btn btn-info" (click)="addCategory()">add Category</button></div>
+    <div class="container my-5 ms-3" style="color:#b83807;"><h6>All Categories</h6></div>
+    <div class="d-flex justify-content-around my-5">
+      <div>
+        <div class="input-group" style="width: 300px;">
+          <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
+            id="example-search-input">
+          <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
+            <i class="fa fa-search" style="color:#FF3A20;"></i>
+          </button>
+        </div>
+      </div>
+      <div>
+        <button class="btn add" (click)="addCategory()">Add Category</button>
+      </div>
+    </div>
+    
+    
 
     <div class="container mt-2">
         <table class="table text-center">

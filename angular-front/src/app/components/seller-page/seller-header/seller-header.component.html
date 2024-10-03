@@ -1,4 +1,4 @@
-<div class="container my-5 m-auto text-center">
+<div class="container my-5 m-auto text-center" style="height:100vh">
   <img src="images/resin1.jpg" class="rounded-circle" style="height:100px; width:100px;" alt="">
   <div>
     <p class="pt-4 ps-2 balance"> Your Balance: <span id="balance">{{seller.total_sales}}</span></p>
@@ -11,6 +11,10 @@
       <li class=" mt-4 mb-4" (click)="onLinkClick('all-seller-offers')">All Offers</li>
     </a>
  
+    <!-- <a>
+      <li class=" mt-4 mb-4" (click)="onLinkClick('statistics')">Top Products</li>
+    </a> -->
+
     <a>
       <li class=" my-4" (click)="onLinkClick('profile')">Profile</li>
     </a>

@@ -1,6 +1,17 @@
-<div class="container-fluid shadow-lg mt-5">
-    <div class="container ">
-  <button (click)="addOffer()" class="btn btn-info mt-5">add new Offer</button>
+<div class="container-fluid shadow-lg" style="height:100vh;">
+    <div class="container d-flex justify-content-around">
+      <div>
+        <div class="input-group mt-5" style="width: 300px;">
+          <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
+            id="example-search-input">
+          <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
+            <i class="fa fa-search" style="color:#FF3A20;"></i>
+          </button>
+        </div>
+      </div>
+      <div>
+        <button (click)="addOffer()" class="btn mt-5" style="background-color:#b83807; color: white">add new Offer</button>    
+      </div>
     </div>
     <h6 class="p-4" style="color: #b83807;">My Offers</h6>
     <div class="container ">
@@ -10,15 +21,14 @@
               <th scope="col">discount</th>
               <th scope="col">start date</th>
               <th scope="col">End date</th>
-              <!-- <th scope="col">added at</th> -->
-
               <th scope="col">Status</th>
-           
+              <th scope="col">Action</th>
+
   
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let offer of offers">
+            <tr *ngFor="let offer of offers  | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
              
               <td style="font-size: 16px;"><p>{{offer.discount}}</p></td>
               <td style="font-size: 14px; width:30%">{{offer.start_date}}</td>
@@ -31,13 +41,20 @@
               </span>
             </td>
               <td>
-                <button (click)="addProductsToOffer(offer)" class="btn btn-primary">add offer to products</button>
-                <button (click)="getProducts(offer)" class="btn btn-secondary">offered products</button>
+                <i (click)="addProductsToOffer(offer)" class="fa-solid fa-plus px-2 fs-5" style="cursor: pointer; color:rgb(4, 92, 4)"></i>
+                <i (click)="getProducts(offer)" class="fa-solid fa-list px-2 fs-5" style="cursor: pointer;"></i>
+
+                <!-- <button (click)="addProductsToOffer(offer)" class="btn" style=""><i class="fa-solid fa-plus"></i></button> -->
+                <!-- <button (click)="getProducts(offer)" class="btn btn-secondary">offered products</button> -->
 
                 <i (click)="deleteOffer(offer)" class="fa-solid fa-trash px-2 fs-5" style="color:rgb(173, 4, 4);cursor: pointer;"></i>
               </td>
             </tr>
           </tbody>
         </table>
+
+        <div class="d-flex justify-content-center my-4 ">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+      </div>
   </div>
   

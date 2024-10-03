@@ -18,7 +18,7 @@
             <tbody>
               <tr *ngFor="let customer of customers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
                 <!-- <td scope="col">{{customer.id}}</td> -->
-                 <td>  <img [src]="customer.user.image" class="rounded-circle" style="height:70px; width:70px;" alt="">
+                 <td>  <img [src]="customer.user.image" class="rounded-circle" style="height:70px; width:70px;object-fit: cover;" alt="">
                  </td>
                 <td scope="col">{{customer.user.name}}</td>
                 <td scope="col">{{customer.user.last_name}}</td>
