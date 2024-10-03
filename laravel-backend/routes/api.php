@@ -22,6 +22,9 @@ use App\Http\Controllers\Api\VerificationController;
 use App\Http\Controllers\Api\PaymentController;
 
 
+Route::get('customers/me', [CustomerController::class , 'getMyCustomer'])->middleware('auth:sanctum');
+
+Route::post('customers/update/customer', [CustomerController::class , 'updateCustomer'])->middleware('auth:sanctum');
 
 
 Route::post('users/update-password', [UserController::class , 'updatePassword'])->middleware('auth:sanctum');
@@ -29,6 +32,8 @@ Route::post('users/update-password', [UserController::class , 'updatePassword'])
 Route::post('sellers/update/seller', [SellerController::class , 'updateSeller'])->middleware('auth:sanctum');
 
 Route::post('/offers/remove-product-from-offer', [ProductController::class , 'removeProductOffer'])->middleware('auth:sanctum');
+
+Route::get('/cart-items/my-items', [CartItemController::class , 'getMyItems'])->middleware('auth:sanctum');
 
 Route::get('/products/byOffer/{offer_id}', [ProductController::class , 'getProductsByOffer'])->middleware('auth:sanctum');
 
@@ -82,7 +87,7 @@ Route::get('/products/restore/{product_id}',
     ->middleware('auth:sanctum');
 
 Route::apiResource('added-offers', AddedOfferController::class);
-Route::apiResource('cart-items', CartItemController::class);
+Route::apiResource('cart-items', CartItemController::class)->middleware('auth:sanctum');
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('customers', CustomerController::class)->middleware('auth:sanctum');
 Route::apiResource('custom-orders', CustomOrderController::class);

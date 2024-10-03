@@ -5,7 +5,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { CustomerService } from './services/customer.service';
 import {SellerPageComponent } from './components/seller-page/seller-page.component';
-
+import { CartService } from './services/cart.service';
 import { CategoryService } from './services/category.service';
 import { ProductService } from './services/product.service';
 import { WishListService } from './services/wishlist.service';
@@ -14,6 +14,8 @@ import { UserService } from './services/user.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SellerService } from './services/seller.service';
+import { OrderService } from './services/order.service';
+
 
 @Component({
   selector: 'app-root',
@@ -35,7 +37,9 @@ import { SellerService } from './services/seller.service';
     ReviewService,
     UserService,
     SellerService,
-  ],
+    CartService,
+    OrderService,
+],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

@@ -20,13 +20,11 @@ export class ChangePasswordComponent {
 
 
 
-  isSeller: Boolean = false;
-  selectedFile: File | null = null;
   submitted: boolean = false;
   imageUploaded = false;
   backendErrors: any = {};
 
-  constructor(private userService: UserService, private sellerService: SellerService) { }
+  constructor(private userService: UserService) { }
 
   seller: any;
   onSubmit(form: any) {

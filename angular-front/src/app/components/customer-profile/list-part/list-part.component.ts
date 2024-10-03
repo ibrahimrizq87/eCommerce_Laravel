@@ -16,4 +16,7 @@ export class ListPartComponent {
   onLinkClick(component: string) {
     this.linkClicked.emit(component);
   }
+
+
+
 }

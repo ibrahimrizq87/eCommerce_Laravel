@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\CartItem;
+
 use Illuminate\Http\Request;
 
 use Response;
@@ -23,16 +26,18 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-
+try{
         $validator = Validator::make($request->all(), [
             'phone' => 'required|string|max:15',
             'address' => 'required|string|max:255',
             'total' => 'required|integer|min:1',
         ]);
 
+
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['errors' => $validator->errors()], 400);
         }
+
 
         $order = Order::create([
             'phone' => $request->phone,
@@ -41,9 +46,25 @@ class OrderController extends Controller
             'user_id' => Auth::id(),
             'payment_status' => 'not_payed', 
         ]);
-        
 
-        return response()->json($order, 201);
+        $cartItems = CartItem::where('user_id',Auth::id())->get();
+        foreach($cartItems as $cartItem){
+
+            $orderItem =new OrderItem();
+            $orderItem->quantity = $cartItem->quantity;
+            $orderItem->product_id = $cartItem->product_id;
+            $orderItem->order_id = $order->id;
+
+
+
+        }
+        CartItem::where('user_id', Auth::id())->delete();
+
+        // return response()->json($order, 201);
+        return response()->json(['message' => 'ordr added successfuly'], 201);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
 
     }
 
@@ -54,6 +75,7 @@ class OrderController extends Controller
     }
 
     return response()->json($order);
+
 }
 
 
@@ -74,7 +96,6 @@ public function update(Request $request, Order $order)
         return response()->json(['errors' => $validator->errors()], 422);
     }
 
-    // لا تسمح بإلغاء الطلب إذا كان بالفعل ملغى أو تم تسليمه
     if ($order->payment_status === 'canceled' || $order->payment_status === 'delivered') {
         return response()->json(['error' => 'Order cannot be canceled'], 422);
     }

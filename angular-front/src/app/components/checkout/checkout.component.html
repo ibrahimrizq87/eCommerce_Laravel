@@ -1,4 +1,3 @@
-<app-customer-header/>
 
 <div class="container shadow-lg my-4">
     <div >
@@ -6,158 +5,95 @@
     </div>
     <div class="row">
         <div class="col-md-6 checkout-form " >
-            <form >
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="fname" placeholder="First Name" name="name" required
-                            ngModel>
-                        <label for="fname">First Name</label>
-                        <div>
-                            First Name is required.
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="lname" placeholder="Last Name" name="last_name" required
-                            ngModel>
-                        <label for="lname">Last Name</label>
-                        <div>
-                            Last Name is required.
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="email" class="form-control" id="email" placeholder="Email" name="email" required email
-                            ngModel>
-                        <label for="email">Email</label>
-                        <div>
-                            <div>
-                                Email is required.
-                            </div>
-                            <div >
-                                Please enter a valid email address.
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <form  #orderForm="ngForm"   (ngSubmit)="onSubmit(orderForm)">
                 
     
                 <div class="my-3">
                     <div class="form-floating">
-                        <input type="tel" class="form-control" id="phone" placeholder="Phone" name="phone" required
+                        <input type="tel" class="form-control" id="phone" [(ngModel)]="customer.phone" placeholder="Phone" name="phone" required
                             pattern="[0-9]{11}" ngModel>
                         <label for="phone">Phone</label>
-                        <div>
+                        <div style="color: red;" *ngIf="submitted && orderForm.controls['phone']?.invalid">
                             Phone number is required and must be a valid 10-digit number.
                         </div>
                     </div>
                 </div>
-    
                 <div class="mb-3">
                     <div class="form-floating">
-                        <textarea class="form-control" id="country" placeholder="Your country" name="country"
-                            style="height: 50px;" ngModel required></textarea>
-                        <label for="country">Country</label>
-                        <div>
-                            Country is required.
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <textarea class="form-control" id="city" placeholder="Your city" name="city" style="height: 50px;"
-                            ngModel required></textarea>
-                        <label for="city">City</label>
-                        <div >
-                            City is required.
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <textarea class="form-control" id="address" placeholder="Your address" name="address"
+                        <textarea class="form-control" id="address"  [(ngModel)]="customer.address" placeholder="Your address" name="address"
                             style="height: 50px;" ngModel required></textarea>
                         <label for="address">Address details</label>
-                        <div>
+                        <div style="color: red;" *ngIf="submitted && orderForm.controls['address']?.invalid">
                             Address is required.
                         </div>
                     </div>
                 </div>
-
+                <div class="text-center mt-3">
+                    <button class="btn mt-3" type="submit"> Place order</button>
+                 </div>
             </form>
         </div>
-        <div class="col-md-6">
-            <div class="container w-75 mt-4" style="background-color: #ffffff;">
+        <div class="col-md-6 p-5 ">
+            <div class="container p-5  boarder rounded shadow " style="background-color: #ffffff;">
                 <div class="row">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="d-flex align-items-center">
-                            <img src="images/logo.png" style="height:50px; width:50px;" alt="">
-                            <span class="ms-2">Product</span>
-                        </div>
-                        <div>
-                            200$
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between my-2">
-                        <div class="d-flex align-items-center">
-                            <img src="images/toys.jpg" style="height:50px; width:50px;" alt="">
-                            <span class="ms-2">Product</span>
-                        </div>
-                        <div>
-                            200$
+                 
+                 
+                    <div class="container rounded shadow bg-white">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Price</th>
+
+                                            <th scope="col">Total Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of cartItems">
+                                            <td>
+                                                <img [src]="item.product.cover_image" style="height:50px; width:50px;" alt="Product Image">
+                                            </td>
+                                            <td>{{item.product.product_name}}</td>
+                                            <td>{{item.quantity}}</td>
+                                            <td>{{item.product.priceAfterOffers}} $</td>
+
+                                            <td>{{item.product.priceAfterOffers * item.quantity}} $</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="d-flex align-items-center justify-content-between my-2">
-                        <div class="d-flex align-items-center">
-                            <img src="images/wedding.jpg" style="height:50px; width:50px;" alt="">
-                            <span class="ms-2">Product</span>
-                        </div>
-                        <div>
-                            200$
-                        </div>
-                    </div>
+            
                     <hr class="my-4">
                     
                     <div class="d-flex align-items-center justify-content-between">
-                        <div>Subtotal:</div>
-                        <div>600$</div>
+                        <div>Total before offer:</div>
+                        <div>{{totalPrice}} $</div>
                     </div>
                     <hr class="my-4">
 
+
+                    
                     <div class="d-flex align-items-center justify-content-between ">
-                        <div>Shipping:</div>
-                        <div>Free</div>
+                        <div>saved by offers:</div>
+                        <div>{{totalOffers}} $</div>
                     </div>
                     <hr class="my-4">
                     
                     <div class="d-flex align-items-center justify-content-between ">
                         <div>Total:</div>
-                        <div>$600</div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between my-4">
-                    <div class="form-check px-5">
-                        <input type="radio" id="bank" name="gender" value="bank" class="form-check-input" required ngModel>
-                        <label for="bank" class="form-check-label">bank</label>
-                    </div>
-                    <div class="form-check px-5">
-                        <input type="radio" id="cash" name="gender" value="cash" class="form-check-input" required
-                            ngModel>
-                        <label for="cash" class="form-check-label">cash on delievery</label>
-                    </div>    
+                        <div>{{totalPriceAfterOffers}} $</div>
                     </div>
                     
                 </div>
             </div>
-            <div class="text-center">
-               <button class="btn" (click)="openModal()"> Place order</button>
-            </div>
+       
             <div class="modal" id="myModal">
                 <div class="modal-dialog">
                     <div class="modal-content">

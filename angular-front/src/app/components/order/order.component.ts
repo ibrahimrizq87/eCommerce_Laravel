@@ -48,7 +48,7 @@ export class OrderComponent implements OnInit {
         this.orderService.cancelOrder(orderId).subscribe(
             () => {
                 alert('Order canceled successfully!');
-                this.fetchOrders(); // تحديث قائمة الطلبات بعد الإلغاء
+                this.fetchOrders(); 
             },
             (error) => {
                 console.error('Error canceling order:', error);

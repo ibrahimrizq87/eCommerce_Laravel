@@ -9,7 +9,6 @@ import { environment } from '../../environments/environment';
 export class CartService {
   private apiUrl = environment.apiUrl+'/cart-items';
 
-    // private apiUrl = 'http://0.0.0.0:8000/api/cart-items'; 
 
     constructor(private http: HttpClient) { }
 
@@ -29,7 +28,7 @@ export class CartService {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${authToken}`
       });
-      return this.http.get(this.apiUrl, { headers });
+      return this.http.get(this.apiUrl+'/my-items', { headers });
     }
 
     deleteItem(id: string): Observable<any> {

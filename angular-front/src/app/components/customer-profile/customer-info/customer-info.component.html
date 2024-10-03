@@ -1,25 +1,24 @@
-<div class="container shadow-lg">
-    <div class=" p-5 text-center">
-        <img src="images/logo.png" style="height: 100px; width: 100px; border-radius: 50%;" alt="">
+<div class="container shadow-lg p-4 rounded-4 bg-light mt-5">
+    <div class="text-center mb-4">
+        <img [src]="customer.user.image" class="rounded-circle border border-3 border-secondary" 
+            style="height: 120px; width: 120px;" alt="User Profile Image">
     </div>
-    <div class="d-flex justify-content-center">
-        <div class=" pt-5 ">
-            <p class="py-2">First Name: Amin</p>
-            <p class="py-2">Gender : Female</p>
-            <p class="py-2">Phone: 01234567890</p>
-            <p class="py-2"> Address: 123, Main Street, London, UK</p>
+    <div class="row justify-content-center">
+        <div class="col-md-5 text-center">
+            <h4 class="fw-bold mb-3">Personal Information</h4>
+            <p class="py-2"><strong>First Name:</strong> {{customer.user.name}}</p>
+            <p class="py-2"><strong>Gender:</strong> {{customer.user.gender}}</p>
+            <p class="py-2"><strong>Phone:</strong> {{customer.phone}}</p>
+            <p class="py-2"><strong>Address:</strong> {{customer.address}}</p>
         </div>
-        <div class="pt-5">
-            <p class="py-2">Last Name: Amin</p>
-            <p class="py-2">Email: amin$gmail.com</p>
-            <p class="py-2"> Accout Type : Customer</p>
-            
+        <div class="col-md-5 text-center">
+            <h4 class="fw-bold mb-3">Account Details</h4>
+            <p class="py-2"><strong>Last Name:</strong> {{customer.user.last_name}}</p>
+            <p class="py-2"><strong>Email:</strong> {{customer.user.email}}</p>
+            <p class="py-2"><strong>Account Type:</strong> Customer</p>
         </div>
-        
     </div>
     <div class="text-center">
-        <a routerLink="/edit-profile" type="submit" class="btn w-50 fw-bolder text-white my-4">Edit Profile</a>
+        <a (click)="editProfile()" class="btn btn-primary w-50 fw-bold text-white mt-4 rounded-pill py-2">Edit Profile</a>
     </div>
-
-
 </div>

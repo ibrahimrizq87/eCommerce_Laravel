@@ -17,11 +17,28 @@ export class CustomerService {
 
      }
 
+
+     private currentCustomer: any;
+
+     setCurrentCustomer(customer: any) {
+       this.currentCustomer = customer;
+ 
+     }
+   
+     getCurrentCustomer() {
+       return this.currentCustomer;
+     }
+
    
    
-     getCustomer(id: string): Observable<any> {
+     getCustomer(): Observable<any> {
         
-        return this.http.get(`${this.apiUrl}/${id}`);
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+        return this.http.get(`${this.apiUrl}/me`,{headers});
     }
 
 
@@ -41,6 +58,16 @@ export class CustomerService {
         'Authorization': `Bearer ${authToken}`
       });
       return this.http.get(this.apiUrl+'/banned', { headers });
+    }
+
+    
+    updateCustomer(data:any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.post(this.apiUrl+'/update/customer',data, { headers });
     }
 
     banCustomer(id: string): Observable<any> {
