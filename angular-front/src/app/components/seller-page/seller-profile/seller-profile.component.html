@@ -1,0 +1,22 @@
+
+<!-- <h1>anythhtbiepbvifbvpfdbvpihdfbvihpdfbvphdfbvihf</h1> -->
+<div class="container-fluid shadow-lg mt-5">
+    <h2 class="p-4 text-center" style="color: #b83807;">Seller Profile</h2>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img [src]="seller.user.image" alt="Seller Image" class="img-fluid rounded-circle" style="height: 150px; width: 150px;">
+            </div>
+            <div class="col-md-8">
+                <h4 class="mt-3">{{ seller.user.name }}</h4>
+                <p><strong>Shop Name:</strong> {{ seller.shop_name }}</p>
+                <p><strong>Shop Description:</strong> {{ seller.about }}</p>
+                <p><strong>Address:</strong> {{ seller.address }}</p>
+                <p><strong>Phone:</strong> {{ seller.phone }}</p>
+                <p><strong>Total Sales:</strong> ${{ seller.total_sales }}</p>
+                <button class="btn btn-primary mt-3" (click)="updateProfile()">Update Profile</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,17 +6,20 @@
     <div class="col-12 col-md-10 container-fluid shadow-lg"  style="background-color: #fff;">
 
       <app-pending-products *ngIf="activeComponent === 'pending-products'"></app-pending-products>
-      <app-all-categories *ngIf="activeComponent === 'all-categories'"></app-all-categories>
+      <app-all-categories *ngIf="activeComponent === 'all-categories'"  (linkClicked)="showComponent($event)"></app-all-categories>
       <app-all-customers *ngIf="activeComponent === 'all-customers'"></app-all-customers>
       <app-all-offers *ngIf="activeComponent === 'all-offers'"></app-all-offers>
       <app-all-orders *ngIf="activeComponent === 'all-orders'"></app-all-orders>
-      <app-all-products *ngIf="activeComponent === 'all-products'"></app-all-products> 
+      <app-all-products *ngIf="activeComponent === 'all-products'"   (linkClicked)="showComponent($event)"></app-all-products> 
       <app-all-sellers *ngIf="activeComponent === 'all-sellers'"></app-all-sellers>
       <app-banned-customers *ngIf="activeComponent === 'banned-customers'"></app-banned-customers>
       <app-banned-sellers *ngIf="activeComponent === 'banned-sellers'"></app-banned-sellers>
       <app-offered-products *ngIf="activeComponent === 'offered-products'"></app-offered-products>
       <app-rejected-products *ngIf="activeComponent === 'rejected-products'"></app-rejected-products>
-      
+      <app-add-category *ngIf="activeComponent === 'add-category'" (linkClicked)="showComponent($event)"></app-add-category>
+      <app-update-category *ngIf="activeComponent === 'update-category'" (linkClicked)="showComponent($event)"></app-update-category>
+      <app-admin-view-product *ngIf="activeComponent === 'view-product'" ></app-admin-view-product>
+
     </div>
   </div>
 </div>

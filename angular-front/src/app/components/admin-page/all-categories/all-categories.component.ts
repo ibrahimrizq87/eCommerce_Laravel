@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 })
 export class AllCategoriesComponent {
   categories:any [] |null [] =[];
+  @Output() linkClicked = new EventEmitter<string>();
+
   page: number = 1;              
   itemsPerPage: number = 10;  
   constructor(private categoryService: CategoryService ,private router: Router) { }
@@ -39,7 +41,15 @@ updateCategories(){
 
   });
 }
-  updateCategory(category:any){}
+  updateCategory(category:any){
+    this.categoryService.setCategory(category);
+    this.linkClicked.emit('update-category');
+
+  }
+  addCategory(){
+    this.linkClicked.emit('add-category');
+
+  }
   deleteCategory(category:any){
     this.categoryService.deleteCategory(category.id).subscribe(
 response=>{

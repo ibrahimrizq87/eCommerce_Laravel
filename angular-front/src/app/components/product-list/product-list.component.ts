@@ -54,7 +54,6 @@ export class ProductListComponent {
 if(this.category){
   this.productService.getProductsByCategory(this.category.id).subscribe(
     response => {
-      this.products = response.data;
       this.products = response.data; 
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;

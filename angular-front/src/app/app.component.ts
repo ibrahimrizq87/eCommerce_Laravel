@@ -1,10 +1,10 @@
-// src/app/app.component.ts
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { CustomerService } from './services/customer.service';
+import {SellerPageComponent } from './components/seller-page/seller-page.component';
 
 import { CategoryService } from './services/category.service';
 import { ProductService } from './services/product.service';
@@ -13,6 +13,7 @@ import { ReviewService } from './services/review.service';
 import { UserService } from './services/user.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SellerService } from './services/seller.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,8 @@ import { CommonModule } from '@angular/common';
     FooterComponent,
     FormsModule,
     CommonModule,
-    AdminPageComponent
+    AdminPageComponent,
+    SellerPageComponent
   ],
   providers: [
     CustomerService,
@@ -32,6 +34,7 @@ import { CommonModule } from '@angular/common';
     WishListService,
     ReviewService,
     UserService,
+    SellerService,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

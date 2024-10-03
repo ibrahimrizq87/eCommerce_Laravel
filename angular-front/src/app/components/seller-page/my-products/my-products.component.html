@@ -1,4 +1,7 @@
-<div class="container-fluid shadow-lg">
+<div class="container-fluid shadow-lg mt-5">
+  <div class="container ">
+<button (click)="addProduct()" class="btn btn-info mt-5">add new product</button>
+  </div>
   <h6 class="p-4" style="color: #b83807;">My Products</h6>
   <div class="container ">
     <table class="table text-center">
@@ -14,18 +17,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr *ngFor="let product of products">
             <td scope="col">
-                <img src="images/bouquet.jpg" style="height:75px;width:75px;" alt="">
+                <img [src]="product.cover_image" style="height:75px;width:75px;" alt="">
             </td>
-            <td style="font-size: 16px;"><a routerLink="/product/view">Product Name</a></td>
-            <td style="font-size: 14px; width:30%">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam veniam perferendis, hic, aperiam velit exercitationem eaque voluptatibus rerum consequatur possimus at ad nobis laborum deleniti quis inventore, deserunt sit! Quia!</td>
-            <td>$100</td>
-            <td>$100</td>
+            <td style="font-size: 16px;"><p>{{product.product_name}}</p></td>
+            <td style="font-size: 14px; width:30%">{{product.description}}</td>
+            <td>${{product.price}}</td>
+            <td>{{product.stock}}</td>
             <td>
-              <a routerLink="/product/view"><i class="fa-solid fa-eye px-2 fs-5" style="cursor: pointer; color:black"></i></a>
-              <a routerLink="/update-product"><i class="fa-solid fa-pen-to-square px-2 fs-5" style="color:#b86507"></i></a>
-              <i class="fa-solid fa-trash px-2 fs-5" style="color:rgb(173, 4, 4);cursor: pointer;"></i>
+              <a (click)="showProduct(product)"><i class="fa-solid fa-eye px-2 fs-5" style="cursor: pointer; color:black"></i></a>
+              <a (click)="updateProduct(product)"><i class="fa-solid fa-pen-to-square px-2 fs-5" style="color:#b86507"></i></a>
+              <i (click)="deleteProduct(product)" class="fa-solid fa-trash px-2 fs-5" style="color:rgb(173, 4, 4);cursor: pointer;"></i>
             </td>
           </tr>
         </tbody>

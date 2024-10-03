@@ -3,24 +3,24 @@
 
         <h6 class="mb-2 p-4" style="color: #b83807;">Add a New Category</h6>
 
-        <!-- <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert alert-danger">
+        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert text-danger">
             <ul>
                 <li *ngFor="let error of getErrorMessages()">{{ error }}</li>
             </ul>
-        </div> -->
+        </div>
 
-        <form class="cat-form ">
+        <form (ngSubmit)="onSubmit(categoryForm)" #categoryForm="ngForm" enctype="multipart/form-data">
 
-            <div class="row">
+            <div class="row p-5">
 
                 <div class="mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="cTitle" placeholder="Your Category Title"
-                            name="title" ngModel required>
-                        <label for="ptitle">Category Title</label>
-                        <!-- <div *ngIf="submitted && productForm.controls['title']?.invalid" class="text-danger">
+                            name="category_name" ngModel required>
+                        <label for="category_name">Category Title</label>
+                        <div *ngIf="submitted && categoryForm.controls['category_name']?.invalid" class="text-danger">
                                 Category title is required.
-                            </div> -->
+                            </div>
                     </div>
                 </div>
 
@@ -29,22 +29,19 @@
                         <textarea class="form-control" id="cDescription" placeholder="Category Description"
                             style="height: 50px;" name="description" ngModel required></textarea>
                         <label for="cDescription">Category Description</label>
-                        <!-- <div *ngIf="submitted && productForm.controls['description']?.invalid" class="text-danger">
+                        <div *ngIf="submitted && categoryForm.controls['description']?.invalid" class="text-danger">
                                 Category description is required.
-                            </div> -->
+                            </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="form-floating">
-                        <input type="file" class="form-control" id="cover_image" accept="image" multiple required>
-                        <label for="cover_image">Cover image </label>
-                        <!-- <input type="file" class="form-control" id="cover_image" accept="image" multiple
-                                (change)="onCoverImageSelect($event)" required>
-                            <label for="cover_image">Cover image </label>
-                            <div *ngIf="submitted && !imageUploaded" class="text-danger">
-                                cover image is required.
-                            </div> -->
+                        <input type="file" class="form-control" id="image" accept="image" multiple required (change)="onFileChange($event)">
+                        <label for="image">category image </label>
+                                <div *ngIf="submitted && !imageUploaded" class="text-danger">
+                                 image is required.
+                            </div> 
                     </div>
                 </div>
 

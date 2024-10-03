@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UpdateProductComponent } from '../../update-product/update-product.component';
+import { UpdateProductComponent } from '../../seller-page/update-product/update-product.component';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -13,6 +13,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
   styleUrl: './all-products.component.css'
 })
 export class AllProductsComponent {
+  @Output() linkClicked = new EventEmitter<string>();
+
   products: Product[] = []; 
   page: number = 1;              
   itemsPerPage: number = 10;     
@@ -38,6 +40,10 @@ export class AllProductsComponent {
     )
   }
   viewProduct(product:any){
+    this.productService.setProduct(product);
+    this.linkClicked.emit('view-product');
+
+  
 
   }
   ngOnInit(): void {

@@ -10,6 +10,11 @@ import { AllSellersComponent } from './all-sellers/all-sellers.component';
 import { BannedCustomersComponent } from './banned-customers/banned-customers.component';
 import { OfferedProductsComponent } from './offered-products/offered-products.component';
 import { RejectedProductsComponent } from './rejected-products/rejected-products.component';
+import { AddCategoryComponent } from './add-category/add-category.component';
+import { UpdateCategoryComponent } from './update-category/update-category.component';
+import { AdminViewProductComponent } from './admin-view-product/admin-view-product.component';
+
+
 import { BannedSellersComponent } from './banned-sellers/banned-sellers.component';
 import { CommonModule } from '@angular/common';
 import { PendingProductsComponent } from './pending-products/pending-products.component';
@@ -32,7 +37,10 @@ import { UserService } from '../../services/user.service';
     OfferedProductsComponent,
     RejectedProductsComponent,
     PendingProductsComponent,
-    CommonModule
+    CommonModule,
+    AddCategoryComponent,
+    UpdateCategoryComponent,
+    AdminViewProductComponent
   ],
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.css']
