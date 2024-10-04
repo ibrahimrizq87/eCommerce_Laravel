@@ -39,15 +39,31 @@ export class OrderItemService {
         });
         return this.http.get(`${this.apiUrl}/my-items/${order_id}`, { headers });
     }
+    getAllMyOrderItems(): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+        return this.http.get(`${this.apiUrl}/seller-orders`, { headers });
+    }
 
-//     getMyOrders(): Observable<any> {
-//       const authToken = sessionStorage.getItem('authToken');
-//       const headers = new HttpHeaders({
-//         'Authorization': `Bearer ${authToken}`
-//       });
-//       return this.http.get(this.apiUrl+'/my-orders', { headers });
-//   }
+    
+    craftOrderItem(id:string): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+        return this.http.get(`${this.apiUrl}/craft-order/${id}`, { headers });
+    }
 
+
+    serveOrderItem(id:string): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+        return this.http.get(`${this.apiUrl}/serve-order/${id}`, { headers });
+    }
 
     deleteOrderItem(id: string): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');

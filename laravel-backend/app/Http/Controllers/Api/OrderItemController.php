@@ -38,6 +38,81 @@ class OrderItemController extends Controller
         return response()->json(['error' => $e->getMessage()], 500);
     }
     }
+
+
+
+
+
+
+
+    public function serveOrderItem($item_id)
+    { 
+     
+        try{
+            $item = OrderItem::find($item_id);
+        if(!$item){
+            return response()->json(['error' => 'order not found'], 404);
+
+            }
+            $product = $item->$product;
+            if ($product->stock >= $item->quantity){
+                return response()->json(['error' => 'there is no enough in your stock'], 403);
+            }
+            $product->stock =$product->stock - $item->quantity;
+            $product->save();
+            $item->status ='done';
+            $item->save();
+        $orderItems = OrderItem::with('product','product.addedOffers' ,'product.category'  )->where('order_id', $order_id)->get();
+
+        return OrderItemResource::collection($orderItems);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    }
+
+    public function craftOrderItem($item_id)
+    { 
+     
+        try{
+            $order = Order::find($order_id);
+        if(!$order){
+            return response()->json(['error' => 'order not found'], 404);
+
+            }
+        $orderItems = OrderItem::with('product','product.addedOffers' ,'product.category'  )->where('order_id', $order_id)->get();
+
+        return OrderItemResource::collection($orderItems);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    }
+    
+
+
+
+
+
+    public function getSellerOrdersItems()
+    { 
+
+        $id = Auth::id();
+        try{
+
+            $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
+            ->whereHas('product', function($query) use ($id) {
+                $query->where('user_id', $id);  
+            })
+            ->whereHas('order', function($query) {
+                $query->where('status', 'payed');  
+            })
+            ->get();
+
+        return OrderItemResource::collection($orderItems);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    }
+    
     
     /**
      * Store a newly created resource in storage.

@@ -16,13 +16,17 @@ import { ProductsInOfferComponent } from './products-in-offer/products-in-offer.
 import { SellerProfileComponent } from './seller-profile/seller-profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import { SellerOrdersComponent } from './seller-orders/seller-orders.component';
+import { SellersOrdersToBeDoneComponent } from './sellers-orders-to-be-done/sellers-orders-to-be-done.component';
 
 
 
 @Component({
   selector: 'app-seller-page',
   standalone: true,
-  imports: [ AddProductComponent,
+  imports: [ SellersOrdersToBeDoneComponent,
+    SellerOrdersComponent,
+    AddProductComponent,
       AdminViewProductComponent,
       UpdateProductComponent,
       CommonModule,
