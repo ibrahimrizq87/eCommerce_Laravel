@@ -1,5 +1,20 @@
-<div class="container my-3 mx-2">
-    <div class="container mt-5 ms-3" style="color:#b83807;"><h6>All Offers</h6></div>
+<div class="container py-5 mx-2">
+  <div class="d-flex justify-content-between">
+    <div class="container mb-3 ms-3" style="color:#b83807;">
+      <h6>All Offers</h6>
+    </div>
+
+    <div>
+      <div class="input-group" style="width: 300px;">
+        <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
+          id="example-search-input">
+        <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
+          <i class="fa fa-search" style="color:#FF3A20;"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
 
     <div class="container mt-2">
         <table class="table text-center">
@@ -14,7 +29,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let offer of offers">
+              <tr *ngFor="let offer of offers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
                
                 <td style="font-size: 14px;">{{offer.discount}}</td>
                 <td style="font-size: 14px;">{{offer.start_date}}</td>
@@ -39,5 +54,7 @@
           </table>
          
     </div>
-    
+    <div class="d-flex justify-content-center my-4 ">
+      <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
 </div>

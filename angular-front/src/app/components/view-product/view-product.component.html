@@ -8,12 +8,12 @@
                 </a>
                 <a *ngFor="let image of product.images" class="pt-2 sm-img item-thumb"
                     (click)="onImageClick(image.image)">
-                    <img width="70" height="70" class="rounded-2" [src]="image.image"
+                    <img width="70" height="70" class="rounded-2" [src]="image.image" style="object-fit: cover;"
                         [ngClass]="{'border border-primary': selectedImage === image.image, 'selected-image': selectedImage === image.image}" />
                 </a>
             </div>
             <div class="col-12 col-md-4">
-                <img class="big-img" [src]="coverImage" alt="">
+                <img class="big-img" [src]="coverImage" alt="" style="object-fit: cover;">
 
             </div>
         </div>
@@ -84,7 +84,7 @@
             </div>
         </div>
 
-
+        <!--offers-->
         <div class="text-center my-4">
             <div class="offers-list">
                 <h2>Offers</h2>

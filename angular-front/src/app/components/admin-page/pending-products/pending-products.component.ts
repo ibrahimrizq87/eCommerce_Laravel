@@ -2,16 +2,20 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @Component({
   selector: 'app-pending-products',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, NgxPaginationModule],
   templateUrl: './pending-products.component.html',
   styleUrl: './pending-products.component.css'
 })
 export class PendingProductsComponent {
   products: Product[] = []; 
-
+  page: number = 1;              
+  itemsPerPage: number = 10;  
+  
   constructor(private productService: ProductService) { }
 
 

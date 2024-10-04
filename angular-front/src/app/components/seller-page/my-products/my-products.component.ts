@@ -2,13 +2,16 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-my-products',
   standalone: true,
   imports: [
     RouterModule,
-    CommonModule
+    CommonModule,
+    NgxPaginationModule
   ],
   templateUrl: './my-products.component.html',
   styleUrl: './my-products.component.css'
@@ -17,6 +20,8 @@ export class MyProductsComponent {
   @Output() linkClicked = new EventEmitter<string>();
 
   products:Product[] = [];
+  page: number = 1;              
+  itemsPerPage: number = 20; 
   constructor(
     private productService: ProductService  ) {}
     ngOnInit(): void {

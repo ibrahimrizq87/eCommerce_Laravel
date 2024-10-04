@@ -15,6 +15,7 @@ import { AdminViewProductComponent } from './admin-view-product/admin-view-produ
 import { ProductsInOfferComponent } from './products-in-offer/products-in-offer.component';
 import { SellerProfileComponent } from './seller-profile/seller-profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 
 
@@ -35,7 +36,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
       AllSellerOffersComponent,
       ProductsInOfferComponent,
     SellerProfileComponent,
-    ChangePasswordComponent],
+    ChangePasswordComponent,
+    StatisticsComponent],
   templateUrl: './seller-page.component.html',
   styleUrls: ['./seller-page.component.css']  
 })

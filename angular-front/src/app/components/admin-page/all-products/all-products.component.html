@@ -1,6 +1,19 @@
 <div class="container my-3 mx-2">
   <div class="container mt-5 ms-3" style="color:#b83807;">
-    <h6>All Products</h6>
+    <div class="d-flex justify-content-between mb-5">
+      <div>
+        <h6>All Products</h6>
+      </div>
+      <div>
+        <div class="input-group" style="width: 300px;">
+          <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
+            id="example-search-input">
+          <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
+            <i class="fa fa-search" style="color:#FF3A20;"></i>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="container mt-2">
@@ -19,7 +32,7 @@
       <tbody>
         <tr *ngFor="let product of products | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
           <td scope="col">
-            <img [src]="product.cover_image" style="height:50px;width:50px;" alt="">
+            <img [src]="product.cover_image" style="height:50px; width:50px; object-fit: cover;" alt="">
           </td>
           <td style="font-size: 14px;"><a class="product">{{product.product_name}}</a></td>
           <td style="font-size: 14px;">{{product.priceAfterOffers}}</td>

@@ -1,16 +1,19 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OfferService } from '../../../services/offer.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-all-seller-offers',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './all-seller-offers.component.html',
   styleUrl: './all-seller-offers.component.css'
 })
 export class AllSellerOffersComponent {
   offers: any; 
+  page: number = 1;              
+  itemsPerPage: number = 20; 
   @Output() linkClicked = new EventEmitter<string>();
 
   constructor(private offerService: OfferService) { }
