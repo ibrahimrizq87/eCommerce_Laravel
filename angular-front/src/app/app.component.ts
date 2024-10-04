@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SellerService } from './services/seller.service';
 import { OrderService } from './services/order.service';
+import { OrderPaymentService } from './services/order-payment.service';
+import { OrderItemService } from './services/order-item.service';
 
 
 @Component({
@@ -30,6 +32,7 @@ import { OrderService } from './services/order.service';
     SellerPageComponent
   ],
   providers: [
+    OrderItemService,
     CustomerService,
     CategoryService,
     ProductService,
@@ -39,6 +42,7 @@ import { OrderService } from './services/order.service';
     SellerService,
     CartService,
     OrderService,
+    OrderPaymentService
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

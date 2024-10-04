@@ -3,28 +3,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'; 
-// import { OrderDetails } from '../order_items'; // Adjust the import path based on your structure
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
-    private apiUrl = `${environment.apiUrl}/orders`;
+export class OrderItemService {
+    private apiUrl = `${environment.apiUrl}/order-items`;
 
     constructor(private http: HttpClient) { }
-    private currentOrder: any;
+    private currentOrderItem: any;
 
-    setCurrentOrder(order: any) {
-      this.currentOrder = order;
+    setCurrentOrderItem(order: any) {
+      this.currentOrderItem = order;
 
     }
   
-    getCurrentOrder() {
-      return this.currentOrder;
+    getCurrentOrderItem() {
+      return this.currentOrderItem;
     }
 
 
-    getOrder(id: string): Observable<any> {
+    getOrderItem(id: string): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${authToken}`
@@ -32,24 +31,25 @@ export class OrderService {
         return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
     }
 
-    getAllOrders(): Observable<any> {
+    
+    getAllOrderItems(order_id:string): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${authToken}`
         });
-        return this.http.get(this.apiUrl, { headers });
+        return this.http.get(`${this.apiUrl}/my-items/${order_id}`, { headers });
     }
 
-    getMyOrders(): Observable<any> {
-      const authToken = sessionStorage.getItem('authToken');
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${authToken}`
-      });
-      return this.http.get(this.apiUrl+'/my-orders', { headers });
-  }
+//     getMyOrders(): Observable<any> {
+//       const authToken = sessionStorage.getItem('authToken');
+//       const headers = new HttpHeaders({
+//         'Authorization': `Bearer ${authToken}`
+//       });
+//       return this.http.get(this.apiUrl+'/my-orders', { headers });
+//   }
 
 
-    deleteOrder(id: string): Observable<any> {
+    deleteOrderItem(id: string): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${authToken}`
@@ -57,7 +57,7 @@ export class OrderService {
         return this.http.delete(`${this.apiUrl}/${id}`, { headers });
     }
 
-    addOrder(orderData: any): Observable<any> {
+    addOrderItem(orderData: any): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${authToken}`
@@ -65,7 +65,7 @@ export class OrderService {
         return this.http.post(this.apiUrl, orderData, { headers });     
     }
 
-    updateOrder(orderData: any, id: string): Observable<any> {
+    updateOrderItem(orderData: any, id: string): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
         const headers = new HttpHeaders({
           'Authorization': `Bearer ${authToken}`
@@ -73,11 +73,5 @@ export class OrderService {
         return this.http.patch(`${this.apiUrl}/${id}`, orderData, { headers });
     }
 
-    cancelOrder(id: string): Observable<any> {
-      const authToken = sessionStorage.getItem('authToken');
-      const headers = new HttpHeaders({
-          'Authorization': `Bearer ${authToken}`
-      });
-      return this.http.patch(`${this.apiUrl}/${id}`, { payment_status: 'canceled' }, { headers });
-  }
+
 }

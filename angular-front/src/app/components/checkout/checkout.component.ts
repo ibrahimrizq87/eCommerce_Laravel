@@ -55,6 +55,12 @@ export class CheckoutComponent {
 
   onSubmit(form:any){
     this.submitted = true;
+    if (this.totalPrice<=0){
+      alert('nothing to buy add products to your cart first');
+      this.router.navigate(['/products']);
+
+      return;
+    }
     if(form.valid){
       const formData = new FormData();
 
@@ -76,6 +82,9 @@ export class CheckoutComponent {
         }
       ).subscribe(
         response=>{
+          alert("order added successfully");
+          this.router.navigate(['/order']);
+
           console.log('order added::',response);
         },error=>{
           console.log('error happend',error);
@@ -135,7 +144,7 @@ export class CheckoutComponent {
 
             if (endDate.getTime() >= today.getTime()) {
               item.product.totalOffers += offerAdded.offer.discount;
-              item.product.priceAfterOffers -= (offerAdded.offer.discount / 100) * item.product.price;
+              item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
             }
 
           });

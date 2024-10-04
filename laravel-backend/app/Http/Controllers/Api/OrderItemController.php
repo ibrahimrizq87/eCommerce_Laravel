@@ -4,29 +4,41 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
+use App\Models\Order;
 
+use App\Http\Resources\OrderItemResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class OrderItemController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    { 
-        // Check if user is admin and return all orders 
-        // if ($request->user()->isAdmin()) {
-        //     $orderItems = OrderItem::all();
-        //     return response()->json($orderItems);
-        // }
+    
 
-        // get only the user's order items
-        $orderItems = OrderItem::where('order_id', Auth::id())->get();
+    public function index()
+    { 
+        
+        $orderItems = OrderItem::all();
         return response()->json($orderItems);
     }
 
+    public function getMyOrderItems($order_id)
+    { 
+     
+        try{
+            $order = Order::find($order_id);
+        if(!$order){
+            return response()->json(['error' => 'order not found'], 404);
+
+            }
+        $orderItems = OrderItem::with('product','product.addedOffers' ,'product.category'  )->where('order_id', $order_id)->get();
+
+        return OrderItemResource::collection($orderItems);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    }
+    
     /**
      * Store a newly created resource in storage.
      */
@@ -91,22 +103,25 @@ class OrderItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(OrderItem $orderItem)
     {
-        $orderItem = OrderItem::find($id);
+        try{
+        if ($orderItem->order->payment_status == 'payed') {
+            return response()->json(['message' => 'can not delete a payed order item'], 403);
+        }
+        $order_id = $orderItem->order_id;
+        $orderItem->delete();
+        $order = Order::find($order_id);
 
-        if (!$orderItem) {
-            return response()->json(['message' => 'OrderItem not found'], Response::HTTP_NOT_FOUND);
+        if ($order->orderItems()->count() == 0) {
+            $order->delete();
+            return response()->json(['message' => 'Order and OrderItem deleted successfully'], 200);
         }
 
-        //the order belongs to the user
-        // if (!Auth::user()->isAdmin() && $orderItem->order_id !== Auth::id()) {
-        //     return response()->json(['message' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
-        // }
-
-        $orderItem->delete();
-
-        return response()->json(['message' => 'OrderItem deleted successfully'], Response::HTTP_NO_CONTENT);
+        return response()->json(['message' => 'OrderItem deleted successfully'], 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
     }
 }
 

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../services/order.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { OrderPaymentService } from '../../services/order-payment.service';
+
 @Component({
     selector: 'app-order',
     standalone: true,
@@ -13,7 +15,7 @@ import { CommonModule } from '@angular/common';
 export class OrderComponent implements OnInit {
     orders: any[] = [];
 
-    constructor(private orderService: OrderService, private router: Router) { }
+    constructor(private OrderPaymentService: OrderPaymentService ,private orderService: OrderService, private router: Router) { }
 
     ngOnInit(): void {
         this.fetchOrders();
@@ -26,36 +28,70 @@ export class OrderComponent implements OnInit {
             },
             (error) => {
                 console.error('Error fetching orders:', error);
+                if (error.status === 401) {
+                    sessionStorage.removeItem('authToken');
+                    sessionStorage.setItem('loginSession', 'true');
+                    this.router.navigate(['/login']);
+                    
+                  } 
             }
         );
     }
-
-    viewOrder(orderId: string): void {
-        this.router.navigate(['/order-details', orderId]);
-    }
-
-    editOrder(orderId: string): void {
-        this.router.navigate(['/edit-order', orderId]);
-    }
-    cancelOrder(orderId: string): void {
-       
-        const order = this.orders.find(order => order.id === orderId);
-        if (order.payment_status === 'canceled' || order.payment_status === 'delivered') {
-            alert('Cannot cancel this order as it is already canceled or delivered.');
-            return;
-        }
-    
-        this.orderService.cancelOrder(orderId).subscribe(
-            () => {
-                alert('Order canceled successfully!');
-                this.fetchOrders(); 
+    deleteOrder(order:any){
+        this.orderService.deleteOrder(order.id).subscribe(
+            (response) => {
+                this.fetchOrders();
+                alert('deleted successfully');
             },
             (error) => {
-                console.error('Error canceling order:', error);
-                alert('Failed to cancel order: ' + (error.error.message || error.message));
-            }
+                alert('an error happened try again later');
+                if (error.status === 401) {
+                    sessionStorage.removeItem('authToken');
+                    sessionStorage.setItem('loginSession', 'true');
+                    this.router.navigate(['/login']);
+                    
+                  }else if(error.status === 403){
+                      alert('can not delete a payed order');
+          
+                  }else{
+          
+                      alert('an erro happend try again later');
+                  }            }
         );
     }
+
+    payForOrder(order:any){
+
+    const requestData = { 'id': order.id };
+    this.OrderPaymentService.requestPayment(requestData).subscribe(
+      response => {
+        console.log(response);
+        const url = response.url;
+        window.open(url, '_blank');
+      }
+      , error => {
+        if (error.status === 401) {
+          sessionStorage.removeItem('authToken');
+          sessionStorage.setItem('loginSession', 'true');
+          this.router.navigate(['/login']);
+        }else if(error.status === 403){
+            alert('this order is already payed can not pay again');
+
+        }else{
+
+            alert('an erro happend try again later');
+        }
+      }
+    )
+  
+    }
+
+    viewOrder(order: any): void {
+        this.orderService.setCurrentOrder(order);
+        this.router.navigate(['/order/view']);
+    }
+
+    
     
     
 }

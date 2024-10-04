@@ -21,6 +21,10 @@ use App\Http\Controllers\Api\VerificationController;
 
 use App\Http\Controllers\Api\PaymentController;
 
+Route::get('order-items/my-items/{order_id}', [OrderItemController::class , 'getMyOrderItems'])->middleware('auth:sanctum');
+
+
+Route::get('orders/my-orders', [OrderController::class , 'getMyOrder'])->middleware('auth:sanctum');
 
 Route::get('customers/me', [CustomerController::class , 'getMyCustomer'])->middleware('auth:sanctum');
 

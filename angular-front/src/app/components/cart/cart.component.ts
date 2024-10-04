@@ -129,7 +129,7 @@ export class CartComponent {
 
             if (endDate.getTime() >= today.getTime()) {
               item.product.totalOffers += offerAdded.offer.discount;
-              item.product.priceAfterOffers -= (offerAdded.offer.discount / 100) * item.product.price;
+              item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
             }
 
           });

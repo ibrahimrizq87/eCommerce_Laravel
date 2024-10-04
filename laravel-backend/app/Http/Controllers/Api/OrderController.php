@@ -24,6 +24,17 @@ class OrderController extends Controller
 
     }
 
+    public function getMyOrder()
+    {
+
+        $orders = Order::where('user_id', Auth::id())->with('orderItems')->get();
+        return response()->json($orders);
+
+    }
+
+
+    
+
     public function store(Request $request)
     {
 try{
@@ -54,13 +65,12 @@ try{
             $orderItem->quantity = $cartItem->quantity;
             $orderItem->product_id = $cartItem->product_id;
             $orderItem->order_id = $order->id;
+            $orderItem->save();
 
 
 
         }
         CartItem::where('user_id', Auth::id())->delete();
-
-        // return response()->json($order, 201);
         return response()->json(['message' => 'ordr added successfuly'], 201);
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
@@ -109,9 +119,13 @@ public function update(Request $request, Order $order)
 public function destroy(Order $order)
 {
     if ($order->user_id !== Auth::id()) {
-        return response()->json(['error' => 'Unauthorized'], 403);
+        return response()->json(['error' => 'Unauthorized'], 40);
     }
-
+ 
+    if ($order->payment_status == 'payed') {
+        return response()->json([ 'error' => 'can not delete a payed order'], 403);
+    }
+    
     $order->delete();
 
     return response()->json(null, 204);

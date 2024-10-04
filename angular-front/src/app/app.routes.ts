@@ -22,14 +22,14 @@ import { NeedVarificationComponent } from './components/need-varification/need-v
 
 import { CustomerMAccountComponent } from './components/customer-m-account/customer-m-account.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
-import { Cart1Component } from './components/cart1/cart1.component';
+// import { Cart1Component } from './components/cart1/cart1.component';
 import { ViewProductComponent } from './components/view-product/view-product.component';
 import { SellerPageComponent } from './components/seller-page/seller-page.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { AdminPageComponent } from './components/admin-page/admin-page.component';
 import { Component } from '@angular/core';
-import { ViewOrderComponent } from './components/cutomer-profile/view-order/view-order.component';
+import { ViewOrderComponent } from './components/view-order/view-order.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { AdminViewProductComponent } from './components/admin-page/admin-view-product/admin-view-product.component';
 import { AddCategoryComponent } from './components/admin-page/add-category/add-category.component';
@@ -62,7 +62,7 @@ export const routes: Routes = [
     {path:"wishlist", component:WishlistComponent},
     {path:"manage/account", component:CustomerMAccountComponent},
     {path:"checkout", component:CheckoutComponent},
-    {path:"cart/new",component:Cart1Component},
+    // {path:"cart/new",component:Cart1Component},
     {path:"product/view", component:ViewProductComponent},
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},

@@ -8,7 +8,7 @@ import { CustomerHeaderComponent } from "../customer-header/customer-header.comp
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { WishlistComponent } from "../wishlist/wishlist.component";
 import { MyCancellationsComponent } from '../cutomer-profile/my-cancellations/my-cancellations.component';
-import { ViewOrderComponent } from '../cutomer-profile/view-order/view-order.component';
+import { ViewOrderComponent } from '../view-order/view-order.component';
 import { ChangePasswordComponent } from '../seller-page/change-password/change-password.component';
 import { CustomerService } from '../../services/customer.service';
 

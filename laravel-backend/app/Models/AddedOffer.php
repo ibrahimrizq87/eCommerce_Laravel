@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class AddedOffer extends Model
 {
@@ -22,10 +23,21 @@ class AddedOffer extends Model
         return $this->belongsTo(Product::class);
     }
     
+    // public function getDiscountAmount()
+    // {
+    //     $offer = $this->offer; 
+    //     return $offer ? $offer->discount : 0; 
+    // }
+
     public function getDiscountAmount()
-    {
-        $offer = $this->offer; 
-        return $offer ? $offer->discount : 0; 
+{
+    $offer = $this->offer;
+
+    if ($offer && Carbon::parse($offer->end_date)->isFuture()) {
+        return $offer->discount;
     }
+
+    return 0; 
+}
 
 }
