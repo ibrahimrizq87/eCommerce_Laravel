@@ -71,6 +71,7 @@ export const routes: Routes = [
     // {path:"admin/category/update", component:UpdateCategoryComponent},
     // {path:"admin/product/view", component:AdminViewProductComponent},
     // {path:"admin/order/view", component:AdminViewOrderComponent},
+    
     {path:"loading", component:LoadingComponent},
     {path:"**",component:ErrorComponent}
 ];
