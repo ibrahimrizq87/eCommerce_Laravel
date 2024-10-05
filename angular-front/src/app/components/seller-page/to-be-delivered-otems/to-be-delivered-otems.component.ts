@@ -2,11 +2,13 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../../services/order-item.service';
 import { CustomerService } from '../../../services/customer.service';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-to-be-delivered-otems',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './to-be-delivered-otems.component.html',
   styleUrl: './to-be-delivered-otems.component.css'
 })
@@ -14,6 +16,8 @@ export class ToBeDeliveredOtemsComponent {
   @Output() linkClicked = new EventEmitter<string>();
 
   orderItems:OrderItem [] = [];
+  page: number = 1;              
+  itemsPerPage: number = 20; 
 //   customer: Customer = {
 //     id: 0,
 //     phone: "",

@@ -3,16 +3,20 @@ import { OrderService } from '../../../services/order.service';
 import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../../services/order-item.service';
 import { ProductService } from '../../../services/product.service';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-seller-orders',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './seller-orders.component.html',
   styleUrl: './seller-orders.component.css'
 })
 export class SellerOrdersComponent {
   orderItems:OrderItem [] = [];
+  page: number = 1;              
+  itemsPerPage: number = 20; 
   constructor(private orderService:OrderService,
     private orderItemService:OrderItemService,
     private productService:ProductService
