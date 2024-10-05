@@ -6,6 +6,7 @@ import { OrderService } from '../../services/order.service';
 import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../services/order-item.service';
 import { ProductService } from '../../services/product.service';
+import { SellerService } from '../../services/seller.service';
 
 @Component({
   selector: 'app-view-order',
@@ -27,7 +28,8 @@ orderItems:OrderItem [] = [];
   constructor(private orderService:OrderService,
     private router:Router,
     private orderItemService:OrderItemService,
-    private productService:ProductService
+    private productService:ProductService,
+    private sellerService:SellerService
   ){}
 
 
@@ -54,16 +56,35 @@ delivered(item:any){
   this.orderItemService.deliverOrder(item.id).subscribe(
     response=>{
     alert('marked as recived successfully and money transferd to seller');
+    this.updateOrderItems();
     },error=>{
       alert('an error happend');
       console.log('error happend',error);
     }
   );
 }
+
+viewSeller(item:any){
+this.sellerService.getSellerById(item.id).subscribe(
+  response=>{
+this.sellerService.setCurrentSeller(response.data);
+this.router.navigate(['/seller/contact']);
+
+  },error=>{
+console.log('error happend::',error)
+  }
+);
+}
+
 updateOrderItems(){
   this.orderItemService.getAllOrderItems(this.order.id).subscribe(
     response=>{
       this.orderItems = response.data;
+      if(this.orderItems.length<1){
+        alert('no order items in this order');
+        this.router.navigate(['/order']);
+
+      }
       console.log(this.orderItems);
 
       this.orderItems.forEach(item => {

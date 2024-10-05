@@ -22,7 +22,7 @@ import { NeedVarificationComponent } from './components/need-varification/need-v
 
 import { CustomerMAccountComponent } from './components/customer-m-account/customer-m-account.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
-// import { Cart1Component } from './components/cart1/cart1.component';
+
 import { ViewProductComponent } from './components/view-product/view-product.component';
 import { SellerPageComponent } from './components/seller-page/seller-page.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
@@ -35,6 +35,7 @@ import { AdminViewProductComponent } from './components/admin-page/admin-view-pr
 import { AddCategoryComponent } from './components/admin-page/add-category/add-category.component';
 import { UpdateCategoryComponent } from './components/admin-page/update-category/update-category.component';
 import { AdminViewOrderComponent } from './components/admin-page/admin-view-order/admin-view-order.component';
+import { ShowSellerContactComponent } from './components/show-seller-contact/show-seller-contact.component';
 
 
 export const routes: Routes = [
@@ -54,6 +55,9 @@ export const routes: Routes = [
     {path:"update-product",component:UpdateProductComponent},
     {path:"category/items", component:CategoryDetailsComponent},
     {path:"customer/profile", component:CustomerProfileComponent},
+    {path:"seller/contact", component:ShowSellerContactComponent},
+
+    
     // {path:"edit-profile", component:EditProfileComponent},
     // {path:"guest-header", component:GuestHeaderComponent},
     // {path:"guest/page", component: GuestPageComponent},

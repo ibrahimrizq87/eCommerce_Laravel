@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 import { WishListService } from '../../services/wishlist.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { CartService } from '../../services/cart.service';
 
 
 // import { Product } from "../../models/product.model";
@@ -35,8 +36,41 @@ export class ProductListComponent {
   itemsPerPage: number = 20; 
   category :any;
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
-  constructor(private productService: ProductService ,private categoryService: CategoryService,private router: Router,private wishListService: WishListService) { }
+  constructor(
+    private productService: ProductService ,
+    private categoryService: CategoryService,
+    private router: Router,
+    private wishListService: WishListService,
+    private cartService:CartService
+  ) { }
   
+
+
+  addToCart(product:any) {
+    this.cartService.addItem({'product_id':product.id , 'quantity' : 1 }).subscribe(
+      response=>{
+        alert('added successfully to your cart');
+        this.router.navigate(['/cart']);
+    
+    console.log(response);
+      },error=>{
+    
+    console.log('error Happend::',error);
+    if(error.status === 401){
+    
+      sessionStorage.removeItem('authToken');
+      sessionStorage.setItem('loginSession', 'true');
+    
+      this.router.navigate(['/login']);
+    }else if(error.status === 403){
+      alert("this product is already in your cart\n check your cart");
+    }else{
+      alert('some error happend');
+    }
+      }
+      
+    );
+       }
 
   moveToCategory(){
     this.router.navigate(['/category']);

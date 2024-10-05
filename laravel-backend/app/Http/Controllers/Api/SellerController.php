@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Seller;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,13 +16,40 @@ use Illuminate\Support\Facades\Auth;
 
 class SellerController extends Controller
 {
-    /**
-     * Display a listing of the sellers.
-     */
+    
+
+
+
+
+    public function getSellerById($order_id)
+    {
+
+
+        $orderItem = OrderItem::find($order_id);
+    
+        if (!$orderItem) {
+            return response()->json(['error' => 'Order item not found'], 404);
+        }
+    
+        $product = Product::find($orderItem->product_id);
+        
+        if (!$product) {
+            return response()->json(['error' => 'product not found'], 404);
+        }
+    
+        $seller = Seller::with('user')->where('user_id', $product->user_id)->first();
+        
+        if (!$seller) {
+            return response()->json(['error' => 'seller not found'], 404);
+        }
+    
+        return new SellerResource($seller);
+    }
+
+
     public function index()
     {
         try {
-            // $sellers = Seller::with(relations: 'user')->get();
             $sellers = Seller::with(relations: 'user')->where('status','active')->get();  
             return SellerResource::collection($sellers);
         } catch (\Exception $e) {

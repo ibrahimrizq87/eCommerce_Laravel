@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use App\Models\Order;
 use App\Models\Product;
-
+use App\Models\Seller;
 use App\Http\Resources\OrderItemResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,6 +22,33 @@ class OrderItemController extends Controller
         $orderItems = OrderItem::all();
         return response()->json($orderItems);
     }
+
+
+    
+
+    public function getMyOldOrderItems()
+    { 
+     
+        try{
+            $orders = Order::where('user_id', Auth::id())->get();
+
+            if ($orders->isEmpty()) {
+                return response()->json(['error' => 'No orders found'], 404);
+            }
+    
+            $orderIds = $orders->pluck('id');
+    
+            $orderItems = OrderItem::with('product', 'product.addedOffers', 'product.category')
+                ->whereIn('order_id', $orderIds)
+                ->where('status', 'delivered')
+                ->get();
+            
+        return OrderItemResource::collection($orderItems);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    }
+
 
     public function getMyOrderItems($order_id)
     { 
@@ -151,8 +178,58 @@ class OrderItemController extends Controller
 
 
 
-
+    protected function calculateTotalOffers(Product $product)
+    {
+        return $product->addedOffers->sum(function ($offer) {
+            return $offer->getDiscountAmount();
+        });
+    }
     
+public function payForOrderItem($item_id)
+{ 
+
+    try{
+
+        $order_item = OrderItem::find($item_id);
+        if(!$order_item){
+        return response()->json([ 'error' => 'ordr Item not found'], 404);
+}
+
+        $product = Product::find($order_item->product_id);
+        if(!$product){
+            return response()->json([ 'error' => 'product not found'], 404);
+        }
+        $seller= Seller::where('user_id',$product->user->id)->first();
+
+   if (!$seller) {
+        return response()->json([ 'error' => 'seller not found'], 404);
+    }
+
+        $totalOffers = $this->calculateTotalOffers($product); 
+        $offersPrecintage = ($totalOffers /100);
+        $priceAfterOffers = $product->price - ($product->price *  $offersPrecintage); 
+        $productTotal = $priceAfterOffers * $order_item->quantity;  
+        $seller->increment('total_sales', $productTotal );
+        
+        $order_id = $order_item->order_id;
+        $order = Order::find($order_id);
+        $order_item->status = 'delivered';
+        $order_item->save();
+        
+        $allItemsDelivered = $order->orderItems()->where('status', '!=', 'delivered')->count() == 0;
+        if ($allItemsDelivered) {
+            $order->status = 'delivered';
+            $order->save();
+        }
+        
+ 
+        return response()->json([ 'message' => 'payment Done'], 200);
+
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
+
 
 public function getDoneOrders()
 { 
@@ -287,7 +364,7 @@ public function getDoingOrders()
     public function destroy(OrderItem $orderItem)
     {
         try{
-        if ($orderItem->order->payment_status == 'payed') {
+        if ($orderItem->order->payment_status == 'payed' && $orderItem->status != 'delivered') {
             return response()->json(['message' => 'can not delete a payed order item'], 403);
         }
         $order_id = $orderItem->order_id;
@@ -306,9 +383,3 @@ public function getDoingOrders()
     }
 }
 
-// GET|HEAD          api/order-items .................... order-items.index › Api\OrderItemController@index  
-//   POST            api/order-items .................... order-items.store › Api\OrderItemController@store  
-//   GET|HEAD        api/order-items/{order_item} ......... order-items.show › Api\OrderItemController@show
-//   PUT|PATCH       api/order-items/{order_item} ..... order-items.update › Api\OrderItemController@update
-//   DELETE          api/order-items/{order_item} ... order-items.destroy › Api\OrderItemController@destroy
-//   GET|HEAD        api/orders .................................. orders.index › Api\OrderController@index  

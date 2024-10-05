@@ -78,7 +78,7 @@ p {
             <h1>Payment Successful!</h1>
             <p>Thank you for your purchase. Your payment has been processed successfully.</p>
             <p>We hope you enjoy your experience with Craftopia!</p>
-            <a href="{{ env('FRONT_DOMAIN_URL')}}" class="back-button">Go back to Craftopia Website</a>
+            <a href="{{ env('FRONT_DOMAIN_URL').'order'}}" class="back-button">Go back to Craftopia Website</a>
         </div>
     </div>
 </body>

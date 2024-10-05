@@ -50,6 +50,19 @@ export class SellerService {
       });
       return this.http.get(this.apiUrl, { headers });
     }
+
+    
+
+
+    getSellerById(id:string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(this.apiUrl+'/seller/'+id, { headers });
+    }
+    
     getAllBannedSellers(): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');
 

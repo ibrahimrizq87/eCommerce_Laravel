@@ -18,6 +18,7 @@ import { CommonModule, NgIfContext } from '@angular/common';
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
+  empty:boolean=true;
   totalPrice: number = 0;
   totalPriceAfterOffers: number = 0;
   totalOffers: number = 0;
@@ -117,7 +118,12 @@ export class CartComponent {
     this.cartService.getAllItems().subscribe(
       response => {
         this.cartItems = response.data;
+if(this.cartItems.length>0){
+  this.empty = false;
+}else{
+  this.empty = true;
 
+}
         this.cartItems.forEach(item => {
           if(item.product.stock < item.quantity){
             item.quantity = item.product.stock +1;

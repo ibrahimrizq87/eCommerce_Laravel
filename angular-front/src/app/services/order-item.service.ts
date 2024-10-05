@@ -81,6 +81,14 @@ export class OrderItemService {
 } 
 
 
+
+getOlddOrderItems(): Observable<any> {
+  const authToken = sessionStorage.getItem('authToken');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${authToken}`
+  });
+  return this.http.get(`${this.apiUrl}/old-order-items`, { headers });
+} 
 getAllMyDoneOrderItems(): Observable<any> {
   const authToken = sessionStorage.getItem('authToken');
   const headers = new HttpHeaders({

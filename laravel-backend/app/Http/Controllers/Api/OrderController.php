@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function index()
     {
 
-        $orders = Order::where('user_id', Auth::id())->with('orderItems')->get();
+        $orders = Order::where('status','!=','delivered')->where('user_id', Auth::id())->with('orderItems')->get();
         return response()->json($orders);
 
     }
