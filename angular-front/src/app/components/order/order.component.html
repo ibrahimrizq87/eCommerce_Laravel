@@ -25,11 +25,9 @@
                     <td>{{ order.status }}</td>
 
                     <td>
-                        <button type="button" class="btn me-1" style="background-color: #b83807; color:white" (click)="viewOrder(order)">View</button>
-                       
-                     <button type="button" class="btn me-1" style="background-color: #e9760b;" (click)="deleteOrder(order)"[disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'">Delete</button>
-
-                        <button type="button" class="btn me-1" style="background-color: #e6b260;" (click)="payForOrder(order)" [disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'" >Pay</button>
+                        <button type="button" class="btn me-1" style="color:#000" (click)="viewOrder(order)"><i class="fa-solid fa-eye fs-4"></i></button>
+                        <button type="button" class="btn me-1" style="color: #007c00" (click)="payForOrder(order)" [disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'" ><img src="images/payment.png" alt="" style="width:30px; height:30px;"></button>
+                        <button type="button" class="btn me-1" style="color: #991f00 ;"  (click)="deleteOrder(order)"[disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'"><i class="fa-solid fa-trash-can fs-4"></i></button>
 
                     </td>
                 </tr>

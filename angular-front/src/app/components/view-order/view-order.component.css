@@ -9,3 +9,7 @@
 .waiting {
     color: red;
 }
+
+td {
+    vertical-align: middle;
+}

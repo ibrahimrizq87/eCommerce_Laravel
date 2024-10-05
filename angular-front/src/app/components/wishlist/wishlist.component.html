@@ -18,10 +18,10 @@
                             alt="product">
                         <div style="position: absolute; top: 10px; left: 10px; color: white; font-size: 14px;">
                             <strong
-                                style="background-color: #d35e30;color:#000000; padding:5px 10px; border-radius: 5px;">{{product.totalOffers}}%</strong>
+                                style="background-color: #d38730;color:#000000; padding:5px 10px; border-radius: 5px;">{{product.totalOffers}}%</strong>
                         </div>
-                        <div style="position: absolute; top: 10px; right: 10px; color: #d35e30 ; font-size: 18px;">
-                            <strong><i (click)="delete(product)" class="fa-solid fa-trash-can fs-4"></i></strong>
+                        <div style="position: absolute; top: 10px; right: 10px; color: #991f00 ;">
+                            <strong><i (click)="delete(product)" class="fa-solid fa-trash-can fs-5" style="background-color: #fff; border-radius: 50%; padding:5px; cursor: pointer;"></i></strong>
                         </div>
                         <div class="card-footer w-100"
                             style="background-color: #000000; color:#ffffff; position: absolute; bottom: 0; height: 35px;">
@@ -32,8 +32,8 @@
                         </div>
                     </div>
                 </div>
-                <span> {{product.product_name}} </span>
-                <p>${{product.priceAfterOffers}} <span class="text-decoration-line-through ps-3">${{product.price}}</span></p>
+                <span class="ps-3"> {{product.product_name}} </span>
+                <p class="ps-3">${{product.priceAfterOffers}} <span class="text-decoration-line-through ps-3">${{product.price}}</span></p>
             </div>
 
        

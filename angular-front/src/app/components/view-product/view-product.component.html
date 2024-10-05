@@ -87,7 +87,7 @@
         <!--offers-->
         <div class="text-center my-4">
             <div class="offers-list">
-                <h2>Offers</h2>
+                <h6>Offers</h6>
                 <div *ngFor="let offer of offers" class="offer-item">
                     <div class="offer-details">
                         <p><strong>Discount:</strong> {{ offer.discount }}%</p>
@@ -213,16 +213,16 @@
             <p class="px-5 pt-5" style="font-size: 18px;"> Related Items</p>
         </div>
         <div class="container mb-3">
-            <div class="row mx-5 my-2">
+            <div class="row my-2">
                 <div *ngIf="1 > products.length ">
-                    <div class="alert alert-warning text-center">
+                    <div class="alert alert-warning text-center"> 
                         No similar products added yet.
                     </div>
                 </div>
 
-                <div *ngFor="let myProduct of products">
+                <div *ngFor="let myProduct of products" class="col-12 col-md-6 col-lg-3 mb-5">
 
-                    <div *ngIf="myProduct.id != product.id" class="col-12 col-md-4 mb-5">
+                    <div *ngIf="myProduct.id != product.id" >
                         <div class="card mb-3 ms-3" style="width: 200px; height: 200px; position: relative; cursor: pointer;">
                             <div style="background-color: #ffffff;">
                                 <img (click)="onproductClick(myProduct)" [src]="myProduct.cover_image"
@@ -247,8 +247,8 @@
                             </div>
                         </div>
                         <div class="ms-2">
-                            <span class="ps-2 me-2">{{myProduct.product_name}}</span>
-                            <p class="ps-2 me-2">${{myProduct.priceAfterOffers}} 
+                            <span class="ps-4 me-2">{{myProduct.product_name}}</span>
+                            <p class="ps-4 me-2">${{myProduct.priceAfterOffers}} 
                             <span class="text-decoration-line-through ps-3">${{myProduct.price}}</span>
                             </p>
                         </div>
