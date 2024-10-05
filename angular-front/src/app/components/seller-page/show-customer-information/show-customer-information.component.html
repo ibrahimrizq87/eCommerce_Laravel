@@ -1,17 +1,17 @@
 <div class="container mt-5">
     <div class="d-flex justify-content-start mb-3">
-        <button class="btn btn-outline-secondary" (click)="goBack()">
-            <i class="bi bi-arrow-left"></i> Back
+        <button class="btn btn-outline-dark" (click)="goBack()">
+            <i class="fa-solid fa-left-long pe-2"></i> Back
         </button>
     </div>
 
     <div class="text-center mb-5">
-        <h2 class="fw-bold">Customer Details</h2>
+        <h5 class="fw-bold" style="color:#b83807;">Customer Details</h5>
     </div>
 
     <div class="row justify-content-center">
         <div class="col-md-6 text-center">
-            <img [src]="customer.user.image" alt="User Image" class="rounded-circle border border-secondary shadow-lg mb-4" width="200" height="200">
+            <img [src]="customer.user.image" alt="User Image" class="rounded-circle mb-4" style="height:200px;width:200px;object-fit: cover; border:1px solid #b83807;">
 
             <div class="user-info">
                 <p><strong>Name:</strong> {{customer.user.name}}</p>
