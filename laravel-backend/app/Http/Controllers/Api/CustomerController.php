@@ -4,6 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderItem;
+
+
+
 use Illuminate\Http\Request;
 use App\Http\Resources\CustomerResource;
 use Illuminate\Support\Facades\Auth;
@@ -100,6 +106,35 @@ public function show(Customer $customer)
         return new ProductResource($customer);
     }
 
+
+
+
+    
+
+    public function getCustomerById($order_id)
+    {
+
+
+        $orderItem = OrderItem::find($order_id);
+    
+        if (!$orderItem) {
+            return response()->json(['error' => 'Order item not found'], 404);
+        }
+    
+        $order = Order::find($orderItem->order_id);
+        
+        if (!$order) {
+            return response()->json(['error' => 'Order not found'], 404);
+        }
+    
+        $customer = Customer::where('user_id', $order->user_id)->first();
+        
+        if (!$customer) {
+            return response()->json(['error' => 'Customer not found'], 404);
+        }
+    
+        return new CustomerResource($customer);
+    }
 
     public function getMyCustomer()
     {

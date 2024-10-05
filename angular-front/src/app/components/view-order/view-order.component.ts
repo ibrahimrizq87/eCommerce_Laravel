@@ -50,6 +50,16 @@ viewProduct(product:any){
   this.router.navigate(['/product/view']);
 }
 
+delivered(item:any){
+  this.orderItemService.deliverOrder(item.id).subscribe(
+    response=>{
+    alert('marked as recived successfully and money transferd to seller');
+    },error=>{
+      alert('an error happend');
+      console.log('error happend',error);
+    }
+  );
+}
 updateOrderItems(){
   this.orderItemService.getAllOrderItems(this.order.id).subscribe(
     response=>{

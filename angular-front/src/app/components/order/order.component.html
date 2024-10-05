@@ -7,7 +7,9 @@
                     
                     <th scope="col">Amount</th>
                     <th scope="col">Order Date</th>
+                    <th scope="col">payment </th>
                     <th scope="col">Status</th>
+
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -20,6 +22,8 @@
 
 
                     <td>{{ order.payment_status }}</td>
+                    <td>{{ order.status }}</td>
+
                     <td>
                         <button type="button" class="btn me-1" style="color:#000" (click)="viewOrder(order)"><i class="fa-solid fa-eye fs-4"></i></button>
                         <button type="button" class="btn me-1" style="color: #007c00" (click)="payForOrder(order)" [disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'" ><img src="images/payment.png" alt="" style="width:30px; height:30px;"></button>

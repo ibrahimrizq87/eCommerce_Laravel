@@ -25,10 +25,14 @@ Route::get('order-items/my-items/{order_id}', [OrderItemController::class , 'get
 Route::get('order-items/seller-orders', [OrderItemController::class , 'getSellerOrdersItems'])->middleware('auth:sanctum');
 Route::get('order-items/craft-order/{item_id}', [OrderItemController::class , 'craftOrderItem'])->middleware('auth:sanctum');
 Route::get('order-items/serve-order/{item_id}', [OrderItemController::class , 'serveOrderItem'])->middleware('auth:sanctum');
+Route::get('order-items/done-order/{item_id}', [OrderItemController::class , 'doneOrderItem'])->middleware('auth:sanctum');
+
+Route::get('order-items/doing-order', [OrderItemController::class , 'getDoingOrders'])->middleware('auth:sanctum');
+Route::get('order-items/done-order-seller', [OrderItemController::class , 'getDoneOrders'])->middleware('auth:sanctum');
 
 
 
-
+Route::get('customers/customer/{order_id}', [CustomerController::class , 'getCustomerById'])->middleware('auth:sanctum');
 
 Route::get('orders/my-orders', [OrderController::class , 'getMyOrder'])->middleware('auth:sanctum');
 

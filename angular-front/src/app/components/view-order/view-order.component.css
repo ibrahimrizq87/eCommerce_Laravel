@@ -1,3 +1,15 @@
+.done {
+    color: green;
+}
+
+.undergoing {
+    color: orange;
+}
+
+.waiting {
+    color: red;
+}
+
 td {
     vertical-align: middle;
 }

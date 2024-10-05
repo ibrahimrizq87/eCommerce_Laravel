@@ -47,7 +47,7 @@ class PaymentController extends Controller
             $offersPrecintage = ($totalOffers /100);
             $priceAfterOffers = $product->price - ($product->price *  $offersPrecintage); 
             $productTotal = $priceAfterOffers * $item->quantity;     
-            $seller->increment('total_sales', $productTotal );
+            //$seller->increment('total_sales', $productTotal );
         }
         return view('payment_done');
 

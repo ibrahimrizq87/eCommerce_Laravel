@@ -18,13 +18,16 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { StatisticsComponent } from './statistics/statistics.component';
 import { SellerOrdersComponent } from './seller-orders/seller-orders.component';
 import { SellersOrdersToBeDoneComponent } from './sellers-orders-to-be-done/sellers-orders-to-be-done.component';
-
+import { ToBeDeliveredOtemsComponent } from './to-be-delivered-otems/to-be-delivered-otems.component';
+import { ShowCustomerInformationComponent } from './show-customer-information/show-customer-information.component';
 
 
 @Component({
   selector: 'app-seller-page',
   standalone: true,
-  imports: [ SellersOrdersToBeDoneComponent,
+  imports: [ 
+    ShowCustomerInformationComponent,
+    SellersOrdersToBeDoneComponent,
     SellerOrdersComponent,
     AddProductComponent,
       AdminViewProductComponent,
@@ -41,7 +44,8 @@ import { SellersOrdersToBeDoneComponent } from './sellers-orders-to-be-done/sell
       ProductsInOfferComponent,
     SellerProfileComponent,
     ChangePasswordComponent,
-    StatisticsComponent],
+    StatisticsComponent,
+    ToBeDeliveredOtemsComponent],
   templateUrl: './seller-page.component.html',
   styleUrls: ['./seller-page.component.css']  
 })
