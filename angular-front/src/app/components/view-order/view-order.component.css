@@ -1,0 +1,11 @@
+.done {
+    color: green;
+}
+
+.undergoing {
+    color: orange;
+}
+
+.waiting {
+    color: red;
+}

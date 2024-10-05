@@ -27,12 +27,19 @@ class OrderController extends Controller
     public function getMyOrder()
     {
 
-        $orders = Order::where('user_id', Auth::id())->with('orderItems')->get();
+        $orders = Order::where('user_id', Auth::id())->where('status','!=','delivered')->with('orderItems')->get();
         return response()->json($orders);
 
     }
 
 
+    public function getDelivered()
+    {
+
+        $orders = Order::where('user_id', Auth::id())->where('status','delivered')->with('orderItems')->get();
+        return response()->json($orders);
+
+    }
     
 
     public function store(Request $request)

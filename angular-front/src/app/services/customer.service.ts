@@ -42,6 +42,16 @@ export class CustomerService {
     }
 
 
+   
+    getCustomerById(id:string): Observable<any> {
+        
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+        return this.http.get(`${this.apiUrl}/customer/${id}`,{headers});
+    }
 
     getAllCustomers(): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');

@@ -23,10 +23,28 @@ export class SellerOrdersComponent {
     this.updateOrderItems();
 }
 craft(item:any){
+this.orderItemService.craftOrderItem(item.id).subscribe(
+  response=>{
+    alert('added to your accepted doing list');
+    this.updateOrderItems();
+  },error=>{
+    console.log('error happend', error)
+    alert('there is an error happend');
 
+  }
+);
 }
 serveFromStock(item:any){
+  this.orderItemService.serveOrderItem(item.id).subscribe(
+    response=>{
+      alert('added to your accepted done list');
+      this.updateOrderItems();
+    },error=>{
+      console.log('error happend', error)
+      alert('there is an error happend');
   
+    }
+  );
 }
 updateOrderItems(){
   this.orderItemService.getAllMyOrderItems().subscribe(

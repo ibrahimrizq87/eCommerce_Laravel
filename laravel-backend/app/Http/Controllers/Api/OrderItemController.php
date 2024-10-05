@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\OrderItem;
 use App\Models\Order;
+use App\Models\Product;
 
 use App\Http\Resources\OrderItemResource;
 use Illuminate\Http\Request;
@@ -31,8 +32,11 @@ class OrderItemController extends Controller
             return response()->json(['error' => 'order not found'], 404);
 
             }
-        $orderItems = OrderItem::with('product','product.addedOffers' ,'product.category'  )->where('order_id', $order_id)->get();
-
+            $orderItems = OrderItem::with('product', 'product.addedOffers', 'product.category')
+            ->where('order_id', $order_id)
+            ->where('status', '!=', 'delivered') 
+            ->get();
+            
         return OrderItemResource::collection($orderItems);
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
@@ -54,34 +58,91 @@ class OrderItemController extends Controller
             return response()->json(['error' => 'order not found'], 404);
 
             }
-            $product = $item->$product;
-            if ($product->stock >= $item->quantity){
-                return response()->json(['error' => 'there is no enough in your stock'], 403);
+            $product = Product::find($item->product_id);
+            if (!$product){
+                return response()->json(['error' => 'product not found'], 404);
             }
-            $product->stock =$product->stock - $item->quantity;
-            $product->save();
+            if ($product->stock <= $item->quantity){
+                return response()->json(['error' => 'there is no enough in your stock' ], 403);
+            }
+            $order = Order::find($item->order_id);
+
+            if (!$order){
+                return response()->json(['error' => 'order not found'], 404);
+            }
+
             $item->status ='done';
             $item->save();
-        $orderItems = OrderItem::with('product','product.addedOffers' ,'product.category'  )->where('order_id', $order_id)->get();
 
-        return OrderItemResource::collection($orderItems);
+            $allDone = $order->orderItems->every(function ($orderItem) {
+                return $orderItem->status === 'done';
+            });
+            
+            if ($allDone) {
+                $order->status = 'done';
+                $order->save();
+            }
+
+            
+            $product->stock =$product->stock - $item->quantity;
+            $product->save();
+
+            return response()->json(['message' => "added successfully"], 200);
+        } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    }
+
+    
+
+    public function doneOrderItem($item_id)
+    { 
+        try{
+            $item = OrderItem::find($item_id);
+        if(!$item){
+            return response()->json(['error' => 'order not found'], 404);
+            }
+
+
+            $order = Order::find($item->order_id);
+
+
+            if (!$order){
+                return response()->json(['error' => 'order not found'], 404);
+            }
+
+            $item->status ='done';
+            $item->save();
+
+            $allDone = $order->orderItems->every(function ($orderItem) {
+                return $orderItem->status === 'done';
+            });
+            
+            if ($allDone) {
+                $order->status = 'done';
+                $order->save(); 
+            }
+
+            return response()->json(['message' => "added successfully"], 200);
+
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
     }
 
+
     public function craftOrderItem($item_id)
     { 
-     
         try{
-            $order = Order::find($order_id);
-        if(!$order){
+            $item = OrderItem::find($item_id);
+        if(!$item){
             return response()->json(['error' => 'order not found'], 404);
-
             }
-        $orderItems = OrderItem::with('product','product.addedOffers' ,'product.category'  )->where('order_id', $order_id)->get();
 
-        return OrderItemResource::collection($orderItems);
+            $item->status ='doing';
+            $item->save();
+            return response()->json(['message' => "added successfully"], 200);
+
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
@@ -91,11 +152,56 @@ class OrderItemController extends Controller
 
 
 
+    
 
+public function getDoneOrders()
+{ 
+
+    $id = Auth::id();
+    
+    try{
+
+        $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
+        ->whereHas('product', function($query) use ($id) {
+            $query->where('user_id', $id);  
+        })
+        ->whereHas('order', function($query) {
+            $query->where('payment_status', 'payed');  
+        })->where('status','done')
+        ->get();
+
+    return OrderItemResource::collection($orderItems);
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
+
+public function getDoingOrders()
+{ 
+
+    $id = Auth::id();
+    
+    try{
+
+        $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
+        ->whereHas('product', function($query) use ($id) {
+            $query->where('user_id', $id);  
+        })
+        ->whereHas('order', function($query) {
+            $query->where('payment_status', 'payed');  
+        })->where('status','doing')
+        ->get();
+
+    return OrderItemResource::collection($orderItems);
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
     public function getSellerOrdersItems()
     { 
 
         $id = Auth::id();
+        
         try{
 
             $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
@@ -103,8 +209,8 @@ class OrderItemController extends Controller
                 $query->where('user_id', $id);  
             })
             ->whereHas('order', function($query) {
-                $query->where('status', 'payed');  
-            })
+                $query->where('payment_status', 'payed');  
+            })->where('status','waiting')
             ->get();
 
         return OrderItemResource::collection($orderItems);

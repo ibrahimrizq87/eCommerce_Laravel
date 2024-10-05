@@ -103,10 +103,17 @@ if ($exists) {
             return response()->json(['errors' => $std_validator->errors()], 400);
         }
         if($cartItem->product->stock < $request->stock){
-            return response()->json(['errors' => "no enough product availbel in stock"], 409);
+        
+            $cartItem->quantity = $cartItem->product->stock;
+            $cartItem->save();
+            
+            // return response()->json(['errors' => "no enough product availbel in stock"], 409);
+
+        }else{
+
+            $cartItem->quantity = $request->stock;
+            $cartItem->save();
         }
-        $cartItem->quantity = $request->stock;
-        $cartItem->save();
         return response()->json(['message' => 'updated successfully' , 'stock'=> $request->stock], 200);
 
 

@@ -20,7 +20,12 @@
                     </td>
                     <td>{{item.product.priceAfterOffers}}</td>
                     <td>{{item.quantity}}</td>
-                    <td>{{item.status}}</td>
+                    <td class="{{ item.status }}">
+                        {{ item.status }}
+                        <div *ngIf="item.status == 'done'">
+                            <button (click)="delivered(item)" class="btn btn-success m-2"> delivered</button>
+                        </div>
+                    </td>
                     <td>
                         <button *ngIf="order.payment_status != 'payed'" type="button" class="btn me-1" style="background-color: #b83807; color:white" (click)="delete(item)">Delete</button>
                         <button type="button" class="btn me-1" style="background-color: #7fe6ee; color:rgb(2, 0, 0)" (click)="viewProduct(item.product)">View Product</button>

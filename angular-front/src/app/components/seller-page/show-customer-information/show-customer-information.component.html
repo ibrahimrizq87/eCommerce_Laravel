@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <div class="d-flex justify-content-start mb-3">
+        <button class="btn btn-outline-secondary" (click)="goBack()">
+            <i class="bi bi-arrow-left"></i> Back
+        </button>
+    </div>
+
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Customer Details</h2>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <img [src]="customer.user.image" alt="User Image" class="rounded-circle border border-secondary shadow-lg mb-4" width="200" height="200">
+
+            <div class="user-info">
+                <p><strong>Name:</strong> {{customer.user.name}}</p>
+                <p><strong>Email:</strong> {{customer.user.email}}</p>
+                <p><strong>Phone:</strong> {{customer.phone}}</p>
+                <p><strong>Address:</strong> {{customer.address}}</p>
+            </div>
+        </div>
+    </div>
+
+
+</div>

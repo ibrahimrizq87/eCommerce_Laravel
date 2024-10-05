@@ -1,14 +1,11 @@
 <div class="container-fluid" style="height:100vh;">
     <div class="row">
       <div class="col-md-3" style="background-color:black; color:white; background-color:#231717;">
-        <!-- Pass the event from SellerHeaderComponent to showComponent -->
         <app-seller-header (linkClicked)="showComponent($event)"></app-seller-header>
       </div>
       <div class="col-12 col-md-9 container shadow-lg">
         
-        <!-- Conditionally load components based on activeComponent value -->
         <app-my-products *ngIf="activeComponent === 'my-products'" (linkClicked)="showComponent($event)"></app-my-products>
-        <!-- <app-add-product *ngIf="activeComponent === 'add-products'"></app-add-product> -->
         <app-edit-profile *ngIf="activeComponent === 'edit'" (linkClicked)="showComponent($event)"></app-edit-profile>
         <app-register *ngIf="activeComponent === 'register'"></app-register>
         <app-product-offers  *ngIf="activeComponent === 'product-offers'"  (linkClicked)="showComponent($event)"></app-product-offers>
@@ -23,6 +20,10 @@
         <app-statistics  *ngIf="activeComponent === 'statistics'"></app-statistics>
         <app-seller-orders  *ngIf="activeComponent === 'seller-orders'"></app-seller-orders>
         <app-sellers-orders-to-be-done  *ngIf="activeComponent === 'seller-orders-to-b-done'"></app-sellers-orders-to-be-done>
+
+        <app-to-be-delivered-otems  *ngIf="activeComponent === 'done-orders'" (linkClicked)="showComponent($event)"></app-to-be-delivered-otems>
+        <app-show-customer-information *ngIf="activeComponent === 'show-customer'" (linkClicked)="showComponent($event)"></app-show-customer-information>
+      
 
       </div>
     </div>

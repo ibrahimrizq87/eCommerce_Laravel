@@ -119,6 +119,13 @@ export class CartComponent {
         this.cartItems = response.data;
 
         this.cartItems.forEach(item => {
+          if(item.product.stock < item.quantity){
+            item.quantity = item.product.stock +1;
+            this.downQuantity(item);
+          }else if(item.product.stock == 0){
+            this.deleteItem(item);
+            return;
+          }
           item.product.priceAfterOffers = item.product.price;
           item.product.totalOffers = 0;
 
