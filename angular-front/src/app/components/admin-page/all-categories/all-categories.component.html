@@ -34,7 +34,7 @@
                  <img [src]="category.image" style="height:50px;width:50px;" alt="">
                 </td>
                 <td style="font-size: 14px;"><p class="product"><strong>{{category.category_name}}</strong></p></td>
-                <td>${{category.description}}</td> 
+                <td>{{category.description}}</td> 
                 <td>
                   <button (click)="updateCategory(category)" class="border-0 bg-transparent"><i class="fa-solid fa-pen-to-square fs-5"  style="cursor: pointer; color:#ce8d00"></i></button>
                  <a (click)="deleteCategory(category)" style="cursor:pointer;">
