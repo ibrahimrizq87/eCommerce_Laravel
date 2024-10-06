@@ -17,9 +17,13 @@
                                 </p>
                             </div>
                             <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 8px;">
-                                <a (click)="onProductClick(element)"><i class="fa fa-heart fs-5"
-                                    style="background-color: #fff; padding: 5px; border-radius: 50%;"></i>
-                            </a>
+                                <p style=" font-size: small;
+                                background-color: #f0f0f0; 
+                                border-radius: 8px; 
+                                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); 
+                                padding: 4px; ">
+                                    Ordered: {{ element.total_ordered }} times
+                                </p>
                             </div>
                         </div>
                         <div class="card-body d-flex flex-column justify-content-between">

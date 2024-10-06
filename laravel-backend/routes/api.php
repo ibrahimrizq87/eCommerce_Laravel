@@ -18,8 +18,12 @@ use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\SellerController;
 use App\Http\Controllers\Api\WishListController;
 use App\Http\Controllers\Api\VerificationController;
+use App\Http\Controllers\Api\ContactMessageController;
+
 
 use App\Http\Controllers\Api\PaymentController;
+
+Route::get('products/most-selled', [ProductController::class , 'getMostSelledProducts']);
 
 Route::get('order-items/my-items/{order_id}', [OrderItemController::class , 'getMyOrderItems'])->middleware('auth:sanctum');
 Route::get('order-items/seller-orders', [OrderItemController::class , 'getSellerOrdersItems'])->middleware('auth:sanctum');
@@ -91,6 +95,8 @@ Route::get('/products/restore/{product_id}',
     [ProductController::class, 'restore'])
     ->middleware('auth:sanctum');
 
+
+Route::apiResource('contact-messages', ContactMessageController::class);
 Route::apiResource('added-offers', AddedOfferController::class);
 Route::apiResource('cart-items', CartItemController::class)->middleware('auth:sanctum');
 Route::apiResource('categories', CategoryController::class);

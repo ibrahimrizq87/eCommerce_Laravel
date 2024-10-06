@@ -3,15 +3,18 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RouterModule } from '@angular/router';
+import { ProductService } from '../../services/product.service';
 
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-carousel',
   standalone: true,
+  imports: [CommonModule, CarouselModule, RouterModule],
   templateUrl: './carousel.component.html',
   styleUrls: ['./carousel.component.css'],
-  imports: [CommonModule, CarouselModule, RouterModule]
 })
 export class CarouselComponent {
+  
   customOptions: OwlOptions = {
     loop: true,          
     autoplay: true,      
@@ -31,4 +34,121 @@ export class CarouselComponent {
     dots: true      
   };
   
+
+  products: Product[] = []; 
+
+  constructor(private productService:ProductService,
+    private router:Router
+  ){}
+  ngOnInit(): void {
+    this.updateProduct();
+  }
+
+  ViewProduct(product:any){
+
+    this.productService.setProduct(product);
+    this.router.navigate(['/product/view']);
+  }
+updateProduct(){
+
+  this.productService.getLatestProducts().subscribe(
+    response => {
+      this.products = response.data; 
+      console.log('my data ata ata ata::',response);
+      this.products.forEach(product=>{
+        product.priceAfterOffers = product.price;
+        product.totalOffers=0;  
+        
+      product.addedOffers.forEach(offerAdded => {
+        const endDate = new Date(offerAdded.offer.end_date); 
+        const today = new Date(); 
+        today.setHours(0, 0, 0, 0); 
+
+if (endDate.getTime() >= today.getTime()) { 
+  product.totalOffers +=offerAdded.offer.discount;
+  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
+
 }
+
+      });
+    });
+    console.log('products after:', this.products);
+
+      
+
+      console.log('response' , response);
+      console.log(response.data.email);
+    },
+    error => {
+      if (error.status === 400 || error.status === 500) {
+        console.error('A specific error occurred:', error);
+      } else {
+        console.error('An unexpected error occurred:', error);
+      }
+    }
+  );
+  
+
+}
+}
+
+
+
+
+
+interface Offer {
+  id: number;
+  discount: number;
+  start_date: string;
+  end_date: string;
+}
+
+interface OfferItem {
+  id: number;
+  offer_id: number;
+  product_id: number;
+  created_at: string;
+  updated_at: string;
+  offer: Offer;
+}
+
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  image: string;
+  role: string;
+}
+
+interface Product {
+  id: number;
+  product_name: string;
+  description: string;
+  price: number;
+  stock: number;
+  material: string;
+  size: string;
+  image: string;
+  video: string;
+  category:Category
+  cover_image: string;
+  created_at: string;
+  updated_at: string;
+  total_ordered:string ;
+
+  deleted_at: string | null;
+  images: Array<{ id: number; url: string }>;
+  addedOffers: OfferItem[];
+  user: User;
+  totalOffers:number;
+  priceAfterOffers:number;
+}
+interface Category {
+  id: number;
+  category_name: string;
+  description: string;
+  image: string;
+  created_at: string;
+  updated_at: string;
+}
+

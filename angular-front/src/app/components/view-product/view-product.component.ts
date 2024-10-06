@@ -228,7 +228,7 @@ componentDataRefresh(){
   
   if (endDate.getTime() >= today.getTime()) { 
     product.totalOffers +=offerAdded.offer.discount;
-    product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+    product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) *product.price);
   }
   
         });

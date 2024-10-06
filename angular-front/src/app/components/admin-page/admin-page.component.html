@@ -19,6 +19,7 @@
       <app-add-category *ngIf="activeComponent === 'add-category'" (linkClicked)="showComponent($event)"></app-add-category>
       <app-update-category *ngIf="activeComponent === 'update-category'" (linkClicked)="showComponent($event)"></app-update-category>
       <app-admin-view-product *ngIf="activeComponent === 'view-product'" ></app-admin-view-product>
+      <app-list-contact-messages *ngIf="activeComponent === 'list-messages'" ></app-list-contact-messages>
 
     </div>
   </div>

@@ -28,7 +28,7 @@ class ProductResource extends JsonResource
             'material' => $this->material,
             'category' => new CategoryResource($this->whenLoaded('category')),
             'user' => new UserResource($this->whenLoaded('user')),
-
+            'total_ordered' =>$this->total_ordered,
             'deleted_at' => $this->deleted_at, 
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
             'addedOffers' => AddedOfferResource::collection($this->whenLoaded('addedOffers')),

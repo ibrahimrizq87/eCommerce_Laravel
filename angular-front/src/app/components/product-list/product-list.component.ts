@@ -100,7 +100,9 @@ if(this.category){
 
 if (endDate.getTime() >= today.getTime()) { 
   product.totalOffers +=offerAdded.offer.discount;
-  product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+  // product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) *product.price);
+
 }
 
       });
@@ -211,6 +213,8 @@ interface Product {
   images: Array<{ id: number; url: string }>;
   addedOffers: OfferItem[];
   user: User;
+  total_ordered:string ;
+
   totalOffers:number;
   priceAfterOffers:number;
 }

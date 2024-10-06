@@ -15,6 +15,7 @@ use App\Models\WishList;
 use App\Models\Category;
 
 use App\Models\ProductImage;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\ProductResource;
@@ -66,6 +67,20 @@ class ProductController extends Controller
         }
                     
 
+    
+
+//         public function getMostSelledProducts()
+// {
+//     $topProducts = Product::with(['category', 'user', 'images', 'addedOffers']) 
+//         ->join('order_items', 'products.id', '=', 'order_items.product_id')
+//         ->select('products.*', DB::raw('SUM(order_items.quantity) as total_ordered')) 
+//         ->groupBy('products.id')
+//         ->orderByDesc('total_ordered')
+//         ->limit(6)
+//         ->get();
+
+//     return ProductResource::collection($topProducts); 
+// }
     public function getProductsByCategory(Category $category)
     {
         $products = Product::where('category_id', $category->id)
@@ -74,11 +89,53 @@ class ProductController extends Controller
         return ProductResource::collection($products);
     }
     
-    public function index()
+    
+
+
+
+public function getMostSelledProducts()
+{
+    $topProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+        ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+        ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
+        ->groupBy('products.id')
+        ->orderByDesc('total_ordered')
+        ->limit(6)
+        ->get();
+
+    if ($topProducts->count() < 6) {
+        $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+            ->whereNotIn('id', $topProducts->pluck('id'))
+            ->limit(6 - $topProducts->count())
+            ->get();
+        
+        $topProducts = $topProducts->merge($additionalProducts);
+    }
+
+    return ProductResource::collection($topProducts); 
+}
+
+
+public function index()
     {
 
-        $products = Product::with(['category', 'user' , 'images' , 'addedOffers'])->get();
-        return ProductResource::collection($products);
+        // $products = Product::with(['category', 'user' , 'images' , 'addedOffers'])->get();
+        $topProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+        ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+        ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
+        ->groupBy('products.id')
+        ->orderByDesc('total_ordered')
+        ->get();
+
+    if ($topProducts->count() < 6) {
+        $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+            ->whereNotIn('id', $topProducts->pluck('id'))
+            ->get();
+        
+        $topProducts = $topProducts->merge($additionalProducts);
+    }
+
+        return ProductResource::collection($topProducts);
     }
     public function getMyProduct()
     {

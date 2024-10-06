@@ -17,7 +17,7 @@ import { SellerService } from './services/seller.service';
 import { OrderService } from './services/order.service';
 import { OrderPaymentService } from './services/order-payment.service';
 import { OrderItemService } from './services/order-item.service';
-
+import { ContactService } from './services/contact.service';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +32,7 @@ import { OrderItemService } from './services/order-item.service';
     SellerPageComponent
   ],
   providers: [
+    ContactService,
     OrderItemService,
     CustomerService,
     CategoryService,

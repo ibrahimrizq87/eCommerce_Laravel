@@ -13,17 +13,17 @@ import { RejectedProductsComponent } from './rejected-products/rejected-products
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { UpdateCategoryComponent } from './update-category/update-category.component';
 import { AdminViewProductComponent } from './admin-view-product/admin-view-product.component';
-
-
 import { BannedSellersComponent } from './banned-sellers/banned-sellers.component';
 import { CommonModule } from '@angular/common';
 import { PendingProductsComponent } from './pending-products/pending-products.component';
 import { UserService } from '../../services/user.service';
+import { ListContactMessagesComponent } from './list-contact-messages/list-contact-messages.component';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
   imports: [
+    ListContactMessagesComponent,
     AcceptedProductsComponent,
     AdminHeaderComponent,
     AllCategoriesComponent,
