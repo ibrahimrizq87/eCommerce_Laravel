@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 
 import { Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
 @Component({
   selector: 'app-carousel',
   standalone: true,
@@ -38,7 +39,8 @@ export class CarouselComponent {
   products: Product[] = []; 
 
   constructor(private productService:ProductService,
-    private router:Router
+    private router:Router,
+    private cartService:CartService
   ){}
   ngOnInit(): void {
     this.updateProduct();
@@ -90,6 +92,35 @@ if (endDate.getTime() >= today.getTime()) {
   
 
 }
+
+
+
+addToCart(product:any) {
+  this.cartService.addItem({'product_id':product.id , 'quantity' : 1 }).subscribe(
+    response=>{
+      alert('added successfully to your cart');
+      this.router.navigate(['/cart']);
+  
+  console.log(response);
+    },error=>{
+  
+  console.log('error Happend::',error);
+  if(error.status === 401){
+  
+    sessionStorage.removeItem('authToken');
+    sessionStorage.setItem('loginSession', 'true');
+  
+    this.router.navigate(['/login']);
+  }else if(error.status === 403){
+    alert("this product is already in your cart\n check your cart");
+  }else{
+    alert('some error happend');
+  }
+    }
+    
+  );
+     }
+
 }
 
 

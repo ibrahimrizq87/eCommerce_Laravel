@@ -31,7 +31,7 @@
                     </div>
                     <p class="card-text desc" style="font-size:14px">{{product.description}}</p>
                     <div class="d-flex justify-content-center mt-1">
-                        <a class="btn text-white mx-2" style="background-color: #b83807;">Add to cart</a>
+                        <a (click)="addToCart(product)" class="btn text-white mx-2" style="background-color: #b83807;">Add to cart</a>
                     </div>
                 </div>
             </div>
