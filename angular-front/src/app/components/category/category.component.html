@@ -3,9 +3,9 @@
   <div class="row mt-3" *ngIf="categories != null">
     <div class="col-md-3 mt-5" *ngFor="let element of categories">
       <a (click)="onCategoryClick(element)" class="card h-100 category-card">
-        <img src="{{element.image}}" class="card-img" alt="...">
+        <img src="{{element.image}}" class="card-img" style="height:220px; object-fit:cover;" alt="...">
         <div class="card-img-overlay">
-          <p class="card-title" style="font-size:20px"><strong>{{element.category_name}}</strong></p>
+          <p class="card-title" style="font-size:20px;"><strong>{{element.category_name}}</strong></p>
           <p class="card-text">{{ element.description.length > 50 ? (element.description | slice:0:50) + '...' : element.description }}</p>
         </div>
       </a>

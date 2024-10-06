@@ -37,7 +37,7 @@
                                     <p class="price mb-1 text-decoration-line-through">$${{ element.price }}</p>
                                 </div>
                             </div>
-                            <p class="card-text desc" style="font-size:14px">{{ element.description.length > 75 ?
+                            <p class="card-text desc" style="font-size:14px"> {{ element.description.length > 75 ?
                                 (element.description | slice:0:75) + '...' : element.description }}
                             </p>
                            <div class="d-flex justify-content-center mt-1">
