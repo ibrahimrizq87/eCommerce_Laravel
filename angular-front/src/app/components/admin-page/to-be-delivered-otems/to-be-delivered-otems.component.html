@@ -32,7 +32,8 @@
                     <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Total Price</th>
-                    <th scope="col">Customer Info</th>
+                    <th scope="col">Seller Name</th>
+                    <th scope="col"> Info</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,8 +47,11 @@
                     <td>{{item.product.priceAfterOffers}}</td>
                     <td>{{item.quantity}}</td>
                     <td>{{item.product.priceAfterOffers * item.quantity}}</td>
-                    <td>
-                        <button type="button" class="btn me-1" style="color: #b83807;" (click)="getCustomer(item)"><i class="fa-solid fa-image-portrait fs-1"></i></button>
+                    <td>{{item.product.user.name}}</td>
+
+                    <td>                                                                                             <!--  <i class="fa-solid fa-image-portrait fs-1"></i> -->
+                        <button type="button" class="btn me-1" style="color: #b83807;" (click)="getCustomer(item)">Customer</button>
+                        <button type="button" class="btn me-1" style="color: #b83807;" (click)="getSeller(item)">Seller</button>
 
                     </td>
                 </tr>
@@ -61,19 +65,7 @@
         </div>
 
       
-        <!-- <div class="modal" id="myModal">
-            <div class="modal-dialog">
-                <div class="modal-content">
-
-                    <div class="modal-body d-flex justify-content-center">
-                        <button class="btn" (click)="closeModal()" data-bs-toggle="modal"
-                            style="background-color: #231717; color:white">Close</button>
-
-                    </div>
-                </div>
-            </div>
-
-        </div> -->
+  
     </div>
 
 </div>

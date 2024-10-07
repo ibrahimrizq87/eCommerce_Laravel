@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../../services/order-item.service';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
+import { CustomerService } from '../../../services/customer.service';
+import { SellerService } from '../../../services/seller.service';
 
 
 @Component({
@@ -26,9 +28,13 @@ export class SellerOrdersComponent {
   priceTo: number = 0;
   searchTerm: string = '';
   searchCriteria: string = 'name'; 
+  @Output() linkClicked = new EventEmitter<string>();
+
   constructor(private orderService:OrderService,
     private orderItemService:OrderItemService,
-    private productService:ProductService
+    private productService:ProductService,
+    private customerService:CustomerService,
+    private sellerService:SellerService
   ){}
 
   search() {
@@ -86,8 +92,34 @@ serveFromStock(item:any){
     }
   );
 }
+
+
+getCustomer(item:any){
+  this.customerService.getCustomerById(item.id).subscribe(
+    response=>{
+
+      this.customerService.setCurrentCustomer(response.data);
+      
+      this.linkClicked.emit("show-customer"); 
+
+    },error=>{
+      console.log('error getting data:',error);
+    }
+  );
+}
+getSeller(item:any){
+  this.sellerService.getSellerById(item.id).subscribe(
+    response=>{
+  this.sellerService.setCurrentSeller(response.data);
+  this.linkClicked.emit("show-seller"); 
+  
+    },error=>{
+  console.log('error happend::',error)
+    }
+  );
+  }
 updateOrderItems(){
-  this.orderItemService.getAllMyOrderItems().subscribe(
+  this.orderItemService.getAllWaitingOrderItems().subscribe(
     response=>{
       this.orderItems = response.data;
       console.log(this.orderItems);

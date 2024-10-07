@@ -1,93 +1,97 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../../services/order-item.service';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
+import { CustomerService } from '../../../services/customer.service';
+import { SellerService } from '../../../services/seller.service';
 
 
 @Component({
-  selector: 'app-seller-orders',
+  selector: 'app-sellers-orders-to-be-done',
   standalone: true,
   imports: [CommonModule, NgxPaginationModule,
     FormsModule
   ],
-  templateUrl: './seller-orders.component.html',
-  styleUrl: './seller-orders.component.css'
+  templateUrl: './sellers-orders-to-be-done.component.html',
+  styleUrl: './sellers-orders-to-be-done.component.css'
 })
-export class SellerOrdersComponent {
+export class SellersOrdersToBeDoneComponent {
   orderItems:OrderItem [] = [];
   page: number = 1;              
   itemsPerPage: number = 20; 
-
   filteredProducts: any[] = [];
   priceFrom: number  = 0;
   priceTo: number = 0;
   searchTerm: string = '';
   searchCriteria: string = 'name'; 
+  @Output() linkClicked = new EventEmitter<string>();
+
   constructor(private orderService:OrderService,
     private orderItemService:OrderItemService,
-    private productService:ProductService
+    private productService:ProductService,
+    private customerService:CustomerService,
+    private sellerService:SellerService
   ){}
-
-  search() {
-    this.filteredProducts = this.orderItems;
-
-    if (this.searchCriteria === 'name' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'category' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'price') {
-        if (this.priceFrom <= this.priceTo ) {
-            this.filteredProducts = this.filteredProducts.filter(product =>
-              product.product.priceAfterOffers !== null && 
-              product.product.priceAfterOffers >= this.priceFrom && 
-              product.product.priceAfterOffers <= this.priceTo
-            );
-        }else{
-          alert('the from price must be less than the to price');
-        }
-    }
-
-    this.page = 1; 
-}
-
-
 
   ngOnInit(): void {
     this.updateOrderItems();
 }
-craft(item:any){
-this.orderItemService.craftOrderItem(item.id).subscribe(
-  response=>{
-    alert('added to your accepted doing list');
-    this.updateOrderItems();
-  },error=>{
-    console.log('error happend', error)
-    alert('there is an error happend');
+search() {
+  this.filteredProducts = this.orderItems;
 
+  if (this.searchCriteria === 'name' && this.searchTerm) {
+      this.filteredProducts = this.filteredProducts.filter(product =>
+          product.product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+  } else if (this.searchCriteria === 'category' && this.searchTerm) {
+      this.filteredProducts = this.filteredProducts.filter(product =>
+          product.product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+  } else if (this.searchCriteria === 'price') {
+      if (this.priceFrom <= this.priceTo ) {
+          this.filteredProducts = this.filteredProducts.filter(product =>
+            product.product.priceAfterOffers !== null && 
+            product.product.priceAfterOffers >= this.priceFrom && 
+            product.product.priceAfterOffers <= this.priceTo
+          );
+      }else{
+        alert('the from price must be less than the to price');
+      }
   }
-);
+
+  this.page = 1; 
 }
-serveFromStock(item:any){
-  this.orderItemService.serveOrderItem(item.id).subscribe(
+
+
+getCustomer(item:any){
+  this.customerService.getCustomerById(item.id).subscribe(
     response=>{
-      alert('added to your accepted done list');
-      this.updateOrderItems();
+
+      this.customerService.setCurrentCustomer(response.data);
+      
+      this.linkClicked.emit("show-customer"); 
+
     },error=>{
-      console.log('error happend', error)
-      alert('there is an error happend');
-  
+      console.log('error getting data:',error);
     }
   );
 }
+getSeller(item:any){
+  this.sellerService.getSellerById(item.id).subscribe(
+    response=>{
+  this.sellerService.setCurrentSeller(response.data);
+  this.linkClicked.emit("show-seller"); 
+  
+    },error=>{
+  console.log('error happend::',error)
+    }
+  );
+  }
 updateOrderItems(){
-  this.orderItemService.getAllMyOrderItems().subscribe(
+  this.orderItemService.getAllDoingOrderItems().subscribe(
     response=>{
       this.orderItems = response.data;
       console.log(this.orderItems);
@@ -121,7 +125,11 @@ updateOrderItems(){
   );
 }
 
+
 }
+
+
+
 
 interface Offer {
   id: number;

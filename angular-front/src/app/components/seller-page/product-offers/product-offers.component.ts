@@ -21,14 +21,44 @@ export class ProductOffersComponent {
   addError:boolean = false;
   selectedProducts: any[] = [];
   offer:any;
+
+  filteredProducts: any[] = [];
+  priceFrom: number  = 0;
+  priceTo: number = 0;
+  searchTerm: string = '';
+  searchCriteria: string = 'name'; 
+
   constructor(
     private productService: ProductService  ,private offerService:OfferService) {}
     ngOnInit(): void {
       this.updateProducts();
       this.getOffer();
       
-
     }
+    search() {
+      this.filteredProducts = this.products;
+  
+      if (this.searchCriteria === 'name' && this.searchTerm) {
+          this.filteredProducts = this.filteredProducts.filter(product =>
+              product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+          );
+      } else if (this.searchCriteria === 'category' && this.searchTerm) {
+          this.filteredProducts = this.filteredProducts.filter(product =>
+              product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+          );
+      } else if (this.searchCriteria === 'price') {
+          if (this.priceFrom <= this.priceTo ) {
+              this.filteredProducts = this.filteredProducts.filter(product =>
+                  product.priceAfterOffers !== null && 
+                  product.priceAfterOffers >= this.priceFrom && 
+                  product.priceAfterOffers <= this.priceTo
+              );
+          }else{
+            alert('the from price must be less than the to price');
+          }
+      }
+  
+  }
 
     onProductSelect(product: any, event: any) {
       if (event.target.checked) {
@@ -68,6 +98,7 @@ updateProducts(){
   this.productService.getMyProducts().subscribe(
     response=>{
       this.products = response.data;
+
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
@@ -80,13 +111,13 @@ updateProducts(){
 
 if (endDate.getTime() >= today.getTime()) { 
   product.totalOffers +=offerAdded.offer.discount;
-  product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount/100) *product.price);
 }
 
       });
     });
-      console.log('my products::' , this.products);
-    },error=>{
+    this.filteredProducts = this.products;
+  },error=>{
       console.log('there is an error :; ',error)
     }
   );

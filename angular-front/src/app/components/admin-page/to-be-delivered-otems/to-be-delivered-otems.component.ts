@@ -4,6 +4,7 @@ import { OrderItemService } from '../../../services/order-item.service';
 import { CustomerService } from '../../../services/customer.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
+import { SellerService } from '../../../services/seller.service';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class ToBeDeliveredOtemsComponent {
   customerIsSet:Boolean = false;
   constructor(
     private orderItemService:OrderItemService,
-    private customerService:CustomerService
+    private customerService:CustomerService,
+    private sellerService:SellerService
   ){}
 
 
@@ -67,10 +69,9 @@ search() {
 }
 
 updateOrderItems(){
-  this.orderItemService.getAllMyDoneOrderItems().subscribe(
+  this.orderItemService.getAllDoneOrderItems().subscribe(
     response=>{
       this.orderItems = response.data;
-      console.log(this.orderItems);
 
       this.orderItems.forEach(item => {
         item.product.priceAfterOffers = item.product.price;
@@ -90,6 +91,7 @@ updateOrderItems(){
 
 
       });
+      console.log('lamia is testing',this.orderItems);
       this.filteredProducts = this.orderItems;
 
     },error=>{
@@ -113,6 +115,18 @@ getCustomer(item:any){
     }
   );
 }
+
+getSeller(item:any){
+  this.sellerService.getSellerById(item.id).subscribe(
+    response=>{
+  this.sellerService.setCurrentSeller(response.data);
+  this.linkClicked.emit("show-seller"); 
+  
+    },error=>{
+  console.log('error happend::',error)
+    }
+  );
+  }
 
 
 openModal() {

@@ -274,6 +274,124 @@ public function getDoingOrders()
     return response()->json(['error' => $e->getMessage()], 500);
 }
 }
+
+
+
+
+
+
+
+
+
+public function getDoingOrderItems()
+{ 
+    try{
+
+
+        $orderItems = OrderItem::with([
+            'product' => function($query) {
+                $query->withTrashed(); 
+            },
+            'product.addedOffers',
+            'product.user',
+            'order'
+        ])
+        ->whereHas('order', function($query) {
+            $query->where('payment_status', 'payed');  
+        })
+        ->where('status', 'doing')
+        ->get();
+
+        // $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
+        // ->whereHas('order', function($query) {
+        //     $query->where('payment_status', 'payed');  
+        // })->where('status','doing')
+        // ->get();
+
+    return OrderItemResource::collection($orderItems);
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
+
+
+public function getWaitingOrderItems()
+{ 
+    try{
+
+
+        $orderItems = OrderItem::with([
+            'product' => function($query) {
+                $query->withTrashed(); 
+            },
+            'product.addedOffers',
+            'product.user',
+            'order'
+        ])
+        ->whereHas('order', function($query) {
+            $query->where('payment_status', 'payed');  
+        })
+        ->where('status', 'waiting')
+        ->get();
+
+        // $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
+        // ->whereHas('order', function($query) {
+        //     $query->where('payment_status', 'payed');  
+        // })->where('status','waiting')
+        // ->get();
+
+    return OrderItemResource::collection($orderItems);
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
+
+public function getDoneOrderItems()
+{ 
+    try{
+
+        $orderItems = OrderItem::with([
+            'product' => function($query) {
+                $query->withTrashed(); 
+            },
+            'product.addedOffers',
+            'product.user',
+            
+            'order'
+        ])
+        ->whereHas('order', function($query) {
+            $query->where('payment_status', 'payed');  
+        })
+        ->where('status', 'done')
+        ->get();
+
+    return OrderItemResource::collection($orderItems);
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
+
+
+
+
+public function getNotPayedOrderItems()
+{ 
+    try{
+
+        $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
+        ->whereHas('order', function($query) {
+            $query->where('payment_status', 'not_payed');  
+        })
+        ->get();
+
+    return OrderItemResource::collection($orderItems);
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
+
+
+
     public function getSellerOrdersItems()
     { 
 
@@ -332,9 +450,7 @@ public function getDoingOrders()
         return response()->json($orderItem);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+ 
     public function update(Request $request, $id)
     {
         $orderItem = OrderItem::find($id);
@@ -343,10 +459,7 @@ public function getDoingOrders()
             return response()->json(['message' => 'OrderItem not found'], Response::HTTP_NOT_FOUND);
         }
 
-       //the order belongs to the user  ====>>> un commit if wont the admin can't to updata order
-        // if (!Auth::user()->isAdmin() && $orderItem->order_id !== Auth::id()) {
-        //     return response()->json(['message' => 'Unauthorized'], Response::HTTP_FORBIDDEN);
-        // }
+ 
 
         $request->validate([
             'quantity' => 'sometimes|required|integer',
@@ -358,9 +471,7 @@ public function getDoingOrders()
         return response()->json($orderItem)->with("orderItem updatad");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy(OrderItem $orderItem)
     {
         try{

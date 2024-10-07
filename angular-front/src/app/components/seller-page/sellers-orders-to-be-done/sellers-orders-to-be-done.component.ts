@@ -4,12 +4,15 @@ import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../../services/order-item.service';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-sellers-orders-to-be-done',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule],
+  imports: [CommonModule, NgxPaginationModule,
+    FormsModule
+  ],
   templateUrl: './sellers-orders-to-be-done.component.html',
   styleUrl: './sellers-orders-to-be-done.component.css'
 })
@@ -17,6 +20,11 @@ export class SellersOrdersToBeDoneComponent {
   orderItems:OrderItem [] = [];
   page: number = 1;              
   itemsPerPage: number = 20; 
+  filteredProducts: any[] = [];
+  priceFrom: number  = 0;
+  priceTo: number = 0;
+  searchTerm: string = '';
+  searchCriteria: string = 'name'; 
   constructor(private orderService:OrderService,
     private orderItemService:OrderItemService,
     private productService:ProductService
@@ -25,6 +33,32 @@ export class SellersOrdersToBeDoneComponent {
   ngOnInit(): void {
     this.updateOrderItems();
 }
+search() {
+  this.filteredProducts = this.orderItems;
+
+  if (this.searchCriteria === 'name' && this.searchTerm) {
+      this.filteredProducts = this.filteredProducts.filter(product =>
+          product.product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+  } else if (this.searchCriteria === 'category' && this.searchTerm) {
+      this.filteredProducts = this.filteredProducts.filter(product =>
+          product.product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+  } else if (this.searchCriteria === 'price') {
+      if (this.priceFrom <= this.priceTo ) {
+          this.filteredProducts = this.filteredProducts.filter(product =>
+            product.product.priceAfterOffers !== null && 
+            product.product.priceAfterOffers >= this.priceFrom && 
+            product.product.priceAfterOffers <= this.priceTo
+          );
+      }else{
+        alert('the from price must be less than the to price');
+      }
+  }
+
+  this.page = 1; 
+}
+
 
 done(item:any){
   this.orderItemService.doneOrder(item.id).subscribe(
@@ -62,6 +96,7 @@ updateOrderItems(){
 
 
       });
+      this.filteredProducts = this.orderItems;
 
     },error=>{
       if(error.status === 404){

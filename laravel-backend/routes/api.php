@@ -27,6 +27,12 @@ Route::get('products/most-selled', [ProductController::class , 'getMostSelledPro
 Route::get('products/most-offered', [ProductController::class , 'getMostOfferedProducts']);
 
 
+
+Route::get('order-items/admin-waiting-orderitems', [OrderItemController::class , 'getWaitingOrderItems'])->middleware('auth:sanctum');
+Route::get('order-items/admin-done-orderitems', [OrderItemController::class , 'getDoneOrderItems'])->middleware('auth:sanctum');
+Route::get('order-items/admin-doing-orderitems', [OrderItemController::class , 'getDoingOrderItems'])->middleware('auth:sanctum');
+
+
 Route::get('order-items/my-items/{order_id}', [OrderItemController::class , 'getMyOrderItems'])->middleware('auth:sanctum');
 Route::get('order-items/seller-orders', [OrderItemController::class , 'getSellerOrdersItems'])->middleware('auth:sanctum');
 Route::get('order-items/craft-order/{item_id}', [OrderItemController::class , 'craftOrderItem'])->middleware('auth:sanctum');
