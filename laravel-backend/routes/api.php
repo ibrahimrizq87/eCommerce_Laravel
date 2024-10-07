@@ -25,6 +25,8 @@ use App\Http\Controllers\Api\PaymentController;
 
 Route::get('products/most-selled', [ProductController::class , 'getMostSelledProducts']);
 Route::get('products/most-offered', [ProductController::class , 'getMostOfferedProducts']);
+Route::get('products/most-ordered-seller', [ProductController::class , 'getMostOrderedProductsSeller'])->middleware('auth:sanctum');
+
 
 
 
