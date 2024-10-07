@@ -188,15 +188,7 @@ public function index()
         ->orderByDesc('total_ordered')
         ->get();
 
-        // $softDeletedItems = OrderItem::onlyTrashed()->get();
-    
-        // foreach ($topProducts as $product) {
-        //     foreach ($softDeletedItems as $item) {
-        //         if ($item->product_id == $product->id) {
-        //             $product->total_ordered += $item->quantity; 
-        //         }
-        //     }
-        // }
+  
     
 
     if ($topProducts->count() < 6) {
@@ -209,6 +201,43 @@ public function index()
 
         return ProductResource::collection($topProducts);
     }
+
+
+    
+
+    public function getMostOrderedProductsSeller()
+    {
+
+
+        // return response()->json(['message' =>  Auth::id()],400);
+
+
+        $topProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+        ->withTrashed() 
+        ->where('user_id', Auth::id())
+        ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+        ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
+        ->groupBy('products.id') 
+        ->orderByDesc('total_ordered')
+        ->limit(6)
+
+        ->get();
+    if ($topProducts->count() < 6) {
+        $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+            ->whereNotIn('id', $topProducts->pluck('id'))
+            ->where('user_id', Auth::id())
+
+            ->limit(6 - $topProducts->count())
+
+            ->get();
+        
+        $topProducts = $topProducts->merge($additionalProducts);
+    }
+
+        return ProductResource::collection($topProducts);
+    }
+
+
     public function getMyProduct()
     {
 
