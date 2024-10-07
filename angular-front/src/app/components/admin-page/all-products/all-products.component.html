@@ -5,14 +5,28 @@
         <h6>All Products</h6>
       </div>
       <div>
-        <div class="input-group" style="width: 300px;">
-          <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
-            id="example-search-input">
-          <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
-            <i class="fa fa-search" style="color:#FF3A20;"></i>
-          </button>
+        <div class="input-group" style="width: 450px;">
+            <select [(ngModel)]="searchCriteria" class="form-select me-2">
+                <option value="name">Search by Name</option>
+                <option value="category">Search by Category</option>
+                <option value="price">Search by Price Range</option>
+            </select>
+            <div *ngIf="searchCriteria !== 'price'; else priceRangeInput">
+                <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control border rounded-pill"  />
+            </div>
+            
+            <ng-template #priceRangeInput>
+                <input type="number" [(ngModel)]="priceFrom" placeholder="From" class="form-control border rounded-pill"  style="width: 100px;" />
+                <input type="number" [(ngModel)]="priceTo" placeholder="To" class="form-control border rounded-pill"  style="width: 100px;" />
+            </ng-template>
+    
+            <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
+                <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
+            </button>
         </div>
-      </div>
+    </div>
+
+    
     </div>
   </div>
 
@@ -30,7 +44,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of products | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+        <tr *ngFor="let product of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
           <td scope="col">
             <img [src]="product.cover_image" style="height:50px; width:50px; object-fit: cover;" alt="">
           </td>

@@ -1,21 +1,36 @@
 import { Component } from '@angular/core';
 import { CustomerService } from '../../../services/customer.service';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-all-customers',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule],
+  imports: [CommonModule, 
+    NgxPaginationModule,
+    FormsModule],
   templateUrl: './all-customers.component.html',
   styleUrl: './all-customers.component.css'
 })
 export class AllCustomersComponent {
   customers:any [] |null [] =[];
-  page: number = 1;              
+  filteredCustomers: any[] = [];
+	  searchTerm: string = '';
+  page: number = 1;       
+
   itemsPerPage: number = 10; 
   constructor(private customerService: CustomerService ) { }
+  search() {
+    if (this.searchTerm) {
+      this.filteredCustomers = this.customers.filter(customer =>
+        customer.user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredCustomers = this.customers; 
+    }
+  }
+  
   ngOnInit(): void {
     this.updateCustomers();
     }
@@ -35,9 +50,9 @@ alert('user banned successfully');
     }
     updateCustomers(){
       this.customerService.getAllCustomers().subscribe(response => {
-        console.log(response);
         this.customers = response.data;
-  
+        this.filteredCustomers = this.customers; 
+
     
       },
       error => {

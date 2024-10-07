@@ -45,7 +45,7 @@ export class LoginComponent {
    successAnimationCreated(animationItem: AnimationItem): void {
     this.successAnimationItem = animationItem;
   }
-  
+  loginErrorBool:boolean  =false;
   sessionError:boolean  =false;
   loginError :string ='';
   submitted: boolean = false;
@@ -129,7 +129,7 @@ export class LoginComponent {
   }
 
   onSubmit(loginForm: any) {
-    // this.backendErrors = [];
+    this.loginErrorBool = false;
     this.loginError = '';
     this.submitted = true;
     if (loginForm.valid) {
@@ -153,12 +153,20 @@ export class LoginComponent {
           const token = response.token;
 
           if(response.user.email_verified_at){
-            sessionStorage.setItem('authToken', token);
-            sessionStorage.setItem('logged', 'true');
-            localStorage.removeItem('needVarification');
-            localStorage.removeItem('tockenForVarification');
+            if(response.status == 'banned'){
+              sessionStorage.setItem('banned', 'true')
+              this.router.navigate(['/banned']);
 
-            window.location.href = '/home';
+            }else{
+              sessionStorage.setItem('authToken', token);
+              sessionStorage.setItem('logged', 'true');
+              localStorage.removeItem('needVarification');
+              localStorage.removeItem('tockenForVarification');
+  
+              window.location.href = '/home';
+            }
+
+           
   
           }else{
             localStorage.setItem('needVarification', 'true');
@@ -186,8 +194,10 @@ export class LoginComponent {
               });
             });
           } else if(error.status === 401){
+            this.loginErrorBool = true;
             this.loginError = 'password is not correct, try again later';
           } else if(error.status === 404){
+            this.loginErrorBool = true;
             this.loginError = 'email dose not exists, make suer to enter the correct email';
 
           }else {

@@ -3,26 +3,59 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-pending-products',
   standalone: true,
-  imports: [RouterModule, CommonModule, NgxPaginationModule],
+  imports: [RouterModule,
+     CommonModule,
+      NgxPaginationModule,
+      FormsModule],
   templateUrl: './pending-products.component.html',
   styleUrl: './pending-products.component.css'
 })
 export class PendingProductsComponent {
   products: Product[] = []; 
+  priceFrom: number  = 0;
+  priceTo: number = 0;
   page: number = 1;              
-  itemsPerPage: number = 10;  
-  
-  constructor(private productService: ProductService) { }
+  itemsPerPage: number = 20; 
+  category :any;
+  searchTerm: string = '';
+  searchCriteria: string = 'name';    
+  filteredProducts: any[] = []; 
 
+  constructor(private productService: ProductService) { }
+  search() {
+    this.filteredProducts = this.products;
+
+    if (this.searchCriteria === 'name' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'category' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'price') {
+        if (this.priceFrom <= this.priceTo ) {
+            this.filteredProducts = this.filteredProducts.filter(product =>
+                product.priceAfterOffers !== null && 
+                product.priceAfterOffers >= this.priceFrom && 
+                product.priceAfterOffers <= this.priceTo
+            );
+        }else{
+          alert('the from price must be less than the to price');
+        }
+    }
+
+    this.page = 1; 
+}
 
   restoreProduct(product:any){
     this.productService.restoreProduct(product.id).subscribe(
 response=>{
-// console.log('restored successfully');
 alert('product restored successfully');
 },error=>{
   console.log('some error has happened');

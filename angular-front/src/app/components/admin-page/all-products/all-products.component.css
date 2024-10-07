@@ -19,3 +19,15 @@ button:hover{
 
 }
 
+.input-group {
+    display: flex;
+  }
+  
+  .form-control {
+    border-right: none; 
+  }
+  
+  .btn {
+    border-left: none; 
+  }
+

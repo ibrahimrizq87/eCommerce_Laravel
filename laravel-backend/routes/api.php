@@ -24,6 +24,8 @@ use App\Http\Controllers\Api\ContactMessageController;
 use App\Http\Controllers\Api\PaymentController;
 
 Route::get('products/most-selled', [ProductController::class , 'getMostSelledProducts']);
+Route::get('products/most-offered', [ProductController::class , 'getMostOfferedProducts']);
+
 
 Route::get('order-items/my-items/{order_id}', [OrderItemController::class , 'getMyOrderItems'])->middleware('auth:sanctum');
 Route::get('order-items/seller-orders', [OrderItemController::class , 'getSellerOrdersItems'])->middleware('auth:sanctum');

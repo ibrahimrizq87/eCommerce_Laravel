@@ -8,3 +8,15 @@ color:#ffffff;
     color: #b83807;
     border-color: #b83807;
 }
+
+.input-group {
+    display: flex;
+  }
+
+  .form-control {
+    border-right: none; 
+  }
+
+  .btn {
+    border-left: none; 
+  }

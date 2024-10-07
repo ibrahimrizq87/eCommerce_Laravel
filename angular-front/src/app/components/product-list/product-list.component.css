@@ -13,3 +13,17 @@
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); 
     padding: 10px; 
 }
+
+
+.input-group {
+    display: flex;
+  }
+  
+  .form-control {
+    border-right: none; 
+  }
+  
+  .btn {
+    border-left: none; 
+  }
+  

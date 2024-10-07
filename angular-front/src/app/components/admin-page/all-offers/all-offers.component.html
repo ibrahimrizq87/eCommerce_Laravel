@@ -5,14 +5,32 @@
     </div>
 
     <div>
-      <div class="input-group" style="width: 300px;">
-        <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
-          id="example-search-input">
-        <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
-          <i class="fa fa-search" style="color:#FF3A20;"></i>
-        </button>
+      <div class="input-group">
+          <select [(ngModel)]="searchCriteria" class="form-select me-2">
+              <option value="date">Search by Date Range</option>
+              <option value="discount">Search by discount</option>
+
+          </select>
+  
+          <input *ngIf="searchCriteria  == 'discount'; else date" type="number" [(ngModel)]="discount" placeholder="Discount (%)" class="form-control border rounded-pill" style="width: 100px; margin-left: 10px;" />
+  
+
+          <ng-template #date>
+            <p class="ms-3"> start date</p>
+            <input type="date"  [(ngModel)]="startDate" class="form-control border rounded-pill" placeholder="Start Date" />
+            <p class="ms-3"> end date</p>
+
+            <input type="date" [(ngModel)]="endDate" class="form-control border rounded-pill" placeholder="End Date" />
+    
+        </ng-template>
+
+
+          <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
+              <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
+          </button>
       </div>
-    </div>
+  </div>
+  
   </div>
 
 
@@ -29,7 +47,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let offer of offers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+              <tr *ngFor="let offer of filteredOffers | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
                
                 <td style="font-size: 14px;">{{offer.discount}}</td>
                 <td style="font-size: 14px;">{{offer.start_date}}</td>

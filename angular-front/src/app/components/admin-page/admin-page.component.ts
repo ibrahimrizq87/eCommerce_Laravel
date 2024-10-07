@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AcceptedProductsComponent } from './accepted-products/accepted-products.component';
 import { AdminHeaderComponent } from './admin-header/admin-header.component';
 import { AllCategoriesComponent } from './all-categories/all-categories.component';
 import { AllCustomersComponent } from './all-customers/all-customers.component';
@@ -24,7 +23,6 @@ import { ListContactMessagesComponent } from './list-contact-messages/list-conta
   standalone: true,
   imports: [
     ListContactMessagesComponent,
-    AcceptedProductsComponent,
     AdminHeaderComponent,
     AllCategoriesComponent,
     AllCustomersComponent,

@@ -78,6 +78,16 @@ export class ProductService {
       });
       return this.http.get(this.apiUrl, { headers });
     }
+    
+    getMostOfferedProducts(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(this.apiUrl+'/most-offered', { headers });
+    }
+    
 
     getDeletedProducts(): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');

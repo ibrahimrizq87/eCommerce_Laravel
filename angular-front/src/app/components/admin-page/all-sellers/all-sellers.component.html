@@ -6,13 +6,17 @@
 
     <div>
       <div class="input-group" style="width: 300px;">
-        <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
-          id="example-search-input">
-        <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
-          <i class="fa fa-search" style="color:#FF3A20;"></i>
-        </button>
+  
+          <input class="form-control border rounded-pill" 
+          [(ngModel)]="searchTerm"
+                 type="search" 
+                 placeholder="Search" 
+                 id="example-search-input">
+          <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
+              <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
+          </button>
       </div>
-    </div>
+  </div>
   </div>
 
     <div class="container mt-2">
@@ -33,7 +37,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let seller of sellers| paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+              <tr *ngFor="let seller of filteredSellers| paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
                 <!-- <td scope="col">{{customer.id}}</td> -->
                  <td>  <img [src]="seller.user.image" class="rounded-circle" style="height:70px; width:70px; object-fit:cover;" alt="">
                  </td>

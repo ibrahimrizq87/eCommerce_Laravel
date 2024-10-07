@@ -11,6 +11,7 @@ import { WishListService } from '../../services/wishlist.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { CartService } from '../../services/cart.service';
 
+import { FormsModule } from '@angular/forms';
 
 // import { Product } from "../../models/product.model";
 
@@ -18,6 +19,7 @@ import { CartService } from '../../services/cart.service';
   selector: 'app-product-list',
   standalone: true,
   imports: [
+    FormsModule,
     ProductDetailsComponent,
     CommonModule,
     RouterModule,
@@ -32,9 +34,16 @@ import { CartService } from '../../services/cart.service';
 
 export class ProductListComponent {
   products: Product[] = []; 
+  filteredProducts: any[] = [];
+
+  priceFrom: number  = 0;
+  priceTo: number = 0;
   page: number = 1;              
   itemsPerPage: number = 20; 
   category :any;
+  searchTerm: string = '';
+  searchCriteria: string = 'name'; 
+
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
   constructor(
     private productService: ProductService ,
@@ -44,6 +53,41 @@ export class ProductListComponent {
     private cartService:CartService
   ) { }
   
+  // search() {
+  //   if (this.searchTerm) {
+  //     this.filteredProducts = this.products.filter(product =>
+  //       product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+  //     );
+  //   } else {
+  //     this.filteredProducts = this.products; 
+  //   }
+  // }
+
+  search() {
+    this.filteredProducts = this.products;
+
+    if (this.searchCriteria === 'name' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'category' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'price') {
+        if (this.priceFrom <= this.priceTo ) {
+            this.filteredProducts = this.filteredProducts.filter(product =>
+                product.priceAfterOffers !== null && 
+                product.priceAfterOffers >= this.priceFrom && 
+                product.priceAfterOffers <= this.priceTo
+            );
+        }else{
+          alert('the from price must be less than the to price');
+        }
+    }
+
+    this.page = 1; 
+}
 
 
   addToCart(product:any) {
@@ -88,7 +132,9 @@ export class ProductListComponent {
 if(this.category){
   this.productService.getProductsByCategory(this.category.id).subscribe(
     response => {
+      this.categoryService.setCategory(undefined);
       this.products = response.data; 
+      this.filteredProducts =this.products;
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
@@ -100,19 +146,13 @@ if(this.category){
 
 if (endDate.getTime() >= today.getTime()) { 
   product.totalOffers +=offerAdded.offer.discount;
-  // product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
   product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) *product.price);
 
 }
 
       });
     });
-      // console.log('addedOffers:', this.products.addedOffers);
-      // console.log('offer:', this.products.addedOffers.offer);
 
-      // this.products.addedOffers.forEach((offerAdded: { discount: number ,start_date: string ,end_date: string  }) => {
-      //   console.log('discount:', offerAdded.discount);
-      // });
       
       
       
@@ -133,6 +173,7 @@ if (endDate.getTime() >= today.getTime()) {
   this.productService.getAllProducts().subscribe(
     response => {
       this.products = response.data; 
+      this.filteredProducts =this.products;
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
@@ -144,17 +185,11 @@ if (endDate.getTime() >= today.getTime()) {
 
 if (endDate.getTime() >= today.getTime()) { 
   product.totalOffers +=offerAdded.offer.discount;
-  product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) *product.price);
 }
 
       });
     });
-    console.log('products after:', this.products);
-
-      
-
-      console.log('response' , response);
-      console.log(response.data.email);
     },
     error => {
       if (error.status === 400 || error.status === 500) {

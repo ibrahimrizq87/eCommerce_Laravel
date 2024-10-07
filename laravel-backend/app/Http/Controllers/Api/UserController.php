@@ -48,11 +48,18 @@ class UserController extends Controller
         }
 
     
+        $status = null;
+        if ($user->role === 'customer') {
+            $status = Customer::where('user_id', $user->id)->value('status'); 
+        } elseif ($user->role === 'seller') {
+            $status = Seller::where('user_id', $user->id)->value('status'); 
+        }
+
         return response()->json([
             'token' => $user->createToken($request->device_name)->plainTextToken,
             'user' => $user,
+            'status' => $status, 
         ]);
-    
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }

@@ -5,6 +5,13 @@
         <div *ngIf="sessionError">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <strong>Alert!</strong> You need to log in first.
+
+            </div>
+        </div> 
+         <div *ngIf="loginErrorBool">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>Error! {{loginError}}</strong>
+
             </div>
         </div>
         <h5 class="text-center my-3" style="color: #b83807;">Login</h5>

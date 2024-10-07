@@ -7,7 +7,7 @@
 .category-card .card-img-overlay {
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
-  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay on hover */
+  background-color: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0;
   left: 0;
@@ -23,11 +23,24 @@
 }
 
 .category-card:hover .card-img-overlay {
-  opacity: 1; /* Show text on hover */
+  opacity: 1;
 }
 
 .category-card:hover {
   cursor: pointer;
   transform: scale(1.05);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.input-group {
+  display: flex;
+}
+
+.form-control {
+  border-right: none; 
+}
+
+.btn {
+  border-left: none; 
 }

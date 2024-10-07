@@ -12,14 +12,12 @@
                     <img class="rounded-2" [src]="image.image" style="object-fit: cover; width:70px; height:70px; margin-top: 10px;"
                         [ngClass]="{'border border-primary': selectedImage === image.image, 'selected-image': selectedImage === image.image}" />
                 </a>
-                <!--image cover-->
             </div>
             <div class="col-12 col-md-4">
                 <img class="big-img" [src]="coverImage" style="object-fit: cover;" alt="">
 
             </div>
         </div>
-        <!--right part-->
 
         <div class="col-xl-6 ps-4">
             <p style="font-size: 18px;"><strong>{{product.product_name}}</strong></p>

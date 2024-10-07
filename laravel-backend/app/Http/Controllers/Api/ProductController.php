@@ -11,6 +11,7 @@ use App\Models\Offer;
 use App\Models\AddedOffer;
 
 use App\Models\WishList;
+use App\Models\OrderItem;
 
 use App\Models\Category;
 
@@ -28,6 +29,49 @@ class ProductController extends Controller
     
 
 
+    
+//     public function getMostOfferedProducts()
+// {
+//     $productsQuery = Product::with(['category', 'user', 'images', 'addedOffers.offer'])
+//         ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+//         ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
+//         ->groupBy('products.id')
+//         ->orderByDesc('total_ordered') 
+//         ->take(8); 
+
+//     $products = $productsQuery->get();
+
+//     $products = $products->map(function ($product) {
+//         $totalDiscount = $product->addedOffers->sum(function ($addedOffer) {
+//             return $addedOffer->getDiscountAmount();
+//         });
+
+//         $product->total_discount = $totalDiscount;
+
+//         return $product;
+//     });
+
+//     $products = $products->sortByDesc('total_discount')->take(8);
+
+//     return ProductResource::collection($products);
+// }
+
+    public function getMostOfferedProducts()
+    {
+        $products = Product::with(['category', 'user', 'images', 'addedOffers.offer'])
+            ->get()
+            ->map(function ($product) {
+                $totalDiscount = $product->addedOffers->sum(function ($addedOffer) {
+                    return $addedOffer->getDiscountAmount();
+                });
+                $product->total_discount = $totalDiscount;    
+                return $product;
+            })
+            ->sortByDesc('total_discount')
+            ->take(8);
+    
+        return ProductResource::collection($products);
+    }
     
 
         public function getProductsByOffer($offer_id)
@@ -69,24 +113,32 @@ class ProductController extends Controller
 
     
 
-//         public function getMostSelledProducts()
-// {
-//     $topProducts = Product::with(['category', 'user', 'images', 'addedOffers']) 
-//         ->join('order_items', 'products.id', '=', 'order_items.product_id')
-//         ->select('products.*', DB::raw('SUM(order_items.quantity) as total_ordered')) 
-//         ->groupBy('products.id')
-//         ->orderByDesc('total_ordered')
-//         ->limit(6)
-//         ->get();
 
-//     return ProductResource::collection($topProducts); 
-// }
     public function getProductsByCategory(Category $category)
     {
-        $products = Product::where('category_id', $category->id)
+        // $products = Product::where('category_id', $category->id)
+        // ->with(['category', 'user', 'images', 'addedOffers'])
+        // ->get();        
+
+
+        $topProducts = Product::where('category_id', $category->id)
         ->with(['category', 'user', 'images', 'addedOffers'])
-        ->get();        
-        return ProductResource::collection($products);
+        ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+        ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
+        ->groupBy('products.id')
+        ->orderByDesc('total_ordered')
+        ->limit(6)
+        ->get();
+
+    if ($topProducts->count() < 6) {
+        $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+            ->whereNotIn('id', $topProducts->pluck('id'))
+            ->limit(6 - $topProducts->count())
+            ->get();
+        
+        $topProducts = $topProducts->merge($additionalProducts);
+    }
+        return ProductResource::collection($topProducts);
     }
     
     
@@ -102,6 +154,16 @@ public function getMostSelledProducts()
         ->orderByDesc('total_ordered')
         ->limit(6)
         ->get();
+
+        // $softDeletedItems = OrderItem::onlyTrashed()->get();
+    
+        // foreach ($topProducts as $product) {
+        //     foreach ($softDeletedItems as $item) {
+        //         if ($item->product_id == $product->id) {
+        //             $product->total_ordered += $item->quantity; 
+        //         }
+        //     }
+        // }
 
     if ($topProducts->count() < 6) {
         $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
@@ -119,13 +181,23 @@ public function getMostSelledProducts()
 public function index()
     {
 
-        // $products = Product::with(['category', 'user' , 'images' , 'addedOffers'])->get();
         $topProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
         ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
         ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
         ->groupBy('products.id')
         ->orderByDesc('total_ordered')
         ->get();
+
+        // $softDeletedItems = OrderItem::onlyTrashed()->get();
+    
+        // foreach ($topProducts as $product) {
+        //     foreach ($softDeletedItems as $item) {
+        //         if ($item->product_id == $product->id) {
+        //             $product->total_ordered += $item->quantity; 
+        //         }
+        //     }
+        // }
+    
 
     if ($topProducts->count() < 6) {
         $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])

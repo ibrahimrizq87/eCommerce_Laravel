@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CustomerService } from '../../../services/customer.service';
-import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-banned-customers',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule],
+  imports: [CommonModule, NgxPaginationModule,FormsModule],
   templateUrl: './banned-customers.component.html',
   styleUrl: './banned-customers.component.css'
 })
@@ -16,11 +16,21 @@ export class BannedCustomersComponent {
   customers:any [] |null [] =[];
   page: number = 1;              
   itemsPerPage: number = 10; 
+  filteredCustomers: any[] = [];
+  searchTerm: string = '';
   constructor(private customerService: CustomerService ) { }
   ngOnInit(): void {
     this.updateCustomers();
     }
-
+    search() {
+      if (this.searchTerm) {
+        this.filteredCustomers = this.customers.filter(customer =>
+          customer.user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      } else {
+        this.filteredCustomers = this.customers; 
+      }
+    }
     activate(customer:any){
       this.customerService.unBanCustomer(customer.id).subscribe(
         response=>{
@@ -36,9 +46,8 @@ alert('user banned successfully');
     }
     updateCustomers(){
       this.customerService.getAllBannedCustomers().subscribe(response => {
-        console.log(response);
-        this.customers = response.data;
-  
+              this.customers = response.data;
+              this.filteredCustomers = this.customers;
     
       },
       error => {

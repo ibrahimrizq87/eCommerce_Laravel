@@ -6,13 +6,17 @@
   
       <div>
         <div class="input-group" style="width: 300px;">
-          <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
-            id="example-search-input">
-          <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
-            <i class="fa fa-search" style="color:#FF3A20;"></i>
-          </button>
+    
+            <input class="form-control border rounded-pill" 
+            [(ngModel)]="searchTerm"
+                   type="search" 
+                   placeholder="Search" 
+                   id="example-search-input">
+            <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
+                <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
+            </button>
         </div>
-      </div>
+    </div>
     </div>
   
     <div class="container mt-2">
@@ -22,14 +26,18 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
+
+            <th scope="col">Message</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let message of messages | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <tr *ngFor="let message of filteredMessages | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
             <td>{{message.name}}</td>
             <td>{{message.email}}</td>
             <td>{{message.phone}}</td>
+            <td>{{message.message}}</td>
+
             <td>
               <button (click)="delete(message)" type="button" class="btn btn-outline-danger">Delete</button>
             </td>

@@ -12,11 +12,8 @@ import { ContactComponent } from './components/contact/contact.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { AddProductComponent } from './components/seller-page/add-product/add-product.component';
 import { UpdateProductComponent } from './components/seller-page/update-product/update-product.component';
-import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { CategoryDetailsComponent } from './components/category-details/category-details.component';
 import { CustomerProfileComponent } from './components/customer-profile/customer-profile.component';
-import { GuestHeaderComponent } from './components/guest-header/guest-header.component';
-import { GuestPageComponent } from './components/guest-page/guest-page.component';
 import { WishlistComponent } from './components/wishlist/wishlist.component';
 import { NeedVarificationComponent } from './components/need-varification/need-varification.component';
 
@@ -24,23 +21,20 @@ import { CustomerMAccountComponent } from './components/customer-m-account/custo
 import { CheckoutComponent } from './components/checkout/checkout.component';
 
 import { ViewProductComponent } from './components/view-product/view-product.component';
-import { SellerPageComponent } from './components/seller-page/seller-page.component';
 import { SendEmailComponent } from './components/send-email/send-email.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
-import { AdminPageComponent } from './components/admin-page/admin-page.component';
-import { Component } from '@angular/core';
+
 import { ViewOrderComponent } from './components/view-order/view-order.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { AdminViewProductComponent } from './components/admin-page/admin-view-product/admin-view-product.component';
-import { AddCategoryComponent } from './components/admin-page/add-category/add-category.component';
-import { UpdateCategoryComponent } from './components/admin-page/update-category/update-category.component';
-import { AdminViewOrderComponent } from './components/admin-page/admin-view-order/admin-view-order.component';
+
 import { ShowSellerContactComponent } from './components/show-seller-contact/show-seller-contact.component';
+import { BannedUserComponent } from './components/banned-user/banned-user.component';
 
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     {path:"home",component:HomeComponent},
+    {path:"banned", component:BannedUserComponent},
     {path:"products", component:ProductListComponent},
     {path:"products/:id", component:ProductDetailsComponent},
     {path:"cart",component:CartComponent},

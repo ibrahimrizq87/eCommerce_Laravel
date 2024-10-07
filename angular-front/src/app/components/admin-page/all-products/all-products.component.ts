@@ -4,11 +4,16 @@ import { UpdateProductComponent } from '../../seller-page/update-product/update-
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-all-products',
   standalone: true,
-  imports: [RouterModule, UpdateProductComponent, CommonModule, NgxPaginationModule],
+  imports: [RouterModule,
+     UpdateProductComponent, 
+     CommonModule, 
+     NgxPaginationModule,
+     FormsModule],
   templateUrl: './all-products.component.html',
   styleUrl: './all-products.component.css'
 })
@@ -16,12 +21,45 @@ export class AllProductsComponent {
   @Output() linkClicked = new EventEmitter<string>();
 
   products: Product[] = []; 
+  priceFrom: number  = 0;
+  priceTo: number = 0;
   page: number = 1;              
-  itemsPerPage: number = 10;     
+  itemsPerPage: number = 20; 
+  category :any;
+  searchTerm: string = '';
+  searchCriteria: string = 'name';  
+  filteredProducts: any[] = []; 
 
   constructor(private productService: ProductService) { }
 
   activeComponent: string = 'all-products'; 
+  
+
+  search() {
+    this.filteredProducts = this.products;
+
+    if (this.searchCriteria === 'name' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'category' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'price') {
+        if (this.priceFrom <= this.priceTo ) {
+            this.filteredProducts = this.filteredProducts.filter(product =>
+                product.priceAfterOffers !== null && 
+                product.priceAfterOffers >= this.priceFrom && 
+                product.priceAfterOffers <= this.priceTo
+            );
+        }else{
+          alert('the from price must be less than the to price');
+        }
+    }
+
+    this.page = 1; 
+}
 
   updateProduct() {
     this.activeComponent = 'update-product'; 
@@ -53,7 +91,9 @@ export class AllProductsComponent {
 
   this.productService.getAllProducts().subscribe(
     response => {
-      this.products = response.data; 
+      this.products = response.data;
+      this.filteredProducts = this.products; 
+ 
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
@@ -65,7 +105,7 @@ export class AllProductsComponent {
 
 if (endDate.getTime() >= today.getTime()) { 
   product.totalOffers +=offerAdded.offer.discount;
-  product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount/100) *product.price);
 }
 
       });
