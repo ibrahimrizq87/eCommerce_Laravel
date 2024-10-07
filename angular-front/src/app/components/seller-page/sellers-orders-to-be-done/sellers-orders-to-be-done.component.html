@@ -22,42 +22,51 @@
                 </button>
             </div>
         </div>
-
-        <table class="table text-center">
-            <thead>
-                <tr>
-                    <th scope="col">Image</th>
-                    <th scope="col">Product</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total Price</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let item of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-                    <td>
-                        <img [src]="item.product.cover_image" style="height:70px; width:70px; object-fit: cover;">
-                    </td>
-                    <td>
-                        <span>{{item.product.product_name}}</span>
-                    </td>
-                    <td>{{item.product.priceAfterOffers}}</td>
-                    <td>{{item.quantity}}</td>
-                    <td>{{item.product.priceAfterOffers * item.quantity}}</td>
-                    <td>
-                        <button type="button" class="btn me-1" (click)="done(item)">
-                            <img src="images/done.png" style="height: 50px; width:50px;" alt="done">
-                        </button>
-
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+        <div *ngIf="filteredProducts && filteredProducts.length > 0; else noProductsTemplate">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+                        <td>
+                            <img [src]="item.product.cover_image" style="height:70px; width:70px; object-fit: cover;">
+                        </td>
+                        <td>
+                            <span>{{item.product.product_name}}</span>
+                        </td>
+                        <td>{{item.product.priceAfterOffers}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>{{item.product.priceAfterOffers * item.quantity}}</td>
+                        <td>
+                            <button type="button" class="btn me-1" (click)="done(item)">
+                                <img src="images/done.png" style="height: 50px; width:50px;" alt="done">
+                            </button>
+    
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <div class="d-flex justify-content-center my-4 ">
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+        </div>
+       
     </div>
-    <div class="d-flex justify-content-center my-4 ">
-        <pagination-controls (pageChange)="page = $event"></pagination-controls>
-    </div>
+   
+    <ng-template #noProductsTemplate>
+        <div class="container text-center p-5 shadow-lg">
+            <img src="images/not-found.jpg" style="height:250px; width:300px;" alt="">
+            <h3 class="text-muted">No data available.</h3>
+        </div>
+    </ng-template>
 
 </div>

@@ -3,7 +3,7 @@
       <div class="col-md-3" style="color:white; background-color:#231717;height: 100vh;">
         <app-seller-header (linkClicked)="showComponent($event)" style="height: 100%;"></app-seller-header>
       </div>
-      <div class="col-12 col-md-9 shadow-lg" style="height: 100vh;">
+      <div class="col-12 col-md-9 shadow-lg" style="height: 100vh; overflow-y:auto;">
         <app-my-products *ngIf="activeComponent === 'my-products'" (linkClicked)="showComponent($event)"></app-my-products>
         <app-edit-profile *ngIf="activeComponent === 'edit'" (linkClicked)="showComponent($event)"></app-edit-profile>
         <app-register *ngIf="activeComponent === 'register'"></app-register>
