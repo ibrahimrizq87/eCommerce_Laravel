@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
@@ -11,13 +12,19 @@ import { NgxPaginationModule } from 'ngx-pagination';
   imports: [
     RouterModule,
     CommonModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    FormsModule
   ],
   templateUrl: './my-products.component.html',
   styleUrl: './my-products.component.css'
 })
 export class MyProductsComponent {
   @Output() linkClicked = new EventEmitter<string>();
+  filteredProducts: any[] = [];
+  priceFrom: number  = 0;
+  priceTo: number = 0;
+  searchTerm: string = '';
+  searchCriteria: string = 'name'; 
 
   products:Product[] = [];
   page: number = 1;              
@@ -31,7 +38,31 @@ export class MyProductsComponent {
       this.linkClicked.emit('add-product'); 
 
     }
-
+    search() {
+      this.filteredProducts = this.products;
+  
+      if (this.searchCriteria === 'name' && this.searchTerm) {
+          this.filteredProducts = this.filteredProducts.filter(product =>
+              product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+          );
+      } else if (this.searchCriteria === 'category' && this.searchTerm) {
+          this.filteredProducts = this.filteredProducts.filter(product =>
+              product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+          );
+      } else if (this.searchCriteria === 'price') {
+          if (this.priceFrom <= this.priceTo ) {
+              this.filteredProducts = this.filteredProducts.filter(product =>
+                  product.priceAfterOffers !== null && 
+                  product.priceAfterOffers >= this.priceFrom && 
+                  product.priceAfterOffers <= this.priceTo
+              );
+          }else{
+            alert('the from price must be less than the to price');
+          }
+      }
+  
+      this.page = 1; 
+  }
 
     deleteProduct(product:any){
 
@@ -74,13 +105,13 @@ updateProducts(){
 
 if (endDate.getTime() >= today.getTime()) { 
   product.totalOffers +=offerAdded.offer.discount;
-  product.priceAfterOffers -= (offerAdded.offer.discount/100) *product.price;
+  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount/100) *product.price);
 }
 
       });
     });
-      console.log('my products::' , this.products);
-    },error=>{
+    this.filteredProducts = this.products;
+  },error=>{
       console.log('there is an error :; ',error)
     }
   );

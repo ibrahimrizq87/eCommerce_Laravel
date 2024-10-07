@@ -34,13 +34,14 @@ import { FormsModule } from '@angular/forms';
 
 export class ProductListComponent {
   products: Product[] = []; 
-  filteredProducts: any[] = [];
 
-  priceFrom: number  = 0;
-  priceTo: number = 0;
   page: number = 1;              
   itemsPerPage: number = 20; 
   category :any;
+
+  filteredProducts: any[] = [];
+  priceFrom: number  = 0;
+  priceTo: number = 0;
   searchTerm: string = '';
   searchCriteria: string = 'name'; 
 
@@ -53,15 +54,7 @@ export class ProductListComponent {
     private cartService:CartService
   ) { }
   
-  // search() {
-  //   if (this.searchTerm) {
-  //     this.filteredProducts = this.products.filter(product =>
-  //       product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-  //     );
-  //   } else {
-  //     this.filteredProducts = this.products; 
-  //   }
-  // }
+
 
   search() {
     this.filteredProducts = this.products;
@@ -134,7 +127,6 @@ if(this.category){
     response => {
       this.categoryService.setCategory(undefined);
       this.products = response.data; 
-      this.filteredProducts =this.products;
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
@@ -157,8 +149,8 @@ if (endDate.getTime() >= today.getTime()) {
       
       
 
-      console.log('response' , response);
-      console.log(response.data.email);
+    this.filteredProducts =this.products;
+
     },
     error => {
       if (error.status === 400 || error.status === 500) {
@@ -173,7 +165,6 @@ if (endDate.getTime() >= today.getTime()) {
   this.productService.getAllProducts().subscribe(
     response => {
       this.products = response.data; 
-      this.filteredProducts =this.products;
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
@@ -190,6 +181,8 @@ if (endDate.getTime() >= today.getTime()) {
 
       });
     });
+    this.filteredProducts =this.products;
+
     },
     error => {
       if (error.status === 400 || error.status === 500) {

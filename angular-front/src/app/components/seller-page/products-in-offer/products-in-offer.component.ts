@@ -2,11 +2,13 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { OfferService } from '../../../services/offer.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-products-in-offer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule
+    ,FormsModule],
   templateUrl: './products-in-offer.component.html',
   styleUrl: './products-in-offer.component.css'
 })
@@ -14,6 +16,14 @@ export class ProductsInOfferComponent {
   @Output() linkClicked = new EventEmitter<string>();
   offer: any;
   products: Product[] = [];
+  page: number = 1;              
+  itemsPerPage: number = 20; 
+
+  filteredProducts: any[] = [];
+  priceFrom: number  = 0;
+  priceTo: number = 0;
+  searchTerm: string = '';
+  searchCriteria: string = 'name'; 
   constructor(
     private productService: ProductService, private offerService: OfferService) { }
   ngOnInit(): void {
@@ -21,6 +31,31 @@ export class ProductsInOfferComponent {
 
     this.updateProducts();
   }
+  search() {
+    this.filteredProducts = this.products;
+
+    if (this.searchCriteria === 'name' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'category' && this.searchTerm) {
+        this.filteredProducts = this.filteredProducts.filter(product =>
+            product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+    } else if (this.searchCriteria === 'price') {
+        if (this.priceFrom <= this.priceTo ) {
+            this.filteredProducts = this.filteredProducts.filter(product =>
+                product.priceAfterOffers !== null && 
+                product.priceAfterOffers >= this.priceFrom && 
+                product.priceAfterOffers <= this.priceTo
+            );
+        }else{
+          alert('the from price must be less than the to price');
+        }
+    }
+
+    this.page = 1; 
+}
   getOffer() {
     if (this.offerService.getCurrentOffer()) {
       this.offer = this.offerService.getCurrentOffer();
@@ -47,6 +82,7 @@ this.offerService.removeProduct({'product_id':product.id , 'offer_id':this.offer
     this.productService.getProductsByOffer(this.offer.id).subscribe(
       response => {
         this.products = response.data;
+        this.filteredProducts = this.products;
         this.products.forEach(product => {
           product.priceAfterOffers = product.price;
           product.totalOffers = 0;

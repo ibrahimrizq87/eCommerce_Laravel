@@ -92,7 +92,6 @@ export class AllProductsComponent {
   this.productService.getAllProducts().subscribe(
     response => {
       this.products = response.data;
-      this.filteredProducts = this.products; 
  
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
@@ -110,12 +109,8 @@ if (endDate.getTime() >= today.getTime()) {
 
       });
     });
-    console.log('products after:', this.products);
+    this.filteredProducts = this.products;
 
-      
-
-      console.log('response' , response);
-      console.log(response.data.email);
     },
     error => {
       if (error.status === 400 || error.status === 500) {

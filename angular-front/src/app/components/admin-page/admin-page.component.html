@@ -20,6 +20,11 @@
       <app-update-category *ngIf="activeComponent === 'update-category'" (linkClicked)="showComponent($event)"></app-update-category>
       <app-admin-view-product *ngIf="activeComponent === 'view-product'" ></app-admin-view-product>
       <app-list-contact-messages *ngIf="activeComponent === 'list-messages'" ></app-list-contact-messages>
+      <app-seller-orders  *ngIf="activeComponent === 'seller-orders'" (linkClicked)="showComponent($event)"></app-seller-orders>
+      <app-sellers-orders-to-be-done  *ngIf="activeComponent === 'seller-orders-to-b-done'" (linkClicked)="showComponent($event)"></app-sellers-orders-to-be-done>
+      <app-to-be-delivered-otems  *ngIf="activeComponent === 'done-orders'" (linkClicked)="showComponent($event)"></app-to-be-delivered-otems>
+      <app-show-customer-information *ngIf="activeComponent === 'show-customer'" (linkClicked)="showComponent($event)"></app-show-customer-information>
+      <app-show-seller-contact *ngIf="activeComponent === 'show-seller'" ></app-show-seller-contact>
 
     </div>
   </div>

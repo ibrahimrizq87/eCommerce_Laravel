@@ -31,7 +31,8 @@ class SellerController extends Controller
             return response()->json(['error' => 'Order item not found'], 404);
         }
     
-        $product = Product::find($orderItem->product_id);
+        // $product = Product::find($orderItem->product_id);
+        $product = Product::withTrashed()->where('id', $orderItem->product_id)->first();
         
         if (!$product) {
             return response()->json(['error' => 'product not found'], 404);

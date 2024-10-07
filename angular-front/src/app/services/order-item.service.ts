@@ -39,6 +39,34 @@ export class OrderItemService {
         });
         return this.http.get(`${this.apiUrl}/my-items/${order_id}`, { headers });
     }
+
+    getAllWaitingOrderItems(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(`${this.apiUrl}/admin-waiting-orderitems`, { headers });
+  }
+
+    
+  getAllDoneOrderItems(): Observable<any> {
+    const authToken = sessionStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.get(`${this.apiUrl}/admin-done-orderitems`, { headers });
+}
+
+
+getAllDoingOrderItems(): Observable<any> {
+  const authToken = sessionStorage.getItem('authToken');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${authToken}`
+  });
+  return this.http.get(`${this.apiUrl}/admin-doing-orderitems`, { headers });
+}
+
+
     getAllMyOrderItems(): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');
         const headers = new HttpHeaders({

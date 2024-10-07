@@ -1,12 +1,8 @@
 <div class="container my-5 p-auto m-auto">
-    <!-- <div class="input-group my-3">
-        <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control mb-3" />
 
-        <button class="btn btn-outline-info" (click)="search()">Search </button>
-    </div> -->
-    <div class="my-4">
-        <div class="input-group text-center" style="width: 500px;">
-            <select [(ngModel)]="searchCriteria" class="form-select rounded-4 ps-3" style="width:165px;">
+    <div>
+        <div class="input-group my-3" style="width: 450px;">
+            <select [(ngModel)]="searchCriteria" class="form-select me-2 rounded-5">
                 <option value="name">Search by Name</option>
                 <option value="category">Search by Category</option>
                 <option value="price">Search by Price Range</option>
@@ -28,24 +24,10 @@
         </div>
     </div>
 
-    <!-- <div class="input-group my-3">
-        
-        <div *ngIf="searchCriteria !== 'price'; else priceRangeInput">
-            <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control mb-3" />
-        </div>
-        
-        <ng-template #priceRangeInput>
-            <input type="number" [(ngModel)]="priceFrom" placeholder="From" class="form-control mb-3" style="width: 100px;" />
-            <input type="number" [(ngModel)]="priceTo" placeholder="To" class="form-control mb-3" style="width: 100px;" />
-        </ng-template>
-
-        <button class="btn btn-outline-info" (click)="search()">Search</button>
-    </div> -->
 
 
     <div *ngIf="filteredProducts && filteredProducts.length > 0; else noProductsTemplate">
 
-    <!-- <div *ngIf="products && products.length > 0;  else noProductsTemplate"> -->
         <div class="container shadow-lg my-5 p-5 m-auto">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 m-auto">
                 <div class="col" *ngFor="let element of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">                    <div class="card card-item h-100">
