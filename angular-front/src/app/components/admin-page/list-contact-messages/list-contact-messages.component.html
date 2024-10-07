@@ -1,4 +1,4 @@
-<div class="container my-3 mx-2">
+<div class="container mx-2">
     <div class="d-flex justify-content-between my-5">
       <div class="container ms-3" style="color:#b83807;">
         <h6>Contact Messages</h6>
@@ -26,20 +26,31 @@
             <th scope="col">Name</th>
             <th scope="col">Email</th>
             <th scope="col">Phone</th>
+<<<<<<< HEAD
 
+=======
+>>>>>>> b0909e5a8e08e13526062212e686ce277370f3bb
             <th scope="col">Message</th>
             <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
+<<<<<<< HEAD
           <tr *ngFor="let message of filteredMessages | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
             <td>{{message.name}}</td>
             <td>{{message.email}}</td>
             <td>{{message.phone}}</td>
             <td>{{message.message}}</td>
 
+=======
+          <tr *ngFor="let message of messages | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+            <td style="width:200px;">{{message.name}}</td>
+            <td style="width:200px;">{{message.email}}</td>
+            <td style="width:200px;">{{message.phone}}</td>
+            <td style="width:350px">{{message.message}}</td>
+>>>>>>> b0909e5a8e08e13526062212e686ce277370f3bb
             <td>
-              <button (click)="delete(message)" type="button" class="btn btn-outline-danger">Delete</button>
+              <button (click)="delete(message)" type="button" class="btn"><i class="fa-solid fa-trash" style="color:#b83807"></i></button>
             </td>
           </tr>
         </tbody>

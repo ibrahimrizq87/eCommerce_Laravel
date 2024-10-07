@@ -21,7 +21,7 @@ export class MyProductsComponent {
 
   products:Product[] = [];
   page: number = 1;              
-  itemsPerPage: number = 20; 
+  itemsPerPage: number = 10; 
   constructor(
     private productService: ProductService  ) {}
     ngOnInit(): void {
