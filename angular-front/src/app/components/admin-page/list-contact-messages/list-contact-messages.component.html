@@ -32,10 +32,17 @@
         </thead>
         <tbody>
           <tr *ngFor="let message of filteredMessages | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+<<<<<<< HEAD
+            <td>{{message.name}}</td>
+            <td>{{message.email}}</td>
+            <td>{{message.phone}}</td>
+            <td>{{message.message}}</td>
+=======
             <td style="width:200px;">{{message.name}}</td>
             <td style="width:200px;">{{message.email}}</td>
             <td style="width:200px;">{{message.phone}}</td>
             <td style="width:350px">{{message.message}}</td>
+>>>>>>> f0ff8409f414be745c64241ef17e09ab36c17a4c
 
             <td>
               <button (click)="delete(message)" type="button" class="btn"><i class="fa-solid fa-trash" style="color:#b83807"></i></button>

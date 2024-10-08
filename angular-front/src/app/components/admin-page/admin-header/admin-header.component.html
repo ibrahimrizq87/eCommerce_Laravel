@@ -1,8 +1,6 @@
-
 <div class="container my-5 m-auto text-center" style="height:100vh;">
   <img [src]="user.image" class="rounded-circle" style="height:100px; width:100px;" alt="">
-  <div>
-  </div>
+
   <ul>
     <a>
       <li class="my-4" (click)="onLinkClick('all-products')">All Products</li>
@@ -19,10 +17,35 @@
     <a>
       <li class="my-4" (click)="onLinkClick('all-offers')">All Offers</li>
     </a>
-    <a>
-      <li class="my-4" (click)="onLinkClick('all-orders')">All Orders</li>
-    </a>
 
+    <div id="accordion" style="background-color: #231717; border:none; color:#ffffff; margin-right:30px;">
+
+      <div class="card" style="background-color: #231717; color:#ffffff; border:none;">
+        <div class="card-header">
+          <a data-bs-toggle="collapse" href="#collapseOne" style="background-color:#231717; color: white">
+            Orders
+          </a>
+        </div>
+        <div id="collapseOne" class="collapse show" data-bs-parent="#accordion">
+          <div class="card-body">
+            <ul>
+              <a>
+                <li class="my-4" (click)="onLinkClick('all-orders')">All Orders</li>
+              </a>
+
+              <a>
+                <li class="my-4" (click)="onLinkClick('seller-orders')">All waiting orders</li>
+              </a>
+
+              <a>
+                <li class="my-4" (click)="onLinkClick('seller-orders-to-b-done')">under crafting</li>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
     <a>
       <li class="my-4" (click)="onLinkClick('all-sellers')">All Sellers</li>
     </a>
@@ -31,23 +54,15 @@
     </a>
     <a>
       <li class="my-4" (click)="onLinkClick('banned-sellers')">Banned Sellers</li>
-    </a> 
-    
-    <a>
-      <li class="my-4" (click)="onLinkClick('seller-orders')">All waiting orders</li>
-    </a> 
-    <a>
-      <li class="my-4" (click)="onLinkClick('seller-orders-to-b-done')">under crafting</li>
-    </a> 
-  
-    
+    </a>
+
+
+
     <a>
       <li class="my-4" (click)="onLinkClick('list-messages')">Contact Messages List</li>
-    </a> 
+    </a>
     <a>
       <li (click)="logout()" class="my-4">Log-out</li>
     </a>
   </ul>
 </div>
-
-

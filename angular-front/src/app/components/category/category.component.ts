@@ -6,11 +6,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
   @Component({
     selector: 'app-category',
     standalone: true,
-    imports: [FormsModule , CommonModule, RouterModule, CustomerHeaderComponent],
+    imports: [FormsModule , CommonModule, RouterModule, CustomerHeaderComponent, NgxPaginationModule],
 
 
     templateUrl: './category.component.html',
@@ -19,6 +21,8 @@ import { FormsModule } from '@angular/forms';
   export class CategoryComponent {
   categories:any [] |null [] =[];
   filteredCategories: any[] = [];
+  page: number = 1;              
+  itemsPerPage: number = 20; 
   searchTerm: string = '';
 
 

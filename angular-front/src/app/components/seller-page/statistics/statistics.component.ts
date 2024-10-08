@@ -1,16 +1,19 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-statistics',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.css'
 })
 export class StatisticsComponent {
   products:Product[] = [];
+  page: number = 1;              
+  itemsPerPage: number = 20; 
   @Output() linkClicked = new EventEmitter<string>();
 
   constructor(private productService:ProductService,
