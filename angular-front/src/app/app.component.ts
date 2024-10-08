@@ -75,6 +75,7 @@ export class AppComponent {
             this.dashboard =true;
           }
           this.userService.setUser(this.user);
+          console.log('this is the user we wanted to>>>',this.user);
           
         },
         error => {
