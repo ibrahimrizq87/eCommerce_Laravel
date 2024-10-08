@@ -21,7 +21,8 @@ export class ShowSellerContactComponent {
     this.updateCustomer();
   }
   goBack(){
-    this.linkClicked.emit("show-seller"); 
+    console.log(sessionStorage.getItem("return-to"));
+    this.linkClicked.emit(sessionStorage.getItem("return-to")?.toString()); 
   }
   updateCustomer(){
     if (this.sellerService.getCurrentSelller()){

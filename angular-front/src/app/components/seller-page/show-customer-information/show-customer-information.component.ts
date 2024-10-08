@@ -19,15 +19,18 @@ ngOnInit(): void {
   this.updateCustomer();
 }
 goBack(){
-  this.linkClicked.emit("done-orders"); 
+  // this.linkClicked.emit("done-orders"); 
+  this.linkClicked.emit(sessionStorage.getItem("return-to")?.toString()); 
+
 
 }
 updateCustomer(){
   if (this.customerService.getCurrentCustomer()){
     this.customer= this.customerService.getCurrentCustomer();
   }else{
-    this.linkClicked.emit("done-orders"); 
+    // this.linkClicked.emit("done-orders"); 
 
+    this.linkClicked.emit(sessionStorage.getItem("return-to")?.toString()); 
 
   }
 }
