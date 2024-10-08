@@ -91,7 +91,6 @@ updateOrderItems(){
 
 
       });
-      console.log('lamia is testing',this.orderItems);
       this.filteredProducts = this.orderItems;
 
     },error=>{
@@ -107,7 +106,8 @@ getCustomer(item:any){
     response=>{
 
       this.customerService.setCurrentCustomer(response.data);
-      
+      sessionStorage.setItem('return-to' , 'done-orders');
+
       this.linkClicked.emit("show-customer"); 
 
     },error=>{
@@ -120,6 +120,8 @@ getSeller(item:any){
   this.sellerService.getSellerById(item.id).subscribe(
     response=>{
   this.sellerService.setCurrentSeller(response.data);
+
+  sessionStorage.setItem('return-to' , 'done-orders');
   this.linkClicked.emit("show-seller"); 
   
     },error=>{
