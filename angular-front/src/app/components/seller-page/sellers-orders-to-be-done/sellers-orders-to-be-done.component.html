@@ -4,7 +4,7 @@
         
         <div *ngIf="filteredProducts && filteredProducts.length > 0; else noProductsTemplate">
             <div class="mb-5 d-flex justify-content-center">
-                <div class="input-group" style="width: 450px;">
+                <div class="input-group" style="max-width: fit-content;">
                     <select [(ngModel)]="searchCriteria" class="form-select me-2 rounded-5" style="max-width: fit-content;">
                         <option value="name">Search by Name</option>
                         <option value="category">Search by Category</option>
