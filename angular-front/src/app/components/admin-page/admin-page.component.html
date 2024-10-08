@@ -3,7 +3,7 @@
     <div class="col-md-3" style="color:white; background-color:#231717; height:100vh; overflow-y:auto; ">
       <app-admin-header (linkClicked)="showComponent($event)" style="height: 100vh; "></app-admin-header>
     </div>
-    <div class="col-12 col-md-9 container-fluid shadow-lg"  style="background-color: #fff; height:98vh; overflow-y:auto";>
+    <div class="col-12 col-md-9 container-fluid shadow-lg"  style="background-color: #fff; height:98vh; overflow-y:auto;">
 
       <app-pending-products *ngIf="activeComponent === 'pending-products'"></app-pending-products>
       <app-all-categories *ngIf="activeComponent === 'all-categories'"  (linkClicked)="showComponent($event)"></app-all-categories>
