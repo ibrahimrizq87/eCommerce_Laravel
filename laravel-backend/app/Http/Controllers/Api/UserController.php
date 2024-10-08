@@ -179,7 +179,7 @@ class UserController extends Controller
             'gender' => 'required|string|in:male,female,other',
             'last_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15', 
-            'shope_name' => 'nullable|string|max:255',
+            'shop_name' => 'nullable|string|max:255',
             'about' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
         ], [
@@ -191,7 +191,7 @@ class UserController extends Controller
             "image.max" => "The image size should not exceed 2MB.",
         ]);
     
-        $std_validator->sometimes('shope_name', 'required|string|max:255', function($input) {
+        $std_validator->sometimes('shop_name', 'required|string|max:255', function($input) {
             return $input->role === 'seller';
         });
         $std_validator->sometimes('about', 'required|string|max:255', function($input) {
