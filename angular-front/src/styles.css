@@ -2,14 +2,6 @@
 body{
     color: #231717;
     overflow-x: hidden;
-    overflow-y: hidden;
-}
-
-@media (max-width: 768px) {
-    body {
-        overflow-x: visible;
-        overflow-y: visible;
-    }
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
