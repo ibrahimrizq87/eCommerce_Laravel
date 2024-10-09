@@ -31,8 +31,8 @@ export class CarouselComponent {
       1000: { items: 4 },
       1400: { items: 5 }
     },
-    nav: true,           
-    dots: true      
+    nav: false,           
+    dots: false      
   };
   
 
