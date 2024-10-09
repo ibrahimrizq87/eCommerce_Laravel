@@ -90,12 +90,8 @@ if (endDate.getTime() >= today.getTime()) {
 
       });
     });
-    console.log('products after:', this.products);
+    this.filteredProducts = this.products;
 
-      
-
-      console.log('response' , response);
-      console.log(response.data.email);
     },
     error => {
       if (error.status === 400 || error.status === 500) {

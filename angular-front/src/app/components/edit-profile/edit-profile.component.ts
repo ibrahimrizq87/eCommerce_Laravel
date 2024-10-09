@@ -48,6 +48,9 @@ isSeller :Boolean = false;
     this.imageUploaded = event.target.files && event.target.files.length > 0;
 
   }
+
+
+  
   changePassword(){
   this.sellerService.setCurrentSeller(this.seller);
   this.linkClicked.emit('change-password');

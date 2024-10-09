@@ -131,7 +131,8 @@ class ProductController extends Controller
         ->get();
 
     if ($topProducts->count() < 6) {
-        $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+        $additionalProducts = Product::where('category_id', $category->id)->
+        with(['category', 'user', 'images', 'addedOffers'])
             ->whereNotIn('id', $topProducts->pluck('id'))
             ->limit(6 - $topProducts->count())
             ->get();
@@ -408,12 +409,12 @@ foreach ($oldImages as $image) {
                 'product_name' => 'required|string|max:255',
                 'size' => 'required|string|max:255',
                 'material' => 'required|string|max:255',
-                'cover_image' => 'required|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'cover_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
 
                 'price' => 'required|numeric',
                 'description' => 'nullable|string',
                 'images' => 'nullable|array',
-                'images.*' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'images.*' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
                 'video' => 'nullable|file|mimes:mp4,mkv,avi,webm|max:102400',
                 'stock' => 'required|integer',
                 'category_id' => 'required|integer|exists:categories,id',
