@@ -9,14 +9,14 @@
                     <option value="price">Search by Price Range</option>
                 </select>
                 <div *ngIf="searchCriteria !== 'price'; else priceRangeInput" class="mx-2">
-                    <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control border rounded-pill"  />
+                    <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control border rounded-pill" style="max-width: fit-content;" />
                 </div>
                 
                 <ng-template #priceRangeInput>
                     <span style="padding-top:8px; padding-right:10px; padding-left:10px"> From </span>
-                    <input type="number" [(ngModel)]="priceFrom" placeholder="From" class="form-control border rounded-pill"  style="width: 30px;" />
+                    <input type="number" [(ngModel)]="priceFrom" placeholder="From" class="form-control border rounded-pill" style="max-width: fit-content;" />
                     <span style="padding-top:8px; padding-right:10px; padding-left:10px"> to </span>
-                    <input type="number" [(ngModel)]="priceTo" placeholder="To" class="form-control border rounded-pill"  style="width: 30px;" />
+                    <input type="number" [(ngModel)]="priceTo" placeholder="To" class="form-control border rounded-pill"  style="max-width: fit-content;" />
                 </ng-template>
         
                 <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
@@ -26,7 +26,8 @@
         </div>
         <div class="container shadow-lg my-5 p-5 m-auto">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 m-auto">
-                <div class="col" *ngFor="let element of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">                    <div class="card card-item h-100">
+                <div class="col" *ngFor="let element of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">                    
+                    <div class="card card-item h-100">
                         <div class="card-img-container" style="background-color: #ffffff;">
                             <a (click)="onProductClick(element)" style="display: block; cursor: pointer;">
                                 <img [src]="element.cover_image" class="card-img-top img-cover w-100"

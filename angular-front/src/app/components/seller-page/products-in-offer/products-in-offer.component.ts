@@ -3,12 +3,14 @@ import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { OfferService } from '../../../services/offer.service';
 import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @Component({
   selector: 'app-products-in-offer',
   standalone: true,
   imports: [CommonModule
-    ,FormsModule],
+    ,FormsModule, NgxPaginationModule],
   templateUrl: './products-in-offer.component.html',
   styleUrl: './products-in-offer.component.css'
 })

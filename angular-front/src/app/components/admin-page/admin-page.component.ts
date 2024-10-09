@@ -6,7 +6,6 @@ import { AllOffersComponent } from './all-offers/all-offers.component';
 import { AllProductsComponent } from './all-products/all-products.component';
 import { AllSellersComponent } from './all-sellers/all-sellers.component';
 import { BannedCustomersComponent } from './banned-customers/banned-customers.component';
-import { OfferedProductsComponent } from './offered-products/offered-products.component';
 import { RejectedProductsComponent } from './rejected-products/rejected-products.component';
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { UpdateCategoryComponent } from './update-category/update-category.component';
@@ -40,7 +39,6 @@ import { ShowSellerContactComponent } from './show-seller-contact/show-seller-co
     AllSellersComponent,
     BannedCustomersComponent,
     BannedSellersComponent,
-    OfferedProductsComponent,
     RejectedProductsComponent,
     PendingProductsComponent,
     CommonModule,
