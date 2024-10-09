@@ -61,19 +61,18 @@ export class AppComponent {
     private categoryService: CategoryService) { }
 
   ngOnInit(): void {
-
-
-
-
     if(sessionStorage.getItem('authToken')){
       this.isLogged = true;
       this.userService.getUser().subscribe(
         response => {
     
           this.user = response.data;
+          
           if (this.user.role === 'seller' || this.user.role === 'admin'){
             this.dashboard =true;
+document.body.style.overflow = 'hidden';
           }
+          
           this.userService.setUser(this.user);
           console.log('this is the user we wanted to>>>',this.user);
           
@@ -105,5 +104,8 @@ export class AppComponent {
 
       });
   }
+ngOnDestroy(): void {
+  document.body.style.overflow = 'auto';
 }
-
+  
+}

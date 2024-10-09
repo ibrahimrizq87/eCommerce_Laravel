@@ -22,15 +22,15 @@ export class CategoryCarouselComponent {
     mouseDrag: true,     
     touchDrag: true,     
     navSpeed: 400,       
-    navText: ['<','>'],
+    navText: ['',''],
     responsive: {
       0: { items: 1 },
       600: { items: 2 },
       1000: { items: 4 },
       1400: { items: 5 }
     },
-    nav: true,           
-    dots: true      
+    nav: false,           
+    dots: false      
   };
 
 categories:any [] |null [] =[];

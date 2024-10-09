@@ -46,8 +46,8 @@
                         <td>{{item.quantity}}</td>
                         <td>{{item.product.priceAfterOffers * item.quantity}}</td>
                         <td>
-                            <button type="button" class="btn me-1" style="background-color: #b83807; color:white" (click)="serveFromStock(item)">serve from stock</button>
-                            <button type="button" class="btn me-1" style="background-color: #7fe6ee; color:rgb(2, 0, 0)" (click)="craft(item)">Craft</button> 
+                            <button type="button" class="btn me-1" (click)="serveFromStock(item)"><img src="images/in-stock.png" style="height:50px; width:50px" alt=""></button>
+                            <button type="button" class="btn me-1" (click)="craft(item)"><img src="images/jug.png" style="height:50px; width:50px" alt=""></button> 
                         </td>
                     </tr>
                 </tbody>
