@@ -118,6 +118,8 @@ export class CartComponent {
     this.cartService.getAllItems().subscribe(
       response => {
         this.cartItems = response.data;
+        console.log('my cart data::::::::::', this.cartItems);
+
 if(this.cartItems.length>0){
   this.empty = false;
 }else{
@@ -155,7 +157,6 @@ if(this.cartItems.length>0){
         });
 
 
-        console.log('my cart data::', response);
       }, error => {
         console.log('error happend', error);
         if (error.status === 401) {

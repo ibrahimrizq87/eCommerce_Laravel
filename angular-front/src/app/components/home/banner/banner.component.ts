@@ -16,7 +16,10 @@ import { CarouselComponent } from "../../carousel/carousel.component";
 export class BannerComponent {
   constructor(private OrderPaymentService: OrderPaymentService , private router: Router) { }
 
+  goTOProducts(){
+    this.router.navigate(['/products']);
 
+  }
   showNow() {
     const requestData = { 'id': 2 };
     console.log('Sending request with data: ', requestData);

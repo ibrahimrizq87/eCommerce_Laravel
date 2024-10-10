@@ -73,7 +73,6 @@ if ($exists) {
     $cartItem->save();
     return response()->json(['message' => "added successfully"], 200);
 
-    return response()->json(['message' => "added successfully"], 200);
 
 } catch (\Exception $e) {
     return response()->json(['error' => $e->getMessage()], 500);

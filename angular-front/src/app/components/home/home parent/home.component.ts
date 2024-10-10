@@ -66,8 +66,9 @@ console.log('an error happpend ::' , error)
   }
 );
   }
+
   addToCart(product:any) {
-    this.cartService.addItem({'product_id':product.id , 'quantity' :1}).subscribe(
+    this.cartService.addItem({'product_id':product.id , 'quantity' : 1 }).subscribe(
       response=>{
         alert('added successfully to your cart');
         this.router.navigate(['/cart']);

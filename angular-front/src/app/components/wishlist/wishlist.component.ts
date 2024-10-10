@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { WishListService } from '../../services/wishlist.service';
 import { CommonModule, NgIfContext } from '@angular/common';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-wishlist',
@@ -20,7 +21,8 @@ export class WishlistComponent {
   constructor(private wishlistService: WishListService,
     private productService: ProductService,
     private userService: UserService,
-    private router: Router) { }
+    private router: Router,
+  private cartService:CartService) { }
 
 
 
@@ -30,6 +32,36 @@ export class WishlistComponent {
     this.router.navigate(['/product/view']);
   }
   addToCart(product: any) {
+
+
+
+  
+      this.cartService.addItem({'product_id':product.id , 'quantity' :1}).subscribe(
+        response=>{
+          alert('added successfully to your cart');
+          this.router.navigate(['/cart']);
+      
+      console.log(response);
+        },error=>{
+      
+      console.log('error Happend::',error);
+      if(error.status === 401){
+      
+        sessionStorage.removeItem('authToken');
+        sessionStorage.setItem('loginSession', 'true');
+      
+        this.router.navigate(['/login']);
+      }else if(error.status === 403){
+        alert("this product is already in your cart\n check your cart");
+      }else{
+        alert('some error happend');
+      }
+        }
+        
+      );
+         
+      
+
 
   }
   delete(product: any) {
