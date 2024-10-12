@@ -65,10 +65,6 @@ export const routes: Routes = [
     {path:"send", component:SendEmailComponent},
     {path:"reset", component:ResetPasswordComponent},
     {path:"order/view", component:ViewOrderComponent},
-    // {path:"admin/category/add", component:AddCategoryComponent},
-    // {path:"admin/category/update", component:UpdateCategoryComponent},
-    // {path:"admin/product/view", component:AdminViewProductComponent},
-    // {path:"admin/order/view", component:AdminViewOrderComponent},
     
     {path:"loading", component:LoadingComponent},
     {path:"**",component:ErrorComponent}

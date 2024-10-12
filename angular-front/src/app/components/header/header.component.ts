@@ -4,7 +4,6 @@ import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { GuestHeaderComponent } from '../guest-header/guest-header.component';
 
-import { AuthGuestHeaderComponent } from '../auth-guest-header/auth-guest-header.component';
 import { CustomerHeaderComponent } from '../customer-header/customer-header.component';
 
 @Component({
@@ -13,7 +12,6 @@ import { CustomerHeaderComponent } from '../customer-header/customer-header.comp
   imports: [RouterModule,
     CommonModule,
     GuestHeaderComponent,
-    AuthGuestHeaderComponent,
     CustomerHeaderComponent
   ],
 

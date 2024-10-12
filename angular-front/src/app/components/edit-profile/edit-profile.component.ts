@@ -88,7 +88,7 @@ isSeller :Boolean = false;
 
    this.sellerService.updateSelller(formData).subscribe(
     response=>{
-      alert('updated successfully');
+      // alert('updated successfully');
       this.sellerService.setCurrentSeller(response.data);
       this.linkClicked.emit('profile');
     },error=>{

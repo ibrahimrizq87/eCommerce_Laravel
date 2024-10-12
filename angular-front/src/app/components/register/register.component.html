@@ -8,24 +8,29 @@
         </div>
         <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm" enctype="multipart/form-data">
             <div class="my-4">
-                <h6  style="color: #b83807;">Create your account</h6>
-
+                <h6 style="color: #b83807;">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicCreateAccount">Create your account</ng-container>
+                    <ng-template #arabicCreateAccount>إنشاء حسابك</ng-template>
+                </h6>
             </div>
             <div class="row">
                 <div class="col-md-4">
                     <ng-lottie [options]="registrationAnimationOptions" width="100%" height="100%"
                         (animationCreated)="animationCreated($event)">
                     </ng-lottie>
-
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
                         <div class="form-floating">
                             <input type="text" class="form-control" id="fname" placeholder="First Name" name="name"
                                 required ngModel>
-                            <label for="fname">First Name</label>
+                            <label for="fname">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicFirstName">First Name</ng-container>
+                                <ng-template #arabicFirstName>الاسم الأول</ng-template>
+                            </label>
                             <div *ngIf="submitted && registerForm.controls['name']?.invalid" style="color:#b83807">
-                                First Name is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicFirstNameRequired">First Name is required.</ng-container>
+                                <ng-template #arabicFirstNameRequired>الاسم الأول مطلوب.</ng-template>
                             </div>
                         </div>
                     </div>
@@ -33,13 +38,18 @@
                         <div class="form-floating">
                             <input type="email" class="form-control" id="email" placeholder="Email" name="email"
                                 required email ngModel>
-                            <label for="email">Email</label>
+                            <label for="email">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicEmail">Email</ng-container>
+                                <ng-template #arabicEmail>البريد الإلكتروني</ng-template>
+                            </label>
                             <div *ngIf="submitted && registerForm.controls['email']?.invalid" style="color:#b83807">
                                 <div *ngIf="registerForm.controls['email']?.errors?.['required']">
-                                    Email is required.
+                                    <ng-container *ngIf="currentLanguage === 'en'; else arabicEmailRequired">Email is required.</ng-container>
+                                    <ng-template #arabicEmailRequired>البريد الإلكتروني مطلوب.</ng-template>
                                 </div>
                                 <div *ngIf="registerForm.controls['email']?.errors?.['email']">
-                                    Please enter a valid email address.
+                                    <ng-container *ngIf="currentLanguage === 'en'; else arabicEmailInvalid">Please enter a valid email address.</ng-container>
+                                    <ng-template #arabicEmailInvalid>يرجى إدخال عنوان بريد إلكتروني صالح.</ng-template>
                                 </div>
                             </div>
                         </div>
@@ -48,9 +58,13 @@
                         <div class="form-floating">
                             <input type="password" class="form-control" id="password" placeholder="Your password"
                                 name="password" required ngModel>
-                            <label for="password">Password</label>
+                            <label for="password">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPassword">Password</ng-container>
+                                <ng-template #arabicPassword>كلمة المرور</ng-template>
+                            </label>
                             <div *ngIf="submitted && registerForm.controls['password']?.invalid" style="color:#b83807">
-                                Password is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPasswordRequired">Password is required.</ng-container>
+                                <ng-template #arabicPasswordRequired>كلمة المرور مطلوبة.</ng-template>
                             </div>
                         </div>
                     </div>
@@ -58,30 +72,16 @@
                         <div class="form-floating">
                             <input type="password" class="form-control" id="password_confirmation"
                                 placeholder="Confirm password" name="password_confirmation" required ngModel>
-                            <label for="password_confirmation">Confirm Password</label>
+                            <label for="password_confirmation">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicConfirmPassword">Confirm Password</ng-container>
+                                <ng-template #arabicConfirmPassword>تأكيد كلمة المرور</ng-template>
+                            </label>
                             <div *ngIf="submitted && registerForm.controls['password_confirmation']?.invalid"
                                 style="color:#b83807">
-                                Password confirmation is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicConfirmPasswordRequired">Password confirmation is required.</ng-container>
+                                <ng-template #arabicConfirmPasswordRequired>تأكيد كلمة المرور مطلوب.</ng-template>
                             </div>
                         </div>
-                    </div>
-                   
-                    <div class="my-3 d-flex">
-                        <span>I am a:</span>
-                        <div class="form-check px-4">
-                            <input type="radio" id="customer" name="role" value="customer" class="form-check-input"
-                                (change)="onRoleChange('customer')" ngModel required>
-                            <label for="customer" class="form-check-label">Customer</label>
-                        </div>
-                        <div class="form-check ">
-                            <input type="radio" id="seller" name="role" value="seller" class="form-check-input"
-                                (change)="onRoleChange('seller')" ngModel required>
-                            <label for="seller" class="form-check-label">Seller</label>
-                        </div>
-
-                    </div>
-                    <div *ngIf="submitted && registerForm.controls['role']?.invalid" style="color:#b83807">
-                        Role is required.
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -89,9 +89,13 @@
                         <div class="form-floating">
                             <input type="text" class="form-control" id="lname" placeholder="Last Name" name="last_name"
                                 required ngModel>
-                            <label for="lname">Last Name</label>
+                            <label for="lname">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicLastName">Last Name</ng-container>
+                                <ng-template #arabicLastName>اسم العائلة</ng-template>
+                            </label>
                             <div *ngIf="submitted && registerForm.controls['last_name']?.invalid" style="color:#b83807">
-                                Last Name is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicLastNameRequired">Last Name is required.</ng-container>
+                                <ng-template #arabicLastNameRequired>اسم العائلة مطلوب.</ng-template>
                             </div>
                         </div>
                     </div>
@@ -99,108 +103,77 @@
                         <div class="form-floating">
                             <input type="tel" class="form-control" id="phone" placeholder="Phone" name="phone" required
                                 pattern="[0-9]{11}" ngModel>
-                            <label for="phone">Phone</label>
+                            <label for="phone">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone</ng-container>
+                                <ng-template #arabicPhone>الهاتف</ng-template>
+                            </label>
                             <div *ngIf="submitted && registerForm.controls['phone']?.invalid" style="color:#b83807">
-                                Phone number is required and must be a valid 10-digit number.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPhoneRequired">Phone number is required and must be a valid 10-digit number.</ng-container>
+                                <ng-template #arabicPhoneRequired>رقم الهاتف مطلوب ويجب أن يكون رقمًا صحيحًا مكونًا من 10 أرقام.</ng-template>
                             </div>
                         </div>
                     </div>
                     <div class="my-3 py-3 d-flex justify-content-start">
-                        <span class="ps-3">Gender:</span>
+                        <span class="ps-3">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicGender">Gender:</ng-container>
+                            <ng-template #arabicGender>الجنس:</ng-template>
+                        </span>
                         <div class="form-check px-5">
                             <input type="radio" id="male" name="gender" value="male" class="form-check-input" required
                                 ngModel>
-                            <label for="male" class="form-check-label">Male</label>
+                            <label for="male" class="form-check-label">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicMale">Male</ng-container>
+                                <ng-template #arabicMale>ذكر</ng-template>
+                            </label>
                         </div>
                         <div class="form-check px-3">
                             <input type="radio" id="female" name="gender" value="female" class="form-check-input"
                                 required ngModel>
-                            <label for="female" class="form-check-label">Female</label>
+                            <label for="female" class="form-check-label">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicFemale">Female</ng-container>
+                                <ng-template #arabicFemale>أنثى</ng-template>
+                            </label>
                         </div>
-
                     </div>
                     <div *ngIf="submitted && registerForm.controls['gender']?.invalid" style="color:#b83807">
-                        Gender is required.
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicGenderRequired">Gender is required.</ng-container>
+                        <ng-template #arabicGenderRequired>الجنس مطلوب.</ng-template>
                     </div>
-                    
+
                     <div class="mb-3">
                         <div class="form-floating">
                             <textarea class="form-control" id="address" placeholder="Your address" name="address"
                                 style="height: 50px;" ngModel required></textarea>
-                            <label for="address">Address details</label>
+                            <label for="address">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicAddress">Address details</ng-container>
+                                <ng-template #arabicAddress>تفاصيل العنوان</ng-template>
+                            </label>
                             <div *ngIf="submitted && registerForm.controls['address']?.invalid" style="color:#b83807">
-                                Address is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicAddressRequired">Address is required.</ng-container>
+                                <ng-template #arabicAddressRequired>العنوان مطلوب.</ng-template>
                             </div>
                         </div>
                     </div>
                     <div class="mb-3 text-end">
                         <input type="file" name="image" id="img" class="file" (change)="onFileChange($event)" />
                         <div *ngIf="submitted && !imageUploaded" style="color:#b83807">
-                            Image is required.
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicImageRequired">Image is required.</ng-container>
+                            <ng-template #arabicImageRequired>الصورة مطلوبة.</ng-template>
                         </div>
                     </div>
                 </div>
-
             </div>
-
-            <div [@slideInOut]="isSeller ? 'in' : 'out'">
-                <div [ngClass]="{'d-none': !isSeller}">
-                    <div class="row d-flex justify-content-end">
-                        <div class="col-4 ">
-                            <div class="mb-3">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="shopname" placeholder="Shop Name"
-                                        name="shop_name" ngModel [attr.required]="isSeller ? true : null" />
-                                    <label for="shopname">Shop Name</label>
-                                    <div *ngIf="submitted && isSeller && registerForm.controls['shop_name']?.invalid"
-                                        style="color:#b83807">
-                                        Shop Name is required.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <div class="form-floating">
-                                    <textarea class="form-control" id="description" placeholder="Type a description"
-                                        name="about" style="height: 50px;" ngModel
-                                        [attr.required]="isSeller ? true : null"></textarea>
-                                    <label for="description">Description</label>
-                                    <div *ngIf="submitted && isSeller && registerForm.controls['about']?.invalid"
-                                        style="color:#b83807">
-                                        Description is required.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
 
             <div class="text-center my-4">
                 <button type="submit" class="btn w-25 fw-bolder text-white">
-                    Register</button>
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicRegister">Register</ng-container>
+                    <ng-template #arabicRegister>تسجيل</ng-template>
+                </button>
             </div>
 
-
-            <!-- <div class="text-center my-4">
-                <button type="submit" class="btn w-25 fw-bolder text-white" data-bs-toggle="modal"
-                    data-bs-target="#myModal" (click)="openModal()">
-                    Register</button>
-            </div> -->
-
-
-            <!-- The Modal -->
             <div class="modal" id="myModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
-
-                        <!-- Modal body -->
                         <div class="modal-body">
                             <ng-lottie [options]="successAnimationOptions"
                                 (animationCreated)="successAnimationCreated($event)">
@@ -208,16 +181,23 @@
                         </div>
                         <div class="modal-body d-flex justify-content-center">
                             <button class="btn" (click)="closeModal()" data-bs-toggle="modal"
-                                style="background-color: #231717; color:white">Close</button>
-
+                                style="background-color: #231717; color:white">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicClose">Close</ng-container>
+                                <ng-template #arabicClose>إغلاق</ng-template>
+                            </button>
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="text-center">
-                <p class="text-center fw-bold">Have an account?</p>
-                <a routerLink="/login" class="nav-link" aria-current="page">Login</a>
+                <p class="text-center fw-bold">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicHaveAccount">Have an account?</ng-container>
+                    <ng-template #arabicHaveAccount>هل لديك حساب؟</ng-template>
+                </p>
+                <a routerLink="/login" class="nav-link" aria-current="page">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicLogin">Login</ng-container>
+                    <ng-template #arabicLogin>تسجيل الدخول</ng-template>
+                </a>
             </div>
         </form>
     </div>

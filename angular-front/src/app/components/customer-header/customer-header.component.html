@@ -1,7 +1,8 @@
 <nav class="navbar navbar-expand-lg shadow-lg">
     <div class="container-fluid">
-        <a class="navbar-brand ms-5" routerLink="home">
-            <img src="images/logo.png" width="110px" height="50px">
+        <a class="navbar-brand" routerLink="home">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicStoreName">baraka Store</ng-container>
+            <ng-template #arabicStoreName>البركه استور</ng-template>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -13,29 +14,36 @@
             <div class="w-100 d-flex justify-content-center">
                 <ul class="navbar-nav text-center">
                     <li class="nav-item">
-                        <a routerLink="/home" class="nav-link" aria-current="page">Home</a>
+                        <a routerLink="/home" class="nav-link" aria-current="page">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicHome">Home</ng-container>
+                            <ng-template #arabicHome>الرئيسية</ng-template>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/contact" class="nav-link" aria-current="page">Contact</a>
+                        <a routerLink="/contact" class="nav-link" aria-current="page">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicContact">Contact</ng-container>
+                            <ng-template #arabicContact>الاتصال</ng-template>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/category" class="nav-link" aria-current="page">Category</a>
+                        <a routerLink="/category" class="nav-link" aria-current="page">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCategory">Category</ng-container>
+                            <ng-template #arabicCategory>الفئة</ng-template>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a routerLink="/products" class="nav-link" aria-current="page">Products</a>
+                        <a routerLink="/products" class="nav-link" aria-current="page">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicProducts">Products</ng-container>
+                            <ng-template #arabicProducts>المنتجات</ng-template>
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
 
+
         <div class="d-none d-lg-flex align-items-center justify-content-lg-start me-5">
-            <!-- <div class="input-group" style="width: 300px;">
-                <input class="form-control border-end-0 border rounded-pill" type="search" placeholder="search"
-                    id="example-search-input">
-                <button class="btn border-0 border rounded-pill ms-n5" type="button" style="margin-left: -40px;">
-                    <i class="fa fa-search" style="color:#FF3A20;"></i>
-                </button>
-            </div> -->
+         
 
             <div class="d-flex ms-3">
                 <a routerLink="/wishlist" class="nav-link">
@@ -50,12 +58,42 @@
                       <i class="fa-solid fa-user" style="color: #FF3A20;"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                      <li><a class="dropdown-item" routerLink="/customer/profile">Manage My Account</a></li>
-                      <li><a class="dropdown-item" routerLink="/order">My Order</a></li>
-                      <li><a (click)="logout()" class="dropdown-item" >Logout</a></li>
+                        <li>
+                            <a class="dropdown-item" routerLink="/customer/profile">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicManageAccount">Manage My Account</ng-container>
+                                <ng-template #arabicManageAccount>إدارة حسابي</ng-template>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" routerLink="/order">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicMyOrder">My Order</ng-container>
+                                <ng-template #arabicMyOrder>طلباتي</ng-template>
+                            </a>
+                        </li>
+                        <li>
+                            <a (click)="logout()" class="dropdown-item">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicLogout">Logout</ng-container>
+                                <ng-template #arabicLogout>تسجيل الخروج</ng-template>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                   
+                <div class="dropdown me-3">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicLanguage">Language</ng-container>
+                        <ng-template #arabicLanguage>اللغة</ng-template>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                        <li style="cursor: pointer;">
+                            <a class="dropdown-item" (click)="changeLanguage('en')">English</a>
+                        </li>
+                        <li style="cursor: pointer;">
+                            <a class="dropdown-item" (click)="changeLanguage('ar')">العربية</a>
+                        </li>
+                    </ul>
+                </div>
+
 
             </div>
         </div>

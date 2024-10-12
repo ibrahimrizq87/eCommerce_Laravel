@@ -84,8 +84,8 @@ public function store(Request $request)
     // return response()->json(['errors' => $request->all()], 400);
 
     $validator = Validator::make($request->all(), [
-        // 'start_date' => 'required|date|after:today',
-        // 'end_date' => 'required|date|after:start_date',
+        'start_date' => 'required|date|after:today',
+        'end_date' => 'required|date|after:start_date',
         'discount' => 'required|integer|min:1',
     ]);
 

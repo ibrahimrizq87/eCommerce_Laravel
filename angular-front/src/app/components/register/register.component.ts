@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { GuestHeaderComponent } from "../guest-header/guest-header.component";
+import { SharedService } from '../../services/language.service';
 
 @Component({
   selector: 'app-register',
@@ -68,8 +69,17 @@ export class RegisterComponent {
   imageUploaded = false;
   user:any;
   backendErrors: any = {};
+  currentLanguage: string ='en';
 
-  constructor(private userService: UserService, private router: Router) { }
+
+
+ 
+  constructor(private sharedService: SharedService,
+    private userService: UserService, private router: Router) {
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+      });
+       }
 
 
   onRoleChange(role: string) {

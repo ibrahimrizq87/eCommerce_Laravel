@@ -71,6 +71,7 @@ export class CartComponent {
 
     } else {
       alert('no enough products in our stock\n max is: ' + item.product.stock);
+      item.quantity --;
     }
   }
 
