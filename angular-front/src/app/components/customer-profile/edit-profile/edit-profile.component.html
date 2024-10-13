@@ -8,10 +8,16 @@
         <form (ngSubmit)="onSubmit(updateUserForm)" #updateUserForm="ngForm" enctype="multipart/form-data">
             <div class="d-flex justify-content-around my-4">
                 <div>
-                    <h6 class="pb-3" style="color: #b83807;">Edit your Account</h6>
+                    <h6 class="pb-3" style="color: #b83807;">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicEditAccount">Edit your Account</ng-container>
+                        <ng-template #arabicEditAccount>قم بتحرير حسابك</ng-template>
+                    </h6>
                 </div>
                 <div>
-                    <button (click)="changePassword()" class="btn">change password</button>
+                    <button (click)="changePassword()" class="btn">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicChangePassword">Change Password</ng-container>
+                        <ng-template #arabicChangePassword>تغيير كلمة المرور</ng-template>
+                    </button>
                 </div>
             </div>
 
@@ -21,9 +27,13 @@
                         <div class="form-floating">
                             <input type="text" class="form-control" id="fname" [(ngModel)]="customer.user.name"
                                 placeholder="First Name" name="name" required ngModel>
-                            <label for="fname">First Name</label>
+                            <label for="fname">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicFirstName">First Name</ng-container>
+                                <ng-template #arabicFirstName>الاسم الأول</ng-template>
+                            </label>
                             <div *ngIf="submitted && updateUserForm.controls['name']?.invalid" style="color:#b83807">
-                                First Name is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicFirstNameRequired">First Name is required.</ng-container>
+                                <ng-template #arabicFirstNameRequired>الاسم الأول مطلوب.</ng-template>
                             </div>
                         </div>
                     </div>
@@ -32,28 +42,31 @@
                             <textarea class="form-control" id="address" [(ngModel)]="customer.address"
                                 placeholder="Your address" name="address" style="height: 50px;" ngModel
                                 required></textarea>
-                            <label for="address">Address details</label>
+                            <label for="address">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicAddressDetails">Address details</ng-container>
+                                <ng-template #arabicAddressDetails>تفاصيل العنوان</ng-template>
+                            </label>
                             <div *ngIf="submitted && updateUserForm.controls['address']?.invalid" style="color:#b83807">
-                                Address is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicAddressRequired">Address is required.</ng-container>
+                                <ng-template #arabicAddressRequired>العنوان مطلوب.</ng-template>
                             </div>
                         </div>
                     </div>
-
-
-
-
                 </div>
-
 
                 <div class="col-md-6">
                     <div class="mb-3">
                         <div class="form-floating">
                             <input type="text" class="form-control" id="lname" [(ngModel)]="customer.user.last_name"
                                 placeholder="Last Name" name="last_name" required ngModel>
-                            <label for="lname">Last Name</label>
+                            <label for="lname">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicLastName">Last Name</ng-container>
+                                <ng-template #arabicLastName>اسم العائلة</ng-template>
+                            </label>
                             <div *ngIf="submitted && updateUserForm.controls['last_name']?.invalid"
                                 style="color:#b83807">
-                                Last Name is required.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicLastNameRequired">Last Name is required.</ng-container>
+                                <ng-template #arabicLastNameRequired>اسم العائلة مطلوب.</ng-template>
                             </div>
                         </div>
                     </div>
@@ -61,44 +74,34 @@
                         <div class="form-floating">
                             <input type="tel" class="form-control" id="phone" [(ngModel)]="customer.phone"
                                 placeholder="Phone" name="phone" required pattern="[0-9]{11}" ngModel>
-                            <label for="phone">Phone</label>
+                            <label for="phone">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone</ng-container>
+                                <ng-template #arabicPhone>رقم الهاتف</ng-template>
+                            </label>
                             <div *ngIf="submitted && updateUserForm.controls['phone']?.invalid" style="color:#b83807">
-                                Phone number is required and must be a valid 10-digit number.
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPhoneRequired">Phone number is required and must be a valid 10-digit number.</ng-container>
+                                <ng-template #arabicPhoneRequired>رقم الهاتف مطلوب ويجب أن يكون رقمًا صالحًا مكونًا من 10 أرقام.</ng-template>
                             </div>
                         </div>
                     </div>
-
-
-
-
                 </div>
-
-
-
             </div>
 
-
             <div class="text-center my-4">
-
                 <div class="">
                     <img [src]="customer.user.image" class="rounded-circle" style="height:100px; width:100px; object-fit:cover;" alt="">
-
                 </div>
                 <div class="">
                     <input type="file" name="image" id="img" class="file" (change)="onFileChange($event)" />
-
                 </div>
             </div>
 
-
-
-
             <div class="text-center my-4">
-                <button type="submit" class="btn w-25 fw-bolder text-white">Save Changes</button>
+                <button type="submit" class="btn w-25 fw-bolder text-white">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicSaveChanges">Save Changes</ng-container>
+                    <ng-template #arabicSaveChanges>حفظ التغييرات</ng-template>
+                </button>
             </div>
-
-
-
         </form>
     </div>
 </div>

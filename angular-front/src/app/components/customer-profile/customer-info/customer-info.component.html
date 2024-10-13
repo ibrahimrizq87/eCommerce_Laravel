@@ -4,21 +4,95 @@
             style="height: 120px; width: 120px; object-fit: cover;" alt="User Profile Image">
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-5 ">
-            <h6 class="mb-3 text-decoration-underline fw-bold">Personal Information:</h6>
-            <p class="py-2 ps-3"><strong>First Name:</strong> {{customer.user.name}}</p>
-            <p class="py-2 ps-3"><strong>Gender:</strong> {{customer.user.gender}}</p>
-            <p class="py-2 ps-3"><strong>Phone:</strong> {{customer.phone}}</p>
-            <p class="py-2 ps-3"><strong>Address:</strong> {{customer.address}}</p>
+        <div class="col-md-5">
+            <h6 class="mb-3 text-decoration-underline fw-bold">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicPersonalInfo">Personal Information:</ng-container>
+                <ng-template #arabicPersonalInfo>المعلومات الشخصية:</ng-template>
+            </h6>
+
+            <div>
+                <div class="label">
+                    <strong>
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicFirstName">First Name:</ng-container>
+                        <ng-template #arabicFirstName>الاسم الأول:</ng-template>
+                    </strong>
+                </div>
+                <div class="content">
+                    <span>{{customer.user.name}}</span>
+                </div>
+            </div>
+
+            <div>
+                <div class="label">
+                    <strong>
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicLastName">Last Name:</ng-container>
+                        <ng-template #arabicLastName>اسم العائلة:</ng-template>
+                    </strong>
+                </div>
+                <div class="content">
+                    <span>{{customer.user.last_name}}</span>
+                </div>
+            </div>
+
+            <div>
+                <div class="label">
+                    <strong>
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicGender">Gender:</ng-container>
+                        <ng-template #arabicGender>الجنس:</ng-template>
+                    </strong>
+                </div>
+                <div class="content">
+                    <span>{{customer.user.gender}}</span>
+                </div>
+            </div>
         </div>
-        <div class="col-md-5 ">
-            <h6 class="mb-3 text-decoration-underline fw-bold">Account Details:</h6>
-            <p class="py-2 ps-3"><strong>Last Name:</strong> {{customer.user.last_name}}</p>
-            <p class="py-2 ps-3"><strong>Email:</strong> {{customer.user.email}}</p>
-            <p class="py-2 ps-3"><strong>Account Type:</strong> Customer</p>
+        <div class="col-md-5">
+            <h6 class="mb-3 text-decoration-underline fw-bold">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicAccountDetails">Account Details:</ng-container>
+                <ng-template #arabicAccountDetails>تفاصيل الحساب:</ng-template>
+            </h6>
+
+            <div>
+                <div class="label">
+                    <strong>
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicEmail">Email:</ng-container>
+                        <ng-template #arabicEmail>البريد الإلكتروني:</ng-template>
+                    </strong>
+                </div>
+                <div class="content">
+                    <span>{{customer.user.email}}</span>
+                </div>
+            </div>
+
+            <div>
+                <div class="label">
+                    <strong>
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicAddress">Address:</ng-container>
+                        <ng-template #arabicAddress>العنوان:</ng-template>
+                    </strong>
+                </div>
+                <div class="content">
+                    <span>{{customer.address}}</span>
+                </div>
+            </div>
+
+            <div>
+                <div class="label">
+                    <strong>
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone:</ng-container>
+                        <ng-template #arabicPhone>رقم الهاتف:</ng-template>
+                    </strong>
+                </div>
+                <div class="content">
+                    <span>{{customer.phone}}</span>
+                </div>
+            </div>
         </div>
     </div>
     <div class="text-center">
-        <a (click)="editProfile()" class="btn w-25 text-white mt-4 rounded-pill py-2">Edit Profile</a>
+        <a (click)="editProfile()" class="btn w-25 text-white mt-4 rounded-pill py-2">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicEditProfile">Edit Profile</ng-container>
+            <ng-template #arabicEditProfile>تعديل الملف الشخصي</ng-template>
+        </a>
     </div>
 </div>

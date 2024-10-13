@@ -59,8 +59,11 @@ export class AppComponent {
   title = 'angular-front';
 
   categories: any[] | null[] = [];
-  constructor( private userService: UserService,
-    private categoryService: CategoryService) { }
+  constructor(private sharedService: SharedService, private userService: UserService,
+    private categoryService: CategoryService) {
+      this.sharedService.updateLanguage();  
+
+     }
 
   ngOnInit(): void {
     if(sessionStorage.getItem('authToken')){

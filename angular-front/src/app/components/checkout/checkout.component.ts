@@ -9,6 +9,9 @@ import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../services/order.service';
+import { SharedService } from '../../services/language.service';
+import { ToastrService } from 'ngx-toastr';
+import { PaymentService } from '../../services/payment.service';
 
 @Component({
   selector: 'app-checkout',
@@ -24,20 +27,32 @@ import { OrderService } from '../../services/order.service';
 export class CheckoutComponent {
   submitted:boolean = false;
   cartItems: CartItem[] = [];
+  payOnDelivery:number = 10;
   user: any;
   customer: any;
   totalPrice: number = 0;
   totalPriceAfterOffers: number = 0;
-  totalOffers: number = 0;
+  total: number = 0;
 
+  totalOffers: number = 0;
+  currentLanguage: string ='en';
+  selectedPaymentOption: string = 'payNow';
 
   private successAnimationItem: AnimationItem | undefined;
-  constructor(private customerService: CustomerService,
-    private userService: UserService,
+  constructor(
+    private paymentService:PaymentService,
+    private customerService: CustomerService,
+    private sharedService: SharedService,
     private router: Router,
+    private toastr :ToastrService,
     private cartService: CartService,
     private orderService:OrderService,
-  ) { }
+  ) { 
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      }); 
+
+  }
 
   successAnimationOptions: AnimationOptions = {
     path: 'animations/confirmation.json',
@@ -52,7 +67,16 @@ export class CheckoutComponent {
     this.updateCartItems();
     this.updateCustomer();
   }
+  paymentChange(selectedOption: string) {
+    this.selectedPaymentOption = selectedOption;
 
+    if (selectedOption === 'payNow') {
+      this.total = this.totalPriceAfterOffers; 
+    } else if (selectedOption === 'delivery') {
+
+      this.total = this.totalPriceAfterOffers +this.payOnDelivery;
+    }
+  }
   onSubmit(form:any){
     this.submitted = true;
     if (this.totalPrice<=0){
@@ -69,25 +93,58 @@ export class CheckoutComponent {
         formData.append(key, form.value[key]);
       });
       formData.append('total',this.totalPriceAfterOffers.toString());
-      'phone'
-            'address'
-            'total' 
+      
       
 
       this.orderService.addOrder(
         {
         'phone': form.value['phone'] , 
         'address':form.value['address'],
-        'total' :this.totalPriceAfterOffers 
+        'total' :this.total ,
+        'payment' :this.selectedPaymentOption 
         }
       ).subscribe(
         response=>{
-          alert("order added successfully");
-          this.router.navigate(['/order']);
+          
+
+          // console.log(response);
+          
+            const isPayed = response.pay;
+          if(isPayed){
+            this.toastr.success("order added successfully proceed to payment");
+
+            const url = response.url;
+            window.open(url, '_blank');
+            this.paymentService.setUrlPayment(url);
+           
+            this.router.navigate(['/need-to-pay']);
+
+
+          }else{
+            this.toastr.success("order added successfully payment on delivery");
+            // this.toastr.error("order added successfully payment on delivery");
+            // this.toastr.warning("order added successfully payment on delivery");
+
+            // alert("order added successfully payment on delivery");
+            this.router.navigate(['/order']);
+          }
+    
 
           console.log('order added::',response);
         },error=>{
+
+
+          const isPayed = error.pay;
+          if(isPayed){
+            this.toastr.warning("order added successfully but there is a problem with payment");
+            alert("order added but there is a problem with payment");
+          }else{
+            alert("an error happend while adding this order");
+          }
+
           console.log('error happend',error);
+          console.log('error happend',error.pay);
+
         }
       );
 
@@ -153,7 +210,7 @@ export class CheckoutComponent {
           this.totalPriceAfterOffers += (item.product.priceAfterOffers) * item.quantity;
           this.totalOffers += (item.product.price - item.product.priceAfterOffers) * item.quantity;
 
-
+          this.paymentChange(this.selectedPaymentOption);
         });
 
 
@@ -168,34 +225,6 @@ export class CheckoutComponent {
       }
     );
   }
-
-  // updateUser() {
-
-  //   console.log(sessionStorage.getItem('authToken'));
-  //   if (sessionStorage.getItem('authToken')) {
-  //     this.userService.getUser().subscribe(
-  //       response => {
-  //         this.userService.setUser(response.user);
-  //       },
-  //       error => {
-  //         if (error.status === 400 || error.status === 500) {
-  //           console.error('A specific error occurred:', error);
-  //         } else if (error.status === 401) {
-  //           sessionStorage.removeItem('authToken');
-  //           sessionStorage.setItem('loginSession', 'true');
-  //           this.router.navigate(['/login']);
-  //         } else {
-  //           console.error('An unexpected error occurred:', error);
-  //         }
-  //       }
-  //     );
-  //   } else {
-  //     sessionStorage.setItem('loginSession', 'true');
-  //     this.router.navigate(['/login']);
-
-  //   }
-
-  // }
 }
 
 

@@ -1,0 +1,64 @@
+.payment-reminder-container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 600px; /* Limit the width for better readability */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #f9f9f9; /* Light background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+h2 {
+    color: #333; /* Dark heading text */
+    font-size: 24px; /* Font size for heading */
+}
+
+p {
+    color: #555; /* Slightly lighter text for the description */
+    font-size: 18px; /* Adjust font size for readability */
+}
+
+.btn-success {
+    background-color: #28a745; /* Green for payment button */
+    color: white; /* White text */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Darker green on hover */
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Grey color for back button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+}
+
+.mt-3 {
+    margin-top: 1rem;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}

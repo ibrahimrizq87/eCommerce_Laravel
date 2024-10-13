@@ -1,3 +1,26 @@
 td {
     vertical-align: middle;
 }
+.text-danger {
+    font-weight: bolder;
+    color: red;
+  }
+  
+  .text-success {
+    font-weight: bolder;
+
+    color: green;
+  }
+  
+  .text-warning {
+    font-weight: bolder;
+
+    color: orange;
+  }
+  
+  .text-muted {
+    font-weight: bolder;
+
+    color: rgb(14, 13, 13);
+  }
+  

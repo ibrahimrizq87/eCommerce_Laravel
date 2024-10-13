@@ -1,30 +1,56 @@
 <div class="container mt-5 mb-5 pb-5">
     <div *ngIf="empty" class="text-center mt-5">
         <div class="alert alert-info" role="alert">
-            <strong>Your cart is empty!</strong> You haven't added any products yet.
+            <strong>
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicCartEmpty">Your cart is empty!</ng-container>
+                <ng-template #arabicCartEmpty>عربة التسوق الخاصة بك فارغة!</ng-template>
+            </strong>
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicAddProducts">You haven't added any products yet.</ng-container>
+            <ng-template #arabicAddProducts>لم تضف أي منتجات بعد.</ng-template>
         </div>
-        <button routerLink="/products" class="btn btn-primary">Return to Products</button>
+        <button routerLink="/products" class="btn btn-primary">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicReturnToProducts">Return to Products</ng-container>
+            <ng-template #arabicReturnToProducts>العودة إلى المنتجات</ng-template>
+        </button>
     </div>
     
     <div *ngIf="!empty">
         <div class="row shadow-lg text-center p-3">
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <p class="mb-0">Product</p>
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicProduct">Product</ng-container>
+                    <ng-template #arabicProduct>المنتج</ng-template>
+                </p>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <p class="mb-0">Price</p>
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicPrice">Price</ng-container>
+                    <ng-template #arabicPrice>السعر</ng-template>
+                </p>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <p class="mb-0">Total Offers</p>
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalOffers">Total Offers</ng-container>
+                    <ng-template #arabicTotalOffers>إجمالي العروض</ng-template>
+                </p>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <p class="mb-0">Quantity</p>
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicQuantity">Quantity</ng-container>
+                    <ng-template #arabicQuantity>الكمية</ng-template>
+                </p>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <p class="mb-0">SubTotal</p>
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicSubTotal">SubTotal</ng-container>
+                    <ng-template #arabicSubTotal>المجموع</ng-template>
+                </p>
             </div>
             <div class="col-2 d-flex justify-content-center align-items-center">
-                <p class="mb-0">Action</p>
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
+                    <ng-template #arabicAction>الإجراء</ng-template>
+                </p>
             </div>
         </div>
 
@@ -34,20 +60,14 @@
                 <span class="ms-2">{{item.product.product_name}}</span>
             </div>
             <div class="col-2 d-flex align-items-center justify-content-center">
-                <p class="ps-2 mb-0">
-                    {{item.product.totalOffers}}%
-                </p>
+                <p class="ps-2 mb-0">{{item.product.totalOffers}}%</p>
             </div>
             <div class="col-2 d-flex align-items-center justify-content-center">
                 <p class="ps-2 mb-0">
                     <span class="original-price me-2 border rounded p-1" *ngIf="item.product.price != item.product.priceAfterOffers">
-                        <span style="color: red; text-decoration: line-through;">
-                            $ {{ item.product.price }}
-                        </span>
+                        <span style="color: red; text-decoration: line-through;">$ {{ item.product.price }}</span>
                     </span>
-                    <span class="discounted-price">
-                        $ {{ item.product.priceAfterOffers }}
-                    </span>
+                    <span class="discounted-price">$ {{ item.product.priceAfterOffers }}</span>
                 </p>
             </div>
 
@@ -56,7 +76,7 @@
                     <button (click)="downQuantity(item)" class="btn btn-link btn-minus">
                         <i class="fas fa-minus"></i>
                     </button>
-                    <input id="form1" min="1" name="quantity" [value]='item.quantity'   type="number" class="form-control" />
+                    <input id="form1" min="1" name="quantity" [value]='item.quantity' type="number" class="form-control" />
                     <button (click)="addQuantity(item)" class="btn btn-link btn-plus">
                         <i class="fas fa-plus"></i>
                     </button>
@@ -70,36 +90,46 @@
             </div>
         </div>
     </div>
-<div *ngIf="!empty">
-    <div class="container w-25 mb-4 mt-5" style="background-color: #fff; border: 2px solid  #b83807;">
-        <div class="p-3">
-            <p><strong>Cart Total</strong></p>
-        </div>
-        <div class="d-flex justify-content-between text-center row ">
-            <div class="col-md-6">
-                Total price:
+
+    <div *ngIf="!empty">
+        <div class="container w-25 mb-4 mt-5" style="background-color: #fff; border: 2px solid #b83807;">
+            <div class="p-3">
+                <p><strong>
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicCartTotal">Cart Total</ng-container>
+                    <ng-template #arabicCartTotal>إجمالي العربة</ng-template>
+                </strong></p>
             </div>
-            <div class="col-md-6">
-                {{totalPrice}} $
+            <div class="d-flex justify-content-between text-center row ">
+                <div class="col-md-6">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalPrice">Total price:</ng-container>
+                    <ng-template #arabicTotalPrice>إجمالي السعر:</ng-template>
+                </div>
+                <div class="col-md-6">
+                    {{totalPrice}} $
+                </div>
+                <hr class="my-2">
+                <div class="col-md-6">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalSaved">Total Saved by Offers:</ng-container>
+                    <ng-template #arabicTotalSaved>إجمالي التوفير من العروض:</ng-template>
+                </div>
+                <div class="col-md-6" style="color: red;">
+                    {{totalOffers}} $
+                </div>
+                <hr class="my-2">
+                <div class="col-md-6">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicFinalTotal">Final Total:</ng-container>
+                    <ng-template #arabicFinalTotal>الإجمالي النهائي:</ng-template>
+                </div>
+                <div class="col-md-6">
+                    {{totalPriceAfterOffers}} $ 
+                </div>
             </div>
-            <hr class="my-2">
-            <div class="col-md-6">
-                Total Saved by Offers:
+            <div class="text-center my-4">
+                <button routerLink="/checkout" class="btn p-2 checkout">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicProcessCheckout">Process to checkout</ng-container>
+                    <ng-template #arabicProcessCheckout>الانتقال إلى الدفع</ng-template>
+                </button>
             </div>
-            <div class="col-md-6" style="color: red;">
-                {{totalOffers}} $
-            </div>
-            <hr class="my-2">
-            <div class="col-md-6">
-                Final Total:
-            </div>
-            <div class="col-md-6">
-                {{totalPriceAfterOffers}} $ 
-            </div>
-        </div>
-        <div class="text-center my-4">
-            <button routerLink="/checkout" class="btn p-2 checkout">Process to checkout</button>
         </div>
     </div>
-</div>
 </div>

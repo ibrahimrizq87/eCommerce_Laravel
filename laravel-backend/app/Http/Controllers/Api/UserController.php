@@ -175,7 +175,6 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'role' => 'required|string|max:50',
             'gender' => 'required|string|in:male,female,other',
             'last_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15', 
@@ -191,18 +190,18 @@ class UserController extends Controller
             "image.max" => "The image size should not exceed 2MB.",
         ]);
     
-        $std_validator->sometimes('shop_name', 'required|string|max:255', function($input) {
-            return $input->role === 'seller';
-        });
-        $std_validator->sometimes('about', 'required|string|max:255', function($input) {
-            return $input->role === 'seller';
-        });
-        $std_validator->sometimes('address', 'required|string|max:255', function($input) {
-            return $input->role === 'seller' || $input->role === 'customer';
-        });
-        $std_validator->sometimes('phone', 'required|string|max:255', function($input) {
-            return $input->role === 'seller' || $input->role === 'customer';
-        });
+        // $std_validator->sometimes('shop_name', 'required|string|max:255', function($input) {
+        //     return $input->role === 'seller';
+        // });
+        // $std_validator->sometimes('about', 'required|string|max:255', function($input) {
+        //     return $input->role === 'seller';
+        // });
+        // $std_validator->sometimes('address', 'required|string|max:255', function($input) {
+        //     return $input->role === 'seller' || $input->role === 'customer';
+        // });
+        // $std_validator->sometimes('phone', 'required|string|max:255', function($input) {
+        //     return $input->role === 'seller' || $input->role === 'customer';
+        // });
         if ($std_validator->fails()) {
             return response()->json(['errors' => $std_validator->errors()], 400);
         }
@@ -220,7 +219,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->name = $request->name;
         $user->last_name = $request->last_name;
-        $user->role = $request->role;
+        $user->role = 'customer';
         $user->gender = $request->gender;
         $user->password = Hash::make($request->password);
         $user->save();
@@ -234,19 +233,8 @@ class UserController extends Controller
             $customer->status = 'active';
             $customer->save(); 
 
-        } elseif ($request->role === 'seller') {
-            $seller = new Seller();
-            $seller->user_id = $user->id; 
-            $seller->total_sales = 0;
-            $seller->phone = $request->phone;
-            $seller->address = $request->address;
-            $seller->status = 'active';
-            $seller->about = $request->about; 
-
-            $seller->shope_name = $request->shop_name; 
-            $seller->save(); 
-        }
-
+        } 
+        
         $token = $user->createToken($request->device_name)->plainTextToken;
         $user->sendEmailVerificationNotification();
 

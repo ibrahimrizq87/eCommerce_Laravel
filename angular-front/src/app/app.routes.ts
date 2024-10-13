@@ -29,11 +29,14 @@ import { LoadingComponent } from './components/loading/loading.component';
 
 import { ShowSellerContactComponent } from './components/show-seller-contact/show-seller-contact.component';
 import { BannedUserComponent } from './components/banned-user/banned-user.component';
+import { NeedToPayComponent } from './components/need-to-pay/need-to-pay.component';
 
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     {path:"home",component:HomeComponent},
+    {path:"need-to-pay",component:NeedToPayComponent},
+
     {path:"banned", component:BannedUserComponent},
     {path:"products", component:ProductListComponent},
     {path:"products/:id", component:ProductDetailsComponent},

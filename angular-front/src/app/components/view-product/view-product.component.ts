@@ -11,6 +11,7 @@ import { WishListService } from '../../services/wishlist.service';
 import { ReviewService } from '../../services/review.service';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { SharedService } from '../../services/language.service';
 
 @Component({
   selector: 'app-view-product',
@@ -42,16 +43,24 @@ export class ViewProductComponent {
   quantity: number = 1;
   coverImage: string = '';
   selectedImage: string = '';
+  currentLanguage: string ='en';
 
 
-
-
-  constructor(private productService: ProductService,
+  constructor(private sharedService: SharedService,
+    private productService: ProductService,
     private userService: UserService,
     private router: Router,
     private reviewService: ReviewService,
     private wishListService: WishListService,
-  private cartService:CartService) { }
+    private cartService:CartService) { 
+     this.sharedService.updateLanguage();  
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+    });
+    this.currentLanguage = this.sharedService.getLanguage();  
+
+
+  }
 
     onProductClick(product: any) {
       this.productService.setProduct(product);

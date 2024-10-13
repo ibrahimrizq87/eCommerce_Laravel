@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CustomerHeaderComponent } from '../customer-header/customer-header.component';
 import { CartService } from '../../services/cart.service';
 import { CommonModule, NgIfContext } from '@angular/common';
-
+import { SharedService } from '../../services/language.service';
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -22,12 +22,18 @@ export class CartComponent {
   totalPrice: number = 0;
   totalPriceAfterOffers: number = 0;
   totalOffers: number = 0;
-
+  currentLanguage: string ='en';
   cartItems: CartItem[] = [];
   user: any;
   constructor(private userService: UserService,
     private router: Router,
-    private cartService: CartService) { }
+    private sharedService: SharedService,
+    private cartService: CartService) {
+      this.sharedService.updateLanguage();  
+this.sharedService.language$.subscribe(language => {
+this.currentLanguage = language;
+});
+     }
 
 
   ngOnInit(): void {

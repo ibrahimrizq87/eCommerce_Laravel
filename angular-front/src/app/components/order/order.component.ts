@@ -3,7 +3,7 @@ import { OrderService } from '../../services/order.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OrderPaymentService } from '../../services/order-payment.service';
-
+import { SharedService } from '../../services/language.service';
 @Component({
     selector: 'app-order',
     standalone: true,
@@ -14,8 +14,16 @@ import { OrderPaymentService } from '../../services/order-payment.service';
 
 export class OrderComponent implements OnInit {
     orders: any[] = [];
-
-    constructor(private OrderPaymentService: OrderPaymentService ,private orderService: OrderService, private router: Router) { }
+    currentLanguage: string ='en';
+    constructor(
+        private sharedService: SharedService,
+        private OrderPaymentService: OrderPaymentService ,
+        private orderService: OrderService, private router: Router) { 
+            this.sharedService.language$.subscribe(language => {
+                this.currentLanguage = language;
+                });
+                      
+        }
 
     ngOnInit(): void {
         this.fetchOrders();
@@ -24,6 +32,7 @@ export class OrderComponent implements OnInit {
     fetchOrders(): void {
         this.orderService.getAllOrders().subscribe(
             (response) => {
+                console.log('my data ata:::..>>', response);
                 this.orders = response; 
             },
             (error) => {
@@ -65,7 +74,6 @@ export class OrderComponent implements OnInit {
     const requestData = { 'id': order.id };
     this.OrderPaymentService.requestPayment(requestData).subscribe(
       response => {
-        console.log(response);
         const url = response.url;
         window.open(url, '_blank');
       }

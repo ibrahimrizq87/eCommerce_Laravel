@@ -12,7 +12,11 @@ export class SharedService {
     localStorage.setItem('language', language);
     this.languageSource.next(language);
   }
-
+  updateLanguage() {
+    var lang= localStorage.getItem('language') || 'en';
+    this.languageSource.next(lang);
+ 
+  }
   getLanguage() {
     return localStorage.getItem('language') || 'en'; 
   }

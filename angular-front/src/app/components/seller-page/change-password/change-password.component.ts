@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { SellerService } from '../../../services/seller.service';
 import { Component, Output, EventEmitter } from '@angular/core';
-
+import { SharedService } from '../../../services/language.service';
 @Component({
   selector: 'app-change-password',
   standalone: true,
@@ -23,8 +23,13 @@ export class ChangePasswordComponent {
   submitted: boolean = false;
   imageUploaded = false;
   backendErrors: any = {};
+  currentLanguage: string ='en';
+  constructor(private sharedService: SharedService,private userService: UserService) { 
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
 
-  constructor(private userService: UserService) { }
+  }
 
   seller: any;
   onSubmit(form: any) {

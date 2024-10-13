@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { GuestHeaderComponent } from "../guest-header/guest-header.component";
+import { SharedService } from '../../services/language.service';
 
 @Component({
   selector: 'app-login',
@@ -51,8 +52,15 @@ export class LoginComponent {
   submitted: boolean = false;
   user:any;
   backendErrors: any = {};
+  currentLanguage: string ='en';
+  constructor(private userService: UserService ,   private router: Router,private sharedService: SharedService) { 
+    this.sharedService.updateLanguage();  
 
-  constructor(private userService: UserService ,   private router: Router) { }
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+      });
+
+  }
   getErrorMessages(): string[] {
     const errorMessages: string[] = [];
     if (this.backendErrors) {

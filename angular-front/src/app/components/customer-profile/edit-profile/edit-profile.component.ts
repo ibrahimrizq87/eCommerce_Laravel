@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
 import { CustomerService } from '../../../services/customer.service';
 import { Component, Output, EventEmitter } from '@angular/core';
-
+import { SharedService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-edit-profile',
@@ -31,8 +31,15 @@ isSeller :Boolean = false;
   submitted: boolean = false;
   imageUploaded = false;
   backendErrors: any = {};
+  currentLanguage: string ='en';
+  constructor(private sharedService: SharedService,private customerService: CustomerService) {
 
-  constructor(private customerService: CustomerService) { }
+    this.sharedService.updateLanguage();  
+this.sharedService.language$.subscribe(language => {
+this.currentLanguage = language;
+});
+
+   }
 
   customer:any;
 

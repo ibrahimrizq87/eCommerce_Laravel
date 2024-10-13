@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../services/order-item.service';
 import { ProductService } from '../../services/product.service';
 import { SellerService } from '../../services/seller.service';
+import { SharedService } from '../../services/language.service';
 
 @Component({
   selector: 'app-view-order',
@@ -19,7 +20,7 @@ import { SellerService } from '../../services/seller.service';
   styleUrl: './view-order.component.css'
 })
 export class ViewOrderComponent {
- 
+  currentLanguage: string ='en';
 order:any;
 totalPrice: number = 0;
 totalPriceAfterOffers: number = 0;
@@ -29,8 +30,14 @@ orderItems:OrderItem [] = [];
     private router:Router,
     private orderItemService:OrderItemService,
     private productService:ProductService,
-    private sellerService:SellerService
-  ){}
+    private sellerService:SellerService,
+    private sharedService: SharedService
+  ){
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+
+  }
 
 
   ngOnInit(): void {

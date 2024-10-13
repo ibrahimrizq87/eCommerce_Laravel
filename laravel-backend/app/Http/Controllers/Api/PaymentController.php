@@ -35,20 +35,6 @@ class PaymentController extends Controller
             return response()->json(['success' => false, 'error' => 'order not found'], 404);
         }
 
-        foreach ($order2->orderItems as $item) {
-            $product = $item->product;
-            $seller= Seller::where('user_id',$product->user->id)->first();
-
-       if (!$seller) {
-            return response()->json(['success' => false, 'error' => 'seller not found'], 404);
-        }
-
-            $totalOffers = $this->calculateTotalOffers($product); 
-            $offersPrecintage = ($totalOffers /100);
-            $priceAfterOffers = $product->price - ($product->price *  $offersPrecintage); 
-            $productTotal = $priceAfterOffers * $item->quantity;     
-            //$seller->increment('total_sales', $productTotal );
-        }
         return view('payment_done');
 
     } catch (Exception $e) {
@@ -67,31 +53,18 @@ class PaymentController extends Controller
 }
     public function handlePayment(Request $request)
     {
-
-
         $request->validate([
             'id' => 'required|exists:orders,id', 
         ]);
-
         try {
-
             Stripe::setApiKey(env('STRIPE_TEST_SK'));
-
-
-
              $order = Order::find($request->id);
- 
-            
-
              if (!$order) {
                 return response()->json(['error' => 'order not found'], 404);
             }
-
-          
             if ($order->payment_status == 'payed') {
                 return response()->json([ 'error' => 'order is already payed'], 403);
             }
-
             $amount = $order->total * 100;
             $message =''; 
             foreach ($order->orderItems as $item) {

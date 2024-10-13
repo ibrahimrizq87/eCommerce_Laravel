@@ -1,0 +1,31 @@
+<div class="payment-reminder-container text-center mt-5 mb-5">
+    <h2 class="mt-4">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicPaymentRequired">Payment Required</ng-container>
+      <ng-template #arabicPaymentRequired>الدفع مطلوب</ng-template>
+    </h2>
+  
+    <p class="mb-4">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicMessage">
+        You need to complete your payment for the selected order to proceed. Please choose one of the options below:
+      </ng-container>
+      <ng-template #arabicMessage>
+        تحتاج إلى إكمال الدفع للطلب المحدد للمتابعة. يرجى اختيار إحدى الخيارات أدناه:
+      </ng-template>
+    </p>
+  
+    <div class="mt-3">
+      <button class="btn btn-success" type="button" (click)="payNow()">
+        <img src="images/payment.png" alt="Payment Icon" style="margin-right: 10px; width:20px; height:20px;">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicPayNow">Pay Now</ng-container>
+        <ng-template #arabicPayNow>ادفع الآن</ng-template>
+      </button>
+    </div>
+  
+    <div class="mt-4">
+      <button class="btn btn-secondary" type="button" (click)="goBackToOrders()">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicBackToOrders">Back to Orders</ng-container>
+        <ng-template #arabicBackToOrders>الرجوع إلى قائمة الطلبات</ng-template>
+      </button>
+    </div>
+  </div>
+  

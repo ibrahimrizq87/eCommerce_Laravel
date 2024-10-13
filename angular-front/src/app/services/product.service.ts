@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment'; 
@@ -32,9 +32,39 @@ export class ProductService {
       this.allProducts = products;
 
     }
+
+    // getProducts(page: number, itemsPerPage: number, searchCriteria: string, searchTerm: string, priceFrom: number, priceTo: number): Observable<any> {
+    //   let params: any = {
+    //     page: page,
+    //     itemsPerPage: itemsPerPage,
+    //   };
   
-    getAllProduct() {
-      return this.allProducts;
+    //   if (searchCriteria && searchTerm) {
+    //     params[searchCriteria] = searchTerm;
+    //   }
+  
+    //   if (priceFrom && priceTo) {
+    //     params.priceFrom = priceFrom;
+    //     params.priceTo = priceTo;
+    //   }
+  
+    //   return this.http.get(this.apiUrl, { params });
+    // }
+  
+    // getAllProduct() {
+    //   return this.allProducts;
+    // }
+
+    getProducts(page: number, itemsPerPage: number, searchCriteria: string, searchTerm: string, priceFrom: number, priceTo: number): Observable<any> {
+      const params = new HttpParams()
+        .set('page', page.toString())
+        .set('itemsPerPage', itemsPerPage.toString())
+        .set('searchCriteria', searchCriteria)
+        .set('searchTerm', searchTerm)
+        .set('priceFrom', priceFrom.toString())
+        .set('priceTo', priceTo.toString());
+    
+      return this.http.get('api/products', { params });
     }
 
 

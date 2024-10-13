@@ -5,7 +5,7 @@ import { ProductService } from '../../services/product.service';
 import { WishListService } from '../../services/wishlist.service';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { CartService } from '../../services/cart.service';
-
+import { SharedService } from '../../services/language.service';
 @Component({
   selector: 'app-wishlist',
   standalone: true,
@@ -16,13 +16,20 @@ import { CartService } from '../../services/cart.service';
 export class WishlistComponent {
   products: Product[] = [];
   noOfProducts: number = 0;
-
+  currentLanguage: string ='en';
   user: any;
   constructor(private wishlistService: WishListService,
     private productService: ProductService,
     private userService: UserService,
     private router: Router,
-  private cartService:CartService) { }
+    private sharedService: SharedService,
+  private cartService:CartService) { 
+    this.sharedService.updateLanguage();  
+this.sharedService.language$.subscribe(language => {
+this.currentLanguage = language;
+});
+
+  }
 
 
 

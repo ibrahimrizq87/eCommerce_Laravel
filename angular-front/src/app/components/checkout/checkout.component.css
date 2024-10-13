@@ -42,13 +42,13 @@
 .form-check-input:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(184, 56, 7, 0.5); /* Orange shadow on focus */
-    border: 1px solid #b83807; /* Orange border */
+    border: 1px solid #b83807; 
 }
 
-/* Style the checkbox when checked */
+
 .form-check-input:checked {
-    background-color: #b83807; /* Orange background when checked */
-    border-color: #b83807; /* Orange border when checked */
+    background-color: #b83807; 
+    border-color: #b83807; 
 }
 
 
@@ -72,8 +72,43 @@ a:hover {
 }
 
 input:-webkit-autofill {
-    background-color: #face86 !important; /* Light grey background */
-    -webkit-box-shadow: 0 0 0 1000px #face86 inset; /* Ensure the background color applies */
-    color: #000 !important; /* Black text */
+    background-color: #face86 !important; 
+    -webkit-box-shadow: 0 0 0 1000px #face86 inset;
+    color: #000 !important; 
 }
 
+
+.btn-pay {
+    background-color: #28a745; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 15px; 
+    font-size: 16px; 
+    display: flex; 
+    align-items: center; 
+    transition: background-color 0.3s, transform 0.2s; 
+}
+
+.btn-pay:hover {
+    background-color: #218838; 
+    transform: translateY(-2px); 
+}
+
+.btn-order {
+    background-color: #b83807;
+    color:#ffffff;
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 15px; 
+    font-size: 16px; 
+    display: flex; 
+    align-items: center; 
+    transition: background-color 0.3s, transform 0.2s; 
+}
+
+
+.btn-order:hover {
+    background-color: #752303;
+    transform: translateY(-2px); 
+}

@@ -1,20 +1,33 @@
 <!-- <app-guest-header /> -->
-<div class=" container w-50 my-5 ">
+<div class="container w-50 my-5">
     <div class="login-form shadow-lg" style="background-color: #ffffff;">
-
+        
         <div *ngIf="sessionError">
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Alert!</strong> You need to log in first.
-
-            </div>
-        </div> 
-         <div *ngIf="loginErrorBool">
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <strong>Error! {{loginError}}</strong>
-
+                <strong>
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicAlert">Alert!</ng-container>
+                    <ng-template #arabicAlert>تنبيه!</ng-template>
+                </strong>
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicLoginPrompt">You need to log in first.</ng-container>
+                <ng-template #arabicLoginPrompt>يجب عليك تسجيل الدخول أولاً.</ng-template>
             </div>
         </div>
-        <h5 class="text-center my-3" style="color: #b83807;">Login</h5>
+
+        <div *ngIf="loginErrorBool">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicError">Error!</ng-container>
+                    <ng-template #arabicError>خطأ!</ng-template>
+                    {{loginError}}
+                </strong>
+            </div>
+        </div>
+
+        <h5 class="text-center my-3" [style.color]="'#b83807'">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicLogin">Login</ng-container>
+            <ng-template #arabicLogin>تسجيل الدخول</ng-template>
+        </h5>
+
         <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert alert-danger">
             <ul *ngIf="loginError == '' ">
                 <li *ngFor="let error of getErrorMessages()">{{ error }}</li>
@@ -25,81 +38,75 @@
         </div>
 
         <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
-        <div class="row">
-            <div class="col-6">
-                <ng-lottie [options]="logInAnimationOptions" width="100%" height="100%"
-                (animationCreated)="logInAnimationCreated($event)">
-            </ng-lottie>
-            </div>
-            <div class="col-6 pt-5">
-            <div class="mb-3">
-                    <div class="form-floating">
-                    <input type="email" class="form-control" id="email" placeholder="Email" name="email" required email
-                        ngModel>
-                    <label for="email">Email</label>
-                    <div *ngIf="submitted && loginForm.controls['email']?.invalid" class="text-danger">
-                        <div *ngIf="loginForm.controls['email']?.errors?.['required']">
-                            Email is required.
+            <div class="row">
+                <div class="col-6">
+                    <ng-lottie [options]="logInAnimationOptions" width="100%" height="100%" 
+                    (animationCreated)="logInAnimationCreated($event)">
+                    </ng-lottie>
+                </div>
+                <div class="col-6 pt-5">
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="email" class="form-control" id="email" placeholder="Email" name="email" required email
+                                ngModel>
+                            <label for="email">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicEmail">Email</ng-container>
+                                <ng-template #arabicEmail>البريد الإلكتروني</ng-template>
+                            </label>
+                            <div *ngIf="submitted && loginForm.controls['email']?.invalid" class="text-danger">
+                                <div *ngIf="loginForm.controls['email']?.errors?.['required']">
+                                    <ng-container *ngIf="currentLanguage === 'en'; else arabicEmailRequired">Email is required.</ng-container>
+                                    <ng-template #arabicEmailRequired>البريد الإلكتروني مطلوب.</ng-template>
+                                </div>
+                                <div *ngIf="loginForm.controls['email']?.errors?.['email']">
+                                    <ng-container *ngIf="currentLanguage === 'en'; else arabicValidEmail">Please enter a valid email address.</ng-container>
+                                    <ng-template #arabicValidEmail>الرجاء إدخال عنوان بريد إلكتروني صالح.</ng-template>
+                                </div>
+                            </div>
                         </div>
-                        <div *ngIf="loginForm.controls['email']?.errors?.['email']">
-                            Please enter a valid email address.
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="password" class="form-control" id="password" placeholder="Your password"
+                                name="password" required ngModel>
+                            <label for="password">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPassword">Password</ng-container>
+                                <ng-template #arabicPassword>كلمة المرور</ng-template>
+                            </label>
+                            <div *ngIf="submitted && loginForm.controls['password']?.invalid" class="text-danger">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPasswordRequired">Password is required.</ng-container>
+                                <ng-template #arabicPasswordRequired>كلمة المرور مطلوبة.</ng-template>
+                            </div>
                         </div>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-start fw-bold">
+                            <a routerLink="/send" class="nav-link" aria-current="page">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicForgotPassword">Forgot Password?</ng-container>
+                                <ng-template #arabicForgotPassword>هل نسيت كلمة السر؟</ng-template>
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="password" placeholder="Your password"
-                        name="password" required ngModel>
-                    <label for="password">Password</label>
-                    <div *ngIf="submitted && loginForm.controls['password']?.invalid" class="text-danger">
-                        Password is required.
-                    </div>
-                </div>
-            </div>
-            <div class="text-center">
-                <p class="text-start fw-bold">
-                    <a routerLink="/send" class="nav-link" aria-current="page">Forgot Password?</a>
-                </p>
-            </div>
-
-
-                       
-            </div>
-        </div>
-
 
             <div class="text-center my-4">
-                <button type="submit" class="btn w-50 fw-bolder text-white">Login</button>
+                <button type="submit" class="btn w-50 fw-bolder text-white">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicLoginButton">Login</ng-container>
+                    <ng-template #arabicLoginButton>تسجيل الدخول</ng-template>
+                </button>
             </div>
 
             <div class="text-center">
-                <p class="text-center fw-bold">Don't have an account?
-                    <a routerLink="/register" class="nav-link" aria-current="page">Create your account</a>
-                    </p>
-
-            </div>
-
-            <div class="modal" id="myModal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-
-                        <div class="modal-body">
-                            <ng-lottie 
-                            [options]="successAnimationOptions"
-                            (animationCreated)="successAnimationCreated($event)"
-                            style="height:50%; width:50%;">
-                          </ng-lottie>
-                        </div>
-                        <div class="modal-body d-flex justify-content-center">
-                            <button routerLink="/home" class="btn" (click)="closeModal()" data-bs-toggle="modal"
-                                style="background-color: #231717; color:white">Close</button>
-
-                        </div>
-                    </div>
-                </div>
-
+                <p class="text-center fw-bold">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicNoAccount">Don't have an account?</ng-container>
+                    <ng-template #arabicNoAccount>ليس لديك حساب؟</ng-template>
+                    <a routerLink="/register" class="nav-link" aria-current="page">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicCreateAccount">Create your account</ng-container>
+                        <ng-template #arabicCreateAccount>أنشئ حسابك</ng-template>
+                    </a>
+                </p>
             </div>
         </form>
-
     </div>
+</div>

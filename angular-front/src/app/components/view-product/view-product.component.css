@@ -197,3 +197,17 @@ video {
 .fa-star:hover ~ .fa-star {
     color: gold; 
 }
+
+
+.label {
+    display: inline-block; 
+    width: 100px; 
+    font-weight: bold; 
+}
+
+.content {
+    display: inline-block; 
+    margin-left: 10px; 
+}
+
+

@@ -1,19 +1,31 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { CustomerService } from '../../../services/customer.service';
+import { SharedService } from '../../../services/language.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-customer-info',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule,CommonModule],
   templateUrl: './customer-info.component.html',
   styleUrl: './customer-info.component.css'
 })
 export class CustomerInfoComponent {
   customer: any;
-  constructor(private router:Router,private customerService: CustomerService,
+  currentLanguage: string ='en';
 
-  ) { }
+  constructor(private sharedService: SharedService,
+    private router:Router,private customerService: CustomerService,
+
+  ) { 
+    this.sharedService.updateLanguage();  
+    this.sharedService.language$.subscribe(language => {
+    this.currentLanguage = language;
+    });
+          
+
+  }
   @Output() linkClicked = new EventEmitter<string>();
   editProfile(){
     this.linkClicked.emit('edit-profile');
@@ -21,7 +33,6 @@ export class CustomerInfoComponent {
   }
 
   ngOnInit(): void {
-    // this.updateCartItems();
     this.updateCustomer();
   }
 

@@ -12,7 +12,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { CartService } from '../../services/cart.service';
 
 import { FormsModule } from '@angular/forms';
-
+import { SharedService } from '../../services/language.service';
 // import { Product } from "../../models/product.model";
 
 @Component({
@@ -34,53 +34,79 @@ import { FormsModule } from '@angular/forms';
 
 export class ProductListComponent {
   products: Product[] = []; 
-
+  currentLanguage: string ='en';
   page: number = 1;              
   itemsPerPage: number = 20; 
   category :any;
-
+  totalItems:number = 0;
   filteredProducts: any[] = [];
   priceFrom: number  = 0;
   priceTo: number = 0;
   searchTerm: string = '';
   searchCriteria: string = 'name'; 
-
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
+
   constructor(
     private productService: ProductService ,
     private categoryService: CategoryService,
     private router: Router,
-    private wishListService: WishListService,
+    private sharedService: SharedService,
     private cartService:CartService
-  ) { }
+  ) {
+    this.sharedService.updateLanguage();  
+
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+    });
+   }
   
-
-
-  search() {
-    this.filteredProducts = this.products;
-
-    if (this.searchCriteria === 'name' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'category' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'price') {
-        if (this.priceFrom <= this.priceTo ) {
-            this.filteredProducts = this.filteredProducts.filter(product =>
-                product.priceAfterOffers !== null && 
-                product.priceAfterOffers >= this.priceFrom && 
-                product.priceAfterOffers <= this.priceTo
-            );
-        }else{
-          alert('the from price must be less than the to price');
-        }
-    }
-
+   search() {
     this.page = 1; 
-}
+    this.getProducts();
+  }
+
+  getProducts() {
+    this.productService.getProducts(
+       this.page,
+       this.itemsPerPage, 
+       this.searchCriteria, 
+       this.searchTerm, 
+       this.priceFrom, 
+       this.priceTo).subscribe(
+
+      response => {
+        console.log('new datata::=>' , response)
+      this.filteredProducts = response.products;
+      this.totalItems = response.totalItems;
+    },error=>{
+      console.log('error happend', error);
+    });
+  }
+
+//   search() {
+//     this.filteredProducts = this.products;
+//     if (this.searchCriteria === 'name' && this.searchTerm) {
+//         this.filteredProducts = this.filteredProducts.filter(product =>
+//             product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+//         );
+//     } else if (this.searchCriteria === 'category' && this.searchTerm) {
+//         this.filteredProducts = this.filteredProducts.filter(product =>
+//             product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
+//         );
+//     } else if (this.searchCriteria === 'price') {
+//         if (this.priceFrom <= this.priceTo ) {
+//             this.filteredProducts = this.filteredProducts.filter(product =>
+//                 product.priceAfterOffers !== null && 
+//                 product.priceAfterOffers >= this.priceFrom && 
+//                 product.priceAfterOffers <= this.priceTo
+//             );
+//         }else{
+//           alert('the from price must be less than the to price');
+//         }
+//     }
+
+//     this.page = 1; 
+// }
 
 
   addToCart(product:any) {
@@ -119,8 +145,15 @@ export class ProductListComponent {
     this.router.navigate(['/product/view']);
 
   }
-  
+  onPageChange(page: number) {
+    this.page = page;
+    this.getProducts();  
+  }
+
+
+
   ngOnInit(): void {
+    this.getProducts(); 
     this.category =this.categoryService.getSelectedCategory();
 if(this.category){
   this.productService.getProductsByCategory(this.category.id).subscribe(

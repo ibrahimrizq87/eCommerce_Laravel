@@ -59,19 +59,19 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li>
-                            <a class="dropdown-item" routerLink="/customer/profile">
+                            <a  style="cursor: pointer;" class="dropdown-item" routerLink="/customer/profile">
                                 <ng-container *ngIf="currentLanguage === 'en'; else arabicManageAccount">Manage My Account</ng-container>
                                 <ng-template #arabicManageAccount>إدارة حسابي</ng-template>
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" routerLink="/order">
+                            <a  style="cursor: pointer;" class="dropdown-item" routerLink="/order">
                                 <ng-container *ngIf="currentLanguage === 'en'; else arabicMyOrder">My Order</ng-container>
                                 <ng-template #arabicMyOrder>طلباتي</ng-template>
                             </a>
                         </li>
                         <li>
-                            <a (click)="logout()" class="dropdown-item">
+                            <a  style="cursor: pointer;" (click)="logout()" class="dropdown-item">
                                 <ng-container *ngIf="currentLanguage === 'en'; else arabicLogout">Logout</ng-container>
                                 <ng-template #arabicLogout>تسجيل الخروج</ng-template>
                             </a>

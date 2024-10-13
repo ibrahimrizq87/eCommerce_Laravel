@@ -76,6 +76,8 @@ export class RegisterComponent {
  
   constructor(private sharedService: SharedService,
     private userService: UserService, private router: Router) {
+      this.sharedService.updateLanguage();  
+
       this.sharedService.language$.subscribe(language => {
         this.currentLanguage = language;
       });

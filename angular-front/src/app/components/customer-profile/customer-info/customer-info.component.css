@@ -10,3 +10,11 @@
 a{
     color: #b83807;
 }
+.label {
+    font-weight: bold;
+}
+
+.content {
+    margin-left: 10px;
+    color: #555; 
+}
