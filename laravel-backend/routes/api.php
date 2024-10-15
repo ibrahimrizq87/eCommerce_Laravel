@@ -35,6 +35,8 @@ Route::get('order-items/admin-done-orderitems', [OrderItemController::class , 'g
 Route::get('order-items/admin-doing-orderitems', [OrderItemController::class , 'getDoingOrderItems'])->middleware('auth:sanctum');
 
 
+Route::get('order-items/my-items-old/{order_id}', [OrderItemController::class , 'getMyOldOrderItems'])->middleware('auth:sanctum');
+
 Route::get('order-items/my-items/{order_id}', [OrderItemController::class , 'getMyOrderItems'])->middleware('auth:sanctum');
 Route::get('order-items/seller-orders', [OrderItemController::class , 'getSellerOrdersItems'])->middleware('auth:sanctum');
 Route::get('order-items/craft-order/{item_id}', [OrderItemController::class , 'craftOrderItem'])->middleware('auth:sanctum');
@@ -45,6 +47,9 @@ Route::get('order-items/done-order-seller', [OrderItemController::class , 'getDo
 Route::get('sellers/seller/{order_id}', [SellerController::class , 'getSellerById'])->middleware('auth:sanctum');
 Route::get('customers/customer/{order_id}', [CustomerController::class , 'getCustomerById'])->middleware('auth:sanctum');
 Route::get('orders/my-orders', [OrderController::class , 'getMyOrder'])->middleware('auth:sanctum');
+Route::get('orders/my-orders-old', [OrderController::class , 'getMyOldOrder'])->middleware('auth:sanctum');
+
+
 Route::get('customers/me', [CustomerController::class , 'getMyCustomer'])->middleware('auth:sanctum');
 Route::get('order-items/old-order-items', [OrderItemController::class , 'getMyOldOrderItems'])->middleware('auth:sanctum');
 
@@ -121,6 +126,8 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('products', ProductController::class)->only([ 'store','update', 'destroy']);
 });
 Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+Route::get('products/related-products/{category}', [ProductController::class, 'getRelatedProducts']);
+
 Route::get('products/byCategory/{category}', [ProductController::class, 'getProductsByCategory']);
 Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
 

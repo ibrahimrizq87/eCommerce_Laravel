@@ -1,39 +1,67 @@
 <div class="container-fluid shadow-lg">
   <h6 class="pt-4 ps-5" style="color:#b83807">All Delivered Order Items</h6>
-  <div class="container">
+  <div class="container mt-5 mb-5 pb-5">
     <table class="table text-center">
       <thead>
         <tr>
-          <th scope="col">Image</th>
-          <th scope="col">Product Name</th>
-          <th scope="col">Quantity</th>
-          <th scope="col">Total Amount</th>
-          <th scope="col">Order Date</th>
-          <th scope="col">Action</th>
-        </tr>
+          <th scope="col">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicAmount">Amount</ng-container>
+              <ng-template #arabicAmount>المبلغ</ng-template>
+          </th>
+          <th scope="col">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicOrderDate">Order Date</ng-container>
+              <ng-template #arabicOrderDate>تاريخ الطلب</ng-template>
+          </th>
+          <th scope="col">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicPayment">Payment</ng-container>
+              <ng-template #arabicPayment>الدفع</ng-template>
+          </th>
+     
+          <th scope="col">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
+              <ng-template #arabicAction>الإجراء</ng-template>
+          </th>
+      </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of orderItems">
-          <td>
-            <img  [src]="item.product.cover_image" width="150px" height="150px" alt="">
-          </td>
+        <tr *ngFor="let order of orders">
+          <td>{{ order.total | currency }}</td>
+          <td>{{ order.created_at | date:'dd/MM/yyyy' }}</td>
+          
+          <td [ngClass]="{
+              'text-muted': order.payment_status === 'not_payed' && order.payment === 'onDelivery',
+              'text-success': order.payment_status === 'payed',
+              'text-warning': order.payment_status === 'not_payed' && order.payment === 'stripe',
+            }">
+          
+          <ng-container *ngIf="currentLanguage === 'en'; else arabicPaymentStatus">
+              {{  order.payment === 'onDelivery' 
+                  ? 'Payment done on Delivery' 
+                  : 'Payment done online' 
+                      
+              }}
+          </ng-container>
+          <ng-template #arabicPaymentStatus>
+              {{ order.payment_status === 'not_payed' && order.payment === 'onDelivery' 
+                  ? 'تم الدفع عند الاستلام' 
+                  :"تم الدفع من خلال الموقع"
+              }}
+          </ng-template>
+        </td>
+
+     
 
           <td>
-          {{item.product.product_name}}
+              <button type="button" class="btn me-1" style="color:#000" (click)="viewOrder(order)">
+                  <i class="fa-solid fa-eye fs-4"></i>
+              </button>
+            
+              <button type="button" class="btn me-1" style="color: #991f00 ;"  
+                      (click)="deleteOrder(order)" >
+                  <i class="fa-solid fa-trash-can fs-4"></i>
+              </button>
           </td>
-          <td>
-          {{item.quantity}}
-          </td>
-          
-          <td>{{ item.product.priceAfterOffers * item.quantity}}</td>
-          <td>{{ item.created_at }}</td>
-          <td>
-            <a (click)="show(item.product)" style="cursor:pointer;">
-              <i class="fa-solid fa-eye px-2 fs-5 text-black" style="text-decoration: none;"></i>
-            </a>
-            <i class="fa-solid fa-trash px-2 fs-5" style="color:rgb(173, 4, 4)" (click)="delete(item)"></i>
-          </td>
-        </tr>
+      </tr>
       </tbody>
     </table>
   </div>

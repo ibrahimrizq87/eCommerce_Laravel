@@ -207,7 +207,7 @@ if(error.status === 401){
   }
 
 componentDataRefresh(){
-  console.log('staaaaaaaaaaaaaaaaaaaaaaaaaaaaaars',this.stars);
+  // console.log('staaaaaaaaaaaaaaaaaaaaaaaaaaaaaars',this.stars);
 
   if (this.productService.getSelectedProduct()) {
     this.product = this.productService.getSelectedProduct();
@@ -217,20 +217,19 @@ componentDataRefresh(){
       this.offers.push(addedOffer.offer);
     })
     this.offers
-    console.log('product: ', this.product);
+    // console.log('product: ', this.product);
     this.coverImage = this.product.cover_image;
 
 
 
-    this.productService.getProductsByCategory(this.product.category.id).subscribe(
+    this.productService.getRelatedProducts(this.product.category.id).subscribe(
       response => {
-        this.products = response.data; 
+        this.products = response.data;
         this.products.forEach(product=>{
           product.priceAfterOffers = product.price;
           product.totalOffers=0;  
           
         product.addedOffers.forEach(offerAdded => {
-          console.log('discount:', offerAdded.offer.discount);
           const endDate = new Date(offerAdded.offer.end_date); 
           const today = new Date(); 
           today.setHours(0, 0, 0, 0); 
@@ -469,6 +468,7 @@ interface Product {
   user: User;
   totalOffers:number;
   priceAfterOffers:number;
+  total_ordered:number;
 }
 interface Feedback {
   id: number;

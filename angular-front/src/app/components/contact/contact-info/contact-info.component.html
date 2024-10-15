@@ -1,17 +1,25 @@
 <div class="container rounded-3 shadow-lg my-5">
     <div class="py-4 d-flex justify-content-start align-items-center">
         <div>
-            <i class="fa-solid fa-phone fs-5 px-3 pt-2 " style="color: #b83807;"></i>
+            <i class="fa-solid fa-phone fs-5 px-3 pt-2" style="color: #b83807;"></i>
         </div>
         <div>
-            <span class="fs-5">Call To Us</span>
+            <span class="fs-5">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicCallToUs">Call To Us</ng-container>
+                <ng-template #arabicCallToUs>اتصل بنا</ng-template>
+            </span>
         </div>
     </div>
     <div class="m-3 py-2">
-    <p>We are available 24/7</p>
-    <p>phone: +201012345678</p>    
+        <p>
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicAvailable">We are available 24/7</ng-container>
+            <ng-template #arabicAvailable>نحن متاحون على مدار الساعة طوال أيام الأسبوع</ng-template>
+        </p>
+        <p>
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone: +201012345678</ng-container>
+            <ng-template #arabicPhone>الهاتف: +201012345678</ng-template>
+        </p>
     </div>
-    
 
     <hr class="my-1">
     <div class="py-4 d-flex justify-content-start align-items-center">
@@ -19,14 +27,21 @@
             <i class="fa-solid fa-envelope fs-5 px-3 pt-1" style="color: #b83807;"></i>
         </div>
         <div>
-            <span class="fs-5">Write To Us</span>
+            <span class="fs-5">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicWriteToUs">Write To Us</ng-container>
+                <ng-template #arabicWriteToUs>اكتب لنا</ng-template>
+            </span>
         </div>
     </div>
 
     <div class="m-3 py-2">
-    <p>Fill out our form and we will contact you within 24 hours</p>
-        <p>Email:iti.assiut$gmail.com</p>
-
+        <p>
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicFillOutForm">Fill out our form and we will contact you within 24 hours</ng-container>
+            <ng-template #arabicFillOutForm>املأ النموذج الخاص بنا وسنتواصل معك خلال 24 ساعة</ng-template>
+        </p>
+        <p>
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicEmail">Email: iti.assiut"&#64;"gmail.com</ng-container>
+            <ng-template #arabicEmail>البريد الإلكتروني: iti.assiut"&#64;"gmail.com</ng-template>
+        </p>
     </div>
-   
 </div>

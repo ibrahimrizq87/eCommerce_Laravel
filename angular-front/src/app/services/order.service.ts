@@ -47,7 +47,14 @@ export class OrderService {
       });
       return this.http.get(this.apiUrl+'/my-orders', { headers });
   }
-
+  
+  getOlddOrders(): Observable<any> {
+    const authToken = sessionStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.get(this.apiUrl+'/my-orders-old', { headers });
+}
 
     deleteOrder(id: string): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');

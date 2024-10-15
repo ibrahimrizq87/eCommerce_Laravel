@@ -33,8 +33,15 @@ export class AllProductsComponent {
   constructor(private productService: ProductService) { }
 
   activeComponent: string = 'all-products'; 
-  
+  addProduct(){
+    this.linkClicked.emit('add-product'); 
 
+  }
+  updateProduct(product:any){
+    this.productService.setProduct(product);
+    this.linkClicked.emit('update-product'); 
+
+  }
   search() {
     this.filteredProducts = this.products;
 
@@ -61,9 +68,7 @@ export class AllProductsComponent {
     this.page = 1; 
 }
 
-  updateProduct() {
-    this.activeComponent = 'update-product'; 
-  }
+
   deleteProduct(product:any){
     this.productService.deleteProduct(product.id).subscribe(
       response=>{

@@ -1,9 +1,9 @@
 <div class="container my-5 p-auto m-auto">
 
-    <div *ngIf="filteredProducts && filteredProducts.length > 0; else noProductsTemplate">
+    <div *ngIf="products && products.length > 0; else noProductsTemplate">
         <div>
             <div class="input-group my-3" style="width: 450px;">
-                <select [(ngModel)]="searchCriteria" class="form-select rounded-5">
+                <select [(ngModel)]="searchCriteria" (change)="changeCriteria()" class="form-select rounded-5">
                     <option value="name">
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByName">Search by Name</ng-container>
                         <ng-template #arabicSearchByName>البحث بالاسم</ng-template>
@@ -40,9 +40,11 @@
             </div>
         </div>
 
+        <!-- filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page } -->
+
         <div class="container shadow-lg my-5 p-5 m-auto">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3 m-auto">
-                <div class="col" *ngFor="let element of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+                <div class="col" *ngFor="let element of products">
                     <div class="card card-item h-100">
                         <div class="card-img-container" style="background-color: #ffffff;">
                             <a (click)="onProductClick(element)" style="display: block; cursor: pointer;">
@@ -93,16 +95,29 @@
             </div>
         </div>
 
-        <!-- <div class="d-flex justify-content-center my-4 ">
-            <pagination-controls (pageChange)="page = $event"></pagination-controls>
-        </div> -->
-        <div class="d-flex justify-content-center my-4">
+      
+        <!-- <div class="d-flex justify-content-center my-4">
             <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
-        </div>
-        
-        <!-- <div class="d-flex justify-content-center my-4 ">
-            <pagination-controls (pageChange)="onPageChange($event)" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage"></pagination-controls>
         </div> -->
+        
+
+        <div class="d-flex justify-content-center my-4">
+            <mat-paginator [length]="totalProducts"
+              [pageSize]="itemsPerPage"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page"
+              (page)="onPageChange($event)">
+                </mat-paginator>
+            <!-- <pagination-controls (pageChange)="onPageChange($event)"
+                                 [totalItems]="totalProducts" 
+                                 [itemsPerPage]="itemsPerPage" 
+                                 [maxSize]="5"
+                                 [directionLinks]="true"
+                                 [autoHide]="true"
+                                 [responsive]="true">
+            </pagination-controls> -->
+        </div>
+
     </div>
 
     <ng-template #noProductsTemplate>

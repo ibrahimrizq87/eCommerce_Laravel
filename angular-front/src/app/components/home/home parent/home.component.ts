@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HomeContentComponent } from '../home-content/home-content.component';
 import { BannerComponent } from '../banner/banner.component';
 import { LatestProductsComponent } from '../latest-products/latest-products.component';
 import { RouterModule ,Router } from '@angular/router';
@@ -9,14 +8,13 @@ import { ProductCarouselComponent } from "../../../home/product-carousel/product
 import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../../services/cart.service';
-
+import { SharedService } from '../../../services/language.service';
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
     CommonModule,
     HomeComponent,
-    HomeContentComponent,
     BannerComponent,
     LatestProductsComponent,
     RouterModule,
@@ -29,10 +27,17 @@ import { CartService } from '../../../services/cart.service';
 })
 export class HomeComponent {
 products:Product[] = [];
+currentLanguage: string ='en';
   constructor(private productService:ProductService,
     private router:Router,
+    private sharedService: SharedService,
+
     private cartService:CartService
-  ){}
+  ){
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+  }
   ngOnInit(): void {
 this.updateProducts();
   }

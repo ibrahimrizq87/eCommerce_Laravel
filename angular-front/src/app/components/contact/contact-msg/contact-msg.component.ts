@@ -4,6 +4,7 @@ import { CustomerService } from '../../../services/customer.service';
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../../../services/contact.service';
 import { RouterModule ,Router } from '@angular/router';
+import { SharedService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-contact-msg',
@@ -22,11 +23,17 @@ export class ContactMsgComponent {
   imageUploaded = false;
   backendErrors: any = {};
 
-
+  currentLanguage: string ='en';
   constructor(private customerService: CustomerService,
     private contactService:ContactService,
-    private router :Router
-  ) { }
+    private router :Router,
+    private sharedService: SharedService,
+  ) {
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+            
+   }
 
   customer: any = {
     user: {

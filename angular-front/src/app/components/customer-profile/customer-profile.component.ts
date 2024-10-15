@@ -7,8 +7,7 @@ import { CustomerOverviewComponent } from './customer-account/customer-account.c
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { WishlistComponent } from "../wishlist/wishlist.component";
-import { MyCancellationsComponent } from '../cutomer-profile/my-cancellations/my-cancellations.component';
-import { ViewOrderComponent } from '../view-order/view-order.component';
+import { ViewOrderComponent } from './view-order/view-order.component';
 import { ChangePasswordComponent } from '../seller-page/change-password/change-password.component';
 import { CustomerService } from '../../services/customer.service';
 
@@ -18,6 +17,7 @@ import { Router } from '@angular/router';
   selector: 'app-customer-profile',
   standalone: true,
   imports: [
+    ViewOrderComponent,
     RouterModule,
     CommonModule, 
     ListPartComponent, 
@@ -27,7 +27,6 @@ import { Router } from '@angular/router';
     CustomerHeaderComponent, 
     EditProfileComponent,
     WishlistComponent, 
-    MyCancellationsComponent, 
     ViewOrderComponent,
     ChangePasswordComponent
   ],

@@ -4,13 +4,11 @@ import { AllCategoriesComponent } from './all-categories/all-categories.componen
 import { AllCustomersComponent } from './all-customers/all-customers.component';
 import { AllOffersComponent } from './all-offers/all-offers.component';
 import { AllProductsComponent } from './all-products/all-products.component';
-import { AllSellersComponent } from './all-sellers/all-sellers.component';
 import { BannedCustomersComponent } from './banned-customers/banned-customers.component';
 import { RejectedProductsComponent } from './rejected-products/rejected-products.component';
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { UpdateCategoryComponent } from './update-category/update-category.component';
 import { AdminViewProductComponent } from './admin-view-product/admin-view-product.component';
-import { BannedSellersComponent } from './banned-sellers/banned-sellers.component';
 import { CommonModule } from '@angular/common';
 import { PendingProductsComponent } from './pending-products/pending-products.component';
 import { UserService } from '../../services/user.service';
@@ -20,11 +18,21 @@ import { SellersOrdersToBeDoneComponent } from './sellers-orders-to-be-done/sell
 import { ToBeDeliveredOtemsComponent } from './to-be-delivered-otems/to-be-delivered-otems.component';
 import { ShowCustomerInformationComponent } from '../seller-page/show-customer-information/show-customer-information.component';
 import { ShowSellerContactComponent } from './show-seller-contact/show-seller-contact.component';
+import { UpdateProductComponent } from './update-product/update-product.component';
+import { AddProductComponent } from './add-product/add-product.component';
+import { ProductOffersComponent } from './product-offers/product-offers.component';
+import { ProductsInOfferComponent } from './products-in-offer/products-in-offer.component';
+import { AddOfferComponent } from './add-offer/add-offer.component';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
   imports: [
+    AddOfferComponent,
+    ProductsInOfferComponent,
+    ProductOffersComponent,
+    AddProductComponent,
+    UpdateProductComponent,
     ShowSellerContactComponent,
     ShowCustomerInformationComponent,
     ToBeDeliveredOtemsComponent,
@@ -36,9 +44,7 @@ import { ShowSellerContactComponent } from './show-seller-contact/show-seller-co
     AllCustomersComponent,
     AllOffersComponent,
     AllProductsComponent,
-    AllSellersComponent,
     BannedCustomersComponent,
-    BannedSellersComponent,
     RejectedProductsComponent,
     PendingProductsComponent,
     CommonModule,

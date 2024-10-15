@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-header.component.css']
 })
 export class AdminHeaderComponent {
+  selected :string='';
 user:any;
   @Output() linkClicked = new EventEmitter<string>();
   constructor(
@@ -20,6 +21,7 @@ user:any;
   
   onLinkClick(component: string) {
     console.log('Emitting:', component);
+    this.selected = component;
     this.linkClicked.emit(component);
   }
 

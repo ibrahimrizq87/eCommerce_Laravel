@@ -55,17 +55,37 @@ export class ProductService {
     //   return this.allProducts;
     // }
 
-    getProducts(page: number, itemsPerPage: number, searchCriteria: string, searchTerm: string, priceFrom: number, priceTo: number): Observable<any> {
-      const params = new HttpParams()
-        .set('page', page.toString())
-        .set('itemsPerPage', itemsPerPage.toString())
-        .set('searchCriteria', searchCriteria)
-        .set('searchTerm', searchTerm)
-        .set('priceFrom', priceFrom.toString())
-        .set('priceTo', priceTo.toString());
+    // getProducts(page: number, itemsPerPage: number, searchCriteria: string, searchTerm: string, priceFrom: number, priceTo: number): Observable<any> {
+    //   const params = new HttpParams()
+    //     .set('page', page.toString())
+    //     .set('itemsPerPage', itemsPerPage.toString())
+    //     .set('searchCriteria', searchCriteria)
+    //     .set('searchTerm', searchTerm)
+    //     .set('priceFrom', priceFrom.toString())
+    //     .set('priceTo', priceTo.toString());
     
-      return this.http.get('api/products', { params });
+    //   return this.http.get('api/products', { params });
+    // }
+
+    getProducts(page: number, itemsPerPage: number, searchCriteria: string, searchTerm: string, priceFrom: number, priceTo: number): Observable<any> {
+      let params = new HttpParams()
+        .set('page', page.toString())
+        .set('itemsPerPage', itemsPerPage.toString());
+    
+      if (searchCriteria && searchTerm) {
+        params = params.set('searchCriteria', searchCriteria).set('searchTerm', searchTerm);
+      }
+    
+      // if (priceFrom !== null) {
+      // }
+      if (priceTo >0) {
+        params = params.set('priceFrom', priceFrom.toString());
+        params = params.set('priceTo', priceTo.toString());
+      }
+    
+      return this.http.get(this.apiUrl, { params });
     }
+    
 
 
     getProduct(id: string): Observable<any> {
@@ -137,6 +157,15 @@ export class ProductService {
     }
 
     
+    
+    getRelatedProducts(categotyId: string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(`${this.apiUrl}/related-products/${categotyId}`, { headers });
+    }
 
     getProductsByCategory(categotyId: string): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');

@@ -32,7 +32,7 @@ export class OrderComponent implements OnInit {
     fetchOrders(): void {
         this.orderService.getAllOrders().subscribe(
             (response) => {
-                console.log('my data ata:::..>>', response);
+                // console.log('my data ata:::..>>', response);
                 this.orders = response; 
             },
             (error) => {

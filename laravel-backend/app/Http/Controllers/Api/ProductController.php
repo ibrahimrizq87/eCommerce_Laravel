@@ -113,14 +113,35 @@ class ProductController extends Controller
 
     
 
+        
 
+        public function getRelatedProducts(Category $category)
+        {
+             
+            $topProducts = Product::where('category_id', $category->id)
+            ->with(['category', 'user', 'images', 'addedOffers'])
+            ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+            ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
+            ->groupBy('products.id')
+            ->orderByDesc('total_ordered')
+            ->limit(6)
+            ->get();
+    
+        if ($topProducts->count() < 6) {
+            $additionalProducts = Product::where('category_id', $category->id)->
+            with(['category', 'user', 'images', 'addedOffers'])
+                ->whereNotIn('id', $topProducts->pluck('id'))
+                ->limit(6 - $topProducts->count())
+                ->get();
+            
+            $topProducts = $topProducts->merge($additionalProducts);
+        }
+            return ProductResource::collection($topProducts);
+        }
+        
     public function getProductsByCategory(Category $category)
     {
-        // $products = Product::where('category_id', $category->id)
-        // ->with(['category', 'user', 'images', 'addedOffers'])
-        // ->get();        
-
-
+         
         $topProducts = Product::where('category_id', $category->id)
         ->with(['category', 'user', 'images', 'addedOffers'])
         ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
@@ -156,15 +177,7 @@ public function getMostSelledProducts()
         ->limit(6)
         ->get();
 
-        // $softDeletedItems = OrderItem::onlyTrashed()->get();
-    
-        // foreach ($topProducts as $product) {
-        //     foreach ($softDeletedItems as $item) {
-        //         if ($item->product_id == $product->id) {
-        //             $product->total_ordered += $item->quantity; 
-        //         }
-        //     }
-        // }
+      
 
     if ($topProducts->count() < 6) {
         $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
@@ -179,29 +192,74 @@ public function getMostSelledProducts()
 }
 
 
-public function index()
-    {
+// public function index()
+//     {
 
-        $topProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
-        ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
-        ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
-        ->groupBy('products.id')
-        ->orderByDesc('total_ordered')
-        ->get();
+//         $topProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+//         ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+//         ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
+//         ->groupBy('products.id')
+//         ->orderByDesc('total_ordered')
+//         ->get();
 
   
-    
 
-    if ($topProducts->count() < 6) {
-        $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
-            ->whereNotIn('id', $topProducts->pluck('id'))
-            ->get();
+
+//     if ($topProducts->count() < 6) {
+//         $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
+//             ->whereNotIn('id', $topProducts->pluck('id'))
+//             ->get();
         
-        $topProducts = $topProducts->merge($additionalProducts);
+//         $topProducts = $topProducts->merge($additionalProducts);
+//     }
+
+//         return ProductResource::collection($topProducts);
+//     }
+
+
+public function index(Request $request)
+{
+    $page = $request->input('page', 1);
+    $itemsPerPage = $request->input('itemsPerPage', 10);
+    $searchCriteria = $request->input('searchCriteria', null);
+    $searchTerm = $request->input('searchTerm', null);
+    $priceFrom = $request->input('priceFrom', null);
+    $priceTo = $request->input('priceTo', null);
+
+    $query = Product::with(['category', 'user', 'images', 'addedOffers'])
+        ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+        ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
+        ->groupBy('products.id')
+        ->orderByDesc('total_ordered');
+
+
+        // return response()->json(['page' =>  $page,'itemsPerPage' =>  $itemsPerPage,
+        // 'searchCriteria' =>  $searchCriteria,'searchTerm' =>  $searchTerm,'priceFrom' =>  $priceFrom,'priceTo' =>  $priceTo],200);
+
+    if (!empty($searchTerm)) {
+        if ($searchCriteria === 'name') {
+            $query->where('products.product_name', 'LIKE', '%' . $searchTerm . '%');
+        } elseif ($searchCriteria === 'category') {
+            $query->join('categories', 'categories.id', '=', 'products.category_id')
+            ->where('categories.category_name', 'LIKE', '%' . $searchTerm . '%');
+
+            // $query->where('products.description', 'LIKE', '%' . $searchTerm . '%');
+        }
     }
 
-        return ProductResource::collection($topProducts);
+    if (!empty($priceFrom)) {
+        $query->where('products.price', '>=', $priceFrom);
     }
+    if (!empty($priceTo)) {
+        $query->where('products.price', '<=', $priceTo);
+    }
+
+    $paginatedProducts = $query->paginate($itemsPerPage, ['*'], 'page', $page);
+
+    return ProductResource::collection($paginatedProducts)
+        ->additional(['total' => $paginatedProducts->total(),'page' =>  $page,'itemsPerPage' =>  $itemsPerPage,
+        'searchCriteria' =>  $searchCriteria,'searchTerm' =>  $searchTerm,'priceFrom' =>  $priceFrom,'priceTo' =>  $priceTo]);
+}
 
 
     

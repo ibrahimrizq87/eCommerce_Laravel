@@ -35,6 +35,15 @@ class OrderController extends Controller
 
     }
 
+    public function getMyOldOrder()
+    {
+
+        $orders = Order::where('user_id', Auth::id())->where('status','delivered')->with('orderItems')->get();
+        return response()->json($orders);
+
+    }
+    
+
 
     public function getDelivered()
     {
@@ -190,14 +199,16 @@ public function update(Request $request, Order $order)
 
 public function destroy(Order $order)
 {
-    if ($order->user_id !== Auth::id()) {
-        return response()->json(['error' => 'Unauthorized'], 40);
-    }
+    // if ($order->user_id !== Auth::id()) {
+    //     return response()->json(['error' => 'Unauthorized'], 401);
+    // }
  
-    if ($order->payment_status == 'payed') {
-        return response()->json([ 'error' => 'can not delete a payed order'], 403);
-    }
+    // if ($order->payment_status == 'payed') {
+    //     return response()->json([ 'error' => 'can not delete a payed order'], 403);
+    // }
     
+    $order->orderItems()->delete();
+
     $order->delete();
 
     return response()->json(null, 204);

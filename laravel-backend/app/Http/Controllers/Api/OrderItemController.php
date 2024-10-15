@@ -61,7 +61,7 @@ class OrderItemController extends Controller
             }
             $orderItems = OrderItem::with('product', 'product.addedOffers', 'product.category')
             ->where('order_id', $order_id)
-            ->where('status', '!=', 'delivered') 
+            ->where('status','!=', 'delivered') 
             ->get();
             
         return OrderItemResource::collection($orderItems);

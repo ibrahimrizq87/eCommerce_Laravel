@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter  } from '@angular/core';
+
 import { OrderItemService } from '../../../services/order-item.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
-
+import { OrderService } from '../../../services/order.service';
+import { SharedService } from '../../../services/language.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-customer-orders',
   standalone: true,
@@ -12,39 +15,30 @@ import { ProductService } from '../../../services/product.service';
   imports: [CommonModule, RouterModule]
 })
 export class CustomerOrdersComponent implements OnInit {
-  orderItems: OrderItem[] = [];
+  @Output() linkClicked = new EventEmitter<string>();
 
-  constructor(private orderItemService: OrderItemService,
+  orders: Order[] = [];
+  currentLanguage: string ='en';
+  constructor(private sharedService: SharedService,
+    private orderItemService: OrderItemService,
      private router: Router,
-    private productService:ProductService) {}
+     private toastr :ToastrService,
+    private productService:ProductService,
+  private orderService:OrderService) {
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
 
-  ngOnInit(): void {
-    this.getOrderItmes();
   }
 
-  getOrderItmes(): void {
-    this.orderItemService.getOlddOrderItems().subscribe(
+  ngOnInit(): void {
+    this.getOrders();
+  }
+
+  getOrders(): void {
+    this.orderService.getOlddOrders().subscribe(
       (response) => {
-        this.orderItems = response.data;
-        this.orderItems.forEach(item => {
-          item.product.priceAfterOffers = item.product.price;
-          item.product.totalOffers = 0;
-  
-          item.product.addedOffers.forEach(offerAdded => {
-            const endDate = new Date(offerAdded.offer.end_date);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-  
-            if (endDate.getTime() >= today.getTime()) {
-              item.product.totalOffers += offerAdded.offer.discount;
-              item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
-            }
-  
-          });
-  
-  
-  
-        });
+        this.orders = response;
       },
       (error) => {
         console.error('Error fetching orders:', error);
@@ -52,30 +46,27 @@ export class CustomerOrdersComponent implements OnInit {
     );
   }
 
+  viewOrder(order:any){
 
-  
-  
+    this.orderService.setCurrentOrder(order);
+    this.linkClicked.emit('view-order');
 
-  delete(item:any){
-    this.orderItemService.deleteOrderItem(item.id).subscribe(
+  }
+  deleteOrder(order:any){
+    this.orderService.deleteOrder(order.id).subscribe(
       response=>{
-        alert('deleted successfully');
-        this.getOrderItmes();
+
+  this.getOrders();
+this.toastr.success("order deleted successfully");
       },error=>{
-        if(error.status === 403){
-          alert('this order item is payed can not delete a payed item');
-        }else{
-          alert('an error happend');
-        }
-        console.log('error happend:' , error);
+        this.toastr.error("an error happend while deleting the order");
+        console.log('an error happend::>',error);
       }
     );
   }
-  show(product:any){
+  
 
-    this.productService.setProduct(product);
-    this.router.navigate(['/product/view']);
-  }
+
   
   }
 
@@ -126,4 +117,19 @@ interface OrderItem {
   quantity: number;
   status: string;
   created_at:string;
+}
+
+interface Order {
+  address: string;
+  created_at: string;
+  error_message: string | null;
+  id: number;
+  order_items: OrderItem[];
+  payment: string;
+  payment_status: string;
+  phone: string;
+  status: string;
+  total: number;
+  updated_at: string;
+  user_id: number;
 }

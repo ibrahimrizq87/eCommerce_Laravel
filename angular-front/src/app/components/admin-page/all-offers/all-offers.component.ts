@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { UpdateProductComponent } from '../../seller-page/update-product/update-product.component';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OfferService } from '../../../services/offer.service';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -17,6 +15,8 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './all-offers.component.css'
 })
 export class AllOffersComponent {
+  @Output() linkClicked = new EventEmitter<string>();
+
   offers: Offer [] =[]; 
   filteredOffers:any;
   page: number = 1;              
@@ -30,6 +30,34 @@ export class AllOffersComponent {
 
 
 
+  addOffer(){
+    this.linkClicked.emit('add-offer');
+
+  }
+  getProducts(offer:any){
+    this.offerService.setCurrentOffer(offer);
+    this.linkClicked.emit('product-in-offer');
+
+  }
+  deleteOffer(offer:any){
+    this.offerService.deleteOffer(offer.id).subscribe(
+      response=>{
+        alert('deleted successfully');
+        this.updateOffers();  
+
+
+      },error=>{
+        console.log('error happend::',error);
+        alert('error deleting offer');
+
+      }
+    );}
+    addProductsToOffer(offer:any){
+      this.offerService.setCurrentOffer(offer);
+      this.linkClicked.emit('product-offers');
+    
+    }
+    
 
   search() {
       if (new Date(this.startDate) > new Date(this.endDate)) {

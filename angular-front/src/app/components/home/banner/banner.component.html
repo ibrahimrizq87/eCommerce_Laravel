@@ -1,17 +1,23 @@
 <section class="position-relative">
-    <img 
-        src="/images/woman-making-wood.jpg" 
-        style="height: 500px; width: 100%; object-fit: cover;" 
-        alt="Image" 
-    />
+    <div 
+        style="height: 500px; width: 100%; background-color: rgb(151, 100, 5); display: flex; justify-content: center; align-items: center;">
+    </div>
     
-    <!-- Overlay container -->
     <div 
         class="overlay position-absolute top-0 bottom-0 left-0 right-100 d-flex flex-column justify-content-center align-items-center" 
         style="background-color: rgba(0, 0, 0, 0.7); width: 100%;"
     >
-        <h2 class="text-white" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">Welcome to Craftopia</h2>
-        <p class="text-white" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">Discover the art of handmade, crafted with love.</p>
-        <button (click)="goTOProducts()" class="btn mx-3 my-4" style="font-weight: bolder;">Shop Now</button>
+        <h2 class="text-white" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicWelcome">Welcome to Elbaraka Store</ng-container>
+            <ng-template #arabicWelcome>مرحبًا بك في متجر البركة</ng-template>
+        </h2>
+        <p class="text-white" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">Discover our products, and enjoy shopping.</ng-container>
+            <ng-template #arabicDescription>اكتشف منتجاتنا واستمتع بالتسوق.</ng-template>
+        </p>
+        <button (click)="goTOProducts()" class="btn mx-3 my-4" style="font-weight: bolder;">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicShopNow">Shop Now</ng-container>
+            <ng-template #arabicShopNow>تسوق الآن</ng-template>
+        </button>
     </div>
 </section>

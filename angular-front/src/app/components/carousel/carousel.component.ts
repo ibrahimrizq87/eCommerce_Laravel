@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
-
+import { SharedService } from '../../services/language.service';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 @Component({
@@ -15,7 +15,7 @@ import { CartService } from '../../services/cart.service';
   styleUrls: ['./carousel.component.css'],
 })
 export class CarouselComponent {
-  
+  currentLanguage: string ='en';
   customOptions: OwlOptions = {
     loop: true,          
     autoplay: true,      
@@ -40,8 +40,14 @@ export class CarouselComponent {
 
   constructor(private productService:ProductService,
     private router:Router,
+    private sharedService: SharedService,
     private cartService:CartService
-  ){}
+  ){
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+
+  }
   ngOnInit(): void {
     this.updateProduct();
   }

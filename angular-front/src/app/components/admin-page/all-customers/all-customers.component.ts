@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CustomerService } from '../../../services/customer.service';
 import { CommonModule } from '@angular/common';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -18,6 +18,7 @@ export class AllCustomersComponent {
   filteredCustomers: any[] = [];
 	  searchTerm: string = '';
   page: number = 1;       
+  @Output() linkClicked = new EventEmitter<string>();
 
   itemsPerPage: number = 10; 
   constructor(private customerService: CustomerService ) { }
@@ -29,6 +30,15 @@ export class AllCustomersComponent {
     } else {
       this.filteredCustomers = this.customers; 
     }
+  }
+
+  viewCustomer(customer:any){
+console.log('herererer')
+    this.customerService.setCurrentCustomer(customer);
+    sessionStorage.setItem('return-to' , 'all-customers');
+
+    this.linkClicked.emit("show-customer"); 
+
   }
   
   ngOnInit(): void {

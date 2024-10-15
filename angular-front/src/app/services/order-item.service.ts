@@ -39,7 +39,13 @@ export class OrderItemService {
         });
         return this.http.get(`${this.apiUrl}/my-items/${order_id}`, { headers });
     }
-
+    getOldOrderItems(order_id:string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+      return this.http.get(`${this.apiUrl}/my-items-old/${order_id}`, { headers });
+  }
     getAllWaitingOrderItems(): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');
       const headers = new HttpHeaders({

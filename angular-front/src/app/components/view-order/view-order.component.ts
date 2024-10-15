@@ -25,6 +25,7 @@ order:any;
 totalPrice: number = 0;
 totalPriceAfterOffers: number = 0;
 totalOffers: number = 0;
+payOnDelivery:number=10;
 orderItems:OrderItem [] = [];
   constructor(private orderService:OrderService,
     private router:Router,
@@ -87,12 +88,15 @@ updateOrderItems(){
   this.orderItemService.getAllOrderItems(this.order.id).subscribe(
     response=>{
       this.orderItems = response.data;
+      // console.log(this.orderItems);
+      // console.log('orderId...+++==>',this.order.id);
+
       if(this.orderItems.length<1){
         alert('no order items in this order');
         this.router.navigate(['/order']);
 
       }
-      console.log(this.orderItems);
+      // console.log(this.orderItems);
 
       this.orderItems.forEach(item => {
         item.product.priceAfterOffers = item.product.price;
@@ -116,6 +120,9 @@ updateOrderItems(){
 
 
       });
+      if (this.order.payment =='onDelivery'){
+        this.totalPriceAfterOffers+=this.payOnDelivery;
+      }
 
     },error=>{
       if(error.status === 404){
