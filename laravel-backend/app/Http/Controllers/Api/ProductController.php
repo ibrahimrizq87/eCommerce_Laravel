@@ -30,31 +30,6 @@ class ProductController extends Controller
 
 
     
-//     public function getMostOfferedProducts()
-// {
-//     $productsQuery = Product::with(['category', 'user', 'images', 'addedOffers.offer'])
-//         ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
-//         ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
-//         ->groupBy('products.id')
-//         ->orderByDesc('total_ordered') 
-//         ->take(8); 
-
-//     $products = $productsQuery->get();
-
-//     $products = $products->map(function ($product) {
-//         $totalDiscount = $product->addedOffers->sum(function ($addedOffer) {
-//             return $addedOffer->getDiscountAmount();
-//         });
-
-//         $product->total_discount = $totalDiscount;
-
-//         return $product;
-//     });
-
-//     $products = $products->sortByDesc('total_discount')->take(8);
-
-//     return ProductResource::collection($products);
-// }
 
     public function getMostOfferedProducts()
     {
@@ -74,18 +49,46 @@ class ProductController extends Controller
     }
     
 
-        public function getProductsByOffer($offer_id)
-        {
-            $products = Product::whereHas('addedOffers', function($query) use ($offer_id) {
-                $query->where('offer_id', $offer_id);
-            })
-            ->with(['category', 'user', 'images', 'addedOffers'])
-            ->get();        
-         
-            return ProductResource::collection($products);
-        }
 
-        
+
+        public function getProductsByOffer(Request $request)
+{
+    $page = $request->input('page', 1);
+    $itemsPerPage = $request->input('itemsPerPage', 10);
+    $searchCriteria = $request->input('searchCriteria', null);
+    $searchTerm = $request->input('searchTerm', null);
+    $priceFrom = $request->input('priceFrom', null);
+    $priceTo = $request->input('priceTo', null);
+    $offer_id = $request->input('offerId');
+
+    $query = Product::whereHas('addedOffers', function ($query) use ($offer_id) {
+        $query->where('offer_id', $offer_id);
+    })
+    ->with(['category', 'user', 'images', 'addedOffers']);
+
+    if (!empty($searchTerm)) {
+        if ($searchCriteria === 'name') {
+            $query->where('products.product_name', 'LIKE', '%' . $searchTerm . '%');
+        } elseif ($searchCriteria === 'category') {
+            $query->whereHas('category', function ($q) use ($searchTerm) {
+                $q->where('category_name', 'LIKE', '%' . $searchTerm . '%');
+            });
+        }
+    }
+
+    if (!empty($priceFrom)) {
+        $query->where('products.price', '>=', $priceFrom);
+    }
+    if (!empty($priceTo)) {
+        $query->where('products.price', '<=', $priceTo);
+    }
+
+    $paginatedProducts = $query->paginate($itemsPerPage, ['*'], 'page', $page);
+
+    return ProductResource::collection($paginatedProducts)
+        ->additional(['total' => $paginatedProducts->total()]);
+}
+
         public function removeProductOffer(Request $request)
         {
     
@@ -192,31 +195,6 @@ public function getMostSelledProducts()
 }
 
 
-// public function index()
-//     {
-
-//         $topProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
-//         ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
-//         ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered')) 
-//         ->groupBy('products.id')
-//         ->orderByDesc('total_ordered')
-//         ->get();
-
-  
-
-
-//     if ($topProducts->count() < 6) {
-//         $additionalProducts = Product::with(['category', 'user', 'images', 'addedOffers'])
-//             ->whereNotIn('id', $topProducts->pluck('id'))
-//             ->get();
-        
-//         $topProducts = $topProducts->merge($additionalProducts);
-//     }
-
-//         return ProductResource::collection($topProducts);
-//     }
-
-
 public function index(Request $request)
 {
     $page = $request->input('page', 1);
@@ -257,8 +235,53 @@ public function index(Request $request)
     $paginatedProducts = $query->paginate($itemsPerPage, ['*'], 'page', $page);
 
     return ProductResource::collection($paginatedProducts)
-        ->additional(['total' => $paginatedProducts->total(),'page' =>  $page,'itemsPerPage' =>  $itemsPerPage,
-        'searchCriteria' =>  $searchCriteria,'searchTerm' =>  $searchTerm,'priceFrom' =>  $priceFrom,'priceTo' =>  $priceTo]);
+        ->additional(['total' => $paginatedProducts->total()]);
+}
+
+
+
+
+
+public function getAlldeleted(Request $request)
+{
+
+
+
+    $page = $request->input('page', 1);
+    $itemsPerPage = $request->input('itemsPerPage', 10);
+    $searchCriteria = $request->input('searchCriteria', null);
+    $searchTerm = $request->input('searchTerm', null);
+    $priceFrom = $request->input('priceFrom', null);
+    $priceTo = $request->input('priceTo', null);
+
+    $query = Product::onlyTrashed()->with(['category', 'user', 'images', 'addedOffers']);    
+
+
+
+    
+    if (!empty($searchTerm)) {
+        if ($searchCriteria === 'name') {
+            $query->where('products.product_name', 'LIKE', '%' . $searchTerm . '%');
+        } elseif ($searchCriteria === 'category') {
+            $query->join('categories', 'categories.id', '=', 'products.category_id')
+            ->where('categories.category_name', 'LIKE', '%' . $searchTerm . '%');
+
+        }
+    }
+
+    if (!empty($priceFrom)) {
+        $query->where('products.price', '>=', $priceFrom);
+    }
+    if (!empty($priceTo)) {
+        $query->where('products.price', '<=', $priceTo);
+    }
+
+    $paginatedProducts = $query->paginate($itemsPerPage, ['*'], 'page', $page);
+
+    return ProductResource::collection($paginatedProducts)
+        ->additional(['total' => $paginatedProducts->total()]);
+
+// return ProductResource::collection($products);
 }
 
 
@@ -567,80 +590,11 @@ foreach ($oldImages as $image) {
         
         }
 
-    // public function update(Request $request, Product $product)
-    // {
-        
-    //     $validator = Validator::make($request->all(), [
-    //         'product_name' => 'required|string|max:255',
-    //         'price' => 'required|numeric',
-    //         'description' => 'nullable|string',
-    //         'images' => 'nullable|array',
-    //         'images.*' => 'file|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //         'videos' => 'nullable|array',
-    //         'videos.*' => 'file|mimes:mp4,mkv,avi|max:102400',
-    //         'stock' => 'required|integer',
-    //         'category_id' => 'required|integer|exists:categories,id',
-          
-    //     ], [
-    //         'product_name.required' => 'Product name is required.',
-    //         'product_name.string' => 'Product name must be a string.',
-    //         'product_name.max' => 'Product name may not be greater than 255 characters.',
-    //         'price.required' => 'Price is required.',
-    //         'price.numeric' => 'Price must be a number.',
-    //         'description.string' => 'Description must be a string.',
-    //         'images.file' => 'Image must be a file.',
-    //         'images.image' => 'The file must be an image.',
-    //         'images.mimes' => 'Image must be of type: jpeg, png, jpg, or gif.',
-    //         'images.max' => 'Image may not be greater than 2 MB.',
-    //         'videos.file' => 'Video must be a file.',
-    //         'videos.mimes' => 'Video must be of type: mp4, mkv, or avi.',
-    //         'videos.max' => 'Video may not be greater than 40 MB.',
-    //         'stock.required' => 'Stock is required.',
-    //         'stock.integer' => 'Stock must be an integer.',
-    //         'category_id.required' => 'Category ID is required.',
-    //         'category_id.integer' => 'Category ID must be an integer.',
-    //         'category_id.exists' => 'Category ID does not exist.',
-    //     ]);
-    
-    //     if ($validator->fails()) {
-    //         return response()->json($validator->errors(), 422);
-    //     }
-    
-    //     $data = $validator->validated();
-    //     if ($request->hasFile('images')) {
-    //         $imagePaths = [];
-    //         Storage::disk('public')->makeDirectory('products');
-    //         foreach ($data['images'] as $image) {
-    //             $path = $image->store('products', 'public');
-    //             $imagePaths[] = $path;
-    //         }
-    //         $data['images'] = implode(',', $imagePaths);
-    //     }
-    
-    //     if ($request->hasFile('videos')) {
-    //         $videoPaths = [];
-    //         Storage::disk('public')->makeDirectory('videos');
-    //         foreach ($data['videos'] as $video) {
-    //             $path = $video->store('videos', 'public');
-    //             $videoPaths[] = $path;
-    //         }
-    //         $data['videos'] = implode(',', $videoPaths);
-    //     }
-   
-    //     $product->update($data);
-    
-    //     return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
-    // }
+
     
     public function show(Product $product)
      {
-    //     $category = Category::with('products')->find($categoryId);
-    
-    //     if (!$category) {
-    //         return response()->json(['message' => 'Category not found'], 404);
-    //     }
-    
-    //     return response()->json($category->products, 200);
+
     return new ProductResource($product->load('category', 'user'));
 
 
@@ -654,11 +608,7 @@ foreach ($oldImages as $image) {
     }
     
     
-    public function getAlldeleted()
-    {
-  $products = Product::onlyTrashed()->with(['category', 'user', 'images', 'addedOffers'])->get();    
-  return ProductResource::collection($products);
-    }
+ 
     
     public function restore($product_id)
     {

@@ -3,7 +3,7 @@
     <div class="col-md-3" style="color:white; background-color:#231717; height:100vh; overflow-y:auto; width: 300px; ">
       <app-admin-header (linkClicked)="showComponent($event)" style="height: 100vh; "></app-admin-header>
     </div>
-    <div class="col-12 col-md-9 container-fluid shadow-lg mt-5 mb-5 pb-5"  style="background-color: #fff; height:98vh; overflow-y:auto;">
+    <div class="col-12 col-md-9 container-fluid shadow-lg mt-3 pb-5"  style="background-color: #fff; height:98vh; overflow-y:auto;">
 
       <app-pending-products *ngIf="activeComponent === 'pending-products'"></app-pending-products>
       <app-all-categories *ngIf="activeComponent === 'all-categories'"  (linkClicked)="showComponent($event)"></app-all-categories>
@@ -11,7 +11,6 @@
       <app-all-offers *ngIf="activeComponent === 'all-offers'" (linkClicked)="showComponent($event)"></app-all-offers>
       <app-all-products *ngIf="activeComponent === 'all-products'"   (linkClicked)="showComponent($event)"></app-all-products> 
       <app-banned-customers *ngIf="activeComponent === 'banned-customers'"></app-banned-customers>
-      <app-rejected-products *ngIf="activeComponent === 'rejected-products'"></app-rejected-products>
       <app-add-category *ngIf="activeComponent === 'add-category'" (linkClicked)="showComponent($event)"></app-add-category>
       <app-update-category *ngIf="activeComponent === 'update-category'" (linkClicked)="showComponent($event)"></app-update-category>
       <app-admin-view-product *ngIf="activeComponent === 'view-product'" ></app-admin-view-product>
@@ -27,6 +26,7 @@
       <app-add-offer *ngIf="activeComponent === 'add-offer'" (linkClicked)="showComponent($event)"></app-add-offer>
       <app-products-in-offer *ngIf="activeComponent === 'product-in-offer'"></app-products-in-offer>
       <app-product-offers  *ngIf="activeComponent === 'product-offers'"  (linkClicked)="showComponent($event)"></app-product-offers>
+      <app-view-order  *ngIf="activeComponent === 'view-order'" (linkClicked)="showComponent($event)"></app-view-order>
 
 
     </div>

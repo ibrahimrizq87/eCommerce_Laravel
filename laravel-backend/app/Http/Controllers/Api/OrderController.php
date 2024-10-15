@@ -10,6 +10,8 @@ use Stripe\Checkout\Session;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\OrderResource;
+use Carbon\Carbon;
 
 use Response;
 
@@ -24,9 +26,84 @@ class OrderController extends Controller
 
         $orders = Order::where('status','!=','delivered')->where('user_id', Auth::id())->with('orderItems')->get();
         return response()->json($orders);
-
     }
 
+    public function getOrders(Request $request)
+    {
+
+        \Log::info('Request Data:', $request->all());
+
+        $order_status = $request->input('status', 'waiting');
+        
+        $query = Order::with('user')->orderBy('created_at', 'desc');
+        $page = $request->input('page', 1);
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+        if ($order_status) {
+            $query->where('status', $order_status);
+        }
+    
+        $priceFrom = $request->input('priceFrom');
+        $priceTo = $request->input('priceTo');
+        if ($priceFrom !== null && $priceTo !== null) {
+            $query->whereBetween('total', [$priceFrom, $priceTo]);
+        }
+    
+        $searchTerm = $request->input('searchTerm');
+        $searchCriteria = $request->input('searchCriteria');
+        if ($searchCriteria && $searchTerm) {
+            if ($searchCriteria === 'name') {
+                $query->whereHas('user', function($q) use ($searchTerm) {
+                    $q->where('name', 'like', '%' . $searchTerm . '%');
+                });
+            }
+        }
+    
+        $startDate = $request->input('startDate');
+        $endDate = $request->input('endDate');
+
+        if ($startDate && $endDate) {
+
+            $query->whereBetween('created_at', [$startDate, $endDate]);   
+             }
+    
+        // $orders = $query->get();
+        $orders = $query->paginate($itemsPerPage, ['*'], 'page', $page);
+
+    
+        return OrderResource::collection($orders)
+        ->additional(['total' => $orders->total()]);
+    }
+    
+
+    // public function getOrders(Request $request)
+    // {
+
+    //     // return response()->json(['status'=> $request->input('status', 'waiting')]);
+
+
+    //     $order_status = $request->input('status', 'waiting');
+    //     if ($order_status == 'waiting'){
+    //         $orders = Order::where('status','waiting')
+    //         ->with('user')
+    //         ->orderBy('created_at', 'desc') 
+    //         ->get();
+    //     }else if($order_status == 'done'){
+    //         $orders = Order::where('status','done')
+    //         ->with('user')
+    //         ->orderBy('created_at', 'desc') 
+    //         ->get();
+
+    //     }else if($order_status == 'delivered'){
+    //         $orders = Order::where('status','delivered')
+    //         ->with('user')
+    //         ->orderBy('created_at', 'desc') 
+    //         ->get();
+
+    //     }
+
+    //     return OrderResource::collection($orders);
+    // }
+    
     public function getMyOrder()
     {
 

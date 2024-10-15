@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
 import { Router } from '@angular/router';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
-// import { NgxPaginationModule } from 'ngx-pagination';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
 import { SharedService } from '../../services/language.service';
@@ -22,7 +21,6 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
     CommonModule,
     RouterModule,
     CustomerHeaderComponent,
-    // NgxPaginationModule,
     MatPaginatorModule
   ],
 
@@ -34,16 +32,18 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 export class ProductListComponent {
   products: Product[] = [];
   currentLanguage: string = 'en';
+  category: any;
+
   page: number = 1;
   itemsPerPage: number = 20;
-  category: any;
   totalItems: number = 0;
   currentPage: number = 1;
   searchTerm: string = '';
   priceFrom: number = 0;
   priceTo: number  = 0;
   totalProducts: number = 0;
-  searchCriteria: string = 'category';
+  searchCriteria: string = 'name';
+  
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
 
   constructor(

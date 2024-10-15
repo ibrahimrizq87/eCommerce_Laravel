@@ -3,7 +3,7 @@
 
   <div class="mb-5 pb-5">
     <div class="input-group" style="width: 450px;">
-        <select [(ngModel)]="searchCriteria" class="form-select me-2">
+        <select [(ngModel)]="searchCriteria" (change)="changeCriteria()"   class="form-select me-2">
             <option value="name">Search by Name</option>
             <option value="category">Search by Category</option>
             <option value="price">Search by Price Range</option>
@@ -40,7 +40,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let product of filteredProducts">
+        <tr *ngFor="let product of products">
           <td scope="col">
             <img [src]="product.cover_image" style="height:75px;width:75px;" alt="">
           </td>
@@ -54,6 +54,14 @@
           </td>
         </tr>
       </tbody>
+      <div class="d-flex justify-content-center my-4">
+        <mat-paginator [length]="totalProducts"
+          [pageSize]="itemsPerPage"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page"
+          (page)="onPageChange($event)">
+            </mat-paginator>
+    </div>
     </table>
 
     <div *ngIf="addError" class="alert alert-warning text-center" role="alert">

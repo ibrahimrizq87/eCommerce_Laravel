@@ -1,36 +1,42 @@
 import { Component } from '@angular/core';
 import { CustomerService } from '../../../services/customer.service';
 import { CommonModule } from '@angular/common';
-import { NgxPaginationModule } from 'ngx-pagination';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-banned-customers',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule,FormsModule],
+  imports: [CommonModule, MatPaginatorModule,FormsModule],
   templateUrl: './banned-customers.component.html',
   styleUrl: './banned-customers.component.css'
 })
 export class BannedCustomersComponent {
 
   customers:any [] |null [] =[];
-  page: number = 1;              
-  itemsPerPage: number = 10; 
-  filteredCustomers: any[] = [];
+  page: number = 1;
+  itemsPerPage: number = 20;
+  totalItems: number = 0;
+  currentPage: number = 1;
   searchTerm: string = '';
+  totalCustomers: number = 0;
+
   constructor(private customerService: CustomerService ) { }
   ngOnInit(): void {
     this.updateCustomers();
     }
-    search() {
-      if (this.searchTerm) {
-        this.filteredCustomers = this.customers.filter(customer =>
-          customer.user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-      } else {
-        this.filteredCustomers = this.customers; 
-      }
+    search(): void {
+      this.currentPage = 1;
+      this.updateCustomers();
+  
+  
     }
+    onPageChange(event: PageEvent) {
+      this.currentPage = event.pageIndex + 1;
+      this.itemsPerPage = event.pageSize;
+      this.updateCustomers();
+    }
+  
     activate(customer:any){
       this.customerService.unBanCustomer(customer.id).subscribe(
         response=>{
@@ -45,10 +51,14 @@ alert('user banned successfully');
       );
     }
     updateCustomers(){
-      this.customerService.getAllBannedCustomers().subscribe(response => {
+      this.customerService.getAllBannedCustomers(
+        this.currentPage,
+      this.itemsPerPage,
+      this.searchTerm,
+      ).subscribe(response => {
               this.customers = response.data;
-              this.filteredCustomers = this.customers;
-    
+              this.totalCustomers = response.total; 
+
       },
       error => {
         

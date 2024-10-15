@@ -81,31 +81,31 @@ this.offerService.removeProduct({'product_id':product.id , 'offer_id':this.offer
 );
   }
   updateProducts() {
-    this.productService.getProductsByOffer(this.offer.id).subscribe(
-      response => {
-        this.products = response.data;
-        this.filteredProducts = this.products;
-        this.products.forEach(product => {
-          product.priceAfterOffers = product.price;
-          product.totalOffers = 0;
+    // this.productService.getProductsByOffer(this.offer.id).subscribe(
+    //   response => {
+    //     this.products = response.data;
+    //     this.filteredProducts = this.products;
+    //     this.products.forEach(product => {
+    //       product.priceAfterOffers = product.price;
+    //       product.totalOffers = 0;
 
-          product.addedOffers.forEach(offerAdded => {
-            const endDate = new Date(offerAdded.offer.end_date);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
+    //       product.addedOffers.forEach(offerAdded => {
+    //         const endDate = new Date(offerAdded.offer.end_date);
+    //         const today = new Date();
+    //         today.setHours(0, 0, 0, 0);
 
-            if (endDate.getTime() >= today.getTime()) {
-              product.totalOffers += offerAdded.offer.discount;
-              product.priceAfterOffers -= (offerAdded.offer.discount / 100) * product.price;
-            }
+    //         if (endDate.getTime() >= today.getTime()) {
+    //           product.totalOffers += offerAdded.offer.discount;
+    //           product.priceAfterOffers -= (offerAdded.offer.discount / 100) * product.price;
+    //         }
 
-          });
-        });
-        console.log('my products::', this.products);
-      }, error => {
-        console.log('there is an error :; ', error)
-      }
-    );
+    //       });
+    //     });
+    //     console.log('my products::', this.products);
+    //   }, error => {
+    //     console.log('there is an error :; ', error)
+    //   }
+    // );
   }
 
 

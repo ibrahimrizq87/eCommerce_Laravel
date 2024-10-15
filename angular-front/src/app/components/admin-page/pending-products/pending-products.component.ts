@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-pending-products',
@@ -11,47 +12,28 @@ import { FormsModule } from '@angular/forms';
   imports: [RouterModule,
      CommonModule,
       NgxPaginationModule,
-      FormsModule],
+      FormsModule,
+      MatPaginatorModule
+    ],
   templateUrl: './pending-products.component.html',
   styleUrl: './pending-products.component.css'
 })
 export class PendingProductsComponent {
   products: Product[] = []; 
-  priceFrom: number  = 0;
-  priceTo: number = 0;
-  page: number = 1;              
-  itemsPerPage: number = 20; 
   category :any;
+
+  page: number = 1;
+  itemsPerPage: number = 20;
+  totalItems: number = 0;
+  currentPage: number = 1;
   searchTerm: string = '';
-  searchCriteria: string = 'name';    
-  filteredProducts: any[] = []; 
+  priceFrom: number = 0;
+  priceTo: number  = 0;
+  totalProducts: number = 0;
+  searchCriteria: string = 'name';  
+  // filteredProducts: any[] = []; 
 
   constructor(private productService: ProductService) { }
-  search() {
-    this.filteredProducts = this.products;
-
-    if (this.searchCriteria === 'name' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'category' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'price') {
-        if (this.priceFrom <= this.priceTo ) {
-            this.filteredProducts = this.filteredProducts.filter(product =>
-                product.priceAfterOffers !== null && 
-                product.priceAfterOffers >= this.priceFrom && 
-                product.priceAfterOffers <= this.priceTo
-            );
-        }else{
-          alert('the from price must be less than the to price');
-        }
-    }
-
-    this.page = 1; 
-}
 
   restoreProduct(product:any){
     this.productService.restoreProduct(product.id).subscribe(
@@ -69,11 +51,39 @@ alert('product restored successfully');
   ngOnInit(): void {
     this.updateProducts();  
   }
+
+ onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex+1; 
+    this.itemsPerPage = event.pageSize; 
+    this.updateProducts();
+  }
+  changeCriteria(){
+    this.searchTerm= '';
+    this.priceFrom = 0;
+    this.priceTo  = 0;
+  }
+  
+  search(): void {
+    this.currentPage = 1; 
+    this.updateProducts();
+
+    
+  }
+
   updateProducts(){
 
-  this.productService.getDeletedProducts().subscribe(
+  this.productService.getDeletedProducts(
+    this.currentPage, 
+      this.itemsPerPage, 
+      this.searchCriteria, 
+      this.searchTerm, 
+      this.priceFrom, 
+      this.priceTo
+  ).subscribe(
     response => {
       this.products = response.data; 
+      this.totalProducts = response.total; 
+
       this.products.forEach(product=>{
         product.priceAfterOffers = product.price;
         product.totalOffers=0;  
@@ -90,7 +100,7 @@ if (endDate.getTime() >= today.getTime()) {
 
       });
     });
-    this.filteredProducts = this.products;
+    // this.filteredProducts = this.products;
 
     },
     error => {

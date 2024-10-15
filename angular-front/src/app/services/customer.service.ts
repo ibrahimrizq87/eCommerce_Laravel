@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'; 
 
@@ -53,22 +53,8 @@ export class CustomerService {
         return this.http.get(`${this.apiUrl}/customer/${id}`,{headers});
     }
 
-    getAllCustomers(): Observable<any> {
-      const authToken = sessionStorage.getItem('authToken');
 
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${authToken}`
-      });
-      return this.http.get(this.apiUrl, { headers });
-    }
-    getAllBannedCustomers(): Observable<any> {
-      const authToken = sessionStorage.getItem('authToken');
 
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${authToken}`
-      });
-      return this.http.get(this.apiUrl+'/banned', { headers });
-    }
 
     
     updateCustomer(data:any): Observable<any> {
@@ -111,7 +97,48 @@ export class CustomerService {
 
 
    
-   
+      getAllCustomers(
+        page: number, 
+        itemsPerPage: number, 
+        searchTerm: string, 
+      ): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+  
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+
+        let params = new HttpParams()
+        .set('page', page.toString())
+        .set('itemsPerPage', itemsPerPage.toString());
+
+        if ( searchTerm) {
+          params = params.set('searchTerm', searchTerm);
+        }
+
+        return this.http.get(this.apiUrl, { headers ,params });
+      }
+      getAllBannedCustomers(
+        page: number, 
+        itemsPerPage: number, 
+        searchTerm: string, 
+      ): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+  
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+        let params = new HttpParams()
+        .set('page', page.toString())
+        .set('itemsPerPage', itemsPerPage.toString());
+
+        if ( searchTerm) {
+          params = params.set('searchTerm', searchTerm);
+        }
+        return this.http.get(this.apiUrl+'/banned', { headers ,params});
+      }
+
+ 
 }
 
 

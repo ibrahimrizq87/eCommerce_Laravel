@@ -94,6 +94,9 @@ Route::post('users/email/resend', [VerificationController::class, 'resend'])
 Route::post('users/login', [UserController::class, 'login']);
 
 Route::post('users/register', [UserController::class, 'register']);
+
+Route::get('orders/all', [OrderController::class, 'getOrders'])->middleware('auth:sanctum');
+
 Route::get('users/me', [UserController::class, 'getUser'])->middleware('auth:sanctum');
 
 Route::post('/users/logout',

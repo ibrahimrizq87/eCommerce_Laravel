@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Carbon\Carbon;
 
 class OrderResource extends JsonResource
 {
@@ -22,7 +23,7 @@ class OrderResource extends JsonResource
             'address' => $this->address,
             'total' => $this->total,
             'payment' => $this->payment,
-
+            'created_at' => $this->created_at->diffForHumans(),
             'error_message' => $this->error_message,
             'user' => new UserResource($this->whenLoaded('user')),
             // 'order_items' => OrderItemResource::collection($this->whenLoaded('orderItems')),

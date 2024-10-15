@@ -1,7 +1,7 @@
 <div class="container">
   <h6 class="ps-5 pt-5 pb-3" style="color:#b83807;">All Products in Offer</h6>
   <div class="container">
-    <div *ngIf="filteredProducts && filteredProducts.length > 0; else noProductsTemplate">
+    <div *ngIf="products && products.length > 0; else noProductsTemplate">
       <div class="mb-5 d-flex justify-content-center">
         <div class="input-group" style="width: 450px;">
           <select [(ngModel)]="searchCriteria" class="form-select me-2 rounded-5">
@@ -43,7 +43,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page } ">
+            <tr *ngFor="let product of products  ">
               <td scope="col">
                 <img [src]="product.cover_image" style="height:75px;width:75px; object-fit: cover;" alt="">
               </td>
@@ -62,9 +62,17 @@
           </tbody>
         </table>
 
-        <div class="d-flex justify-content-center my-4 ">
+        <!-- <div class="d-flex justify-content-center my-4 ">
           <pagination-controls (pageChange)="page = $event"></pagination-controls>
-        </div>
+        </div> -->
+        <div class="d-flex justify-content-center my-4">
+          <mat-paginator [length]="totalProducts"
+            [pageSize]="itemsPerPage"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            aria-label="Select page"
+            (page)="onPageChange($event)">
+              </mat-paginator>
+      </div>
 
       </div>
     </div>

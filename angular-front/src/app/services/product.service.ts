@@ -147,14 +147,7 @@ export class ProductService {
       return this.http.get(this.apiUrl+'/most-ordered-seller', { headers });
     }
 
-    getDeletedProducts(): Observable<any> {
-      const authToken = sessionStorage.getItem('authToken');
 
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${authToken}`
-      });
-      return this.http.get(this.apiUrl+"/deleted", { headers });
-    }
 
     
     
@@ -241,15 +234,67 @@ export class ProductService {
       return this.http.post(`${this.apiUrl}/update`,productData, { headers });
     }
 
-    getProductsByOffer(offer_id: string ): Observable<any> {
+    getProductsByOffer(
+      page: number, 
+      itemsPerPage: number, 
+      searchCriteria: string, 
+      searchTerm: string, 
+      priceFrom: number, 
+      priceTo: number, 
+      offer_id: string
+    ): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+    
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+    
+      let params = new HttpParams()
+        .set('page', page.toString())
+        .set('itemsPerPage', itemsPerPage.toString());
+    
+      if (searchCriteria && searchTerm) {
+        params = params.set('searchCriteria', searchCriteria).set('searchTerm', searchTerm);
+      }
+    
+      if (priceTo > 0) {
+        params = params.set('priceFrom', priceFrom.toString()).set('priceTo', priceTo.toString());
+      }
+    
+      params = params.set('offerId', offer_id.toString());
+    
+      return this.http.get(`${this.apiUrl}/byOffer/${offer_id}`, { headers, params });
+    }
+
+    getDeletedProducts(
+      page: number, 
+      itemsPerPage: number, 
+      searchCriteria: string, 
+      searchTerm: string, 
+      priceFrom: number, 
+      priceTo: number
+    ): Observable<any> {
       const authToken = sessionStorage.getItem('authToken');
 
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${authToken}`
       });
 
-      return this.http.get(`${this.apiUrl}/byOffer/${offer_id}`, { headers });
+      let params = new HttpParams()
+        .set('page', page.toString())
+        .set('itemsPerPage', itemsPerPage.toString());
+    
+      if (searchCriteria && searchTerm) {
+        params = params.set('searchCriteria', searchCriteria).set('searchTerm', searchTerm);
+      }
+    
+      if (priceTo > 0) {
+        params = params.set('priceFrom', priceFrom.toString()).set('priceTo', priceTo.toString());
+      }
+      
+      return this.http.get(this.apiUrl+"/deleted", { headers ,params });
     }
+    
 
 
     

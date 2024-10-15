@@ -115,7 +115,7 @@ export class AllOffersComponent {
 this.offers = response.data;
 this.filteredOffers =response.data;
 
-console.log(response);
+// console.log(response);
       },error=>{
         console.log('error getting the data::' , error)
 

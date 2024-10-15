@@ -1,212 +1,165 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { OrderService } from '../../../services/order.service';
 import { CommonModule } from '@angular/common';
-import { OrderItemService } from '../../../services/order-item.service';
-import { CustomerService } from '../../../services/customer.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
-import { SellerService } from '../../../services/seller.service';
-
+import { CustomerService } from '../../../services/customer.service';
+import { ToastrService } from 'ngx-toastr';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-to-be-delivered-otems',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule,
-    FormsModule
+  imports: [CommonModule,
+    NgxPaginationModule,
+    FormsModule,
+    MatPaginatorModule
+
   ],
   templateUrl: './to-be-delivered-otems.component.html',
   styleUrl: './to-be-delivered-otems.component.css'
 })
 export class ToBeDeliveredOtemsComponent {
+
+
   @Output() linkClicked = new EventEmitter<string>();
 
-  orderItems:OrderItem [] = [];
-  page: number = 1;              
-  itemsPerPage: number = 20; 
-  filteredProducts: any[] = [];
-  priceFrom: number  = 0;
+  orders: any[] = [];
+  page: number = 1;
+  itemsPerPage: number = 20;
+  priceFrom: number = 0;
   priceTo: number = 0;
   searchTerm: string = '';
-  searchCriteria: string = 'name'; 
+  searchCriteria: string = 'name';
+  startDate: string = '';
+  endDate: string = '';
+  currentPage: number = 1;
 
-
-  customerIsSet:Boolean = false;
+  totalOrders: number = 0;
   constructor(
-    private orderItemService:OrderItemService,
-    private customerService:CustomerService,
-    private sellerService:SellerService
-  ){}
+    private orderService: OrderService,
+    private customerService: CustomerService,
+    private toastrService: ToastrService,
 
+
+  ) { }
+
+
+
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex + 1;
+    this.itemsPerPage = event.pageSize;
+    this.updateOrders();
+  }
 
   ngOnInit(): void {
-    this.updateOrderItems();
-}
+    this.updateOrders();
+  }
 
+  craft(item: any) {
 
-search() {
-  this.filteredProducts = this.orderItems;
+  }
+  getCustomer(order: any) {
+    this.customerService.getCustomerById(order.user.id).subscribe(
+      response => {
 
-  if (this.searchCriteria === 'name' && this.searchTerm) {
-      this.filteredProducts = this.filteredProducts.filter(product =>
-          product.product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-  } else if (this.searchCriteria === 'category' && this.searchTerm) {
-      this.filteredProducts = this.filteredProducts.filter(product =>
-          product.product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      );
-  } else if (this.searchCriteria === 'price') {
-      if (this.priceFrom <= this.priceTo ) {
-          this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product.priceAfterOffers !== null && 
-            product.product.priceAfterOffers >= this.priceFrom && 
-            product.product.priceAfterOffers <= this.priceTo
-          );
-      }else{
-        alert('the from price must be less than the to price');
+        this.customerService.setCurrentCustomer(response.data);
+        sessionStorage.setItem('return-to', 'seller-orders');
+        this.linkClicked.emit("show-customer");
+
+      }, error => {
+        console.log('error getting data:', error);
       }
+    );
   }
 
-  this.page = 1; 
-}
+  deleteOrder(order: any) {
+    this.orderService.deleteOrder(order.id).subscribe(
+      (response) => {
+        this.updateOrders();
+        this.toastrService.success('deleted successfully');
+      },
+      (error) => {
+        alert('an error happened try again later');
+        if (error.status === 401) {
+          sessionStorage.removeItem('authToken');
+          sessionStorage.setItem('loginSession', 'true');
+          this.updateOrders();
 
-updateOrderItems(){
-  this.orderItemService.getAllDoneOrderItems().subscribe(
-    response=>{
-      this.orderItems = response.data;
+        } else if (error.status === 403) {
+          this.toastrService.error('can not delete a payed order');
 
-      this.orderItems.forEach(item => {
-        item.product.priceAfterOffers = item.product.price;
-        item.product.totalOffers = 0;
+        } else {
 
-        item.product.addedOffers.forEach(offerAdded => {
-          const endDate = new Date(offerAdded.offer.end_date);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
-
-          if (endDate.getTime() >= today.getTime()) {
-            item.product.totalOffers += offerAdded.offer.discount;
-            item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
-          }
-
-        });
-
-
-      });
-      this.filteredProducts = this.orderItems;
-
-    },error=>{
-      if(error.status === 404){
+          this.toastrService.error('an erro happend try again later');
+        }
       }
-      console.log("error",error);
+    );
+  }
+  viewOrder(order: any) {
+    this.orderService.setCurrentOrder(order);
+    sessionStorage.setItem('return-to', 'done-orders');
+    this.linkClicked.emit("view-order");
+  }
+  delivery(order: any) { }
 
+  search() {
+    if (this.searchCriteria === 'date') {
+      if (!this.startDate || !this.endDate) {
+        this.toastrService.error("Start and End dates are required.");
+        return;
+      }
+      if (new Date(this.startDate) >= new Date(this.endDate)) {
+        this.toastrService.error("Start Date must be less than End Date.");
+        return;
+      }
     }
-  );
-}
-getCustomer(item:any){
-  this.customerService.getCustomerById(item.id).subscribe(
-    response=>{
 
-      this.customerService.setCurrentCustomer(response.data);
-      sessionStorage.setItem('return-to' , 'done-orders');
+    if (this.searchCriteria === 'total') {
 
-      this.linkClicked.emit("show-customer"); 
-
-    },error=>{
-      console.log('error getting data:',error);
+      if (this.priceFrom >= this.priceTo) {
+        this.toastrService.error("From price must be less than To price.");
+        return;
+      }
     }
-  );
-}
 
-getSeller(item:any){
-  this.sellerService.getSellerById(item.id).subscribe(
-    response=>{
-  this.sellerService.setCurrentSeller(response.data);
+    // console.log("Searching...", this.searchCriteria, this.searchTerm, this.startDate, this.endDate, this.priceFrom, this.priceTo);
+    this.updateOrders()
+  }
+  changeCriteria() {
+    this.priceFrom = 0;
+    this.priceTo = 0;
+    this.searchTerm = '';
+    this.startDate = '';
+    this.endDate = '';
+  }
+  updateOrders() {
+    this.orderService.getWaitingOrders(
+      'delivered',
+      this.currentPage,
+      this.itemsPerPage,
+      this.priceFrom,
+      this.searchTerm,
+      this.priceTo,
+      this.searchCriteria,
+      this.startDate,
+      this.endDate
+    ).subscribe(
+      response => {
+        this.orders = response.data;
+        this.totalOrders = response.total;
+        console.log('my serponse >>>>>+++::: ', response);
 
-  sessionStorage.setItem('return-to' , 'done-orders');
-  this.linkClicked.emit("show-seller"); 
-  
-    },error=>{
-  console.log('error happend::',error)
-    }
-  );
+
+
+      }, error => {
+        if (error.status === 404) {
+        }
+        console.log("error", error);
+
+      }
+    );
   }
 
-
-openModal() {
-  const modal = document.getElementById("myModal");
-  if (modal != null) {
-    modal.style.display = "block";
-
-  }
-}
-closeModal(){
-  const modal = document.getElementById("myModal");
-  if (modal != null) {
-    this.customerIsSet=false;
-    modal.style.display = "none";
-  }
-}
 }
 
-
-
-interface Offer {
-  id: number;
-  discount: number;
-  start_date: string;
-  end_date: string;
-}
-
-interface AddedOffer {
-  id: number;
-  offer_id: number;
-  product_id: number;
-  created_at: string;
-  updated_at: string;
-  offer: Offer;
-}
-
-interface Product {
-  id: number;
-  product_name: string;
-  description: string;
-  price: number;
-  size: string;
-  stock: number;
-  material: string;
-  cover_image: string;
-  video: string | null;
-  deleted_at: string | null;
-  addedOffers: AddedOffer[];
-
-  totalOffers: number;
-  priceAfterOffers: number;
-
-}
-
-interface OrderItem {
-  id: number;
-  product: Product;
-  quantity: number;
-  status: string;
-
-}
-
-
-interface User {
-  id: number;
-  name: string;
-  last_name: string;
-  email: string;
-  gender: string;
-
-  image: string;
-}
-
-interface Customer {
-  id: number;
-  phone: string;
-  address: string;
-  status: string;
-  total_spent: number;
-  user: User;
-}

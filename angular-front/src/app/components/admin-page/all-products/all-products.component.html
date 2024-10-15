@@ -7,10 +7,10 @@
   </div>
 
   <div class="container">
-    <div *ngIf="filteredProducts && filteredProducts.length > 0; else noProductsTemplate">
+    <div >
       <div class="mb-5 d-flex justify-content-center ">
         <div class="input-group" style="max-width: fit-content;">
-          <select [(ngModel)]="searchCriteria" class="form-select me-2 rounded-5">
+          <select [(ngModel)]="searchCriteria" (change)="changeCriteria()"  class="form-select me-2 rounded-5">
             <option value="name">Search by Name</option>
             <option value="category">Search by Category</option>
             <option value="price">Search by Price Range</option>
@@ -35,7 +35,7 @@
         </div>
       </div>
 
-      <table class="table text-center">
+      <table    *ngIf="products && products.length > 0; else noProductsTemplate" class="table text-center">
         <thead>
           <tr>
             <th scope="col">image</th>
@@ -48,7 +48,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let product of filteredProducts | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <tr *ngFor="let product of products">
             <td scope="col">
               <img [src]="product.cover_image" style="height:75px;width:75px; object-fit: cover;" alt="">
             </td>
@@ -73,9 +73,14 @@
         </tbody>
       </table>
 
-      <div class="d-flex justify-content-center my-4 ">
-        <pagination-controls (pageChange)="page = $event"></pagination-controls>
-      </div>
+    
+      <div class="d-flex justify-content-center my-4">
+        <mat-paginator [length]="totalProducts"
+          [pageSize]="itemsPerPage"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page"
+          (page)="onPageChange($event)">
+            </mat-paginator>
     </div>
 
   </div>

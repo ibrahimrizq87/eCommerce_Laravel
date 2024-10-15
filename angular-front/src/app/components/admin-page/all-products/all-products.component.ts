@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-all-products',
@@ -13,7 +14,9 @@ import { FormsModule } from '@angular/forms';
      UpdateProductComponent, 
      CommonModule, 
      NgxPaginationModule,
-     FormsModule],
+     FormsModule,
+     MatPaginatorModule
+    ],
   templateUrl: './all-products.component.html',
   styleUrl: './all-products.component.css'
 })
@@ -21,14 +24,17 @@ export class AllProductsComponent {
   @Output() linkClicked = new EventEmitter<string>();
 
   products: Product[] = []; 
-  priceFrom: number  = 0;
-  priceTo: number = 0;
-  page: number = 1;              
-  itemsPerPage: number = 20; 
   category :any;
+
+  page: number = 1;
+  itemsPerPage: number = 20;
+  totalItems: number = 0;
+  currentPage: number = 1;
   searchTerm: string = '';
-  searchCriteria: string = 'name';  
-  filteredProducts: any[] = []; 
+  priceFrom: number = 0;
+  priceTo: number  = 0;
+  totalProducts: number = 0;
+  searchCriteria: string = 'name';
 
   constructor(private productService: ProductService) { }
 
@@ -42,38 +48,13 @@ export class AllProductsComponent {
     this.linkClicked.emit('update-product'); 
 
   }
-  search() {
-    this.filteredProducts = this.products;
-
-    if (this.searchCriteria === 'name' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'category' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'price') {
-        if (this.priceFrom <= this.priceTo ) {
-            this.filteredProducts = this.filteredProducts.filter(product =>
-                product.priceAfterOffers !== null && 
-                product.priceAfterOffers >= this.priceFrom && 
-                product.priceAfterOffers <= this.priceTo
-            );
-        }else{
-          alert('the from price must be less than the to price');
-        }
-    }
-
-    this.page = 1; 
-}
 
 
   deleteProduct(product:any){
     this.productService.deleteProduct(product.id).subscribe(
       response=>{
         alert('deleted sucessfully ');
-        this.updateProducts();  
+        this.getProducts();  
 
       },error=>{
         alert('some error happend ');
@@ -90,42 +71,93 @@ export class AllProductsComponent {
 
   }
   ngOnInit(): void {
-    this.updateProducts();  
+    this.getProducts();  
   }
-  updateProducts(){
 
-  this.productService.getAllProducts().subscribe(
-    response => {
-      this.products = response.data;
- 
-      this.products.forEach(product=>{
-        product.priceAfterOffers = product.price;
-        product.totalOffers=0;  
-        
-      product.addedOffers.forEach(offerAdded => {
-        const endDate = new Date(offerAdded.offer.end_date); 
-        const today = new Date(); 
-        today.setHours(0, 0, 0, 0); 
+  onPageChange(event: PageEvent) {
+    this.currentPage = event.pageIndex+1; 
+    this.itemsPerPage = event.pageSize; 
+    this.getProducts();
+  }
 
-if (endDate.getTime() >= today.getTime()) { 
-  product.totalOffers +=offerAdded.offer.discount;
-  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount/100) *product.price);
-}
 
+  getProducts(): void {
+    this.productService.getProducts(this.currentPage, this.itemsPerPage, this.searchCriteria, this.searchTerm, this.priceFrom, this.priceTo)
+      .subscribe(response => {
+        this.products = response.data; 
+        this.totalProducts = response.total; 
+        this.products.forEach(product => {
+          product.priceAfterOffers = product.price;
+          product.totalOffers = 0;
+
+          product.addedOffers.forEach(offerAdded => {
+            const endDate = new Date(offerAdded.offer.end_date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (endDate.getTime() >= today.getTime()) {
+              product.totalOffers += offerAdded.offer.discount;
+              product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
+
+            }
+
+          });
+        });
+
+    },error=>{
+        console.log('error>>>>>>>>>>>>>>>>' , error);
       });
-    });
-    this.filteredProducts = this.products;
-
-    },
-    error => {
-      if (error.status === 400 || error.status === 500) {
-        console.error('A specific error occurred:', error);
-      } else {
-        console.error('An unexpected error occurred:', error);
-      }
-    }
-  );
   }
+  
+
+  search(): void {
+    this.currentPage = 1; 
+    this.getProducts();
+
+    
+  }
+
+
+  changeCriteria(){
+    this.searchTerm= '';
+    this.priceFrom = 0;
+    this.priceTo  = 0;
+  }
+
+//   updateProducts(){
+
+//   this.productService.getAllProducts().subscribe(
+//     response => {
+//       this.products = response.data;
+ 
+//       this.products.forEach(product=>{
+//         product.priceAfterOffers = product.price;
+//         product.totalOffers=0;  
+        
+//       product.addedOffers.forEach(offerAdded => {
+//         const endDate = new Date(offerAdded.offer.end_date); 
+//         const today = new Date(); 
+//         today.setHours(0, 0, 0, 0); 
+
+// if (endDate.getTime() >= today.getTime()) { 
+//   product.totalOffers +=offerAdded.offer.discount;
+//   product.priceAfterOffers -= Math.floor((offerAdded.offer.discount/100) *product.price);
+// }
+
+//       });
+//     });
+//     this.filteredProducts = this.products;
+
+//     },
+//     error => {
+//       if (error.status === 400 || error.status === 500) {
+//         console.error('A specific error occurred:', error);
+//       } else {
+//         console.error('An unexpected error occurred:', error);
+//       }
+//     }
+//   );
+//   }
 
 }
 

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 import { CustomerService } from '../../services/customer.service';
-import { UserService } from '../../services/user.service';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
@@ -107,7 +106,6 @@ export class CheckoutComponent {
         response=>{
           
 
-          // console.log(response);
           
             const isPayed = response.pay;
           if(isPayed){

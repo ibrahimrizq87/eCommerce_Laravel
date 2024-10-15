@@ -26,99 +26,58 @@ export class SellerOrdersComponent {
   priceTo: number = 0;
   searchTerm: string = '';
   searchCriteria: string = 'name'; 
+
+
   constructor(private orderService:OrderService,
-    private orderItemService:OrderItemService,
-    private productService:ProductService
   ){}
 
-  search() {
-    this.filteredProducts = this.orderItems;
-
-    if (this.searchCriteria === 'name' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'category' && this.searchTerm) {
-        this.filteredProducts = this.filteredProducts.filter(product =>
-            product.product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-        );
-    } else if (this.searchCriteria === 'price') {
-        if (this.priceFrom <= this.priceTo ) {
-            this.filteredProducts = this.filteredProducts.filter(product =>
-              product.product.priceAfterOffers !== null && 
-              product.product.priceAfterOffers >= this.priceFrom && 
-              product.product.priceAfterOffers <= this.priceTo
-            );
-        }else{
-          alert('the from price must be less than the to price');
-        }
-    }
-
-    this.page = 1; 
-}
 
 
 
   ngOnInit(): void {
-    this.updateOrderItems();
+    this.updateOrders();
 }
+
 craft(item:any){
-this.orderItemService.craftOrderItem(item.id).subscribe(
-  response=>{
-    alert('added to your accepted doing list');
-    this.updateOrderItems();
-  },error=>{
-    console.log('error happend', error)
-    alert('there is an error happend');
 
-  }
-);
 }
+search(){}
 serveFromStock(item:any){
-  this.orderItemService.serveOrderItem(item.id).subscribe(
-    response=>{
-      alert('added to your accepted done list');
-      this.updateOrderItems();
-    },error=>{
-      console.log('error happend', error)
-      alert('there is an error happend');
-  
-    }
-  );
+
 }
-updateOrderItems(){
-  this.orderItemService.getAllMyOrderItems().subscribe(
-    response=>{
-      this.orderItems = response.data;
-      console.log(this.orderItems);
+updateOrders(){
+//   this.orderService.getWaitingOrders('waiting').subscribe(
+//     response=>{
+//       this.orderItems = response.data;
+//       console.log(this.orderItems);
 
-      this.orderItems.forEach(item => {
-        item.product.priceAfterOffers = item.product.price;
-        item.product.totalOffers = 0;
+//       this.orderItems.forEach(item => {
+//         item.product.priceAfterOffers = item.product.price;
+//         item.product.totalOffers = 0;
 
-        item.product.addedOffers.forEach(offerAdded => {
-          const endDate = new Date(offerAdded.offer.end_date);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
+//         item.product.addedOffers.forEach(offerAdded => {
+//           const endDate = new Date(offerAdded.offer.end_date);
+//           const today = new Date();
+//           today.setHours(0, 0, 0, 0);
 
-          if (endDate.getTime() >= today.getTime()) {
-            item.product.totalOffers += offerAdded.offer.discount;
-            item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
-          }
+//           if (endDate.getTime() >= today.getTime()) {
+//             item.product.totalOffers += offerAdded.offer.discount;
+//             item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
+//           }
 
-        });
+//         });
 
 
-      });
-      this.filteredProducts = this.orderItems;
+//       });
+//       this.filteredProducts = this.orderItems;
 
-    },error=>{
-      if(error.status === 404){
-      }
-      console.log("error",error);
+//     },error=>{
+//       if(error.status === 404){
+//       }
+//       console.log("error",error);
 
-    }
-  );
+//     }
+//   );
 }
 
 }

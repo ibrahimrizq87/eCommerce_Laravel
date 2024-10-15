@@ -5,7 +5,7 @@
   </div>
 
   <div class="container">
-    <div *ngIf="filteredOffers && filteredOffers.length > 0; else noProductsTemplate">
+    <div >
       <div class="mb-5 d-flex justify-content-center ">
         <div class="input-group ms-5">
           <select [(ngModel)]="searchCriteria" class="form-select rounded-5" style="max-width: fit-content;">
@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <table class="table text-center">
+      <table *ngIf="filteredOffers && filteredOffers.length > 0; else noProductsTemplate" class="table text-center">
         <thead>
           <tr>
             <th scope="col">discount</th>

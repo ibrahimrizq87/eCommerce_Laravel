@@ -5,7 +5,6 @@ import { AllCustomersComponent } from './all-customers/all-customers.component';
 import { AllOffersComponent } from './all-offers/all-offers.component';
 import { AllProductsComponent } from './all-products/all-products.component';
 import { BannedCustomersComponent } from './banned-customers/banned-customers.component';
-import { RejectedProductsComponent } from './rejected-products/rejected-products.component';
 import { AddCategoryComponent } from './add-category/add-category.component';
 import { UpdateCategoryComponent } from './update-category/update-category.component';
 import { AdminViewProductComponent } from './admin-view-product/admin-view-product.component';
@@ -23,6 +22,7 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { ProductOffersComponent } from './product-offers/product-offers.component';
 import { ProductsInOfferComponent } from './products-in-offer/products-in-offer.component';
 import { AddOfferComponent } from './add-offer/add-offer.component';
+import { ViewOrderComponent } from './view-order/view-order.component';
 
 @Component({
   selector: 'app-admin-page',
@@ -45,12 +45,12 @@ import { AddOfferComponent } from './add-offer/add-offer.component';
     AllOffersComponent,
     AllProductsComponent,
     BannedCustomersComponent,
-    RejectedProductsComponent,
     PendingProductsComponent,
     CommonModule,
     AddCategoryComponent,
     UpdateCategoryComponent,
-    AdminViewProductComponent
+    AdminViewProductComponent,
+    ViewOrderComponent
   ],
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.css']

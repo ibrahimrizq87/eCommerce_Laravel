@@ -19,16 +19,48 @@ use Illuminate\Support\Facades\Storage;
 class CustomerController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $customers = Customer::where('status','active')->get();  
-        return CustomerResource::collection($customers);
+        $page = $request->input('page', 1);
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+        $searchTerm = $request->input('searchTerm', null);
+    
+        $query = Customer::where('status', 'active');
+    
+        if (!empty($searchTerm)) {
+            $query->join('users', 'users.id', '=', 'customers.user_id') 
+                ->where('users.name', 'LIKE', '%' . $searchTerm . '%');
+        }
+    
+        $paginatedCustomers = $query->paginate($itemsPerPage, ['*'], 'page', $page);
+    
+        return CustomerResource::collection($paginatedCustomers)
+            ->additional(['total' => $paginatedCustomers->total()]);
     }
+    
 
-    public function getBanned()
+
+
+
+    public function getBanned(Request $request)
     {
-        $customers = Customer::where('status','banned')->get();  
-        return CustomerResource::collection($customers);
+       
+
+        $page = $request->input('page', 1);
+        $itemsPerPage = $request->input('itemsPerPage', 10);
+        $searchTerm = $request->input('searchTerm', null);
+    
+        $query = Customer::where('status','banned');
+    
+        if (!empty($searchTerm)) {
+            $query->join('users', 'users.id', '=', 'customers.user_id') 
+                ->where('users.name', 'LIKE', '%' . $searchTerm . '%');
+        }
+    
+        $paginatedCustomers = $query->paginate($itemsPerPage, ['*'], 'page', $page);
+    
+        return CustomerResource::collection($paginatedCustomers)
+            ->additional(['total' => $paginatedCustomers->total()]);
     }
 
     public function banCustomer($id)
@@ -115,19 +147,15 @@ public function show(Customer $customer)
     {
 
 
-        $orderItem = OrderItem::find($order_id);
+  
     
-        if (!$orderItem) {
-            return response()->json(['error' => 'Order item not found'], 404);
-        }
-    
-        $order = Order::find($orderItem->order_id);
+        // $order = Order::find($order_id);
         
-        if (!$order) {
-            return response()->json(['error' => 'Order not found'], 404);
-        }
+        // if (!$order) {
+        //     return response()->json(['error' => 'Order not found'], 404);
+        // }
     
-        $customer = Customer::where('user_id', $order->user_id)->first();
+        $customer = Customer::where('user_id', $order_id)->first();
         
         if (!$customer) {
             return response()->json(['error' => 'Customer not found'], 404);

@@ -3,14 +3,16 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { OfferService } from '../../../services/offer.service';
-
+import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-offers',
   standalone: true,
-  imports: [CommonModule,
-    FormsModule
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatPaginatorModule
   ],
   templateUrl: './product-offers.component.html',
   styleUrl: './product-offers.component.css'
@@ -22,43 +24,25 @@ export class ProductOffersComponent {
   selectedProducts: any[] = [];
   offer:any;
 
-  filteredProducts: any[] = [];
-  priceFrom: number  = 0;
-  priceTo: number = 0;
+ 
+  page: number = 1;
+  itemsPerPage: number = 20;
+  totalItems: number = 0;
+  currentPage: number = 1;
   searchTerm: string = '';
-  searchCriteria: string = 'name'; 
+  priceFrom: number = 0;
+  priceTo: number  = 0;
+  totalProducts: number = 0;
+  searchCriteria: string = 'name';
 
   constructor(
     private productService: ProductService  ,private offerService:OfferService) {}
     ngOnInit(): void {
-      this.updateProducts();
+      this.getProducts();
       this.getOffer();
       
     }
-    search() {
-      this.filteredProducts = this.products;
-  
-      if (this.searchCriteria === 'name' && this.searchTerm) {
-          this.filteredProducts = this.filteredProducts.filter(product =>
-              product.product_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-          );
-      } else if (this.searchCriteria === 'category' && this.searchTerm) {
-          this.filteredProducts = this.filteredProducts.filter(product =>
-              product.category.category_name.toLowerCase().includes(this.searchTerm.toLowerCase())
-          );
-      } else if (this.searchCriteria === 'price') {
-          if (this.priceFrom <= this.priceTo ) {
-              this.filteredProducts = this.filteredProducts.filter(product =>
-                  product.priceAfterOffers !== null && 
-                  product.priceAfterOffers >= this.priceFrom && 
-                  product.priceAfterOffers <= this.priceTo
-              );
-          }else{
-            alert('the from price must be less than the to price');
-          }
-      }
-  
-  }
+
 
     onProductSelect(product: any, event: any) {
       if (event.target.checked) {
@@ -94,35 +78,60 @@ this.offer=this.offerService.getCurrentOffer();
 }
     }
 
-updateProducts(){
-  this.productService.getMyProducts().subscribe(
-    response=>{
-      this.products = response.data;
 
-      this.products.forEach(product=>{
-        product.priceAfterOffers = product.price;
-        product.totalOffers=0;  
-        product.selected = false;
-        
-      product.addedOffers.forEach(offerAdded => {
-        const endDate = new Date(offerAdded.offer.end_date); 
-        const today = new Date(); 
-        today.setHours(0, 0, 0, 0); 
 
-if (endDate.getTime() >= today.getTime()) { 
-  product.totalOffers +=offerAdded.offer.discount;
-  product.priceAfterOffers -= Math.floor((offerAdded.offer.discount/100) *product.price);
-}
 
-      });
-    });
-    this.filteredProducts = this.products;
-  },error=>{
-      console.log('there is an error :; ',error)
+ 
+    onPageChange(event: PageEvent) {
+      this.currentPage = event.pageIndex+1; 
+      this.itemsPerPage = event.pageSize; 
+      this.getProducts();
     }
-  );
-}
-
+  
+  
+    getProducts(): void {
+      this.productService.getProducts(this.currentPage, this.itemsPerPage, this.searchCriteria, this.searchTerm, this.priceFrom, this.priceTo)
+        .subscribe(response => {
+          this.products = response.data; 
+          this.totalProducts = response.total; 
+          this.products.forEach(product => {
+            product.priceAfterOffers = product.price;
+            product.totalOffers = 0;
+  
+            product.addedOffers.forEach(offerAdded => {
+              const endDate = new Date(offerAdded.offer.end_date);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+  
+              if (endDate.getTime() >= today.getTime()) {
+                product.totalOffers += offerAdded.offer.discount;
+                product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
+  
+              }
+  
+            });
+          });
+  
+      },error=>{
+          console.log('error>>>>>>>>>>>>>>>>' , error);
+        });
+    }
+    
+  
+    search(): void {
+      this.currentPage = 1; 
+      this.getProducts();
+  
+      
+    }
+  
+  
+    changeCriteria(){
+      this.searchTerm= '';
+      this.priceFrom = 0;
+      this.priceTo  = 0;
+    }
+  
 addProducts(){
   if (this.selectedProducts.length < 1) {
     this.addError = true;
@@ -139,7 +148,6 @@ addProducts(){
 
   this.offerService.addOfferToProducts(data).subscribe(
     response => {
-      console.log('Offer added successfully', response);   
       alert('Offer added successfully');
       this.linkClicked.emit('all-seller-offers');
 
