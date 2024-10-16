@@ -25,6 +25,17 @@ export class UserService {
     register(userData: any): Observable<any> {
       return this.http.post(this.apiUrl+"/register", userData);
     }
+    
+    addDelivery(userData: any): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.post(this.apiUrl+"/add-delivery", userData,{headers});
+    }
+    
 
     getUser(): Observable<any> {
         const authToken = sessionStorage.getItem('authToken');

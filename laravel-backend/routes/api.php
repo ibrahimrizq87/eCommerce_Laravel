@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\SellerController;
 use App\Http\Controllers\Api\WishListController;
 use App\Http\Controllers\Api\VerificationController;
 use App\Http\Controllers\Api\ContactMessageController;
+use App\Http\Controllers\Api\CityController;
+use App\Http\Controllers\Api\DeliveryController;
 
 
 use App\Http\Controllers\Api\PaymentController;
@@ -65,6 +67,8 @@ Route::post('/offers/add-offer-to-products', [OfferController::class , 'addOffer
 Route::get('/offers/getMyOffers', [OfferController::class , 'getMyOffers'])->middleware('auth:sanctum');
 Route::get('/products/myProduct', [ProductController::class , 'getMyProduct'])->middleware('auth:sanctum');
 Route::post('/products/update', [ProductController::class , 'updateProduct'])->middleware('auth:sanctum');
+
+Route::post('/users/add-delivery', [UserController::class , 'addDelivery'])->middleware('auth:sanctum');
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -124,6 +128,8 @@ Route::apiResource('offers', OfferController::class)->middleware('auth:sanctum')
 Route::apiResource('orders', OrderController::class)->middleware('auth:sanctum');
 Route::apiResource('order-items', OrderItemController::class);
 Route::apiResource('payment-requests', PaymentRequestController::class);
+Route::apiResource('cities', CityController::class)->middleware('auth:sanctum');
+Route::apiResource('deliveries', DeliveryController::class)->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {
 Route::apiResource('products', ProductController::class)->only([ 'store','update', 'destroy']);

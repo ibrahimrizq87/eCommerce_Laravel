@@ -61,7 +61,6 @@ class OrderItemController extends Controller
             }
             $orderItems = OrderItem::with('product', 'product.addedOffers', 'product.category')
             ->where('order_id', $order_id)
-            // ->where('status','!=', 'delivered') 
             ->get();
             
         return OrderItemResource::collection($orderItems);
@@ -302,11 +301,7 @@ public function getDoingOrderItems()
         ->where('status', 'doing')
         ->get();
 
-        // $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
-        // ->whereHas('order', function($query) {
-        //     $query->where('payment_status', 'payed');  
-        // })->where('status','doing')
-        // ->get();
+   
 
     return OrderItemResource::collection($orderItems);
 } catch (\Exception $e) {
@@ -334,11 +329,7 @@ public function getWaitingOrderItems()
         ->where('status', 'waiting')
         ->get();
 
-        // $orderItems = OrderItem::with('product', 'product.addedOffers', 'order')
-        // ->whereHas('order', function($query) {
-        //     $query->where('payment_status', 'payed');  
-        // })->where('status','waiting')
-        // ->get();
+  
 
     return OrderItemResource::collection($orderItems);
 } catch (\Exception $e) {

@@ -17,6 +17,12 @@
     <a>
       <li class="my-4" (click)="onLinkClick('all-offers')" [ngClass]="{'active': selected === 'all-offers'}">All Offers</li>
     </a>
+    <a>
+      <li class="my-4" (click)="onLinkClick('cities')" [ngClass]="{'active': selected === 'cities'}">City</li>
+    </a>
+    <a>
+      <li class="my-4" (click)="onLinkClick('deliveries')" [ngClass]="{'active': selected === 'deliveries'}">Delivery</li>
+    </a>
 
     <div id="accordion" style="background-color: #231717; border:none; color:#ffffff; margin-right:30px;">
       <div class="card" style="background-color: #231717; color:#ffffff; border:none;">

@@ -19,7 +19,8 @@ import { OrderPaymentService } from './services/order-payment.service';
 import { OrderItemService } from './services/order-item.service';
 import { ContactService } from './services/contact.service';
 import { SharedService } from './services/language.service';
-
+import { DeliveryService } from './services/delivery.service';
+import { City } from './services/city.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -33,6 +34,8 @@ import { SharedService } from './services/language.service';
     SellerPageComponent
   ],
   providers: [
+    City,
+    DeliveryService,
     SharedService,
     ContactService,
     OrderItemService,

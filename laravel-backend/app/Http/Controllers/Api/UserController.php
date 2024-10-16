@@ -5,12 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Customer;
+use App\Models\Delivery;
+
 use App\Models\Seller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\DeliveryResource;
+
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\DB;
 
@@ -166,6 +170,77 @@ class UserController extends Controller
 }
 
 
+
+
+function addDelivery(Request $request) {
+    try {
+    $std_validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|unique:users,email',
+        'password' => 'required|string|min:8|confirmed',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'gender' => 'required|string|in:male,female,other',
+        'last_name' => 'required|string|max:255',
+        'phone' => 'nullable|string|max:15', 
+        'address' => 'nullable|string|max:255',
+        'city_id' => 'required|integer|exists:cities,id',
+
+    ], [
+        "email.required" => "You must add an email to log in.",
+        "email.email" => "The email format you provided is invalid.",
+        "password.confirmed" => "The password confirmation does not match.",
+        "image.image" => "The image must be a valid image file.",
+        "image.mimes" => "The image must be in jpeg, png, jpg, or gif format.",
+        "image.max" => "The image size should not exceed 2MB.",
+    ]);
+
+    if ($std_validator->fails()) {
+        return response()->json(['errors' => $std_validator->errors()], 400);
+    }
+
+
+    $my_path = '';
+    if(request()->hasFile("image")){
+        $image = request()->file("image");
+        $my_path=$image->store('users','uploads');
+        $my_path= asset('uploads/' . $my_path); 
+    }
+
+    $user = new User();
+    $user->image = $my_path; 
+    $user->email = $request->email;
+    $user->name = $request->name;
+    $user->last_name = $request->last_name;
+    $user->role = 'customer';
+    $user->gender = $request->gender;
+    $user->email_verified_at = now();
+
+    $user->password = Hash::make($request->password);
+    $user->save();
+
+        $delivery = new Delivery();
+        $delivery->user_id = $user->id; 
+        $delivery->city_id = $request->city_id;
+        $delivery->phone = $request->phone;
+        $delivery->address = $request->address;
+        $delivery->status = 'active';
+        $delivery->save(); 
+
+
+    
+        $delivery->load('user');
+        $delivery->load('city');
+
+        
+
+
+    return response()->json([ 'user' => new DeliveryResource($delivery)], 201); 
+} catch (\Exception $e) {
+    return response()->json(['error' => $e->getMessage()], 500);
+}
+}
+
+
     function register(Request $request) {
         try {
         $std_validator = Validator::make($request->all(), [
@@ -190,18 +265,7 @@ class UserController extends Controller
             "image.max" => "The image size should not exceed 2MB.",
         ]);
     
-        // $std_validator->sometimes('shop_name', 'required|string|max:255', function($input) {
-        //     return $input->role === 'seller';
-        // });
-        // $std_validator->sometimes('about', 'required|string|max:255', function($input) {
-        //     return $input->role === 'seller';
-        // });
-        // $std_validator->sometimes('address', 'required|string|max:255', function($input) {
-        //     return $input->role === 'seller' || $input->role === 'customer';
-        // });
-        // $std_validator->sometimes('phone', 'required|string|max:255', function($input) {
-        //     return $input->role === 'seller' || $input->role === 'customer';
-        // });
+    
         if ($std_validator->fails()) {
             return response()->json(['errors' => $std_validator->errors()], 400);
         }
@@ -221,10 +285,10 @@ class UserController extends Controller
         $user->last_name = $request->last_name;
         $user->role = 'customer';
         $user->gender = $request->gender;
+
         $user->password = Hash::make($request->password);
         $user->save();
 
-        if ($request->role === 'customer') {
             $customer = new Customer();
             $customer->user_id = $user->id; 
             $customer->total_spent = 0;
@@ -233,7 +297,7 @@ class UserController extends Controller
             $customer->status = 'active';
             $customer->save(); 
 
-        } 
+    
         
         $token = $user->createToken($request->device_name)->plainTextToken;
         $user->sendEmailVerificationNotification();

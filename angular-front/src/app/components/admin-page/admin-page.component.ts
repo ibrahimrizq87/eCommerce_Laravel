@@ -23,11 +23,21 @@ import { ProductOffersComponent } from './product-offers/product-offers.componen
 import { ProductsInOfferComponent } from './products-in-offer/products-in-offer.component';
 import { AddOfferComponent } from './add-offer/add-offer.component';
 import { ViewOrderComponent } from './view-order/view-order.component';
+import { CitiesComponent } from './cities/cities.component';
+import { AddCityComponent } from './add-city/add-city.component';
+import { AddDeliveryComponent } from './add-delivery/add-delivery.component';
+import { DeliveriesComponent } from './deliveries/deliveries.component';
+import { ViewDeliveryComponent } from './view-delivery/view-delivery.component';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
   imports: [
+    ViewDeliveryComponent,
+    DeliveriesComponent,
+    AddDeliveryComponent,
+    AddCityComponent,
+    CitiesComponent,
     AddOfferComponent,
     ProductsInOfferComponent,
     ProductOffersComponent,
