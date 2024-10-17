@@ -31,6 +31,7 @@
       <app-cities  *ngIf="activeComponent === 'cities'" (linkClicked)="showComponent($event)"></app-cities>
       <app-deliveries  *ngIf="activeComponent === 'deliveries'" (linkClicked)="showComponent($event)" ></app-deliveries>
       <app-add-delivery  *ngIf="activeComponent === 'add-delivery'"  (linkClicked)="showComponent($event)"></app-add-delivery>
+      <app-deleted-orders  *ngIf="activeComponent === 'deleted-orders'"  (linkClicked)="showComponent($event)"></app-deleted-orders>
 
     </div>
   </div>

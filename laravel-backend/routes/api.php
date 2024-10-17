@@ -29,6 +29,9 @@ Route::get('products/most-selled', [ProductController::class , 'getMostSelledPro
 Route::get('products/most-offered', [ProductController::class , 'getMostOfferedProducts']);
 Route::get('products/most-ordered-seller', [ProductController::class , 'getMostOrderedProductsSeller'])->middleware('auth:sanctum');
 
+Route::post('orders/edit-order', [OrderController::class , 'updateOrderStatus'])->middleware('auth:sanctum');
+
+Route::get('orders/deleted', [OrderController::class , 'getDeletedOrders'])->middleware('auth:sanctum');
 
 
 

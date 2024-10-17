@@ -99,7 +99,18 @@ viewOrder(order:any){
       sessionStorage.setItem('return-to' , 'seller-orders');
       this.linkClicked.emit("view-order"); 
 }
-delivery(order:any){}
+
+delivery(order:any){
+  this.orderService.updateOrderStatus({'id':order.id , 'status': 'done'}).subscribe(
+    response=>{
+      alert('updated successfully');
+      this.updateOrders();
+    },error=>{
+      alert('an error happend');
+      console.log('anerror happend:' , error);
+    }
+  );
+}
 
 search() {
   if (this.searchCriteria === 'date') {
@@ -146,7 +157,7 @@ updateOrders(){
     response=>{
       this.orders = response.data;
       this.totalOrders = response.total;
-      console.log('my serponse >>>>>+++::: ',response);
+      // console.log('my serponse >>>>>+++::: ',response);
 
 
 

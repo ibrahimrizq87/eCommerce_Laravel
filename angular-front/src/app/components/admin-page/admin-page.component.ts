@@ -28,11 +28,13 @@ import { AddCityComponent } from './add-city/add-city.component';
 import { AddDeliveryComponent } from './add-delivery/add-delivery.component';
 import { DeliveriesComponent } from './deliveries/deliveries.component';
 import { ViewDeliveryComponent } from './view-delivery/view-delivery.component';
+import { DeletedOrdersComponent } from './deleted-orders/deleted-orders.component';
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
   imports: [
+    DeletedOrdersComponent,
     ViewDeliveryComponent,
     DeliveriesComponent,
     AddDeliveryComponent,

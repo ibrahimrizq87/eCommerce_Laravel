@@ -40,8 +40,19 @@ class ReviewController extends Controller
 
          
 
+            $userId = Auth::id();
+        $productId = $request->input('product_id');
+
+        $existingReview = Review::where('user_id', $userId)
+                                ->where('product_id', $productId)
+                                ->first();
+
+        if ($existingReview) {
+            return response()->json(['message' => 'You have already reviewed this product'], 409);
+        }
+
+
             $item = new Review();
-            // 'rating', 'feedback', 'product_id', 'user_id'
 
             $item->product_id = $request->input('product_id');
             $item->rating = $request->input('rating');

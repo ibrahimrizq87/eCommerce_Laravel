@@ -28,6 +28,47 @@ class OrderController extends Controller
         return response()->json($orders);
     }
 
+
+
+
+    
+
+    public function getDeletedOrders(Request $request)
+{
+    $query = Order::withTrashed() 
+                  ->with('user')
+                  ->orderBy('created_at', 'desc');
+
+    $page = $request->input('page', 1);
+    $itemsPerPage = $request->input('itemsPerPage', 10);
+
+  
+    $priceFrom = $request->input('priceFrom');
+    $priceTo = $request->input('priceTo');
+    if ($priceFrom !== null && $priceTo !== null) {
+        $query->whereBetween('total', [$priceFrom, $priceTo]);
+    }
+
+    $searchTerm = $request->input('searchTerm');
+    $searchCriteria = $request->input('searchCriteria');
+    if ($searchCriteria === 'name' && $searchTerm) {
+        $query->whereHas('user', function ($q) use ($searchTerm) {
+            $q->where('name', 'like', '%' . $searchTerm . '%');
+        });
+    }
+    $startDate = $request->input('startDate');
+    $endDate = $request->input('endDate');
+    if ($startDate && $endDate) {
+        $query->whereBetween('created_at', [$startDate, $endDate]);
+    }
+
+    $orders = $query->paginate($itemsPerPage, ['*'], 'page', $page);
+
+    return OrderResource::collection($orders)
+        ->additional(['total' => $orders->total()]);
+}
+
+    
     public function getOrders(Request $request)
     {
 
@@ -74,35 +115,45 @@ class OrderController extends Controller
         ->additional(['total' => $orders->total()]);
     }
     
+    
+    public function updateOrderStatus(Request $request)
+    {
+try{
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|exists:orders,id',
+            'status' => 'required|string|in:waiting,done,delivered',
+        ]);
 
-    // public function getOrders(Request $request)
-    // {
 
-    //     // return response()->json(['status'=> $request->input('status', 'waiting')]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
 
+        $order = Order::find($request->input('id'));
 
-    //     $order_status = $request->input('status', 'waiting');
-    //     if ($order_status == 'waiting'){
-    //         $orders = Order::where('status','waiting')
-    //         ->with('user')
-    //         ->orderBy('created_at', 'desc') 
-    //         ->get();
-    //     }else if($order_status == 'done'){
-    //         $orders = Order::where('status','done')
-    //         ->with('user')
-    //         ->orderBy('created_at', 'desc') 
-    //         ->get();
+        if ($request->input('status') === 'delivered') {
+            foreach ($order->orderItems as $item) {
+                $product = $item->product; 
+                $product->stock -= $item->quantity;
 
-    //     }else if($order_status == 'delivered'){
-    //         $orders = Order::where('status','delivered')
-    //         ->with('user')
-    //         ->orderBy('created_at', 'desc') 
-    //         ->get();
+                if ($product->stock < 0) {
+                    return response()->json(['error' => 'Insufficient stock for product: ' . $product->name], 400);
+                }
 
-    //     }
+                $product->save();
+            }
+        }
 
-    //     return OrderResource::collection($orders);
-    // }
+        $order->status = $request->input('status');
+        $order->save();
+
+        return response()->json(['message' => 'Order status updated successfully'], 200);
+
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+    
+}
     
     public function getMyOrder()
     {

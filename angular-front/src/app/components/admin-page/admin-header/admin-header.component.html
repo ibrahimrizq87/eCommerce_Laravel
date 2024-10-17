@@ -43,6 +43,10 @@
               <a>
                 <li class="my-4" (click)="onLinkClick('done-orders')" [ngClass]="{'active': selected === 'done-orders'}">Deliverd Orders</li>
               </a>
+              <a>
+                <li class="my-4" (click)="onLinkClick('deleted-orders')" [ngClass]="{'active': selected === 'deleted-orders'}">Deleted Orders</li>
+              </a>
+              
             </ul>
           </div>
         </div>

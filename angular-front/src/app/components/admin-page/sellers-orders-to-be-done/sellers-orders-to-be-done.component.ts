@@ -105,7 +105,17 @@ viewOrder(order:any){
       sessionStorage.setItem('return-to' , 'seller-orders-to-b-done');
       this.linkClicked.emit("view-order"); 
 }
-delivery(order:any){}
+deliveryed(order:any){
+  this.orderService.updateOrderStatus({'id':order.id , 'status': 'delivered'}).subscribe(
+    response=>{
+      alert('updated successfully');
+      this.updateOrders();
+    },error=>{
+      alert('an error happend');
+      console.log('anerror happend:' , error);
+    }
+  );
+}
 
 search() {
   if (this.searchCriteria === 'date') {
@@ -128,7 +138,7 @@ search() {
   }
 
   // console.log("Searching...", this.searchCriteria, this.searchTerm, this.startDate, this.endDate, this.priceFrom, this.priceTo);
-  this.updateOrders()
+  this.updateOrders();
 }
 changeCriteria(){
   this.priceFrom  = 0;

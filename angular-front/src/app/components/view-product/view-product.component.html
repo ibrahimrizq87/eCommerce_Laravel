@@ -197,7 +197,7 @@
                             <div class="mb-3">
                                 <div class="form-floating">
                                     <textarea style="width: 100%;" class="form-control review-textarea" id="review"
-                                        name="review" placeholder="{{ currentLanguage === 'ar' ? 'مراجعتك' : 'Your review' }}" ngModel required></textarea>
+                                    [(ngModel)]='reviewMessage' name="review" placeholder="{{ currentLanguage === 'ar' ? 'مراجعتك' : 'Your review' }}" ngModel required></textarea>
         
                                     <label for="review">
                                         {{ currentLanguage === 'ar' ? 'تعليق التقييم' : 'Review message' }}

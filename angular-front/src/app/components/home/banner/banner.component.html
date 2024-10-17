@@ -1,14 +1,14 @@
 <section class="position-relative">
-    <div 
+    <img src="images/background.jpg"
         style="height: 500px; width: 100%; background-color: rgb(151, 100, 5); display: flex; justify-content: center; align-items: center;">
-    </div>
     
     <div 
         class="overlay position-absolute top-0 bottom-0 left-0 right-100 d-flex flex-column justify-content-center align-items-center" 
         style="background-color: rgba(0, 0, 0, 0.7); width: 100%;"
     >
         <h2 class="text-white" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">
-            <ng-container *ngIf="currentLanguage === 'en'; else arabicWelcome">Welcome to Elbaraka Store</ng-container>
+            <img src="images/logo.png" height="50px" style="background-color: white; border-radius: 40px; padding: 4px; margin-right: 10px;" alt="">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicWelcome">Welcome to Al Barka Store</ng-container>
             <ng-template #arabicWelcome>مرحبًا بك في متجر البركة</ng-template>
         </h2>
         <p class="text-white" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);">

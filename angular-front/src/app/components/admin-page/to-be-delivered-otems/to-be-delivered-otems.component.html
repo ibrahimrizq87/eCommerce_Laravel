@@ -85,17 +85,10 @@
                                     style="cursor: pointer; color:black"></i></a>
 
 
-                            <button type="button" class="btn me-1" style="color: #991f00 ;" (click)="deleteOrder(item)"
-                                [disabled]="item.status !== 'waiting' && item.payment_status === 'payed'">
-                                <i class="fa-solid fa-trash-can fs-4"></i>
-                            </button>
-
-                            <button type="button" class="btn me-1" (click)="delivery(item)"
-                                [disabled]="item.payment === 'stripe' && item.payment_status === 'not_payed'">
-                                <img src="images/delivery.png"
-                                    style="width: 40px;height:40px; border:1px solid #b83807 ;border-radius: 50%; padding:5px"
-                                    alt="">
-                            </button>
+                                    <button type="button" class="btn me-1" style="color: #991f00 ;" (click)="deleteOrder(item)"
+                                    >
+                                     <i class="fa-solid fa-trash-can fs-4"></i>
+                                 </button>
                         </td>
 
                     </tr>

@@ -72,6 +72,15 @@ export class OrderService {
     return this.http.post(this.apiUrl, orderData, { headers });
   }
 
+  
+  updateOrderStatus(orderData: any): Observable<any> {
+    const authToken = sessionStorage.getItem('authToken');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`
+    });
+    return this.http.post(this.apiUrl+'/edit-order', orderData, { headers });
+  }
+
   updateOrder(orderData: any, id: string): Observable<any> {
     const authToken = sessionStorage.getItem('authToken');
     const headers = new HttpHeaders({
@@ -123,6 +132,39 @@ export class OrderService {
         // console.log('start:',startDate  , 'end:' , endDate);
         return this.http.get(`${this.apiUrl}/all`, { headers, params });
       }
+
+      getDDeletedOrders(
+        page: number,
+        itemsPerPage: number,
+        priceFrom: number,
+        searchTerm: string,
+        priceTo: number,
+        searchCriteria: string,
+        startDate: string,
+        endDate: string
+      ): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+        let params = new HttpParams()
+        .set('page', page.toString())
+
+          .set('itemsPerPage', itemsPerPage.toString());
+        if (searchCriteria && searchTerm) {
+          params = params.set('searchCriteria', searchCriteria).set('searchTerm', searchTerm);
+        }
+        if (priceTo > 0) {
+          params = params.set('priceFrom', priceFrom.toString()).set('priceTo', priceTo.toString());
+        }
+        if (startDate && endDate) {
+
+          params = params.set('startDate', startDate.toString()).set('endDate', endDate.toString());
+        }
+        return this.http.get(`${this.apiUrl}/deleted`, { headers, params });
+      }
+
+      
 
 
 

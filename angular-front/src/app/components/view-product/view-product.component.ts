@@ -12,6 +12,8 @@ import { ReviewService } from '../../services/review.service';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { SharedService } from '../../services/language.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-view-product',
@@ -44,7 +46,7 @@ export class ViewProductComponent {
   coverImage: string = '';
   selectedImage: string = '';
   currentLanguage: string ='en';
-
+  reviewMessage:string='';
 
   constructor(private sharedService: SharedService,
     private productService: ProductService,
@@ -52,6 +54,7 @@ export class ViewProductComponent {
     private router: Router,
     private reviewService: ReviewService,
     private wishListService: WishListService,
+    private toastr :ToastrService,
     private cartService:CartService) { 
      this.sharedService.updateLanguage();  
     this.sharedService.language$.subscribe(language => {
@@ -93,13 +96,14 @@ export class ViewProductComponent {
   addToCart() {
 this.cartService.addItem({'product_id':this.product.id , 'quantity' :this.quantity}).subscribe(
   response=>{
-    alert('added successfully to your cart');
+    this.toastr.success('added successfully to your cart');
+    // alert('added successfully to your cart');
     this.router.navigate(['/cart']);
 
-console.log(response);
+// console.log(response);
   },error=>{
 
-console.log('error Happend::',error);
+// console.log('error Happend::',error);
 if(error.status === 401){
 
   sessionStorage.removeItem('authToken');
@@ -107,9 +111,11 @@ if(error.status === 401){
 
   this.router.navigate(['/login']);
 }else if(error.status === 403){
-  alert("this product is already in your cart\n check your cart");
+  // alert("this product is already in your cart\n check your cart");
+  this.toastr.warning("this product is already in your cart\n check your cart");
 }else{
-  alert('some error happend');
+  // alert('some error happend');
+  this.toastr.error("some error happend");
 }
   }
   
@@ -120,7 +126,7 @@ if(error.status === 401){
    addAnotherToCart(product:any) {
     this.cartService.addItem({'product_id':product.id , 'quantity' : 1 }).subscribe(
       response=>{
-        alert('added successfully to your cart');
+        this.toastr.success('added successfully to your cart');
         this.router.navigate(['/cart']);
     
     console.log(response);
@@ -134,9 +140,9 @@ if(error.status === 401){
     
       this.router.navigate(['/login']);
     }else if(error.status === 403){
-      alert("this product is already in your cart\n check your cart");
+      this.toastr.warning("this product is already in your cart\n check your cart");
     }else{
-      alert('some error happend');
+      this.toastr.error("some error happend");
     }
       }
       
@@ -154,7 +160,8 @@ if(error.status === 401){
     if (this.addToWish){
       this.wishListService.deleteWishlistItem(this.product.id).subscribe(
         response => {
-          alert('removesd from wishlist successfully');
+          this.toastr.success("removesd from wishlist successfully");
+          // alert('removesd from wishlist successfully');
           this.addToWish = false;
 
         }, error => {
@@ -167,6 +174,7 @@ if(error.status === 401){
   
             this.router.navigate(['/login']);
           } else {
+            this.toastr.error("An error happend please check your network connection");
             console.error('An unexpected error occurred:', error);
           }
   
@@ -177,7 +185,7 @@ if(error.status === 401){
       response => {
         console.log(response);
         this.addToWish = true;
-        alert('added successfully to wishlist');
+        this.toastr.success("Added from wishlist successfully");
       },
       error => {
         if (error.status === 401) {
@@ -186,7 +194,7 @@ if(error.status === 401){
           this.router.navigate(['/login']);
           console.error('A specific error occurred:', error);
         } else if (error.status === 409) {
-          alert('already added to your wishlist');
+          this.toastr.error("An error happend please check your network connection");
         } else {
           console.error('An unexpected error occurred:', error);
         }
@@ -207,7 +215,6 @@ if(error.status === 401){
   }
 
 componentDataRefresh(){
-  // console.log('staaaaaaaaaaaaaaaaaaaaaaaaaaaaaars',this.stars);
 
   if (this.productService.getSelectedProduct()) {
     this.product = this.productService.getSelectedProduct();
@@ -217,7 +224,6 @@ componentDataRefresh(){
       this.offers.push(addedOffer.offer);
     })
     this.offers
-    // console.log('product: ', this.product);
     this.coverImage = this.product.cover_image;
 
 
@@ -241,13 +247,17 @@ componentDataRefresh(){
   
         });
       });
-        console.log(response.data.email);
+        // console.log(response.data.email);
       },
       error => {
         if (error.status === 400 || error.status === 500) {
           console.error('A specific error occurred:', error);
+          this.toastr.error("an error happend while getting the products");
+          
         } else {
           console.error('An unexpected error occurred:', error);
+          this.toastr.error("an error happend while getting the products");
+
         }
       }
     );
@@ -278,7 +288,7 @@ componentDataRefresh(){
 this.wishListService.isInMyWishlist({'product_id':this.product.id}).subscribe(
 response=>{
   this.addToWish=response.message;
-console.log('in my wish list?????',response.message);
+// console.log('in my wish list?????',response.message);
 },error=>{
   console.log('error happend in wishlist data:: ',error);
 }
@@ -318,7 +328,7 @@ this.stars = 0;
 
   setRating(rating: number) {
     this.ratingStars = rating;
-    console.log("Rating set to:", this.ratingStars);
+    // console.log("Rating set to:", this.ratingStars);
   }
   toggleVideo() {
     this.showVideo = !this.showVideo;
@@ -333,10 +343,14 @@ this.stars = 0;
       formData.append('product_id', this.product.id)
       formData.append('feedback', form.value.review)
       formData.append('rating', this.ratingStars.toString())
+      this.reviewMessage = '';
+      this.ratingStars =0;
+      this.submitted = false;
 
       this.reviewService.addReview(formData).subscribe(
         response => {
-          alert('rating add ');
+          this.toastr.success('rating add ');
+          // alert('rating add ');
           this.updateReview();
         },
         error => {
@@ -345,7 +359,10 @@ this.stars = 0;
             sessionStorage.setItem('loginSession', 'true');
             this.router.navigate(['/login']);
             console.error('A specific error occurred:', error);
-          } else {
+            // this.toastr.error("");
+          } else if(error.status === 409){
+            this.toastr.warning("you can not add to reviews to the same product");
+          }else {
             console.error('An unexpected error occurred:', error);
           }
         }
@@ -393,12 +410,14 @@ this.stars = 0;
       if(this.user.id == review.user.id){
           this.reviewService.deleteReview(review.id).subscribe(
             response=>{
-            alert('deleted successfully');
+              this.toastr.success('deleted successfully');
+            // alert('deleted successfully');
             this.updateReview();
 
             }, error =>{
               console.log('error happed:::' , error);
-              alert('error happend');
+              // alert('error happend');
+              this.toastr.error("an error happend");
 
             }
           )
