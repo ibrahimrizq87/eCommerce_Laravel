@@ -39,7 +39,7 @@ export class RegisterComponent {
 
   @Output() messageEvent = new EventEmitter<string>();
 
-
+disable:boolean = false;
   registrationAnimationOptions: AnimationOptions = {
     path: 'animations/registration.json',
     loop: false,
@@ -112,6 +112,7 @@ export class RegisterComponent {
   onSubmit(registerForm: any) {
     this.submitted = true;
     if (registerForm.valid) {
+      this.disable = true;
       const formData = new FormData();
       const deviceName = getDeviceName();
       console.log(deviceName);
@@ -134,7 +135,6 @@ export class RegisterComponent {
         response => {
           const token = response.token;
           this.userService.setUser(response.user.data);
-          this.messageEvent.emit(response.user.data);
 
           console.log('Registration successful:', response);
           localStorage.setItem('needVarification', 'true');
@@ -161,6 +161,8 @@ export class RegisterComponent {
           } else {
             console.error('An unexpected error occurred:', error);
           }
+          this.disable = false;
+
         }
       );
     } else {

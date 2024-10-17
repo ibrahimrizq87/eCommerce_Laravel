@@ -49,12 +49,12 @@ getErrorMessages(): string[] {
   }
   updateCategories(){
     this.categories = this.categoryService.getAllCategory();
-    console.log('categories:: ', this.categories);
+    // console.log('categories:: ', this.categories);
 
     if (this.categories.length < 1) {
       this.categoryService.getAllCategories().subscribe(response => {
         this.categories = response.data;
-        console.log('categories:: ', this.categories);
+        // console.log('categories:: ', this.categories);
       }, error => {
         console.log('failure is: ', error);
       });
@@ -90,7 +90,7 @@ getErrorMessages(): string[] {
     if(this.productService.getSelectedProduct()){
 this.product = this.productService.getSelectedProduct();
     }else{
-      this.linkClicked.emit('my-products'); 
+      this.linkClicked.emit('all-products'); 
 
     }
     this.coverImage = this.product.cover_image;
@@ -137,8 +137,8 @@ this.product = this.productService.getSelectedProduct();
     this.productService.updateProduct(formData).subscribe(
 
       response => {
-          console.log(response);
-          this.linkClicked.emit('my-products'); 
+alert('updated successfully');
+          this.linkClicked.emit('all-products'); 
 
 
         }, error => {

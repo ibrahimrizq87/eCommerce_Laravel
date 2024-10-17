@@ -39,12 +39,8 @@
 
         <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
             <div class="row">
-                <div class="col-6">
-                    <ng-lottie [options]="logInAnimationOptions" width="100%" height="100%" 
-                    (animationCreated)="logInAnimationCreated($event)">
-                    </ng-lottie>
-                </div>
-                <div class="col-6 pt-5">
+          
+                <div class="col-12 pt-5">
                     <div class="mb-3">
                         <div class="form-floating">
                             <input type="email" class="form-control" id="email" placeholder="Email" name="email" required email

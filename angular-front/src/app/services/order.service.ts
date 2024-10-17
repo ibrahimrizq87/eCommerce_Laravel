@@ -133,6 +133,16 @@ export class OrderService {
         return this.http.get(`${this.apiUrl}/all`, { headers, params });
       }
 
+      restoreOrder(id: string): Observable<any> {
+        const authToken = sessionStorage.getItem('authToken');
+  
+        const headers = new HttpHeaders({
+          'Authorization': `Bearer ${authToken}`
+        });
+  
+        return this.http.get(`${this.apiUrl}/restore/${id}`, { headers });
+      }
+  
       getDDeletedOrders(
         page: number,
         itemsPerPage: number,

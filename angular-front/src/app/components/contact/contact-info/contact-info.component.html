@@ -16,8 +16,10 @@
             <ng-template #arabicAvailable>نحن متاحون على مدار الساعة طوال أيام الأسبوع</ng-template>
         </p>
         <p>
-            <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone: +201012345678</ng-container>
-            <ng-template #arabicPhone>الهاتف: +201012345678</ng-template>
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone: </ng-container>
+            <ng-template #arabicPhone>الهاتف:</ng-template>
+            <br>
+            +972 56-888-8882
         </p>
     </div>
 
@@ -40,8 +42,10 @@
             <ng-template #arabicFillOutForm>املأ النموذج الخاص بنا وسنتواصل معك خلال 24 ساعة</ng-template>
         </p>
         <p>
-            <ng-container *ngIf="currentLanguage === 'en'; else arabicEmail">Email: iti.assiut"&#64;"gmail.com</ng-container>
-            <ng-template #arabicEmail>البريد الإلكتروني: iti.assiut"&#64;"gmail.com</ng-template>
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicEmail">Email:</ng-container>
+            <ng-template #arabicEmail>البريد الإلكتروني: </ng-template>
+            <br>
+            albarkastore0&#64;gmail.com
         </p>
     </div>
 </div>

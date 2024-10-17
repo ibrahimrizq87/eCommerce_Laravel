@@ -87,14 +87,14 @@
 
 
                             <button type="button" class="btn me-1" style="color: #991f00 ;" (click)="deleteOrder(item)"
-                                [disabled]="item.status !== 'waiting' && item.payment_status === 'payed'">
+                               >
                                 <i class="fa-solid fa-trash-can fs-4"></i>
                             </button>
 
                             <button type="button" class="btn me-1" (click)="deliveryed(item)"
                                 [disabled]="item.payment === 'stripe' && item.payment_status === 'not_payed'">
                                 <img src="images/done.png"
-                                    style="width: 40px;height:40px; border:1px solid #b83807 ;border-radius: 50%; padding:5px"
+                                    style="width: 40px;height:40px; border:1px solid #098119 ;border-radius: 10%; padding:5px"
                                     alt="">
                             </button>
                         </td>

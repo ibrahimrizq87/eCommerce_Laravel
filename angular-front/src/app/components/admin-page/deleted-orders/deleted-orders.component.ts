@@ -70,7 +70,16 @@ getCustomer(order:any){
   );
 }
 
-restore(item:any){}
+restore(item:any){
+  this.orderService.restoreOrder(item.id).subscribe(
+    response=>{
+alert ('restored successfully');
+this.updateOrders();
+    },error=>{
+alert('an error happend');
+    }
+  );
+}
 viewOrder(order:any){
       this.orderService.setCurrentOrder(order);
       sessionStorage.setItem('return-to' , 'deleted-orders');

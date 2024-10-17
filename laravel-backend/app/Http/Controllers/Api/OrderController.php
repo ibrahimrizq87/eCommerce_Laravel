@@ -30,12 +30,21 @@ class OrderController extends Controller
 
 
 
+    public function restore($order_id)
+    {
+        $order = Order::withTrashed()->find($order_id);
+        if (!$order) {
+            return response()->json(['message' => 'order not found.'], 404);
+        }
+        $order->restore();
+        return response()->json(['message' => 'done suuccessfully.'], 200);
+    }
 
     
 
     public function getDeletedOrders(Request $request)
 {
-    $query = Order::withTrashed() 
+    $query = Order::onlyTrashed() 
                   ->with('user')
                   ->orderBy('created_at', 'desc');
 
