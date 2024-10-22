@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { UserService } from '../../../services/user.service';
-import { Router } from '@angular/router';
 import { GuestHeaderComponent } from "../../guest-header/guest-header.component";
 import { SharedService } from '../../../services/language.service';
 import { City } from '../../../services/city.service';
 import { DeliveryService } from '../../../services/delivery.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-delivery',
   standalone: true,
@@ -35,7 +34,10 @@ export class AddDeliveryComponent {
 
   constructor(private city:City,
     private sharedService: SharedService,
-    private userService: UserService, private deliveryService:DeliveryService) {
+    private userService: UserService,
+    
+    private toastr :ToastrService,
+     private deliveryService:DeliveryService) {
       this.sharedService.updateLanguage();  
 
       this.sharedService.language$.subscribe(language => {
@@ -80,25 +82,19 @@ export class AddDeliveryComponent {
           this.userService.addDelivery(formData).subscribe(
             response => {
               this.deliveryService.setDelivery(response.user.data);
-              alert('added successfully');
+              this.toastr.success('added successfully');
               this.linkClicked.emit('deliveries');
             },
             error => {
               if (error.status === 400 || error.status === 500) {
                 this.backendErrors = error.error.errors;
-                console.error('Registration failed:', error);
-                console.log('Error: ' + error.error.errors);
-    
+            
                 Object.keys(error.error.errors).forEach(key => {
-                  console.log('Field:', key);
     
-                    error.error.errors[key].forEach((message: String) => {
-                    console.log('Error message:', message);
-                  });
+                  
                 });
               } else {
-                console.error('An unexpected error occurred:', error);
-                alert('an error happend');
+                this.toastr.error('an error happend');
               }
             }
           );

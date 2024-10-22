@@ -6,6 +6,8 @@ import { WishListService } from '../../services/wishlist.service';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { CartService } from '../../services/cart.service';
 import { SharedService } from '../../services/language.service';
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-wishlist',
   standalone: true,
@@ -16,18 +18,19 @@ import { SharedService } from '../../services/language.service';
 export class WishlistComponent {
   products: Product[] = [];
   noOfProducts: number = 0;
-  currentLanguage: string ='en';
+  currentLanguage: string = 'en';
   user: any;
   constructor(private wishlistService: WishListService,
     private productService: ProductService,
     private userService: UserService,
     private router: Router,
     private sharedService: SharedService,
-  private cartService:CartService) { 
-    this.sharedService.updateLanguage();  
-this.sharedService.language$.subscribe(language => {
-this.currentLanguage = language;
-});
+    private cartService: CartService,
+    private toastr: ToastrService) {
+    this.sharedService.updateLanguage();
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+    });
 
   }
 
@@ -42,53 +45,76 @@ this.currentLanguage = language;
 
 
 
-  
-      this.cartService.addItem({'product_id':product.id , 'quantity' :1}).subscribe(
-        response=>{
-          alert('added successfully to your cart');
-          this.router.navigate(['/cart']);
-      
-      console.log(response);
-        },error=>{
-      
-      console.log('error Happend::',error);
-      if(error.status === 401){
-      
-        sessionStorage.removeItem('authToken');
-        sessionStorage.setItem('loginSession', 'true');
-      
-        this.router.navigate(['/login']);
-      }else if(error.status === 403){
-        alert("this product is already in your cart\n check your cart");
-      }else{
-        alert('some error happend');
-      }
+
+    this.cartService.addItem({ 'product_id': product.id, 'quantity': 1 }).subscribe(
+      response => {
+        if (this.currentLanguage == 'en') {
+          this.toastr.success('added successfully to your cart');
+        } else {
+          this.toastr.success('تمت الاضافة الى العربة بنجاح');
+
+        } this.router.navigate(['/cart']);
+
+        console.log(response);
+      }, error => {
+
+        console.log('error Happend::', error);
+        if (error.status === 401) {
+
+          sessionStorage.removeItem('authToken');
+          sessionStorage.setItem('loginSession', 'true');
+
+          this.router.navigate(['/login']);
+        } else if (error.status === 403) {
+          if (this.currentLanguage == 'en') {
+            this.toastr.warning("this product is already in your cart\n check your cart");
+          } else {
+            this.toastr.warning("هذا المنتج فى العربة بالفعلت تحقق من العربة");
+
+          }
+        } else {
+          if (this.currentLanguage == 'en') {
+            this.toastr.error('some error happend');
+          } else {
+            this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+          }
         }
-        
-      );
-         
-      
+      }
+
+    );
+
+
 
 
   }
   delete(product: any) {
     this.wishlistService.deleteWishlistItem(product.id).subscribe(
       response => {
-        alert('deleted successfully');
+        if (this.currentLanguage == 'en') {
+          this.toastr.success('deleted successfully');
+        } else {
+          this.toastr.success('تمت العمليه بنجاح');
+        }
+
         console.log(response);
 
-this.updateProducts();
+        this.updateProducts();
       }, error => {
-        alert('some error happend');
+
+        if (this.currentLanguage == 'en') {
+          this.toastr.error('some error happend');
+        } else {
+          this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+        }
         if (error.status === 400 || error.status === 500) {
-          console.error('A specific error occurred:', error);
+          // console.error('A specific error occurred:', error);
         } else if (error.status === 401) {
           sessionStorage.removeItem('authToken');
           sessionStorage.setItem('loginSession', 'true');
 
           this.router.navigate(['/login']);
         } else {
-          console.error('An unexpected error occurred:', error);
+          // console.error('An unexpected error occurred:', error);
         }
 
       }
@@ -103,14 +129,14 @@ this.updateProducts();
         },
         error => {
           if (error.status === 400 || error.status === 500) {
-            console.error('A specific error occurred:', error);
+            // console.error('A specific error occurred:', error);
           } else if (error.status === 401) {
             sessionStorage.removeItem('authToken');
             sessionStorage.setItem('loginSession', 'true');
 
             this.router.navigate(['/login']);
           } else {
-            console.error('An unexpected error occurred:', error);
+            // console.error('An unexpected error occurred:', error);
           }
         }
       );
@@ -123,15 +149,15 @@ this.updateProducts();
 
 
 
-this.updateProducts();
+    this.updateProducts();
   }
 
-  updateProducts(){
+  updateProducts() {
 
     this.productService.getProductsInWishlist().subscribe(
       response => {
-        console.log('hererererere');
-        console.log(response);
+        // console.log('hererererere');
+        // console.log(response);
         this.products = response.data;
         this.products.forEach(product => {
           product.priceAfterOffers = product.price;
@@ -150,18 +176,18 @@ this.updateProducts();
           });
         });
         this.noOfProducts = this.products.length;
-        console.log('products after:', this.products);
+        // console.log('products after:', this.products);
 
 
 
-        console.log('response', response);
-        console.log(response.data.email);
+        // console.log('response', response);
+        // console.log(response.data.email);
       },
       error => {
         if (error.status === 400 || error.status === 500) {
-          console.error('A specific error occurred:', error);
+          // console.error('A specific error occurred:', error);
         } else {
-          console.error('An unexpected error occurred:', error);
+          // console.error('An unexpected error occurred:', error);
         }
       }
     );

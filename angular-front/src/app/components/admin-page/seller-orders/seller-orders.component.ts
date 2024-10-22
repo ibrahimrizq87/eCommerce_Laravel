@@ -7,6 +7,10 @@ import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
+import { SharedService } from '../../../services/language.service';
+ 
+	 
+
 
 @Component({
   selector: 'app-seller-orders',
@@ -22,6 +26,7 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 })
 export class SellerOrdersComponent {
   @Output() linkClicked = new EventEmitter<string>();
+  currentLanguage: string ='en';
 
   orders:any [] = [];
   page: number = 1;              
@@ -40,8 +45,14 @@ export class SellerOrdersComponent {
     private customerService:CustomerService,
     private toastrService:ToastrService,
 
-    
-  ){}
+    private sharedService: SharedService,
+		 private toastr :ToastrService,
+
+  ){
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+  }
 
 
 
@@ -55,9 +66,7 @@ export class SellerOrdersComponent {
     this.updateOrders();
 }
 
-craft(item:any){
 
-}
 getCustomer(order:any){
   this.customerService.getCustomerById(order.user.id).subscribe(
     response=>{
@@ -67,7 +76,7 @@ getCustomer(order:any){
       this.linkClicked.emit("show-customer"); 
 
     },error=>{
-      console.log('error getting data:',error);
+      // console.log('error getting data:',error);
     }
   );
 }
@@ -76,21 +85,34 @@ deleteOrder(order:any){
   this.orderService.deleteOrder(order.id).subscribe(
       (response) => {
         this.updateOrders();
-        this.toastrService.success('deleted successfully');
+        if (this.currentLanguage == 'en'){
+          this.toastrService.success('deleted successfully');
+        }else{
+          this.toastrService.success('تم الحذف بنجاح.');
+        }
       },
       (error) => {
-          alert('an error happened try again later');
+        // this.toastrService.error('an error happened try again later');
           if (error.status === 401) {
               sessionStorage.removeItem('authToken');
               sessionStorage.setItem('loginSession', 'true');
               this.updateOrders();
               
             }else if(error.status === 403){
-              this.toastrService.error('can not delete a payed order');
+              if (this.currentLanguage == 'en'){
+                this.toastrService.error('can not delete a payed order');
+              }else{
+                this.toastrService.error('لا يمكن حذف طلب مدفوع.');
+              }
     
             }else{
     
-              this.toastrService.error('an erro happend try again later');
+
+              if (this.currentLanguage == 'en'){
+                this.toastrService.error('an erro happend try again later');
+              }else{
+                this.toastrService.error('حدث خطأ، يرجى المحاولة لاحقًا.');
+              }
             }            }
   );
 }
@@ -103,11 +125,19 @@ viewOrder(order:any){
 delivery(order:any){
   this.orderService.updateOrderStatus({'id':order.id , 'status': 'done'}).subscribe(
     response=>{
-      alert('updated successfully');
+    
+      if (this.currentLanguage == 'en'){
+        this.toastr.success('updated successfully');
+      }else{
+        this.toastr.success('تمت العمليه بنجاح');
+      }
       this.updateOrders();
     },error=>{
-      alert('an error happend');
-      console.log('anerror happend:' , error);
+      if (this.currentLanguage == 'en'){
+        this.toastr.error('some error happend');
+      }else{
+        this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+      }
     }
   );
 }
@@ -115,11 +145,25 @@ delivery(order:any){
 search() {
   if (this.searchCriteria === 'date') {
       if (!this.startDate || !this.endDate) {
-          this.toastrService.error("Start and End dates are required.");
+        if (this.currentLanguage == 'en')
+          {
+            this.toastrService.error("Start and End dates are required.");
+
+          }else{
+            this.toastrService.error("تاريخ البدء وتاريخ الانتهاء مطلوبان.");
+
+          }
           return;
       }
       if (new Date(this.startDate) >= new Date(this.endDate)) {
-          this.toastrService.error("Start Date must be less than End Date.");
+          if (this.currentLanguage == 'en')
+            {
+              this.toastrService.error("Start Date must be less than End Date.");
+  
+            }else{
+              this.toastrService.error("يجب أن يكون تاريخ البدء أقل من تاريخ الانتهاء.");
+  
+            }
           return;
       }
   }
@@ -127,7 +171,14 @@ search() {
   if (this.searchCriteria === 'total') {
      
       if (this.priceFrom >= this.priceTo) {
-        this.toastrService.error("From price must be less than To price.");
+        if (this.currentLanguage == 'en')
+          {
+            this.toastrService.error("From price must be less than To price.");
+
+          }else{
+            this.toastrService.error("يجب أن يكون سعر البداية أقل من سعر النهاية.");
+
+          }
           return;
       }
   }
@@ -164,7 +215,7 @@ updateOrders(){
     },error=>{
       if(error.status === 404){
       }
-      console.log("error",error);
+      // console.log("error",error);
 
     }
   );

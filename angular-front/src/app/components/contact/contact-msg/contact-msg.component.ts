@@ -5,7 +5,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { ContactService } from '../../../services/contact.service';
 import { RouterModule ,Router } from '@angular/router';
 import { SharedService } from '../../../services/language.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-contact-msg',
   standalone: true,
@@ -27,6 +27,7 @@ export class ContactMsgComponent {
   constructor(private customerService: CustomerService,
     private contactService:ContactService,
     private router :Router,
+    private toastr :ToastrService,
     private sharedService: SharedService,
   ) {
     this.sharedService.language$.subscribe(language => {
@@ -75,13 +76,23 @@ export class ContactMsgComponent {
       });
       this.contactService.setMessage(formData).subscribe(
         response=>{
-          alert('message sent successfully');
+          if (this.currentLanguage == 'en'){
+            this.toastr.success('message sent successfully');
+          }else{
+            this.toastr.success('تمت العمليه بنجاح');
+          }
+            
           this.router.navigate(['/home']);
 
 
         },error=>{
-          console.log('error happend::',error);
-          alert('an error happend while uploding')
+          
+
+ if (this.currentLanguage == 'en'){
+  this.toastr.error('some error happend');
+}else{
+  this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+}
         }
       );
   }
@@ -95,11 +106,11 @@ export class ContactMsgComponent {
     this.customerService.getCustomer().subscribe(
         response=>{
           this.customer =response.data;
-          console.log('customer data', this.customer)
+          // console.log('customer data', this.customer)
         },error=>{
           if(error.status === 401){
           }
-          console.log('error happend is:: ',error);
+          // console.log('error happend is:: ',error);
 
         }
       );

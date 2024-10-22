@@ -6,6 +6,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { City } from '../../../services/city.service';
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+
+
+
 @Component({
   selector: 'app-cities',
   standalone: true,
@@ -18,6 +24,7 @@ import { City } from '../../../services/city.service';
 export class CitiesComponent {
   Cities:any [] |null [] =[];
   @Output() linkClicked = new EventEmitter<string>();
+  currentLanguage: string ='en';
 
   page: number = 1;              
   itemsPerPage: number = 10;  
@@ -25,7 +32,15 @@ export class CitiesComponent {
   filteredCities: any[] = [];
   searchTerm: string = '';
 
-  constructor(private cityService: City ,private router: Router) { }
+  constructor(	 private sharedService: SharedService,
+    private toastr :ToastrService,
+
+    private cityService: City ,private router: Router) { 
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
+
+    }
   search() {
     if (this.searchTerm) {
       console.log(this.searchTerm);
@@ -50,16 +65,11 @@ updateCategories(){
   },
   error => {
     
-    console.error('some error happend:', error);
-    // console.log('Error: ' + error.error);
+    // console.error('some error happend:', error);
 
   });
 }
-  // updateCategory(category:any){
-  //   this.cityService.setCategory(category);
-  //   this.linkClicked.emit('update-category');
 
-  // }
   addCategory(){
     this.linkClicked.emit('add-city');
 
@@ -68,11 +78,18 @@ updateCategories(){
     this.cityService.deleteCity(city.id).subscribe(
 response=>{
   this.updateCategories();
-  alert('deleted successfully');
-
+          if (this.currentLanguage == 'en'){
+            this.toastr.success('Deleted successfully');
+          }else{
+            this.toastr.success('تمت العمليه بنجاح');
+          }
+            
 },error=>{
-console.log('error happened::' , error)
-  alert('some error happened during deleting');
+  if (this.currentLanguage == 'en'){
+    this.toastr.error('some error happend');
+  }else{
+    this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+  }
 }
     );
   }

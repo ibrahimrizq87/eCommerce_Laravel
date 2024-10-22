@@ -1,35 +1,63 @@
 <div class="container ">
-    <h6 class="ps-5 pt-5 pb-3" style="color: #b83807;">Waiting Orders</h6>
+    <h6 class="ps-5 pt-5 pb-3" style="color: #b83807;">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicWaitingOrders">Waiting Orders</ng-container>
+        <ng-template #arabicWaitingOrders>الطلبات المعلقة</ng-template>
+    </h6>
     <div class="container">
-        <!-- <div *ngIf="orders && orders.length > 0; else noProductsTemplate"> -->
-            <div>
+        <div>
             <div class="mb-5 d-flex justify-content-center ">
                 <div class="input-group" style="max-width: fit-content;">
                     <select [(ngModel)]="searchCriteria" (change)="changeCriteria()" class="form-select me-2 rounded-5">
-                        <option value="name">Search by Name</option>
-                        <option value="date">Search by date</option>
-                        <option value="total">Search by total Range</option>
+                        <option value="name">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByName">Search by Name</ng-container>
+                            <ng-template #arabicSearchByName>البحث بالاسم</ng-template>
+                        </option>
+                        <option value="date">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByDate">Search by date</ng-container>
+                            <ng-template #arabicSearchByDate>البحث بالتاريخ</ng-template>
+                        </option>
+                        <option value="total">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByTotal">Search by total Range</ng-container>
+                            <ng-template #arabicSearchByTotal>البحث بالنطاق الإجمالي</ng-template>
+                        </option>
                     </select>
                     <div *ngIf="searchCriteria === 'name'">
-                        <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..."
+                        <input type="text" [(ngModel)]="searchTerm" 
+                            placeholder="{{ currentLanguage === 'en' ? 'Search products...' : 'ابحث عن المنتجات...' }}" 
                             class="form-control border rounded-pill" style="max-width: fit-content;" />
                     </div>
 
                     <div *ngIf="searchCriteria === 'date'">
-                        <span style="padding-top:8px; padding-right:10px; padding-left:10px"> Start Date</span>
+                        <span style="padding-top:8px; padding-right:10px; padding-left:10px">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicStartDate">Start Date</ng-container>
+                            <ng-template #arabicStartDate>تاريخ البدء</ng-template>
+                        </span>
                         <input type="date" [(ngModel)]="startDate" class="form-control border rounded-pill"
-                            placeholder="Start Date" style="max-width: fit-content;" />
-                        <span style="padding-top:8px; padding-right:10px; padding-left:10px"> End Date</span>
+                            placeholder="{{ currentLanguage === 'en' ? 'Start Date' : 'تاريخ البدء' }}" 
+                            style="max-width: fit-content;" />
+                        <span style="padding-top:8px; padding-right:10px; padding-left:10px">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicEndDate">End Date</ng-container>
+                            <ng-template #arabicEndDate>تاريخ الانتهاء</ng-template>
+                        </span>
                         <input type="date" [(ngModel)]="endDate" class="form-control border rounded-pill"
-                            placeholder="End Date" style="max-width: fit-content;" />
+                            placeholder="{{ currentLanguage === 'en' ? 'End Date' : 'تاريخ الانتهاء' }}" 
+                            style="max-width: fit-content;" />
                     </div>
 
                     <div *ngIf="searchCriteria === 'total'">
-                        <span style="padding-top:8px; padding-right:10px; padding-left:10px"> From </span>
-                        <input type="number" [(ngModel)]="priceFrom" placeholder="From"
+                        <span style="padding-top:8px; padding-right:10px; padding-left:10px">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicFrom">From</ng-container>
+                            <ng-template #arabicFrom>من</ng-template>
+                        </span>
+                        <input type="number" [(ngModel)]="priceFrom" 
+                            placeholder="{{ currentLanguage === 'en' ? 'From' : 'من' }}" 
                             class="form-control border rounded-pill" style="max-width: fit-content;" />
-                        <span style="padding-top:8px; padding-right:10px; padding-left:10px"> To </span>
-                        <input type="number" [(ngModel)]="priceTo" placeholder="To"
+                        <span style="padding-top:8px; padding-right:10px; padding-left:10px">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicTo">To</ng-container>
+                            <ng-template #arabicTo>إلى</ng-template>
+                        </span>
+                        <input type="number" [(ngModel)]="priceTo" 
+                            placeholder="{{ currentLanguage === 'en' ? 'To' : 'إلى' }}" 
                             class="form-control border rounded-pill" style="max-width: fit-content;" />
                     </div>
 
@@ -41,37 +69,68 @@
             <table *ngIf="orders && orders.length > 0; else noProductsTemplate" class="table text-center">
                 <thead>
                     <tr>
-                        <th scope="col">total</th>
-                        <th scope="col">Ordered At</th>
-                        <th scope="col">payment</th>
-                        <th scope="col">additional money</th>
-                        <th scope="col">Final Total</th>
-                        <th scope="col">Customer Info</th>
-                        <th scope="col">Action</th>
-
+                        <th scope="col">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicTotal">Total</ng-container>
+                            <ng-template #arabicTotal>الإجمالي</ng-template>
+                        </th>
+                        <th scope="col">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicOrderedAt">Ordered At</ng-container>
+                            <ng-template #arabicOrderedAt>تاريخ الطلب</ng-template>
+                        </th>
+                        <th scope="col">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicPayment">Payment</ng-container>
+                            <ng-template #arabicPayment>الدفع</ng-template>
+                        </th>
+                        <th scope="col">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicAdditionalMoney">Additional Money</ng-container>
+                            <ng-template #arabicAdditionalMoney>أموال إضافية</ng-template>
+                        </th>
+                        <th scope="col">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicFinalTotal">Final Total</ng-container>
+                            <ng-template #arabicFinalTotal>الإجمالي النهائي</ng-template>
+                        </th>
+                        <th scope="col">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCustomerInfo">Customer Info</ng-container>
+                            <ng-template #arabicCustomerInfo>معلومات العميل</ng-template>
+                        </th>
+                        <th scope="col">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
+                            <ng-template #arabicAction>إجراء</ng-template>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of orders ">
-
-                        <td>{{ item.payment === 'onDelivery' ? item.total-10 : item.total }}</td>
+                        <td>{{ item.payment === 'onDelivery' ? item.total-10 : item.total }} <strong>ILS</strong></td>
                         <td>{{ item.created_at }}</td>
-
                         <td [ngClass]="{
                             'text-muted': item.payment_status === 'not_payed' && item.payment === 'onDelivery',
                             'text-success': item.payment_status === 'payed',
                             'text-warning': item.payment_status === 'not_payed' && item.payment === 'stripe',
-                          }"> {{ item.payment_status === 'not_payed' && item.payment === 'onDelivery'
-                            ? 'Payment on Delivery'
-                            : item.payment_status === 'payed'
-                            ? 'Payment Completed'
-                            : item.payment_status === 'not_payed' && item.payment === 'stripe'
-                            ? 'Online, Not Payed'
-                            : 'Unknown Payment Status'
-                            }}
+                          }"> 
+                            <ng-container *ngIf="item.payment_status === 'not_payed' && item.payment === 'onDelivery'; else paymentStatusTemplate">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPaymentOnDelivery">Payment on Delivery</ng-container>
+                                <ng-template #arabicPaymentOnDelivery>الدفع عند التسليم</ng-template>
+                            </ng-container>
+                            <ng-template #paymentStatusTemplate>
+                                <ng-container *ngIf="item.payment_status === 'payed'; else onlineNotPayedTemplate">
+                                    <ng-container *ngIf="currentLanguage === 'en'; else arabicPaymentCompleted">Payment Completed</ng-container>
+                                    <ng-template #arabicPaymentCompleted>تم الدفع</ng-template>
+                                </ng-container>
+                                <ng-template #onlineNotPayedTemplate>
+                                    <ng-container *ngIf="item.payment_status === 'not_payed' && item.payment === 'stripe'; else unknownPaymentStatus">
+                                        <ng-container *ngIf="currentLanguage === 'en'; else arabicOnlineNotPayed">Online, Not Payed</ng-container>
+                                        <ng-template #arabicOnlineNotPayed>أونلاين، لم يتم الدفع</ng-template>
+                                    </ng-container>
+                                    <ng-template #unknownPaymentStatus>
+                                        <ng-container *ngIf="currentLanguage === 'en'; else arabicUnknownPaymentStatus">Unknown Payment Status</ng-container>
+                                        <ng-template #arabicUnknownPaymentStatus>حالة الدفع غير معروفة</ng-template>
+                                    </ng-template>
+                                </ng-template>
+                            </ng-template>
                         </td>
-                        <td>{{ item.payment === 'onDelivery' ? '10' : '0'}}</td>
-                        <td> {{item.total}}</td>
+                        <td>{{ item.payment === 'onDelivery' ? '10' : '0'}} <strong>ILS</strong></td>
+                        <td> {{item.total}} <strong>ILS</strong></td>
                         <td>
                             <button type="button" class="btn me-1" (click)="getCustomer(item)">
                                 <img src="images/user.png"
@@ -79,44 +138,30 @@
                                     alt="">
                             </button>
                         </td>
-
-
                         <td>
-                            <a (click)="viewOrder(item)"><i class="fa-solid fa-eye px-2 fs-5"
-                                    style="cursor: pointer; color:black"></i></a>
-
-
-                            <button type="button" class="btn me-1" style="color: #991f00 ;" (click)="deleteOrder(item)"
-                               >
+                            <a (click)="viewOrder(item)"><i class="fa fa-eye me-2"></i></a>
+                            <button type="button" class="btn me-1" style="color: #991f00;" (click)="deleteOrder(item)">
                                 <i class="fa-solid fa-trash-can fs-4"></i>
                             </button>
-
                             <button type="button" class="btn me-1" (click)="delivery(item)"
                                 [disabled]="item.payment === 'stripe' && item.payment_status === 'not_payed'">
                                 <img src="images/delivery.png"
-                                    style="width: 40px;height:40px; border:1px solid #b83807 ;border-radius: 50%; padding:5px"
+                                    style="width: 40px;height:40px; border:1px solid #098119 ;border-radius: 10%; padding:5px"
                                     alt="">
                             </button>
                         </td>
-
                     </tr>
                 </tbody>
             </table>
-            <div class="d-flex justify-content-center my-4">
-                <mat-paginator [length]="totalOrders"
-                  [pageSize]="itemsPerPage"
-                  [pageSizeOptions]="[5, 10, 25, 100]"
-                  aria-label="Select page"
-                  (page)="onPageChange($event)">
-                    </mat-paginator>
-            </div>
+            <ng-template #noProductsTemplate>
+                <div class="container text-center p-5 shadow-lg">
+                    <img src="images/not-found.jpg" style="height:200px; width:250px;" alt="">
+                    <h3 class="text-muted">
+                      <ng-container *ngIf="currentLanguage === 'en'; else arabicNoProducts">No products available.</ng-container>
+                      <ng-template #arabicNoProducts>لا توجد منتجات متاحة.</ng-template>
+                    </h3>
+                  </div>
+            </ng-template>
         </div>
     </div>
-
 </div>
-<ng-template #noProductsTemplate>
-    <div class="container text-center p-5 shadow-lg">
-        <img src="images/not-found.jpg" style="height:200px; width:250px;" alt="">
-        <h3 class="text-muted">No data available.</h3>
-    </div>
-</ng-template>

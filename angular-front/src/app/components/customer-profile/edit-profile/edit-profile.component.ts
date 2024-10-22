@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../../services/user.service';
 import { CustomerService } from '../../../services/customer.service';
 import { Component, Output, EventEmitter } from '@angular/core';
 import { SharedService } from '../../../services/language.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-profile',
@@ -32,7 +32,9 @@ isSeller :Boolean = false;
   imageUploaded = false;
   backendErrors: any = {};
   currentLanguage: string ='en';
-  constructor(private sharedService: SharedService,private customerService: CustomerService) {
+  constructor(private toastr:ToastrService,
+    private sharedService: SharedService,
+    private customerService: CustomerService) {
 
     this.sharedService.updateLanguage();  
 this.sharedService.language$.subscribe(language => {
@@ -89,26 +91,34 @@ this.currentLanguage = language;
 
    this.customerService.updateCustomer(formData).subscribe(
     response=>{
-      alert('updated successfully');
+      if (this.currentLanguage == 'en'){
+        this.toastr.success('updated successfully')
+      }else{
+        this.toastr.success('تمت العمليه بنجاح');
+      }
+        
       this.customerService.setCurrentCustomer(response.data);
       this.linkClicked.emit('profile');
     },error=>{
       if (error.status === 400) {
         this.backendErrors = error.error.errors;
 
-        console.error('Registration failed:', error);
-        console.log('Error: ' + error.error.errors);
+        // console.error('Registration failed:', error);
+        // console.log('Error: ' + error.error.errors);
 
-        Object.keys(error.error.errors).forEach(key => {
-          console.log('Field:', key);
+        // Object.keys(error.error.errors).forEach(key => {
+        //   console.log('Field:', key);
 
-          error.error.errors[key].forEach((message: String) => {
-            console.log('Error message:', message);
-          });
-        });
+        //   error.error.errors[key].forEach((message: String) => {
+        //     console.log('Error message:', message);
+        //   });
+        // });
       }
-      alert('some error happend');
-      console.log('error happend',error);
+      if (this.currentLanguage == 'en'){
+        this.toastr.error('some error happend');
+      }else{
+        this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+      }
     }
    );
   }
@@ -116,7 +126,6 @@ this.currentLanguage = language;
   customerData(){
     if(this.customerService.getCurrentCustomer()){
       this.customer =  this.customerService.getCurrentCustomer();
-      console.log('seller' , this.customer)
 
     }else{
     this.customerService.getCustomer().subscribe(
@@ -124,9 +133,8 @@ this.currentLanguage = language;
           this.customer =response.data;
         },error=>{
           if(error.status === 401){
-            alert('login first please');
+            // alert('login first please');
           }
-          console.log('error happend is:: ',error);
 
         }
       );

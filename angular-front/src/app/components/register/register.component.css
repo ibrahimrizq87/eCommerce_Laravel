@@ -76,3 +76,9 @@ input:-webkit-autofill {
     color: #000 !important; /* Black text */
 }
 
+.container-my > div {
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    height: 100%;            
+}

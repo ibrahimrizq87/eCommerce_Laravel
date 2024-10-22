@@ -21,6 +21,8 @@ class CartItemResource extends JsonResource
             'user_id' => $this->user_id,
             'product_id' => $this->product_id,
             'user' => new UserResource($this->whenLoaded('user')), 
+            'color' => new ColorResource($this->color),
+            'size' => new SizeResource($this->size),
             'product' => new ProductResource($this->whenLoaded('product')), 
             'created_at' => $this->created_at->toDateTimeString(), 
             'updated_at' => $this->updated_at->toDateTimeString(), 

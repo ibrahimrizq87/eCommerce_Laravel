@@ -51,7 +51,7 @@ Route::get('order-items/serve-order/{item_id}', [OrderItemController::class , 's
 Route::get('order-items/done-order/{item_id}', [OrderItemController::class , 'doneOrderItem'])->middleware('auth:sanctum');
 Route::get('order-items/doing-order', [OrderItemController::class , 'getDoingOrders'])->middleware('auth:sanctum');
 Route::get('order-items/done-order-seller', [OrderItemController::class , 'getDoneOrders'])->middleware('auth:sanctum');
-Route::get('sellers/seller/{order_id}', [SellerController::class , 'getSellerById'])->middleware('auth:sanctum');
+// Route::get('sellers/seller/{order_id}', [SellerController::class , 'getSellerById'])->middleware('auth:sanctum');
 Route::get('customers/customer/{order_id}', [CustomerController::class , 'getCustomerById'])->middleware('auth:sanctum');
 Route::get('orders/my-orders', [OrderController::class , 'getMyOrder'])->middleware('auth:sanctum');
 Route::get('orders/my-orders-old', [OrderController::class , 'getMyOldOrder'])->middleware('auth:sanctum');
@@ -64,7 +64,7 @@ Route::post('customers/update/customer', [CustomerController::class , 'updateCus
 
 Route::get('order-items/deliver-order/{item_id}', [OrderItemController::class , 'payForOrderItem'])->middleware('auth:sanctum');
 Route::post('users/update-password', [UserController::class , 'updatePassword'])->middleware('auth:sanctum');
-Route::post('sellers/update/seller', [SellerController::class , 'updateSeller'])->middleware('auth:sanctum');
+// Route::post('sellers/update/seller', [SellerController::class , 'updateSeller'])->middleware('auth:sanctum');
 Route::post('/offers/remove-product-from-offer', [ProductController::class , 'removeProductOffer'])->middleware('auth:sanctum');
 Route::get('/cart-items/my-items', [CartItemController::class , 'getMyItems'])->middleware('auth:sanctum');
 Route::get('/products/byOffer/{offer_id}', [ProductController::class , 'getProductsByOffer'])->middleware('auth:sanctum');
@@ -89,9 +89,9 @@ Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'
     Route::get('/customers/unBan/{id}', [CustomerController::class, 'unBanCustomer'])->middleware('auth:sanctum');
     Route::get('/customers/banned', [CustomerController::class, 'getBanned'])->middleware('auth:sanctum');
     
-    Route::get('/sellers/ban/{id}', [SellerController::class, 'banSeller'])->middleware('auth:sanctum');
-    Route::get('/sellers/unBan/{id}', [SellerController::class, 'unBanSeller'])->middleware('auth:sanctum');
-    Route::get('/sellers/banned', [SellerController::class, 'getBanned'])->middleware('auth:sanctum');
+    // Route::get('/sellers/ban/{id}', [SellerController::class, 'banSeller'])->middleware('auth:sanctum');
+    // Route::get('/sellers/unBan/{id}', [SellerController::class, 'unBanSeller'])->middleware('auth:sanctum');
+    // Route::get('/sellers/banned', [SellerController::class, 'getBanned'])->middleware('auth:sanctum');
     
 
 Route::post('users/reset-password', [UserController::class, 'sendResetLinkEmail'])->name('password.email');
@@ -146,7 +146,7 @@ Route::get('products/byCategory/{category}', [ProductController::class, 'getProd
 Route::get('reviews/product/{product_id}', [ReviewController::class, 'getAllReviews']);
 
 Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
-Route::apiResource('sellers', SellerController::class)->middleware('auth:sanctum');
+// Route::apiResource('sellers', SellerController::class)->middleware('auth:sanctum');
 
 
 Route::apiResource('wish_lists', WishListController::class)->middleware('auth:sanctum');
@@ -161,7 +161,7 @@ Route::get('/payment/success/{orderId}', [PaymentController::class, 'success'])-
 Route::post('wish_lists/myWish', [WishListController::class , 'inWishlist'])->middleware('auth:sanctum');
 Route::get('/products/wishlist/all', [ProductController::class , 'productsInWishlist'])->middleware('auth:sanctum');
 Route::delete('wish_lists/remove/{product_id}', [WishListController::class , 'removeWishlist'])->middleware('auth:sanctum');
-Route::get('/sellers/get/me', [SellerController::class , 'getSeller'])->middleware('auth:sanctum');
+// Route::get('/sellers/get/me', [SellerController::class , 'getSeller'])->middleware('auth:sanctum');
 
 
 

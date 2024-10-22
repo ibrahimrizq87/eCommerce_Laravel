@@ -16,7 +16,6 @@ import { SellerOrdersComponent } from './seller-orders/seller-orders.component';
 import { SellersOrdersToBeDoneComponent } from './sellers-orders-to-be-done/sellers-orders-to-be-done.component';
 import { ToBeDeliveredOtemsComponent } from './to-be-delivered-otems/to-be-delivered-otems.component';
 import { ShowCustomerInformationComponent } from '../seller-page/show-customer-information/show-customer-information.component';
-import { ShowSellerContactComponent } from './show-seller-contact/show-seller-contact.component';
 import { UpdateProductComponent } from './update-product/update-product.component';
 import { AddProductComponent } from './add-product/add-product.component';
 import { ProductOffersComponent } from './product-offers/product-offers.component';
@@ -29,6 +28,7 @@ import { AddDeliveryComponent } from './add-delivery/add-delivery.component';
 import { DeliveriesComponent } from './deliveries/deliveries.component';
 import { ViewDeliveryComponent } from './view-delivery/view-delivery.component';
 import { DeletedOrdersComponent } from './deleted-orders/deleted-orders.component';
+
 
 @Component({
   selector: 'app-admin-page',
@@ -45,7 +45,6 @@ import { DeletedOrdersComponent } from './deleted-orders/deleted-orders.componen
     ProductOffersComponent,
     AddProductComponent,
     UpdateProductComponent,
-    ShowSellerContactComponent,
     ShowCustomerInformationComponent,
     ToBeDeliveredOtemsComponent,
     SellersOrdersToBeDoneComponent,
@@ -74,7 +73,7 @@ export class AdminPageComponent {
   ) { }
 
   showComponent(component: string) {
-    console.log('Switching to component:', component);  
+    // console.log('Switching to component:', component);  
     this.activeComponent = component;
   }
 
@@ -87,9 +86,9 @@ export class AdminPageComponent {
       },
       error => {
         if (error.status === 400 || error.status === 500) {
-          console.error('A specific error occurred:', error);
+          // console.error('A specific error occurred:', error);
         } else {
-          console.error('An unexpected error occurred:', error);
+          // console.error('An unexpected error occurred:', error);
         }
       }
     );

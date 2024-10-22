@@ -2,12 +2,19 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ValueChangeEvent } from '@angular/forms';
+import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+
 
 @Component({
   selector: 'app-update-category',
   standalone: true,
   imports: [CommonModule,
-    FormsModule
+    FormsModule,
+    LottieComponent
   ],  templateUrl: './update-category.component.html',
   styleUrl: './update-category.component.css'
 })
@@ -16,8 +23,23 @@ export class UpdateCategoryComponent {
   submitted: boolean = false;
   backendErrors: any = {};
   category:any;
+  currentLanguage: string ='en';
 
-
+  private lodingAnimaation: AnimationItem | undefined;
+  disable:boolean =false;
+  
+            lodingAnimaationOptions: AnimationOptions = {
+      path: 'animations/loading-main.json',
+      loop: true,
+      autoplay: true
+    };
+  
+            loadingAnimation(animationItem: AnimationItem): void {
+      this.lodingAnimaation = animationItem;
+  
+    }
+  
+          
   @Output() linkClicked = new EventEmitter<string>();
   getErrorMessages(): string[] {
     const errorMessages: string[] = [];
@@ -30,7 +52,16 @@ export class UpdateCategoryComponent {
     }
     return errorMessages;
   }
-  constructor(private categoryService: CategoryService ) { }
+  constructor(
+    private sharedService: SharedService,
+      private toastr :ToastrService,
+      private categoryService: CategoryService ) { 
+        this.sharedService.language$.subscribe(language => {
+          this.currentLanguage = language;
+          });
+
+          
+      }
   onFileChange(event: any) {
     this.selectedFile = event.target.files[0];
 
@@ -41,7 +72,7 @@ export class UpdateCategoryComponent {
   
   this.category =this.categoryService.getSelectedCategory();
   if(this.category){
-console.log(this.category );
+// console.log(this.category );
   }else{
     this.linkClicked.emit('all-categories');
 
@@ -52,14 +83,14 @@ console.log(this.category );
 onSubmit(categoryForm: any) {
   this.submitted = true;
   if (categoryForm.valid ) {
+    this.disable = true;
     const formData = new FormData();
 
 
   
     Object.keys(categoryForm.value).forEach(key => {
       formData.append(key, categoryForm.value[key]);
-      console.log('key:' ,key);
-      console.log('value:' , categoryForm.value[key]);
+
 
     });
     formData.append('id', this.category.id);
@@ -70,37 +101,43 @@ onSubmit(categoryForm: any) {
       formData.append('image', this.selectedFile);
     }
 
-    console.log('FormData contents:');
 formData.forEach((value, key) => {
-  console.log(`Key: ${key}, Value: ${value}`);
 });
 
 this.categoryService.updateCategory(formData, this.category.id).subscribe(
 response=>{
-alert('updated successfully');
-this.linkClicked.emit('all-categories');
+  this.disable = false;
+  if (this.currentLanguage == 'en'){
+    this.toastr.success('updates successfully');
+  }else{
+    this.toastr.success('تمت العمليه بنجاح');
+  }
+  this.linkClicked.emit('all-categories');
 
 },error=>{
+  this.disable = false;
 
   if (error.status === 422) {
     this.backendErrors = error.error.errors;
-    console.log('Error: ' + error.error.errors);
+    // console.log('Error: ' + error.error.errors);
 
-    Object.keys(error.error.errors).forEach(key => {
-      console.log('Field:', key);
+    // Object.keys(error.error.errors).forEach(key => {
+    //   // console.log('Field:', key);
 
-      error.error.errors[key].forEach((message: String) => {
-        console.log('Error message:', message);
-      });
-    });
+    //   error.error.errors[key].forEach((message: String) => {
+    //     // console.log('Error message:', message);
+    //   });
+    // });
   } 
-alert('some error happend');
-console.log("error happend:: ",error);
+  if (this.currentLanguage == 'en'){
+    this.toastr.error('some error happend');
+  }else{
+    this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+  }
 }
 );
 
   } else {
-    console.error('Form is invalid');
   }
 }
 }

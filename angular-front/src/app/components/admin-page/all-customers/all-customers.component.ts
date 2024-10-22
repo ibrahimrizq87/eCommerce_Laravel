@@ -4,6 +4,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+
+
+ 
 @Component({
   selector: 'app-all-customers',
   standalone: true,
@@ -15,7 +21,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 })
 export class AllCustomersComponent {
   customers: any[] | null[] = [];
-  // filteredCustomers: any[] = [];
+  currentLanguage: string ='en';
 
 
   page: number = 1;
@@ -27,7 +33,12 @@ export class AllCustomersComponent {
 
   @Output() linkClicked = new EventEmitter<string>();
 
-  constructor(private customerService: CustomerService) { }
+  constructor(	 private sharedService: SharedService,
+    private toastr :ToastrService,private customerService: CustomerService) { 
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
+    }
 
   onPageChange(event: PageEvent) {
     this.currentPage = event.pageIndex + 1;
@@ -45,7 +56,7 @@ export class AllCustomersComponent {
 
 
   viewCustomer(customer: any) {
-    console.log('herererer')
+    // console.log('herererer')
     this.customerService.setCurrentCustomer(customer);
     sessionStorage.setItem('return-to', 'all-customers');
 
@@ -61,10 +72,17 @@ export class AllCustomersComponent {
     this.customerService.banCustomer(customer.id).subscribe(
       response => {
         this.updateCustomers();
-        alert('user banned successfully');
+        if (this.currentLanguage == 'en'){
+          this.toastr.success('user banned  successfully');
+        }else{
+          this.toastr.success('تمت العمليه بنجاح');
+        }
       }, error => {
-      alert('some error happend');
-      console.log('error happend', error);
+        if (this.currentLanguage == 'en'){
+          this.toastr.error('some error happend');
+        }else{
+          this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+        }      // console.log('error happend', error);
 
     }
     );
@@ -84,7 +102,7 @@ export class AllCustomersComponent {
     },
       error => {
 
-        console.error('some error happend:', error);
+        // console.error('some error happend:', error);
 
       });
   }

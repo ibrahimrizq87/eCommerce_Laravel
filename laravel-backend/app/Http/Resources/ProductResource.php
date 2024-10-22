@@ -32,6 +32,9 @@ class ProductResource extends JsonResource
             'deleted_at' => $this->deleted_at, 
             'images' => ProductImageResource::collection($this->whenLoaded('images')),
             'addedOffers' => AddedOfferResource::collection($this->whenLoaded('addedOffers')),
+            'colors' => ColorResource::collection($this->colors),
+            'sizes' => SizeResource::collection($this->sizes),
+
 
         ];
     }

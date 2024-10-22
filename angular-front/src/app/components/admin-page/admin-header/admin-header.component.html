@@ -1,52 +1,107 @@
 <div class="container my-5 m-auto text-center" style="height:100vh;">
   <img [src]="user.image" class="rounded-circle" style="height:100px; width:100px;" alt="">
 
+
+  <div class="dropdown mt-4">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicLanguage">Language</ng-container>
+        <ng-template #arabicLanguage>اللغة</ng-template>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+        <li class="mt-2" style="cursor: pointer;">
+            <a class="dropdown-item" (click)="changeLanguage('en')">English</a>
+        </li>
+        <li class="mt-2" style="cursor: pointer;">
+            <a class="dropdown-item" (click)="changeLanguage('ar')">العربية</a>
+        </li>
+    </ul>
+</div>
+
   <ul class="nav-menu">
     <a>
-      <li class="my-4" (click)="onLinkClick('all-products')" [ngClass]="{'active': selected === 'all-products'}">All Products</li>
+      <li class="my-4" (click)="onLinkClick('all-products')" [ngClass]="{'active': selected === 'all-products'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAllProducts">All Products</ng-container>
+        <ng-template #arabicAllProducts>كل المنتجات</ng-template>
+      </li>
     </a>
+    
     <a>
-      <li class="mt-4 mb-4" (click)="onLinkClick('pending-products')" [ngClass]="{'active': selected === 'pending-products'}">Deleted Products</li>
+      <li class="mt-4 mb-4" (click)="onLinkClick('pending-products')" [ngClass]="{'active': selected === 'pending-products'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicDeletedProducts">Deleted Products</ng-container>
+        <ng-template #arabicDeletedProducts>المنتجات المحذوفة</ng-template>
+      </li>
     </a>
+    
     <a>
-      <li class="my-4" (click)="onLinkClick('all-categories')" [ngClass]="{'active': selected === 'all-categories'}">All Categories</li>
+      <li class="my-4" (click)="onLinkClick('all-categories')" [ngClass]="{'active': selected === 'all-categories'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAllCategories">All Categories</ng-container>
+        <ng-template #arabicAllCategories>كل الفئات</ng-template>
+      </li>
     </a>
+
     <a>
-      <li class="my-4" (click)="onLinkClick('all-customers')" [ngClass]="{'active': selected === 'all-customers'}">All Customers</li>
+      <li class="my-4" (click)="onLinkClick('all-customers')" [ngClass]="{'active': selected === 'all-customers'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAllCustomers">All Customers</ng-container>
+        <ng-template #arabicAllCustomers>كل العملاء</ng-template>
+      </li>
     </a>
+
     <a>
-      <li class="my-4" (click)="onLinkClick('all-offers')" [ngClass]="{'active': selected === 'all-offers'}">All Offers</li>
+      <li class="my-4" (click)="onLinkClick('all-offers')" [ngClass]="{'active': selected === 'all-offers'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAllOffers">All Offers</ng-container>
+        <ng-template #arabicAllOffers>كل العروض</ng-template>
+      </li>
     </a>
+
     <a>
-      <li class="my-4" (click)="onLinkClick('cities')" [ngClass]="{'active': selected === 'cities'}">City</li>
+      <li class="my-4" (click)="onLinkClick('cities')" [ngClass]="{'active': selected === 'cities'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicCity">City</ng-container>
+        <ng-template #arabicCity>مدينة</ng-template>
+      </li>
     </a>
+
     <a>
-      <li class="my-4" (click)="onLinkClick('deliveries')" [ngClass]="{'active': selected === 'deliveries'}">Delivery</li>
+      <li class="my-4" (click)="onLinkClick('deliveries')" [ngClass]="{'active': selected === 'deliveries'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicDelivery">Delivery</ng-container>
+        <ng-template #arabicDelivery>التوصيل</ng-template>
+      </li>
     </a>
 
     <div id="accordion" style="background-color: #231717; border:none; color:#ffffff; margin-right:30px;">
       <div class="card" style="background-color: #231717; color:#ffffff; border:none;">
         <div class="card-header">
           <a data-bs-toggle="collapse" href="#collapseOne" style="background-color:#231717; color: white">
-            Orders
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicOrders">Orders</ng-container>
+            <ng-template #arabicOrders>الطلبات</ng-template>
           </a>
         </div>
         <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
           <div class="card-body">
             <ul>
               <a>
-                <li class="my-4" (click)="onLinkClick('seller-orders')" [ngClass]="{'active': selected === 'seller-orders'}">Waiting Orders</li>
+                <li class="my-4" (click)="onLinkClick('seller-orders')" [ngClass]="{'active': selected === 'seller-orders'}">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicWaitingOrders">Waiting Orders</ng-container>
+                  <ng-template #arabicWaitingOrders>الطلبات المعلقة</ng-template>
+                </li>
               </a>
               <a>
-                <li class="my-4" (click)="onLinkClick('seller-orders-to-b-done')" [ngClass]="{'active': selected === 'seller-orders-to-b-done'}">On Delivery Orders</li>
+                <li class="my-4" (click)="onLinkClick('seller-orders-to-b-done')" [ngClass]="{'active': selected === 'seller-orders-to-b-done'}">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicOnDelivery">On Delivery Orders</ng-container>
+                  <ng-template #arabicOnDelivery>طلبات قيد التوصيل</ng-template>
+                </li>
               </a>
               <a>
-                <li class="my-4" (click)="onLinkClick('done-orders')" [ngClass]="{'active': selected === 'done-orders'}">Deliverd Orders</li>
+                <li class="my-4" (click)="onLinkClick('done-orders')" [ngClass]="{'active': selected === 'done-orders'}">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDeliveredOrders">Delivered Orders</ng-container>
+                  <ng-template #arabicDeliveredOrders>الطلبات المُسلّمة</ng-template>
+                </li>
               </a>
               <a>
-                <li class="my-4" (click)="onLinkClick('deleted-orders')" [ngClass]="{'active': selected === 'deleted-orders'}">Deleted Orders</li>
+                <li class="my-4" (click)="onLinkClick('deleted-orders')" [ngClass]="{'active': selected === 'deleted-orders'}">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDeletedOrders">Deleted Orders</ng-container>
+                  <ng-template #arabicDeletedOrders>الطلبات المحذوفة</ng-template>
+                </li>
               </a>
-              
             </ul>
           </div>
         </div>
@@ -54,14 +109,24 @@
     </div>
 
     <a>
-      <li class="my-4" (click)="onLinkClick('banned-customers')" [ngClass]="{'active': selected === 'banned-customers'}">Banned Customers</li>
+      <li class="my-4" (click)="onLinkClick('banned-customers')" [ngClass]="{'active': selected === 'banned-customers'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicBannedCustomers">Banned Customers</ng-container>
+        <ng-template #arabicBannedCustomers>العملاء المحظورين</ng-template>
+      </li>
     </a>
 
     <a>
-      <li class="my-4" (click)="onLinkClick('list-messages')" [ngClass]="{'active': selected === 'list-messages'}">Contact Messages List</li>
+      <li class="my-4" (click)="onLinkClick('list-messages')" [ngClass]="{'active': selected === 'list-messages'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicMessages">Contact Messages List</ng-container>
+        <ng-template #arabicMessages>قائمة الرسائل</ng-template>
+      </li>
     </a>
+
     <a>
-      <li (click)="logout()" class="my-4">Log-out</li>
+      <li (click)="logout()" class="my-4">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicLogout">Log-out</ng-container>
+        <ng-template #arabicLogout>تسجيل الخروج</ng-template>
+      </li>
     </a>
   </ul>
 </div>

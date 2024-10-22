@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CustomerHeaderComponent } from "../customer-header/customer-header.component";
-import { RouterModule,Router } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { ListPartComponent } from '../customer-profile/list-part/list-part.component';
 import { OrderService } from '../../services/order.service';
 import { CommonModule } from '@angular/common';
@@ -8,146 +8,143 @@ import { OrderItemService } from '../../services/order-item.service';
 import { ProductService } from '../../services/product.service';
 import { SellerService } from '../../services/seller.service';
 import { SharedService } from '../../services/language.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-order',
   standalone: true,
   imports: [CommonModule,
-            CustomerHeaderComponent,
-            ListPartComponent,
-            RouterModule],
+    CustomerHeaderComponent,
+    ListPartComponent,
+    RouterModule],
   templateUrl: './view-order.component.html',
   styleUrl: './view-order.component.css'
 })
 export class ViewOrderComponent {
-  currentLanguage: string ='en';
-order:any;
-totalPrice: number = 0;
-totalPriceAfterOffers: number = 0;
-totalOffers: number = 0;
-payOnDelivery:number=10;
-orderItems:OrderItem [] = [];
-  constructor(private orderService:OrderService,
-    private router:Router,
-    private orderItemService:OrderItemService,
-    private productService:ProductService,
-    private sellerService:SellerService,
-    private sharedService: SharedService
-  ){
+  currentLanguage: string = 'en';
+  order: any;
+  totalPrice: number = 0;
+  totalPriceAfterOffers: number = 0;
+  totalOffers: number = 0;
+  payOnDelivery: number = 10;
+  orderItems: OrderItem[] = [];
+  constructor(private orderService: OrderService,
+    private router: Router,
+    private orderItemService: OrderItemService,
+    private productService: ProductService,
+    private sellerService: SellerService,
+    private sharedService: SharedService,
+    private toastr: ToastrService
+  ) {
     this.sharedService.language$.subscribe(language => {
       this.currentLanguage = language;
-      });
+    });
 
   }
 
 
   ngOnInit(): void {
     this.updateOrder();
-}
-
-updateOrder(){
-  if(this.orderService.getCurrentOrder()){
-    this.order =this.orderService.getCurrentOrder();
-    this.updateOrderItems();
-  }else{
-    this.router.navigate(['/order']);
   }
-}
 
-viewProduct(product:any){
+  updateOrder() {
+    if (this.orderService.getCurrentOrder()) {
+      this.order = this.orderService.getCurrentOrder();
+      // console.log(this.order);
 
-  this.productService.setProduct(product);
-  this.router.navigate(['/product/view']);
-}
-
-delivered(item:any){
-  this.orderItemService.deliverOrder(item.id).subscribe(
-    response=>{
-    alert('marked as recived successfully and money transferd to seller');
-    this.updateOrderItems();
-    },error=>{
-      alert('an error happend');
-      console.log('error happend',error);
+      this.updateOrderItems();
+    } else {
+      this.router.navigate(['/order']);
     }
-  );
-}
-
-viewSeller(item:any){
-this.sellerService.getSellerById(item.id).subscribe(
-  response=>{
-this.sellerService.setCurrentSeller(response.data);
-this.router.navigate(['/seller/contact']);
-
-  },error=>{
-console.log('error happend::',error)
   }
-);
-}
 
-updateOrderItems(){
-  this.orderItemService.getAllOrderItems(this.order.id).subscribe(
-    response=>{
-      this.orderItems = response.data;
-      // console.log(this.orderItems);
-      // console.log('orderId...+++==>',this.order.id);
+  viewProduct(product: any) {
 
-      if(this.orderItems.length<1){
-        alert('no order items in this order');
-        this.router.navigate(['/order']);
+    this.productService.setProduct(product);
+    this.router.navigate(['/product/view']);
+  }
 
-      }
-      // console.log(this.orderItems);
 
-      this.orderItems.forEach(item => {
-        item.product.priceAfterOffers = item.product.price;
-        item.product.totalOffers = 0;
 
-        item.product.addedOffers.forEach(offerAdded => {
-          const endDate = new Date(offerAdded.offer.end_date);
-          const today = new Date();
-          today.setHours(0, 0, 0, 0);
 
-          if (endDate.getTime() >= today.getTime()) {
-            item.product.totalOffers += offerAdded.offer.discount;
-            item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
+
+  updateOrderItems() {
+    this.orderItemService.getAllOrderItems(this.order.id).subscribe(
+      response => {
+        this.orderItems = response.data;
+        // console.log(response);
+
+        if (this.orderItems.length < 1) {
+
+
+
+          if (this.currentLanguage == 'en') {
+            this.toastr.error('no order items in this order');
+          } else {
+            this.toastr.error('حدثت مشكله فى تحميل عناصر هذا الطلب');
           }
+          this.router.navigate(['/order']);
+
+        }
+
+        this.orderItems.forEach(item => {
+          item.product.priceAfterOffers = item.product.price;
+          item.product.totalOffers = 0;
+
+          item.product.addedOffers.forEach(offerAdded => {
+            const endDate = new Date(offerAdded.offer.end_date);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (endDate.getTime() >= today.getTime()) {
+              item.product.totalOffers += offerAdded.offer.discount;
+              item.product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * item.product.price);
+            }
+
+          });
+
+          this.totalPrice += (item.product.price) * item.quantity;
+          this.totalPriceAfterOffers += (item.product.priceAfterOffers) * item.quantity;
+          this.totalOffers += (item.product.price - item.product.priceAfterOffers) * item.quantity;
+
 
         });
+        if (this.order.payment == 'onDelivery') {
+          this.totalPriceAfterOffers += this.payOnDelivery;
+        }
 
-        this.totalPrice += (item.product.price) * item.quantity;
-        this.totalPriceAfterOffers += (item.product.priceAfterOffers) * item.quantity;
-        this.totalOffers += (item.product.price - item.product.priceAfterOffers) * item.quantity;
+      }, error => {
+        if (error.status === 404) {
+          this.router.navigate(['/order']);
+        }
+        // console.log("error", error);
 
-
-      });
-      if (this.order.payment =='onDelivery'){
-        this.totalPriceAfterOffers+=this.payOnDelivery;
       }
-
-    },error=>{
-      if(error.status === 404){
-        this.router.navigate(['/order']);
+    );
+  }
+  delete(item: any) {
+    this.orderItemService.deleteOrderItem(item.id).subscribe(
+      response => {
+        if (this.currentLanguage == 'en') {
+          this.toastr.success('deleted successfully');
+        } else {
+          this.toastr.success('تمت العمليه بنجاح');
+        }
+        this.updateOrderItems();
+      }, error => {
+        if (error.status === 403) {
+          // alert('this order item is payed can not delete a payed item');
+        } else {
+          if (this.currentLanguage == 'en') {
+            this.toastr.error('some error happend');
+          } else {
+            this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+          }
+        }
+        // console.log('error happend:', error);
       }
-      console.log("error",error);
-
-    }
-  );
-}
-delete(item:any){
-  this.orderItemService.deleteOrderItem(item.id).subscribe(
-    response=>{
-      alert('deleted successfully');
-      this.updateOrderItems();
-    },error=>{
-      if(error.status === 403){
-        alert('this order item is payed can not delete a payed item');
-      }else{
-        alert('an error happend');
-      }
-      console.log('error happend:' , error);
-    }
-  );
-}
+    );
+  }
 }
 
 
@@ -191,5 +188,16 @@ interface OrderItem {
   product: Product;
   quantity: number;
   status: string;
+  size: Size;
+  color:Color;
+}
+interface Color {
+  id: number;
+  image: string;
 
+}
+
+interface Size {
+  size: string;
+  price: number;
 }

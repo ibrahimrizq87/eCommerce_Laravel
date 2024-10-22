@@ -7,6 +7,13 @@ import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
+
+
+import { SharedService } from '../../../services/language.service';
+ 
+
+
+
 @Component({
   selector: 'app-to-be-delivered-otems',
   standalone: true,
@@ -20,6 +27,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
   styleUrl: './to-be-delivered-otems.component.css'
 })
 export class ToBeDeliveredOtemsComponent {
+  currentLanguage: string ='en';
 
 
   @Output() linkClicked = new EventEmitter<string>();
@@ -40,9 +48,15 @@ export class ToBeDeliveredOtemsComponent {
     private orderService: OrderService,
     private customerService: CustomerService,
     private toastrService: ToastrService,
+    private sharedService: SharedService,
 
 
-  ) { }
+  ) { 
+
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+  }
 
 
 
@@ -56,9 +70,7 @@ export class ToBeDeliveredOtemsComponent {
     this.updateOrders();
   }
 
-  craft(item: any) {
-
-  }
+  
   getCustomer(order: any) {
     this.customerService.getCustomerById(order.user.id).subscribe(
       response => {
@@ -73,29 +85,43 @@ export class ToBeDeliveredOtemsComponent {
     );
   }
 
-  deleteOrder(order: any) {
+
+  deleteOrder(order:any){
     this.orderService.deleteOrder(order.id).subscribe(
-      (response) => {
-        this.updateOrders();
-        this.toastrService.success('deleted successfully');
-      },
-      (error) => {
-        alert('an error happened try again later');
-        if (error.status === 401) {
-          sessionStorage.removeItem('authToken');
-          sessionStorage.setItem('loginSession', 'true');
+        (response) => {
           this.updateOrders();
-
-        } else if (error.status === 403) {
-          this.toastrService.error('can not delete a payed order');
-
-        } else {
-
-          this.toastrService.error('an erro happend try again later');
-        }
-      }
+          if (this.currentLanguage == 'en'){
+            this.toastrService.success('deleted successfully');
+          }else{
+            this.toastrService.success('تم الحذف بنجاح.');
+          }
+        },
+        (error) => {
+          // this.toastrService.error('an error happened try again later');
+            if (error.status === 401) {
+                sessionStorage.removeItem('authToken');
+                sessionStorage.setItem('loginSession', 'true');
+                this.updateOrders();
+                
+              }else if(error.status === 403){
+                if (this.currentLanguage == 'en'){
+                  this.toastrService.error('can not delete a payed order');
+                }else{
+                  this.toastrService.error('لا يمكن حذف طلب مدفوع.');
+                }
+      
+              }else{
+      
+  
+                if (this.currentLanguage == 'en'){
+                  this.toastrService.error('an erro happend try again later');
+                }else{
+                  this.toastrService.error('حدث خطأ، يرجى المحاولة لاحقًا.');
+                }
+              }            }
     );
   }
+  
   viewOrder(order: any) {
     this.orderService.setCurrentOrder(order);
     sessionStorage.setItem('return-to', 'done-orders');
@@ -105,26 +131,31 @@ export class ToBeDeliveredOtemsComponent {
 
   search() {
     if (this.searchCriteria === 'date') {
-      if (!this.startDate || !this.endDate) {
-        this.toastrService.error("Start and End dates are required.");
-        return;
-      }
-      if (new Date(this.startDate) >= new Date(this.endDate)) {
-        this.toastrService.error("Start Date must be less than End Date.");
-        return;
-      }
+        if (!this.startDate || !this.endDate) {
+          if (this.currentLanguage == 'en')
+            {
+              this.toastrService.error("Start and End dates are required.");
+  
+            }else{
+              this.toastrService.error("تاريخ البدء وتاريخ الانتهاء مطلوبان.");
+  
+            }
+            return;
+        }
+        if (new Date(this.startDate) >= new Date(this.endDate)) {
+            if (this.currentLanguage == 'en')
+              {
+                this.toastrService.error("Start Date must be less than End Date.");
+    
+              }else{
+                this.toastrService.error("يجب أن يكون تاريخ البدء أقل من تاريخ الانتهاء.");
+    
+              }
+            return;
+        }
     }
-
-    if (this.searchCriteria === 'total') {
-
-      if (this.priceFrom >= this.priceTo) {
-        this.toastrService.error("From price must be less than To price.");
-        return;
-      }
-    }
-
-    // console.log("Searching...", this.searchCriteria, this.searchTerm, this.startDate, this.endDate, this.priceFrom, this.priceTo);
-    this.updateOrders()
+  
+    this.updateOrders();
   }
   changeCriteria() {
     this.priceFrom = 0;
@@ -148,14 +179,14 @@ export class ToBeDeliveredOtemsComponent {
       response => {
         this.orders = response.data;
         this.totalOrders = response.total;
-        console.log('my serponse >>>>>+++::: ', response);
+        // console.log('my serponse >>>>>+++::: ', response);
 
 
 
       }, error => {
         if (error.status === 404) {
         }
-        console.log("error", error);
+        // console.log("error", error);
 
       }
     );

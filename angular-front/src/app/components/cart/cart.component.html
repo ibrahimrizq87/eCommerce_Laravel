@@ -28,7 +28,7 @@
                     <ng-template #arabicPrice>السعر</ng-template>
                 </p>
             </div>
-            <div class="col-2 d-flex justify-content-center align-items-center">
+            <div class="col-1 d-flex justify-content-center align-items-center">
                 <p class="mb-0">
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalOffers">Total Offers</ng-container>
                     <ng-template #arabicTotalOffers>إجمالي العروض</ng-template>
@@ -40,13 +40,28 @@
                     <ng-template #arabicQuantity>الكمية</ng-template>
                 </p>
             </div>
+                 
             <div class="col-2 d-flex justify-content-center align-items-center">
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicSize">Size</ng-container>
+                    <ng-template #arabicSize>الحجم</ng-template>
+                </p>
+            </div>
+            <div  class="col-1 d-flex justify-content-center align-items-center">
+                <p class="mb-0">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicColor">Color</ng-container>
+                    <ng-template #arabicColor>اللون</ng-template>
+                </p>
+            </div>
+       
+            
+            <div class="col-1 d-flex justify-content-center align-items-center">
                 <p class="mb-0">
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicSubTotal">SubTotal</ng-container>
                     <ng-template #arabicSubTotal>المجموع</ng-template>
                 </p>
             </div>
-            <div class="col-2 d-flex justify-content-center align-items-center">
+            <div class="col-1 d-flex justify-content-center align-items-center">
                 <p class="mb-0">
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
                     <ng-template #arabicAction>الإجراء</ng-template>
@@ -59,17 +74,20 @@
                 <img [src]="item.product.cover_image" style="height:70px; width:70px; object-fit: cover; padding-right:10px;" alt="">
                 <span class="ms-2">{{item.product.product_name}}</span>
             </div>
-            <div class="col-2 d-flex align-items-center justify-content-center">
-                <p class="ps-2 mb-0">{{item.product.totalOffers}}%</p>
-            </div>
+
             <div class="col-2 d-flex align-items-center justify-content-center">
                 <p class="ps-2 mb-0">
                     <span class="original-price me-2 border rounded p-1" *ngIf="item.product.price != item.product.priceAfterOffers">
-                        <span style="color: red; text-decoration: line-through;">$ {{ item.product.price }}</span>
+                        <span style="color: red; text-decoration: line-through;"> {{ item.product.price }} <strong>ILS</strong></span>
                     </span>
-                    <span class="discounted-price">$ {{ item.product.priceAfterOffers }}</span>
+                    <span class="discounted-price">{{ item.product.priceAfterOffers }} <strong>ILS</strong></span>
                 </p>
             </div>
+
+            <div class="col-1 d-flex align-items-center justify-content-center">
+                <p class="ps-2 mb-0">{{item.product.totalOffers}}%</p>
+            </div>
+          
 
             <div class="col-2 d-flex align-items-center justify-content-center">
                 <div class="d-flex quantity">
@@ -82,10 +100,18 @@
                     </button>
                 </div>
             </div>
+
             <div class="col-2 d-flex align-items-center justify-content-center">
-                <p class="ps-5 mb-0">$ {{item.product.priceAfterOffers * item.quantity}}</p>
+                <p class="ps-2 mb-0">{{item.size.size}}</p>
+            </div>     
+            <div class="col-1 d-flex align-items-center justify-content-center">
+                <img *ngIf="item.color" class="ps-2 mb-0" height="50px" [src]="item.color.image">
+                <p *ngIf="!item.color">...</p>
             </div>
-            <div class="col-2 d-flex justify-content-center align-items-center">
+            <div class="col-1 d-flex align-items-center justify-content-center">
+                <p class="ps-5 mb-0"> {{item.product.priceAfterOffers * item.quantity}}  <strong>ILS</strong></p>
+            </div>
+            <div class="col-1 d-flex justify-content-center align-items-center">
                 <a (click)="deleteItem(item)" class="text-danger"><i class="fas fa-trash fa-lg"></i></a>
             </div>
         </div>
@@ -105,7 +131,7 @@
                     <ng-template #arabicTotalPrice>إجمالي السعر:</ng-template>
                 </div>
                 <div class="col-md-6">
-                    {{totalPrice}} $
+                    {{totalPrice}} <strong>ILS</strong>
                 </div>
                 <hr class="my-2">
                 <div class="col-md-6">
@@ -113,7 +139,7 @@
                     <ng-template #arabicTotalSaved>إجمالي التوفير من العروض:</ng-template>
                 </div>
                 <div class="col-md-6" style="color: red;">
-                    {{totalOffers}} $
+                    {{totalOffers}} <strong>ILS</strong>
                 </div>
                 <hr class="my-2">
                 <div class="col-md-6">
@@ -121,7 +147,7 @@
                     <ng-template #arabicFinalTotal>الإجمالي النهائي:</ng-template>
                 </div>
                 <div class="col-md-6">
-                    {{totalPriceAfterOffers}} $ 
+                    {{totalPriceAfterOffers}} <strong>ILS</strong>
                 </div>
             </div>
             <div class="text-center my-4">

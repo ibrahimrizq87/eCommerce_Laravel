@@ -3,17 +3,19 @@
         <div class="col-lg-6 d-flex">
             <div class="col-md-2 ">
                 <a class="pt-2 sm-img item-thumb" (click)="onImageClick(product.cover_image)">
+
                     <img width="70" height="70" class="rounded-2" [src]="product.cover_image"
+                    style="object-fit: contain; margin-top: 10px;"
                         [ngClass]="{'border border-primary': selectedImage === product.cover_image, 'selected-image': selectedImage === product.cover_image}" />
                 </a>
                 <a *ngFor="let image of product.images" class=" sm-img item-thumb"
                     (click)="onImageClick(image.image)">
-                    <img width="70" height="70" class="rounded-2" [src]="image.image" style="object-fit: cover; margin-top: 10px;"
+                    <img width="70" height="70" class="rounded-2" [src]="image.image" style="object-fit: contain; margin-top: 10px;"
                         [ngClass]="{'border border-primary': selectedImage === image.image, 'selected-image': selectedImage === image.image}" />
                 </a>
             </div>
             <div class="col-12 col-md-4">
-                <img class="big-img" [src]="coverImage" alt="" style="object-fit: cover;">
+                <img class="big-img" [src]="coverImage" alt="" style="object-fit: contain;">
 
             </div>
         </div>
@@ -47,10 +49,10 @@
                 </span>
             </ul>
         
-            <p class="pt-3"><strong>${{product.priceAfterOffers}}</strong></p>
+            <p class="pt-3"><strong>{{product.priceAfterOffers}} <strong>ILS</strong></strong></p>
             
             <div *ngIf="product.priceAfterOffers != product.price">
-                <p class="price mb-1 text-decoration-line-through">${{ product.price }}</p>
+                <p class="price mb-1 text-decoration-line-through">{{ product.price }} <strong>ILS</strong></p>
             </div>
         
             <p class="w-75" style="font-size: 14px;">
@@ -58,7 +60,7 @@
             </p>
             
             <hr class="my-3">
-            <div>
+            <div *ngIf="product.material">
                 <div class="label">
                     <strong>
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicMaterials">Materials:</ng-container>
@@ -69,18 +71,55 @@
                     <span>{{product.material}}</span>
                 </div>
             </div>
+
+      
+            <ng-container *ngIf="product.sizes.length > 1; else oneSize">
+                <div class="d-flex align-items-center">
+                  <div class="me-3">
+                    <strong>Choose Size:</strong>
+                  </div>
+                  <div class="dropdown w-80 mt-4 mb-4">
+                    <button 
+                      class="btn btn-secondary dropdown-toggle w-100" 
+                      type="button" 
+                      id="languageDropdown" 
+                      data-bs-toggle="dropdown" 
+                      aria-expanded="false">
+                      {{ currentSize.size }}
+                    </button>
+              
+                    <ul class="dropdown-menu w-100" aria-labelledby="languageDropdown">
+                      <li 
+                        *ngFor="let size of product.sizes; let i = index" 
+                        style="color: #000;"
+                        class="d-flex justify-content-between align-items-center mt-2">
+                        <a 
+                          (click)="changeSize(size)" 
+                          style="cursor: pointer; color: #000;" 
+                          class="dropdown-item text-wrap">
+                          {{ size.size }} || Price: {{ size.price }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </ng-container>
+              
+            <ng-template #oneSize>
+                <div>
+                    <div class="label">
+                        <strong>
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSize">Size:</ng-container>
+                            <ng-template #arabicSize>الحجم : </ng-template>
+                        </strong>
+                    </div>
+                    <div class="content">
+                        <span>{{currentSize.size}}</span>
+                    </div>
+                </div>
+            </ng-template>
             
-            <div>
-                <div class="label">
-                    <strong>
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicSize">Size:</ng-container>
-                        <ng-template #arabicSize>الحجم : </ng-template>
-                    </strong>
-                </div>
-                <div class="content">
-                    <span>{{product.size}}</span>
-                </div>
-            </div>
+      
             
             <div *ngIf="product.total_ordered">
                 <div class="label">
@@ -95,7 +134,33 @@
                     <ng-template #arabicTimes>مرات</ng-template>
                 </div>
             </div>
-            
+
+
+                   <ng-container *ngIf="product.colors.length>0">
+                    <div class="mt-4">
+                        <strong>
+                            choose color
+                        </strong>
+                    </div>
+
+                <div class="d-flex align-items-center">
+                 
+                  <!-- <div class="dropdown w-100  mb-4 border shadow rounded d-flex align-items-center">
+                 <img *ngFor="let color of colors" [src]="color.image" height="50px" class="m-2" alt="">
+                  </div> -->
+                  <div class="selectImage w-100 mb-4 border shadow rounded d-flex align-items-center">
+                    <img 
+                      *ngFor="let color of product.colors" 
+                      [src]="color.image" 
+                      height="50px" 
+                      class="m-2 myImage" 
+                      alt="" 
+                      [class.selected]="selectedColor && selectedColor.id === color.id" 
+                      (click)="selectImage(color)">
+                  </div>
+                </div>
+              </ng-container>
+              
             
             <div class="d-flex justify-content-evenly row pt-2">
                 <div class="col-12 col-md-6 d-flex quantity me-3">
@@ -261,8 +326,8 @@
                                 </div>
                                 <div class="ms-2">
                                   <span class="ps-2 me-2">{{myProduct.product_name}}</span>
-                                  <p class="ps-2 me-2">${{myProduct.priceAfterOffers}} 
-                                    <span class="text-decoration-line-through ps-3">${{myProduct.price}}</span>
+                                  <p class="ps-2 me-2">{{myProduct.priceAfterOffers}} <strong>ILS</strong>
+                                    <span class="text-decoration-line-through ps-3">{{myProduct.price}} <strong>ILS</strong></span>
                                   </p>
                                 </div>
                               </ng-container>

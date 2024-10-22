@@ -4,6 +4,13 @@ import { CommonModule } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+	
+
+
+
 @Component({
   selector: 'app-banned-customers',
   standalone: true,
@@ -12,6 +19,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './banned-customers.component.css'
 })
 export class BannedCustomersComponent {
+  currentLanguage: string ='en';
 
   customers:any [] |null [] =[];
   page: number = 1;
@@ -21,7 +29,14 @@ export class BannedCustomersComponent {
   searchTerm: string = '';
   totalCustomers: number = 0;
 
-  constructor(private customerService: CustomerService ) { }
+  constructor( private sharedService: SharedService,
+    private toastr :ToastrService,
+    private customerService: CustomerService ) {
+
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
+     }
   ngOnInit(): void {
     this.updateCustomers();
     }
@@ -41,11 +56,19 @@ export class BannedCustomersComponent {
       this.customerService.unBanCustomer(customer.id).subscribe(
         response=>{
           this.updateCustomers();
-alert('user banned successfully');
+if (this.currentLanguage == 'en'){
+  this.toastr.success('user activated successfully');
+}else{
+  this.toastr.success('تمت العمليه بنجاح');
+}
         },error=>
           {
-            alert('some error happend');
-            console.log('error happend',error);
+            
+ if (this.currentLanguage == 'en'){
+  this.toastr.error('some error happend');
+}else{
+  this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+}
 
           }
       );

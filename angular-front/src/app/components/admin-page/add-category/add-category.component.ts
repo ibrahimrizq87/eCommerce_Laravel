@@ -2,12 +2,17 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CategoryService } from '../../../services/category.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
 
 @Component({
   selector: 'app-add-category',
   standalone: true,
   imports: [CommonModule,
-    FormsModule
+    FormsModule,
+    LottieComponent
   ],
   templateUrl: './add-category.component.html',
   styleUrl: './add-category.component.css'
@@ -16,12 +21,31 @@ export class AddCategoryComponent {
   selectedFile: File | null = null;
   submitted: boolean = false;
   imageUploaded = false;
-
-
+  currentLanguage: string = 'en';
+  private lodingAnimaation: AnimationItem | undefined;
+  disable:boolean =false;
+  
+            lodingAnimaationOptions: AnimationOptions = {
+      path: 'animations/loading-main.json',
+      loop: true,
+      autoplay: true
+    };
+  
+            loadingAnimation(animationItem: AnimationItem): void {
+      this.lodingAnimaation = animationItem;
+  
+    }
+  
   @Output() linkClicked = new EventEmitter<string>();
 
-  constructor(private categoryService: CategoryService ) { }
-  
+  constructor(private sharedService: SharedService,
+    private toastr: ToastrService,
+    private categoryService: CategoryService) {
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+    });
+  }
+
   backendErrors: any = {};
   getErrorMessages(): string[] {
     const errorMessages: string[] = [];
@@ -44,48 +68,52 @@ export class AddCategoryComponent {
   }
 
   onSubmit(categoryForm: any) {
-    // this.backendErrors = [];
     this.submitted = true;
     if (categoryForm.valid && this.imageUploaded) {
+      this.disable = true;
       const formData = new FormData();
 
 
-    
+
       Object.keys(categoryForm.value).forEach(key => {
         formData.append(key, categoryForm.value[key]);
       });
-   
+
 
 
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);
       }
-this.categoryService.addCategory(formData).subscribe(
-  response=>{
-alert('added successfully');
-this.linkClicked.emit('all-categories');
+      this.categoryService.addCategory(formData).subscribe(
+        response => {
+          this.disable = false;
 
-  },error=>{
+          if (this.currentLanguage == 'en'){
+            this.toastr.success('added successfully');
+          }else{
+            this.toastr.success('تمت العمليه بنجاح');
+          }
+          this.linkClicked.emit('all-categories');
 
-    if (error.status === 422) {
-      this.backendErrors = error.error.errors;
-      console.log('Error: ' + error.error.errors);
+        }, error => {
+          this.disable = false;
 
-      Object.keys(error.error.errors).forEach(key => {
-        console.log('Field:', key);
-
-        error.error.errors[key].forEach((message: String) => {
-          console.log('Error message:', message);
-        });
-      });
-    } 
-alert('some error happend');
-console.log("error happend:: ",error);
-  }
-);
+          if (error.status === 422) {
+            this.backendErrors = error.error.errors;
+            Object.keys(error.error.errors).forEach(key => {
+              error.error.errors[key].forEach((message: String) => {
+              });
+            });
+          }
+          if (this.currentLanguage == 'en'){
+            this.toastr.error('some error happend');
+          }else{
+            this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+          }
+        }
+      );
 
     } else {
-      console.error('Form is invalid');
     }
   }
 }

@@ -1,6 +1,5 @@
 
 import { Component, NgModule, TemplateRef } from '@angular/core';
-import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { RouterModule } from '@angular/router';
@@ -11,13 +10,12 @@ import { CartService } from '../../services/cart.service';
 import { FormsModule } from '@angular/forms';
 import { SharedService } from '../../services/language.service';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
     FormsModule,
-    ProductDetailsComponent,
     CommonModule,
     RouterModule,
     CustomerHeaderComponent,
@@ -50,6 +48,7 @@ export class ProductListComponent {
     private productService: ProductService,
     private categoryService: CategoryService,
     private router: Router,
+    private toastr :ToastrService,
     private sharedService: SharedService,
     private cartService: CartService
   ) {
@@ -64,6 +63,7 @@ export class ProductListComponent {
     this.productService.getProducts(this.currentPage, this.itemsPerPage, this.searchCriteria, this.searchTerm, this.priceFrom, this.priceTo)
       .subscribe(response => {
         this.products = response.data; 
+        // console.log(response );
         this.totalProducts = response.total; 
         this.products.forEach(product => {
           product.priceAfterOffers = product.price;
@@ -84,7 +84,7 @@ export class ProductListComponent {
         });
 
     },error=>{
-        console.log('error>>>>>>>>>>>>>>>>' , error);
+        // console.log('error>>>>>>>>>>>>>>>>' , error);
       });
   }
   
@@ -104,14 +104,28 @@ export class ProductListComponent {
   }
 
   addToCart(product: any) {
-    this.cartService.addItem({ 'product_id': product.id, 'quantity': 1 }).subscribe(
+    if (!product.sizes[0]){
+      this.toastr.error('size must be set');
+      return;
+  }
+  let obj:any ={ 'product_id': product.id, 'quantity': 1, "size": product.sizes[0].id};
+if (product.colors.length>0){
+  obj.color = product.colors[0].id;
+}
+  this.cartService.addItem(obj).subscribe(
       response => {
-        alert('added successfully to your cart');
+              
+       if (this.currentLanguage == 'en'){
+        this.toastr.success('added successfully to your cart');
+      }else{
+        this.toastr.success('تمت الإضافة بنجاح إلى سلتك');
+      }
+        
         this.router.navigate(['/cart']);
 
       }, error => {
 
-        console.log('error Happend::', error);
+        // console.log('error Happend::', error);
         if (error.status === 401) {
 
           sessionStorage.removeItem('authToken');
@@ -119,10 +133,17 @@ export class ProductListComponent {
 
           this.router.navigate(['/login']);
         } else if (error.status === 403) {
-          alert("this product is already in your cart\n check your cart");
+          if (this.currentLanguage == 'en'){
+            this.toastr.warning("this product is already in your cart\n check your cart");
+          }else{
+            this.toastr.success('هذا المنتج موجود بالفعل في سلتك.\nتحقق من سلتك');
+          }
         } else {
-          alert('some error happend');
-        }
+          if (this.currentLanguage == 'en'){
+            this.toastr.success('added successfully');
+          }else{
+            this.toastr.success('تمت العمليه بنجاح');
+          }        }
       }
 
     );
@@ -188,9 +209,9 @@ export class ProductListComponent {
         },
         error => {
           if (error.status === 400 || error.status === 500) {
-            console.error('A specific error occurred:', error);
+            // console.error('A specific error occurred:', error);
           } else {
-            console.error('An unexpected error occurred:', error);
+            // console.error('An unexpected error occurred:', error);
           }
         }
       );
@@ -219,9 +240,9 @@ export class ProductListComponent {
         },
         error => {
           if (error.status === 400 || error.status === 500) {
-            console.error('A specific error occurred:', error);
+            // console.error('A specific error occurred:', error);
           } else {
-            console.error('An unexpected error occurred:', error);
+            // console.error('An unexpected error occurred:', error);
           }
         }
       );

@@ -101,14 +101,14 @@
                     <div class="my-3">
                         <div class="form-floating">
                             <input type="tel" class="form-control" id="phone" placeholder="Phone" name="phone" required
-                                pattern="[0-9]{11}" ngModel>
+                            pattern="^[0-9]{8,18}$" ngModel>
                             <label for="phone">
                                 <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone</ng-container>
                                 <ng-template #arabicPhone>الهاتف</ng-template>
                             </label>
                             <div *ngIf="submitted && registerForm.controls['phone']?.invalid" style="color:#b83807">
-                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPhoneRequired">Phone number is required and must be a valid 10-digit number.</ng-container>
-                                <ng-template #arabicPhoneRequired>رقم الهاتف مطلوب ويجب أن يكون رقمًا صحيحًا مكونًا من 10 أرقام.</ng-template>
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicPhoneRequired">Phone number is required and must be a validnumber.</ng-container>
+                                <ng-template #arabicPhoneRequired>رقم الهاتف مطلوب ويجب أن يكون رقمًا صحيحًا .</ng-template>
                             </div>
                         </div>
                     </div>
@@ -163,34 +163,24 @@
                 </div>
             </div>
 
+<div class="container-my ">
+    <div *ngIf="disable">
+        <ng-lottie [options]="lodingAnimaationOptions" width="100px" 
+            (animationCreated)="loadingAnimation($event)">
+        </ng-lottie>
+    </div>
+</div>
+       
+
             <div class="text-center my-4">
                 <button type="submit" class="btn w-25 fw-bolder text-white"
                 [disabled]="disable">
+           
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicRegister">Register</ng-container>
                     <ng-template #arabicRegister>تسجيل</ng-template>
                 </button>
             </div>
 
-            <div class="modal" id="myModal">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <ng-lottie [options]="successAnimationOptions"
-                                (animationCreated)="successAnimationCreated($event)">
-                            </ng-lottie>
-                        </div>
-                        <div class="modal-body d-flex justify-content-center">
-                            <button class="btn" (click)="closeModal()" data-bs-toggle="modal"
-                                style="background-color: #231717; color:white"
-                                >
-
-                                <ng-container *ngIf="currentLanguage === 'en'; else arabicClose">Close</ng-container>
-                                <ng-template #arabicClose>إغلاق</ng-template>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="text-center">
                 <p class="text-center fw-bold">
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicHaveAccount">Have an account?</ng-container>

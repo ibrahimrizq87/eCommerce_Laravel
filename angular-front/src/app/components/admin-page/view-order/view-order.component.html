@@ -34,6 +34,27 @@
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicQuantity">Quantity</ng-container>
                         <ng-template #arabicQuantity>الكمية</ng-template>
                     </th>
+
+                    <th scope="col">
+                        <p class="mb-0">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicColor">Size</ng-container>
+                            <ng-template #arabicColor>الحجم</ng-template>
+                        </p>
+                    </th>
+               
+                    
+                    <th scope="col">
+                        <p class="mb-0">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabiccolor">color</ng-container>
+                            <ng-template #arabiccolor>اللون</ng-template>
+                        </p>
+                    </th>
+                    <th scope="col">
+                        <p class="mb-0">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSubTotal">Total</ng-container>
+                            <ng-template #arabicSubTotal>المجموع</ng-template>
+                        </p>
+                    </th>
                     <th scope="col">
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
                         <ng-template #arabicAction>الإجراء</ng-template>
@@ -46,9 +67,15 @@
                         <img [src]="item.product.cover_image" style="width:60px; height:60px; object-fit: cover; padding-right:20px;">
                         <span>{{item.product.product_name}}</span>
                     </td>
-                    <td>{{item.product.priceAfterOffers}}</td>
+                    <td>{{item.product.priceAfterOffers}} <strong>ILS</strong></td>
                     <td>{{item.quantity}}</td>
-               
+
+                    <td><p class="ps-2 mb-0">{{item.size.size}}</p></td>
+                    <td><img *ngIf="item.color" class="ps-2 mb-0" height="50px" [src]="item.color.image">
+                        <p *ngIf="!item.color">...</p></td>
+
+                        <td>{{item.product.priceAfterOffers *item.quantity }} <strong>ILS</strong></td>
+
                     <td>
                         <button type="button" class="btn me-1" style="color:rgb(2, 0, 0);" (click)="viewProduct(item.product)">
                             <i class="fa-solid fa-eye fs-4"></i>
@@ -79,7 +106,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalBeforeOffers">Total before offers:</ng-container>
                             <ng-template #arabicTotalBeforeOffers>الإجمالي قبل العروض:</ng-template>
                         </strong></div>
-                        <div><p>{{ totalPrice }}</p></div>
+                        <div><p>{{ totalPrice }} <strong>ILS</strong></p></div>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-around">
@@ -87,7 +114,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalSavedByOffers">Total saved by offers:</ng-container>
                             <ng-template #arabicTotalSavedByOffers>الإجمالي الموفر من العروض:</ng-template>
                         </strong></div>
-                        <div><p>-{{ totalOffers }}</p></div>
+                        <div><p>-{{ totalOffers }} <strong>ILS</strong></p></div>
                     </div>                    
                    
                     <hr *ngIf="order.payment=== 'onDelivery'" class="my-4">
@@ -99,7 +126,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicSavedByOffers">pay on delivery:</ng-container>
                             <ng-template #arabicSavedByOffers>دفع عند الاستلام:</ng-template>
                         </strong></div>
-                        <div>{{payOnDelivery}} </div>
+                        <div>{{payOnDelivery}} <strong>ILS</strong></div>
                     </div>  
                     <hr>
                     <div class="d-flex justify-content-around">
@@ -107,7 +134,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalAfterOffers">Total after offers:</ng-container>
                             <ng-template #arabicTotalAfterOffers>الإجمالي بعد العروض:</ng-template>
                         </strong></div>
-                        <div><p>{{ totalPriceAfterOffers }}</p></div>
+                        <div><p>{{ totalPriceAfterOffers }} <strong>ILS</strong></p></div>
                     </div>
                     
                 </div>

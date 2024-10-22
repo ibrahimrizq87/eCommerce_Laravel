@@ -18,7 +18,6 @@ class OrderItemController extends Controller
 
     public function index()
     { 
-        
         $orderItems = OrderItem::all();
         return response()->json($orderItems);
     }

@@ -68,3 +68,12 @@ a:hover {
     color: #D00000;
     font-size: 18px;
 }
+
+
+       
+.container-my > div {
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    height: 100%;            
+}

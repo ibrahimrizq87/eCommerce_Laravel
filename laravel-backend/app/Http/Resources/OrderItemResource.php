@@ -21,6 +21,8 @@ class OrderItemResource extends JsonResource
             'quantity' => $this->quantity,
             'status' => $this->status,
             'created_at' => $this->created_at->diffForHumans(),
+            'color' => new ColorResource($this->color),
+            'size' => new SizeResource($this->size),
             'order' => new OrderResource($this->whenLoaded('order')),
             'product' => new ProductResource($this->whenLoaded('product')),
         ];

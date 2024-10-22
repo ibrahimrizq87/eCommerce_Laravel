@@ -45,7 +45,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     
     ngOnInit(): void {
       this.categoryService.getAllCategories().subscribe(response => {
-        console.log(response);
+        // console.log(response);
         this.categories = response.data;
         this.filteredCategories = this.categories; 
 
@@ -54,7 +54,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
       },
       error => {
         
-        console.error('Error getting data:', error);
+        // console.error('Error getting data:', error);
 
       });
     }

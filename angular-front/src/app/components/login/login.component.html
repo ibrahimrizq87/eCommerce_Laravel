@@ -86,8 +86,19 @@
                 </div>
             </div>
 
+
+            
+<div class="container-my ">
+    <div *ngIf="disable">
+        <ng-lottie [options]="lodingAnimaationOptions" width="100px" 
+            (animationCreated)="loadingAnimation($event)">
+        </ng-lottie>
+    </div>
+</div>
+       
             <div class="text-center my-4">
-                <button type="submit" class="btn w-50 fw-bolder text-white">
+                <button type="submit" class="btn w-50 fw-bolder text-white"
+                [disabled]="disable">
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicLoginButton">Login</ng-container>
                     <ng-template #arabicLoginButton>تسجيل الدخول</ng-template>
                 </button>

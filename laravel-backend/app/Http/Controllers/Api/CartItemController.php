@@ -7,6 +7,10 @@ use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Color;
+
+use App\Models\Size;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +46,8 @@ class CartItemController extends Controller
         $std_validator = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id', 
             'quantity' => 'required|numeric|min:1', 
+            'size' => 'required|exists:sizes,id', 
+            'color' => 'nullable|exists:colors,id', 
         ]);
     if ($std_validator->fails()) {
         return response()->json(['errors' => $std_validator->errors()], 400);
@@ -51,6 +57,18 @@ class CartItemController extends Controller
         return response()->json(['errors' => "product not found"], 404);
 
     }
+    $size = Size::find($request->size);
+    if(!$size){
+        return response()->json(['errors' => "size not found"], 404);
+
+    }
+  if($request->color>0){
+    $color = Color::find($request->color);
+    if(!$color){
+        return response()->json(['errors' => "color not found"], 404);
+
+    }
+  }
     
     if($product->stock < $request->quantity){
         return response()->json(['errors' => "no enough product availbel in stock"], 409);
@@ -59,7 +77,23 @@ class CartItemController extends Controller
 
     $exists = CartItem::where('product_id', $request->product_id)
     ->where('user_id', Auth::id())
+    ->where('size_id', $request->size)
     ->exists(); 
+    if($request->color>0){
+        $exists = CartItem::where('product_id', $request->product_id)
+        ->where('user_id', Auth::id())
+        ->where('size_id', $request->size)
+        ->where('color_id', $request->color)
+
+        ->exists();    
+       }else{
+        $exists = CartItem::where('product_id', $request->product_id)
+        ->where('user_id', Auth::id())
+        ->where('size_id', $request->size)
+        ->exists(); 
+      }
+        
+  
 
 if ($exists) {
     return response()->json(['errors' => "Item already added to cart"], 403);
@@ -67,7 +101,12 @@ if ($exists) {
     
     $cartItem = new CartItem();
     $cartItem->product_id = $request->product_id;
+    if($request->color>0){
+        $cartItem->color_id = $request->color;
+      }
+        
 
+    $cartItem->size_id = $request->size;
     $cartItem->user_id = Auth::id();
     $cartItem->quantity = $request->quantity;
     $cartItem->save();

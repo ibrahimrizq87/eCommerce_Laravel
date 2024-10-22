@@ -6,6 +6,12 @@ import { OfferService } from '../../../services/offer.service';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import { FormsModule } from '@angular/forms';
 
+
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+
+
 @Component({
   selector: 'app-product-offers',
   standalone: true,
@@ -20,6 +26,8 @@ import { FormsModule } from '@angular/forms';
 export class ProductOffersComponent {
   @Output() linkClicked = new EventEmitter<string>();
   products:Product[] = [];
+  currentLanguage: string ='en';
+
   addError:boolean = false;
   selectedProducts: any[] = [];
   offer:any;
@@ -36,7 +44,18 @@ export class ProductOffersComponent {
   searchCriteria: string = 'name';
 
   constructor(
-    private productService: ProductService  ,private offerService:OfferService) {}
+    private sharedService: SharedService,
+    private toastr :ToastrService,
+
+    private productService: ProductService  ,private offerService:OfferService) {
+
+
+
+ this.sharedService.language$.subscribe(language => {
+  this.currentLanguage = language;
+  });
+
+    }
     ngOnInit(): void {
       this.getProducts();
       this.getOffer();
@@ -73,7 +92,7 @@ export class ProductOffersComponent {
 if(this.offerService.getCurrentOffer()){
 this.offer=this.offerService.getCurrentOffer();
 }else{
-  this.linkClicked.emit('all-seller-offers');
+  this.linkClicked.emit('all-offers');
 
 }
     }
@@ -113,7 +132,7 @@ this.offer=this.offerService.getCurrentOffer();
           });
   
       },error=>{
-          console.log('error>>>>>>>>>>>>>>>>' , error);
+          // console.log('error>>>>>>>>>>>>>>>>' , error);
         });
     }
     
@@ -148,13 +167,21 @@ addProducts(){
 
   this.offerService.addOfferToProducts(data).subscribe(
     response => {
-      alert('Offer added successfully');
+             
+      if (this.currentLanguage == 'en'){
+        this.toastr.success('Offer added successfully');
+      }else{
+        this.toastr.success('تمت العمليه بنجاح');
+      }
       this.linkClicked.emit('all-seller-offers');
 
     },
     error => {
-      alert('some error happend.')
-      console.log('Error adding offer', error);
+      if (this.currentLanguage == 'en'){
+        this.toastr.error('some error happend');
+      }else{
+        this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+      }
     }
   );
 }

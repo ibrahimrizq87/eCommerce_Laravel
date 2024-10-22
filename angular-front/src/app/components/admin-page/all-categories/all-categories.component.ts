@@ -6,7 +6,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
-
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-all-categories',
@@ -27,8 +28,15 @@ export class AllCategoriesComponent {
 
   filteredCategories: any[] = [];
   searchTerm: string = '';
+  currentLanguage: string ='en';
+  constructor(
+    private sharedService: SharedService,
+    private toastr :ToastrService,private categoryService: CategoryService ,private router: Router) { 
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
 
-  constructor(private categoryService: CategoryService ,private router: Router) { }
+    }
   search() {
     if (this.searchTerm) {
       this.filteredCategories = this.categories.filter(categories =>
@@ -52,7 +60,7 @@ updateCategories(){
   },
   error => {
     
-    console.error('some error happend:', error);
+    // console.error('some error happend:', error);
     // console.log('Error: ' + error.error);
 
   });
@@ -70,11 +78,18 @@ updateCategories(){
     this.categoryService.deleteCategory(category.id).subscribe(
 response=>{
   this.updateCategories();
-  alert('deleted successfully');
+  if (this.currentLanguage == 'en'){
+    this.toastr.success('deleted successfully');
+  }else{
+    this.toastr.success('تمت العمليه بنجاح');
+  }
 
 },error=>{
-console.log('error happened::' , error)
-  alert('some error happened during deleting');
+  if (this.currentLanguage == 'en'){
+    this.toastr.error('some error happend');
+  }else{
+    this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+  }
 }
     );
   }

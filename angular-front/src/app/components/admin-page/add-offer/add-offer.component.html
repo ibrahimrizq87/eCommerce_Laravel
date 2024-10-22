@@ -1,73 +1,104 @@
-<div class="container my-5 ">
+<div class="container my-5">
     <div class="offer-form shadow-lg w-50" style="background-color: #ffffff;">
-        <div class="my-2">
-            <h6 style="color: #b83807;">Add an offer</h6>
-        </div>
-
-        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger">
-            <ul>
-                <li class="list-unstyled text-center" *ngFor="let error of getErrorMessages()">{{ error }}</li>
-            </ul>
-        </div>
-        
-        <div class="mb-3 text-center">
-            <!-- <form (ngSubmit)="submitDates()" #dateForm="ngForm"> -->
-                <form #offerForm="ngForm" (ngSubmit)="onSubmit(offerForm)">
-                <div class="form-group my-3">
-                    <label for="startDate">Start Date:</label>
-                    <input type="date" id="startDate" class="form-control" [(ngModel)]="startDate" name="startDate"
-                        required (change)="onStartDateChange()" />
-                        <div *ngIf="submitted && offerForm.controls['startDate']?.invalid" class="text-danger">
-                            Offer start Date is required.
-                        </div>
-
+      
+      <!-- Form Title -->
+      <div class="my-2">
+        <h6 style="color: #b83807;">
+          <ng-container *ngIf="currentLanguage === 'en'; else arabicTitle">Add an Offer</ng-container>
+          <ng-template #arabicTitle>إضافة عرض</ng-template>
+        </h6>
+      </div>
+  
+      <!-- Error Messages -->
+      <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger">
+        <ul>
+          <li class="list-unstyled text-center" *ngFor="let error of getErrorMessages()">{{ error }}</li>
+        </ul>
+      </div>
+  
+      <!-- Form -->
+      <div class="mb-3 text-center">
+        <form #offerForm="ngForm" (ngSubmit)="onSubmit(offerForm)">
+          
+          <!-- Start Date Field -->
+          <div class="form-group my-3">
+            <label for="startDate">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicStartDate">Start Date:</ng-container>
+              <ng-template #arabicStartDate>تاريخ البداية:</ng-template>
+            </label>
+            <input type="date" id="startDate" class="form-control" [(ngModel)]="startDate" name="startDate" required (change)="onStartDateChange()" />
+            <div *ngIf="submitted && offerForm.controls['startDate']?.invalid" class="text-danger">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicStartError">Offer start date is required.</ng-container>
+              <ng-template #arabicStartError>تاريخ البداية مطلوب.</ng-template>
+            </div>
+          </div>
+  
+          <!-- End Date Field -->
+          <div class="form-group">
+            <label for="endDate">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicEndDate">End Date:</ng-container>
+              <ng-template #arabicEndDate>تاريخ النهاية:</ng-template>
+            </label>
+            <input type="date" id="endDate" class="form-control" [(ngModel)]="endDate" name="endDate" required [min]="minEndDate" />
+            <div *ngIf="submitted && offerForm.controls['endDate']?.invalid" class="text-danger">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicEndError">Offer end date is required.</ng-container>
+              <ng-template #arabicEndError>تاريخ النهاية مطلوب.</ng-template>
+            </div>
+          </div>
+  
+          <!-- Discount Field -->
+          <div class="my-3">
+            <div class="form-floating">
+              <input type="number" class="form-control" id="discount" placeholder="Your product price" name="discount" ngModel required min="1">
+              <label for="discount">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicDiscount">Discount</ng-container>
+                <ng-template #arabicDiscount>الخصم</ng-template>
+              </label>
+              <div *ngIf="submitted && offerForm.controls['discount']?.invalid" class="text-danger">
+                <div *ngIf="offerForm.controls['discount']?.errors?.['required']">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDiscountError">Offer discount is required.</ng-container>
+                  <ng-template #arabicDiscountError>الخصم مطلوب.</ng-template>
                 </div>
-
-
-
-                <div class="form-group">
-                    <label for="endDate">End Date:</label>
-                    <input type="date" id="endDate" class="form-control" [(ngModel)]="endDate" name="endDate" required
-                        [min]="minEndDate" />
-
-                        <div *ngIf="submitted && offerForm.controls['endDate']?.invalid" class="text-danger">
-                            Offer end Date is required.
-                        </div>
+                <div *ngIf="offerForm.controls['discount']?.errors?.['min']">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicMinDiscountError">Offer discount must be greater than 0.</ng-container>
+                  <ng-template #arabicMinDiscountError>يجب أن يكون الخصم أكبر من 0.</ng-template>
                 </div>
-                
-                <div class="my-3">       
-                      <div class="form-floating">
-                    <input type="number" class="form-control" id="discount" placeholder="Your product price"
-                        name="discount" ngModel required min="1">
-                    <label for="discount">Product Price</label>
-                    <div *ngIf="submitted && offerForm.controls['discount']?.invalid" class="text-danger">
-                        <div *ngIf="offerForm.controls['discount']?.errors?.['required']">
-                            Offer discount is required.
-                        </div>
-                        <div *ngIf="offerForm.controls['price']?.errors?.['min']">
-                            Offer discount must be greater than 0.
-                        </div>
-                    </div>
-                </div>
-                </div>
-                
-
-                <div class="text-center">
-                    <button type="submit" class="btn my-3 text-center" >Submit</button>
-                </div>
-            </form>
-        </div>
-
-        
-        <div class="text-center fw-bolder">
-            <p *ngIf="startDate && endDate">The Offer will start at: {{ startDate | date: 'fullDate' }}</p>
-            <p *ngIf="endDate"> And will end at: {{ endDate | date: 'fullDate' }}</p>
-        </div>
-
+              </div>
+            </div>
+          </div>
+  
        
-
-
+          <div class="container-my ">
+            <div *ngIf="disable">
+                <ng-lottie [options]="lodingAnimaationOptions" width="100px" 
+                    (animationCreated)="loadingAnimation($event)">
+                </ng-lottie>
+            </div>
+        </div>
+               
+            
+          <div class="text-center">
+            <button type="submit" class="btn my-3 text-center"
+            [disabled]="disable">
+              <ng-container *ngIf="currentLanguage === 'en'; else arabicSubmit">Submit</ng-container>
+              <ng-template #arabicSubmit>إرسال</ng-template>
+            </button>
+          </div>
+        </form>
+      </div>
+  
+      <!-- Offer Summary -->
+      <div class="text-center fw-bolder">
+        <p *ngIf="startDate && endDate">
+          <ng-container *ngIf="currentLanguage === 'en'; else arabicStartMessage">The offer will start at: {{ startDate | date: 'fullDate' }}</ng-container>
+          <ng-template #arabicStartMessage>سيبدأ العرض في: {{ startDate | date: 'fullDate' }}</ng-template>
+        </p>
+        <p *ngIf="endDate">
+          <ng-container *ngIf="currentLanguage === 'en'; else arabicEndMessage">And will end at: {{ endDate | date: 'fullDate' }}</ng-container>
+          <ng-template #arabicEndMessage>وسينتهي في: {{ endDate | date: 'fullDate' }}</ng-template>
+        </p>
+      </div>
+  
     </div>
-
-
-</div>
+  </div>
+  

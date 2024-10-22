@@ -35,9 +35,9 @@ import { SharedService } from '../../services/language.service';
 })
 export class RegisterComponent {
   private animationItem: AnimationItem | undefined;
-  private successAnimationItem: AnimationItem | undefined;
+  private lodingAnimaation: AnimationItem | undefined;
 
-  @Output() messageEvent = new EventEmitter<string>();
+  // @Output() messageEvent = new EventEmitter<string>();
 
 disable:boolean = false;
   registrationAnimationOptions: AnimationOptions = {
@@ -53,12 +53,18 @@ disable:boolean = false;
     autoplay: true
   };
 
+  lodingAnimaationOptions: AnimationOptions = {
+    path: 'animations/loading-main.json',
+    loop: true,
+    autoplay: true
+  };
+
   animationCreated(animationItem: AnimationItem): void {
     this.animationItem = animationItem;
   }
 
-  successAnimationCreated(animationItem: AnimationItem): void {
-    this.successAnimationItem = animationItem;
+  loadingAnimation(animationItem: AnimationItem): void {
+    this.lodingAnimaation = animationItem;
 
   }
 
@@ -115,7 +121,7 @@ disable:boolean = false;
       this.disable = true;
       const formData = new FormData();
       const deviceName = getDeviceName();
-      console.log(deviceName);
+      // console.log(deviceName);
       if (deviceName) {
         formData.append('device_name', deviceName);
 
@@ -130,60 +136,47 @@ disable:boolean = false;
         formData.append('image', this.selectedFile);
       }
 
-      console.log(formData);
+      // console.log(formData);
       this.userService.register(formData).subscribe(
         response => {
           const token = response.token;
           this.userService.setUser(response.user.data);
 
-          console.log('Registration successful:', response);
+          // console.log('Registration successful:', response);
           localStorage.setItem('needVarification', 'true');
           localStorage.setItem('tockenForVarification', token);
 
 
-          this.openModal();
+          this.router.navigate(['/varification']);
           
 
         },
         error => {
           if (error.status === 400 || error.status === 500) {
             this.backendErrors = error.error.errors;
-            console.error('Registration failed:', error);
-            console.log('Error: ' + error.error.errors);
+            // console.error('Registration failed:', error);
+            // console.log('Error: ' + error.error.errors);
 
-            Object.keys(error.error.errors).forEach(key => {
-              console.log('Field:', key);
+            // Object.keys(error.error.errors).forEach(key => {
+            //   console.log('Field:', key);
 
-              error.error.errors[key].forEach((message: String) => {
-                console.log('Error message:', message);
-              });
-            });
+            //   error.error.errors[key].forEach((message: String) => {
+            //     console.log('Error message:', message);
+            //   });
+            // });
           } else {
-            console.error('An unexpected error occurred:', error);
+            // console.error('An unexpected error occurred:', error);
           }
           this.disable = false;
 
         }
       );
     } else {
-      console.error('Form is invalid');
+      // console.error('Form is invalid');
     }
   }
 
-  openModal() {
-    const modal = document.getElementById("myModal");
-    if (modal != null) {
-      modal.style.display = "block";
 
-    }
-  }
-  closeModal(){
-    const modal = document.getElementById("myModal");
-    if (modal != null) {
-      modal.style.display = "none";
-      this.router.navigate(['/varification']);
-    }
-  }
   ngOnInit(): void {
     if (localStorage.getItem('needVarification')){
       window.location.href = '/varification';
@@ -210,7 +203,7 @@ disable:boolean = false;
           response => {
 
             this.user = response.data;
-            console.log(this.user)
+            // console.log(this.user)
             if (this.user.email_verified_at){
               window.location.href = '/home';
             }else{
@@ -221,7 +214,7 @@ disable:boolean = false;
           },
           error => {
             if (error.status === 400 || error.status === 500) {
-              console.error('A specific error occurred:', error);
+              // console.error('A specific error occurred:', error);
             } else if (error.status === 401) {
 
               sessionStorage.removeItem('authToken');
@@ -229,7 +222,7 @@ disable:boolean = false;
               
 
             } else {
-              console.error('An unexpected error occurred:', error);
+              // console.error('An unexpected error occurred:', error);
             }
           }
         );

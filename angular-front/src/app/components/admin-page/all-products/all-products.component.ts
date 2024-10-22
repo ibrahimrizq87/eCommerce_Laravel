@@ -1,17 +1,17 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UpdateProductComponent } from '../../seller-page/update-product/update-product.component';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-all-products',
   standalone: true,
   imports: [RouterModule,
-     UpdateProductComponent, 
      CommonModule, 
      NgxPaginationModule,
      FormsModule,
@@ -35,8 +35,14 @@ export class AllProductsComponent {
   priceTo: number  = 0;
   totalProducts: number = 0;
   searchCriteria: string = 'name';
-
-  constructor(private productService: ProductService) { }
+  currentLanguage: string ='en';
+  constructor( private sharedService: SharedService,
+    private toastr :ToastrService,
+    private productService: ProductService) {
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
+     }
 
   activeComponent: string = 'all-products'; 
   addProduct(){
@@ -53,12 +59,19 @@ export class AllProductsComponent {
   deleteProduct(product:any){
     this.productService.deleteProduct(product.id).subscribe(
       response=>{
-        alert('deleted sucessfully ');
-        this.getProducts();  
+       
+        if (this.currentLanguage == 'en'){
+          this.toastr.success('deleted successfully');
+        }else{
+          this.toastr.success('تمت العمليه بنجاح');
+        }        this.getProducts();  
 
       },error=>{
-        alert('some error happend ');
-        console.log('error happend:::',error );
+        if (this.currentLanguage == 'en'){
+          this.toastr.error('some error happend');
+        }else{
+          this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+        }
 
       }
     )
@@ -105,7 +118,7 @@ export class AllProductsComponent {
         });
 
     },error=>{
-        console.log('error>>>>>>>>>>>>>>>>' , error);
+        // console.log('error>>>>>>>>>>>>>>>>' , error);
       });
   }
   
@@ -124,40 +137,6 @@ export class AllProductsComponent {
     this.priceTo  = 0;
   }
 
-//   updateProducts(){
-
-//   this.productService.getAllProducts().subscribe(
-//     response => {
-//       this.products = response.data;
- 
-//       this.products.forEach(product=>{
-//         product.priceAfterOffers = product.price;
-//         product.totalOffers=0;  
-        
-//       product.addedOffers.forEach(offerAdded => {
-//         const endDate = new Date(offerAdded.offer.end_date); 
-//         const today = new Date(); 
-//         today.setHours(0, 0, 0, 0); 
-
-// if (endDate.getTime() >= today.getTime()) { 
-//   product.totalOffers +=offerAdded.offer.discount;
-//   product.priceAfterOffers -= Math.floor((offerAdded.offer.discount/100) *product.price);
-// }
-
-//       });
-//     });
-//     this.filteredProducts = this.products;
-
-//     },
-//     error => {
-//       if (error.status === 400 || error.status === 500) {
-//         console.error('A specific error occurred:', error);
-//       } else {
-//         console.error('An unexpected error occurred:', error);
-//       }
-//     }
-//   );
-//   }
 
 }
 

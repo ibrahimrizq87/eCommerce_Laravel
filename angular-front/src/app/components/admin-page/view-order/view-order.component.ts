@@ -6,9 +6,8 @@ import { OrderService } from '../../../services/order.service';
 import { CommonModule } from '@angular/common';
 import { OrderItemService } from '../../../services/order-item.service';
 import { ProductService } from '../../../services/product.service';
-import { SellerService } from '../../../services/seller.service';
 import { SharedService } from '../../../services/language.service';
-
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-view-order',
   standalone: true,
@@ -32,7 +31,7 @@ orderItems:OrderItem [] = [];
   constructor(private orderService:OrderService,
     private orderItemService:OrderItemService,
     private productService:ProductService,
-    private sellerService:SellerService,
+    private toastr :ToastrService,
     private sharedService: SharedService
   ){
     this.sharedService.language$.subscribe(language => {
@@ -66,15 +65,15 @@ viewProduct(product:any){
 }
 
 delivered(item:any){
-  this.orderItemService.deliverOrder(item.id).subscribe(
-    response=>{
-    alert('marked as recived successfully and money transferd to seller');
-    this.updateOrderItems();
-    },error=>{
-      alert('an error happend');
-      console.log('error happend',error);
-    }
-  );
+  // this.orderItemService.deliverOrder(item.id).subscribe(
+  //   response=>{
+  //   alert('marked as recived successfully and money transferd to seller');
+  //   this.updateOrderItems();
+  //   },error=>{
+  //     alert('an error happend');
+  //     // console.log('error happend',error);
+  //   }
+  // );
 }
 
 
@@ -85,7 +84,14 @@ updateOrderItems(){
       this.orderItems = response.data;
  
       if(this.orderItems.length<1){
-        alert('no order items in this order');
+        if (this.currentLanguage == 'en'){
+          this.toastr.warning('no order items in this order');
+
+        }else{
+          this.toastr.warning('لا توجد عناصر طلب في هذا الطلب.');
+
+        }
+
         this.linkClicked.emit(sessionStorage.getItem("return-to")?.toString()); 
       }
       this.orderItems.forEach(item => {
@@ -118,7 +124,7 @@ updateOrderItems(){
       if(error.status === 404){
         this.linkClicked.emit(sessionStorage.getItem("return-to")?.toString()); 
       }
-      console.log("error",error);
+      // console.log("error",error);
 
     }
   );
@@ -126,15 +132,29 @@ updateOrderItems(){
 delete(item:any){
   this.orderItemService.deleteOrderItem(item.id).subscribe(
     response=>{
-      alert('deleted successfully');
+     
+      if (this.currentLanguage == 'en'){
+        this.toastr.success('deleted successfully');
+      }else{
+        this.toastr.success('تمت العمليه بنجاح');
+      }
       this.updateOrderItems();
     },error=>{
       if(error.status === 403){
-        alert('this order item is payed can not delete a payed item');
+        
+        if (this.currentLanguage == 'en'){
+          this.toastr.error('this order item is payed can not delete a payed item');
+        }else{
+          this.toastr.error('هذه عنصر الطلب مدفوع، لا يمكن حذف عنصر مدفوع.');
+
+        }
       }else{
-        alert('an error happend');
-      }
-      console.log('error happend:' , error);
+        if (this.currentLanguage == 'en'){
+          this.toastr.error('some error happend');
+        }else{
+          this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+        }      }
+      // console.log('error happend:' , error);
     }
   );
 }
@@ -181,5 +201,17 @@ interface OrderItem {
   product: Product;
   quantity: number;
   status: string;
+  size: Size;
+  color:Color;
 
+}
+interface Color {
+  id: number;
+  image: string;
+
+}
+
+interface Size {
+  size: string;
+  price: number;
 }

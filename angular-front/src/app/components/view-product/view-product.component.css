@@ -211,3 +211,39 @@ video {
 }
 
 
+.text-wrap {
+    white-space: normal; /* Allows the text to wrap */
+    overflow: hidden; /* Hides overflow content */
+    text-overflow: ellipsis; /* Optionally add ellipsis for clipped text */
+  }
+  
+
+  /* Align the images at the center */
+.selectImage {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    gap: 10px;               /* Space between images */
+    flex-wrap: wrap;         /* Wrap if needed */
+}
+
+/* Styling on hover */
+.selectImage img:hover {
+    transform: scale(1.2);  /* Enlarge the image slightly */
+    transition: transform 0.3s ease; /* Smooth animation */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add shadow effect */
+    cursor: pointer;        /* Change cursor to pointer */
+    border-radius: 8px;     /* Add rounded corners */
+}
+
+/* Styling when selected (using a class) */
+.selected {
+    outline: 3px solid #007bff; /* Blue border to indicate selection */
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+}
+
+/* Optional: For smoother interaction */
+.myImage {
+    transition: all 0.3s ease-in-out; 
+}

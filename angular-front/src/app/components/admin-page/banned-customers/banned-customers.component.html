@@ -1,65 +1,82 @@
 <div class="container">
-  <h6 class="ps-5 pt-5 pb-3" style="color:#b83807;">All Banned Customers</h6>
+  <h6 class="ps-5 pt-5 pb-3" style="color:#b83807;">
+    <ng-container *ngIf="currentLanguage === 'en'; else arabicTitle">All Banned Customers</ng-container>
+    <ng-template #arabicTitle>جميع العملاء المحظورين</ng-template>
+  </h6>
+
   <div class="container">
     <div>
       <div class="mb-5 d-flex justify-content-center">
-      <div class="input-group" style="max-width: fit-content;">
-        <input class="form-control border rounded-pill" [(ngModel)]="searchTerm" type="search" placeholder="Search"
-          id="example-search-input" style="max-width: fit-content;">
-        <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
-          <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
-        </button>
+        <div class="input-group" style="max-width: fit-content;">
+          <input 
+            class="form-control border rounded-pill" 
+            [(ngModel)]="searchTerm" 
+            type="search" 
+            [placeholder]="currentLanguage === 'en' ? 'Search' : 'بحث'" 
+            id="example-search-input" 
+            style="max-width: fit-content;">
+          <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
+            <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
+          </button>
+        </div>
       </div>
-      </div>
+
       <div class="container mt-2">
-        <table  *ngIf="customers && customers.length > 0; else noProductsTemplate" class="table text-center">
+        <table *ngIf="customers && customers.length > 0; else noCustomersTemplate" class="table text-center">
           <thead>
             <tr>
-              <th scope="col">ID</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Gender</th>
-              <th scope="col">Email</th>
-              <th scope="col">Address</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Action</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'ID' : 'الهوية' }}</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'First Name' : 'الاسم الأول' }}</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'Last Name' : 'الاسم الأخير' }}</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'Gender' : 'النوع' }}</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'Email' : 'البريد الإلكتروني' }}</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'Address' : 'العنوان' }}</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'Phone' : 'الهاتف' }}</th>
+              <th scope="col">{{ currentLanguage === 'en' ? 'Action' : 'إجراء' }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              *ngFor="let customer of customers ">
-              <!-- <td scope="col">{{customer.id}}</td> -->
-              <td> <img [src]="customer.user.image" class="rounded-circle" style="height:70px; width:70px;" alt="">
-              </td>
-              <td scope="col">{{customer.user.name}}</td>
-              <td scope="col">{{customer.user.last_name}}</td>
-              <td scope="col">{{customer.user.gender}}</td>
-              <td scope="col">{{customer.user.email}}</td>
-              <td scope="col">{{customer.address}}</td>
-              <td>{{customer.phone}}</td>
+            <tr *ngFor="let customer of customers">
               <td>
-
-                <button (click)="activate(customer)" class="btn btn-success">Activate</button>
+                <img [src]="customer.user.image ? customer.user.image : 'images/user.png'" 
+                  class="rounded-circle" 
+                  style="height:70px; width:70px; object-fit: cover;" 
+                  alt="">
+              </td>
+              <td scope="col">{{ customer.user.name }}</td>
+              <td scope="col">{{ customer.user.last_name }}</td>
+              <td scope="col">{{ customer.user.gender }}</td>
+              <td scope="col">{{ customer.user.email }}</td>
+              <td scope="col">{{ customer.address }}</td>
+              <td>{{ customer.phone }}</td>
+              <td>
+                <button (click)="activate(customer)" class="btn btn-success">
+                  {{ currentLanguage === 'en' ? 'Activate' : 'تفعيل' }}
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
+
         <div class="d-flex justify-content-center my-4">
           <mat-paginator [length]="totalCustomers"
             [pageSize]="itemsPerPage"
             [pageSizeOptions]="[5, 10, 25, 100]"
             aria-label="Select page"
             (page)="onPageChange($event)">
-              </mat-paginator>
-      </div>
+          </mat-paginator>
+        </div>
       </div>
     </div>
-
   </div>
 </div>
-<ng-template #noProductsTemplate>
+
+<ng-template #noCustomersTemplate>
   <div class="container text-center p-5 shadow-lg">
     <img src="images/not-found.jpg" style="height:200px; width:250px;" alt="">
-    <h3 class="text-muted">No data available.</h3>
+    <h3 class="text-muted">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicNoData">No data available.</ng-container>
+      <ng-template #arabicNoData>لا توجد بيانات متاحة.</ng-template>
+    </h3>
   </div>
 </ng-template>

@@ -29,26 +29,5 @@ export class BannerComponent {
     this.router.navigate(['/products']);
 
   }
-  showNow() {
-    const requestData = { 'id': 2 };
-    console.log('Sending request with data: ', requestData);
-    this.OrderPaymentService.requestPayment(requestData).subscribe(
-      response => {
 
-        console.log(response);
-        const url = response.url;
-        window.open(url, '_blank');
-      }
-      , error => {
-        if (error.status === 401) {
-          sessionStorage.removeItem('authToken');
-          sessionStorage.setItem('loginSession', 'true');
-          this.router.navigate(['/login']);
-        }
-        console.error('An unexpected error occurred:', error);
-        alert('an erro happend try again later');
-        console.log('error happend::::', error);
-      }
-    )
-  }
 }

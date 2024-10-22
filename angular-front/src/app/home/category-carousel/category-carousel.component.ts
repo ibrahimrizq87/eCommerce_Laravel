@@ -45,17 +45,14 @@ categories:any [] |null [] =[];
     
     ngOnInit(): void {
       this.categoryService.getAllCategories().subscribe(response => {
-        console.log(response);
+        // console.log(response);
         this.categories = response.data;
-        this.categories.forEach(element => {
-          console.log(element.image);
-        });
-
+     
       },
       error => {
         
-        console.error('Registration failed:', error);
-        console.log('Error: ' + error.error);
+        // console.error('Registration failed:', error);
+        // console.log('Error: ' + error.error);
 
       });
     }

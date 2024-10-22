@@ -79,7 +79,13 @@ export class CheckoutComponent {
   onSubmit(form:any){
     this.submitted = true;
     if (this.totalPrice<=0){
-      alert('nothing to buy add products to your cart first');
+
+ if (this.currentLanguage == 'en'){
+  this.toastr.warning('nothing to buy add products to your cart first');
+}else{
+  this.toastr.warning("يجب اضافة عناصر الى العربه اولا");
+}
+
       this.router.navigate(['/products']);
 
       return;
@@ -109,8 +115,12 @@ export class CheckoutComponent {
           
             const isPayed = response.pay;
           if(isPayed){
-            this.toastr.success("order added successfully proceed to payment");
+            if (this.currentLanguage == 'en'){
+              this.toastr.success("order added successfully proceed to payment");
+            }else{
+              this.toastr.success("تمت العملية بنجاح اكمل عملية الدفع");
 
+            }
             const url = response.url;
             window.open(url, '_blank');
             this.paymentService.setUrlPayment(url);
@@ -119,29 +129,40 @@ export class CheckoutComponent {
 
 
           }else{
-            this.toastr.success("order added successfully payment on delivery");
-            // this.toastr.error("order added successfully payment on delivery");
-            // this.toastr.warning("order added successfully payment on delivery");
+            if (this.currentLanguage == 'en'){
+              this.toastr.success("order added successfully payment on delivery");
+            }else{
+              this.toastr.success("تمت العملية سوف يتم الدفع عند التوصيل");
 
-            // alert("order added successfully payment on delivery");
+            }
+          
             this.router.navigate(['/order']);
           }
     
 
-          console.log('order added::',response);
+          // console.log('order added::',response);
         },error=>{
 
 
           const isPayed = error.pay;
           if(isPayed){
-            this.toastr.warning("order added successfully but there is a problem with payment");
-            alert("order added but there is a problem with payment");
-          }else{
-            alert("an error happend while adding this order");
-          }
+            if (this.currentLanguage == 'en'){
+              this.toastr.warning("order added successfully but there is a problem with payment");
+            }else{
+              this.toastr.warning("تمت اضافة الطلب لكن عملية الدفع لم تنجح حاول مرة اخرى");
 
-          console.log('error happend',error);
-          console.log('error happend',error.pay);
+            }
+          }else{
+
+            if (this.currentLanguage == 'en'){
+              this.toastr.error('some error happend');
+            }else{
+              this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+            }
+                      }
+
+          // console.log('error happend',error);
+          // console.log('error happend',error.pay);
 
         }
       );
@@ -154,9 +175,9 @@ export class CheckoutComponent {
     this.customerService.getCustomer().subscribe(
       response => {
         this.customer = response.data;
-        console.log('customer::' , response.data);
+        // console.log('customer::' , response.data);
       }, error => {
-        console.log('an error happend:', error);
+        // console.log('an error happend:', error);
         if (error.status === 401) {
           sessionStorage.removeItem('authToken');
           sessionStorage.setItem('loginSession', 'true');
@@ -212,9 +233,9 @@ export class CheckoutComponent {
         });
 
 
-        console.log('my cart data::', response);
+        // console.log('my cart data::', response);
       }, error => {
-        console.log('error happend', error);
+        // console.log('error happend', error);
         if (error.status === 401) {
           sessionStorage.removeItem('authToken');
           sessionStorage.setItem('loginSession', 'true');

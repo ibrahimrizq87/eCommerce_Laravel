@@ -7,6 +7,14 @@ import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
+
+
+import { SharedService } from '../../../services/language.service';
+ 
+
+
+
+
 @Component({
   selector: 'app-deleted-orders',
   standalone: true,
@@ -20,6 +28,7 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 })
 export class DeletedOrdersComponent {
 
+  currentLanguage: string ='en';
 
   @Output() linkClicked = new EventEmitter<string>();
 
@@ -38,10 +47,14 @@ export class DeletedOrdersComponent {
   constructor(
     private orderService:OrderService,
     private customerService:CustomerService,
-    private toastrService:ToastrService,
-
+    private toastr:ToastrService,
+    private sharedService: SharedService,
     
-  ){}
+  ){
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+  }
 
 
 
@@ -65,7 +78,7 @@ getCustomer(order:any){
       this.linkClicked.emit("show-customer"); 
 
     },error=>{
-      console.log('error getting data:',error);
+      // console.log('error getting data:',error);
     }
   );
 }
@@ -73,11 +86,18 @@ getCustomer(order:any){
 restore(item:any){
   this.orderService.restoreOrder(item.id).subscribe(
     response=>{
-alert ('restored successfully');
+if (this.currentLanguage == 'en'){
+  this.toastr.success('restored successfully');
+}else{
+  this.toastr.success('تمت العمليه بنجاح');
+}
 this.updateOrders();
     },error=>{
-alert('an error happend');
-    }
+      if (this.currentLanguage == 'en'){
+        this.toastr.error('some error happend');
+      }else{
+        this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+      }    }
   );
 }
 viewOrder(order:any){
@@ -90,11 +110,11 @@ viewOrder(order:any){
 search() {
   if (this.searchCriteria === 'date') {
       if (!this.startDate || !this.endDate) {
-          this.toastrService.error("Start and End dates are required.");
+          this.toastr.error("Start and End dates are required.");
           return;
       }
       if (new Date(this.startDate) >= new Date(this.endDate)) {
-          this.toastrService.error("Start Date must be less than End Date.");
+          this.toastr.error("Start Date must be less than End Date.");
           return;
       }
   }
@@ -102,7 +122,7 @@ search() {
   if (this.searchCriteria === 'total') {
      
       if (this.priceFrom >= this.priceTo) {
-        this.toastrService.error("From price must be less than To price.");
+        this.toastr.error("From price must be less than To price.");
           return;
       }
   }
@@ -134,7 +154,7 @@ updateOrders(){
     },error=>{
       if(error.status === 404){
       }
-      console.log("error",error);
+      // console.log("error",error);
 
     }
   );

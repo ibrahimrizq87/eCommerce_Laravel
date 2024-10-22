@@ -5,6 +5,7 @@ import { CustomerHeaderComponent } from '../customer-header/customer-header.comp
 import { CartService } from '../../services/cart.service';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { SharedService } from '../../services/language.service';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-cart',
   standalone: true,
@@ -18,22 +19,23 @@ import { SharedService } from '../../services/language.service';
   styleUrl: './cart.component.css'
 })
 export class CartComponent {
-  empty:boolean=true;
+  empty: boolean = true;
   totalPrice: number = 0;
   totalPriceAfterOffers: number = 0;
   totalOffers: number = 0;
-  currentLanguage: string ='en';
+  currentLanguage: string = 'en';
   cartItems: CartItem[] = [];
   user: any;
   constructor(private userService: UserService,
     private router: Router,
     private sharedService: SharedService,
+    private toastr: ToastrService,
     private cartService: CartService) {
-      this.sharedService.updateLanguage();  
-this.sharedService.language$.subscribe(language => {
-this.currentLanguage = language;
-});
-     }
+    this.sharedService.updateLanguage();
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+    });
+  }
 
 
   ngOnInit(): void {
@@ -51,8 +53,12 @@ this.currentLanguage = language;
           this.totalOffers -= (item.product.price - item.product.priceAfterOffers);
 
         }, error => {
-          alert('error happend while updating\n theck your network please')
-          console.log('error updating::', error);
+
+          if (this.currentLanguage == 'en') {
+            this.toastr.error('error happend while updating\n theck your network please');
+          } else {
+            this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+          }
         }
       );
 
@@ -70,14 +76,21 @@ this.currentLanguage = language;
           this.totalOffers += (item.product.price - item.product.priceAfterOffers);
 
         }, error => {
-          alert('error happend while updating\n theck your network please')
-          console.log('error updating::', error);
+          if (this.currentLanguage == 'en') {
+            this.toastr.error('error happend while updating\n theck your network please');
+          } else {
+            this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+          }
         }
       );
 
     } else {
-      alert('no enough products in our stock\n max is: ' + item.product.stock);
-      item.quantity --;
+      if (this.currentLanguage == 'en') {
+        this.toastr.warning('no enough products in our stock\n max is: ' + item.product.stock);
+      } else {
+        this.toastr.error(item.product.stock + ' لا يوجد كمية كافية بالمخزون اكبر كمية يمكن طلبها هى ');
+      }
+      item.quantity--;
     }
   }
 
@@ -85,12 +98,20 @@ this.currentLanguage = language;
   deleteItem(item: any) {
     this.cartService.deleteItem(item.id).subscribe(
       response => {
-        alert('deleted successfully');
+        if (this.currentLanguage == 'en') {
+          this.toastr.success('deleted successfully');
+        } else {
+          this.toastr.success('تمت العمليه بنجاح');
+        }
 
         this.updateCartItems();
       }, error => {
-        alert('an error happend!!');
-        console.log('an error happend::', error);
+        if (this.currentLanguage == 'en') {
+          this.toastr.error('some error happend');
+        } else {
+          this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+        }
+
       }
     );
   }
@@ -104,13 +125,13 @@ this.currentLanguage = language;
         },
         error => {
           if (error.status === 400 || error.status === 500) {
-            console.error('A specific error occurred:', error);
+            // console.error('A specific error occurred:', error);
           } else if (error.status === 401) {
             sessionStorage.removeItem('authToken');
             sessionStorage.setItem('loginSession', 'true');
             this.router.navigate(['/login']);
           } else {
-            console.error('An unexpected error occurred:', error);
+            // console.error('An unexpected error occurred:', error);
           }
         }
       );
@@ -125,22 +146,23 @@ this.currentLanguage = language;
     this.cartService.getAllItems().subscribe(
       response => {
         this.cartItems = response.data;
-        console.log('my cart data::::::::::', this.cartItems);
+        // console.log('my cart data::::::::::', this.cartItems);
 
-if(this.cartItems.length>0){
-  this.empty = false;
-}else{
-  this.empty = true;
+        if (this.cartItems.length > 0) {
+          this.empty = false;
+        } else {
+          this.empty = true;
 
-}
+        }
         this.cartItems.forEach(item => {
-          if(item.product.stock < item.quantity){
-            item.quantity = item.product.stock +1;
+          if (item.product.stock < item.quantity) {
+            item.quantity = item.product.stock + 1;
             this.downQuantity(item);
-          }else if(item.product.stock == 0){
+          } else if (item.product.stock == 0) {
             this.deleteItem(item);
             return;
           }
+          item.product.price = item.size.price;
           item.product.priceAfterOffers = item.product.price;
           item.product.totalOffers = 0;
 
@@ -165,7 +187,7 @@ if(this.cartItems.length>0){
 
 
       }, error => {
-        console.log('error happend', error);
+        // console.log('error happend', error);
         if (error.status === 401) {
           sessionStorage.removeItem('authToken');
           sessionStorage.setItem('loginSession', 'true');
@@ -179,6 +201,10 @@ if(this.cartItems.length>0){
 }
 
 
+interface Size {
+  size: string;
+  price: number;
+}
 
 interface Offer {
   id: number;
@@ -201,7 +227,7 @@ interface Product {
   price: number;
   stock: number;
   cover_image: string;
-  size: string;
+  // size: string;
   material: string;
   video: string;
 
@@ -217,4 +243,11 @@ interface CartItem {
   user_id: number;
   product_id: number;
   product: Product;
+  size: Size;
+  color:Color;
+}
+interface Color {
+  id: number;
+  image: string;
+
 }

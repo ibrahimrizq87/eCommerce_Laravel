@@ -4,6 +4,10 @@ import { CommonModule } from '@angular/common';
 import { ContactService } from '../../../services/contact.service';
 import { FormsModule } from '@angular/forms';
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+
 @Component({
   selector: 'app-list-contact-messages',
   standalone: true,
@@ -16,13 +20,21 @@ import { FormsModule } from '@angular/forms';
 })
 export class ListContactMessagesComponent {
   messages: Message[]=[];
+  currentLanguage: string ='en';
 
   filteredMessages: any[] = [];
   searchTerm: string = '';
   page: number = 1;
   itemsPerPage: number = 10;
 
-  constructor(private contactService: ContactService) { }
+  constructor(	 private sharedService: SharedService,
+    private toastr :ToastrService,
+private contactService: ContactService) {
+
+ this.sharedService.language$.subscribe(language => {
+  this.currentLanguage = language;
+  });
+ }
   ngOnInit(): void {
     this.updateMessages();
   }
@@ -38,13 +50,21 @@ export class ListContactMessagesComponent {
   delete(message:any){
     this.contactService.deleteMessage(message.id).subscribe(
       response => {
-        alert('deleted successfully');
+        // alert('deleted successfully');
+        if (this.currentLanguage == 'en'){
+          this.toastr.success('deleted successfully');
+        }else{
+          this.toastr.success('تمت العمليه بنجاح');
+        }
         this.updateMessages();
-        console.log(response);
+        // console.log(response);
 
       },error=>{
-        alert('an error happend check you network connection')
-        console.log('an error happend' , error)
+        if (this.currentLanguage == 'en'){
+          this.toastr.error('some error happend');
+        }else{
+          this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+        }
       }
     );
   
@@ -56,7 +76,7 @@ export class ListContactMessagesComponent {
         this.messages = response.data;
         this.filteredMessages =this.messages;
       },error=>{
-        console.log('an error happend' , error)
+        // console.log('an error happend' , error)
       }
     );
   }

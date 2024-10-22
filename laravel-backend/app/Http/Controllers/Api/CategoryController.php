@@ -28,7 +28,7 @@ class CategoryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'category_name' => 'required|string|max:255|unique:categories,category_name',
-            'description' => 'required|string|max:500',
+            'description' => 'nullable|string|max:500',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
 
 
@@ -62,7 +62,13 @@ class CategoryController extends Controller
         $category = new Category();
 
         $category->category_name = $request->category_name;
-        $category->description = $request->description;
+        if($request->description){
+            $category->description = $request->description;
+
+        }else{
+            $category->description = '';
+
+        }
         $category->image = $my_path;
         $category->save();
 

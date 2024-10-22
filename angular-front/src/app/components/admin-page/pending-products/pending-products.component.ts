@@ -6,6 +6,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+	
+
+ 
 @Component({
   selector: 'app-pending-products',
   standalone: true,
@@ -21,6 +27,7 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 export class PendingProductsComponent {
   products: Product[] = []; 
   category :any;
+  currentLanguage: string ='en';
 
   page: number = 1;
   itemsPerPage: number = 20;
@@ -33,16 +40,26 @@ export class PendingProductsComponent {
   searchCriteria: string = 'name';  
   // filteredProducts: any[] = []; 
 
-  constructor(private productService: ProductService) { }
+  constructor( private sharedService: SharedService,
+    private toastr :ToastrService,private productService: ProductService) { this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+    }
 
   restoreProduct(product:any){
     this.productService.restoreProduct(product.id).subscribe(
 response=>{
-alert('product restored successfully');
+if (this.currentLanguage == 'en'){
+  this.toastr.success('product restored successfully');
+}else{
+  this.toastr.success('تمت العمليه بنجاح');
+}
 },error=>{
-  console.log('some error has happened');
-  console.log('error::::>>',error);
-  alert('some error has happened');
+  if (this.currentLanguage == 'en'){
+    this.toastr.error('some error happend');
+  }else{
+    this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+  }
 }
 
     );
@@ -105,9 +122,9 @@ if (endDate.getTime() >= today.getTime()) {
     },
     error => {
       if (error.status === 400 || error.status === 500) {
-        console.error('A specific error occurred:', error);
+        // console.error('A specific error occurred:', error);
       } else {
-        console.error('An unexpected error occurred:', error);
+        // console.error('An unexpected error occurred:', error);
       }
     }
   );

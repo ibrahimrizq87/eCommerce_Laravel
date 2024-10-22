@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { Router } from '@angular/router';
-
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
 @Component({
   selector: 'app-admin-header',
   standalone: true,
@@ -13,14 +14,25 @@ import { Router } from '@angular/router';
 export class AdminHeaderComponent {
   selected :string='';
 user:any;
+currentLanguage: string ='en';
   @Output() linkClicked = new EventEmitter<string>();
   constructor(
     private userService: UserService,
+    private sharedService: SharedService,
+    private toastr :ToastrService,
     private router: Router
-  ) {}
+  ) {
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+  }
+  changeLanguage(lang: string) {
+    this.currentLanguage = lang;
+    this.sharedService.setLanguage(lang);
+  }
   
   onLinkClick(component: string) {
-    console.log('Emitting:', component);
+    // console.log('Emitting:', component);
     this.selected = component;
     this.linkClicked.emit(component);
   }

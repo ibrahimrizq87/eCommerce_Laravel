@@ -17,6 +17,10 @@ use App\Http\Resources\DeliveryResource;
 
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+use App\Http\Resources\CustomerResource;
+
 
 
 class UserController extends Controller
@@ -50,20 +54,35 @@ class UserController extends Controller
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['error' => 'Invalid password.'], 401);
         }
+        Log::info('User found: ', ['user' => $user]);
 
     
         $status = null;
+        $customer = null;
+
         if ($user->role === 'customer') {
             $status = Customer::where('user_id', $user->id)->value('status'); 
-        } elseif ($user->role === 'seller') {
-            $status = Seller::where('user_id', $user->id)->value('status'); 
-        }
+            $customer = Customer::where('user_id'  , $user->id)->first(); 
+            if (!$customer) {
+                return response()->json(['error' => 'customer not found.'], 404);
+            }
 
-        return response()->json([
-            'token' => $user->createToken($request->device_name)->plainTextToken,
-            'user' => $user,
-            'status' => $status, 
-        ]);
+
+            return response()->json([
+                'token' => $user->createToken($request->device_name)->plainTextToken,
+                'user' => new CustomerResource($customer),
+                'status' => $status, 
+            ]);
+    
+        }else{
+            return response()->json([
+                'token' => $user->createToken($request->device_name)->plainTextToken,
+                'user' => new UserResource($user),
+                'status' => $status, 
+            ]);
+        }
+       
+    
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
@@ -253,8 +272,6 @@ function addDelivery(Request $request) {
             'gender' => 'required|string|in:male,female,other',
             'last_name' => 'required|string|max:255',
             'phone' => 'nullable|string|max:15', 
-            'shop_name' => 'nullable|string|max:255',
-            'about' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
         ], [
             "email.required" => "You must add an email to log in.",
@@ -302,7 +319,7 @@ function addDelivery(Request $request) {
         $token = $user->createToken($request->device_name)->plainTextToken;
         $user->sendEmailVerificationNotification();
 
-        return response()->json(['token' => $token , 'user' => new UserResource($user)], 201); 
+        return response()->json(['token' => $token , 'user' => new CustomerResource($customer)], 201); 
     } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
     }
@@ -387,7 +404,6 @@ function addDelivery(Request $request) {
 
     public function index(Request $request)
     {
-        // جلب جميع المستخدمين أو أي منطق تريده هنا
         $users = User::all();
         return response()->json($users);
     }

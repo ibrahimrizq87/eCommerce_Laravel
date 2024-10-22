@@ -1,29 +1,48 @@
 <div class="container m-auto w-50 shadow-lg my-4">
-  <div class=" text-center">
+  <div class="text-center">
 
-    <div class=" m-auto" style="width: 250px; height: 250px;">
+    <div class="m-auto" style="width: 250px; height: 250px;">
       <ng-lottie [options]="successAnimationOptions" (animationCreated)="successAnimationCreated($event)"
         style="height: 100%; width: 100%; display: block;">
       </ng-lottie>
     </div>
 
-    <h6>Verify your E-mail Address</h6>
+    <h6>
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicVerifyEmail">Verify your E-mail Address</ng-container>
+      <ng-template #arabicVerifyEmail>تحقق من عنوان بريدك الإلكتروني</ng-template>
+    </h6>
 
-    <span class="px-3 span d-block"> Please check your email and click on the verification link we have sent you.</span>
-    <p class="pb-2"> You might need to ckeck your spam folder.</p>
+    <span class="px-3 span d-block">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicCheckEmail">Please check your email and click on the verification link we have sent you.</ng-container>
+      <ng-template #arabicCheckEmail>يرجى التحقق من بريدك الإلكتروني والنقر على رابط التحقق الذي أرسلناه لك.</ng-template>
+    </span>
+    
+    <p class="pb-2">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicCheckSpam">You might need to check your spam folder.</ng-container>
+      <ng-template #arabicCheckSpam>قد تحتاج إلى التحقق من مجلد البريد العشوائي لديك.</ng-template>
+    </p>
+    
     <div class="text-center my-3">
-      <button class="reload-btn btn verified" (click)="reloadPage()">Verify</button>
+      <button class="reload-btn btn verified" (click)="reloadPage()">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicVerifyButton">Verify</ng-container>
+        <ng-template #arabicVerifyButton>تحقق</ng-template>
+      </button>
     </div>
-    <button class="btn mx-3 resend" style="font-size:12px" (click)="resendVerificationEmail()">Resend verification
-      email</button> <small>or</small>
-    <button class="btn other-email my-4 ms-3" style="font-size:12px" (click)="reloadPage()">Try login with other
-      email</button>
-
-
-    <!-- <button class="reload-btn btn verified" (click)="reloadPage()">Verified let's Login </button> -->
-
-    <!-- <button class="btn other-email my-4 ms-3" (click)="reloadPage()">Try login with other email</button> -->
+    
+    <button class="btn mx-3 resend" style="font-size:12px" (click)="resendVerificationEmail()">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicResendEmail">Resend verification email</ng-container>
+      <ng-template #arabicResendEmail>إعادة إرسال بريد التحقق</ng-template>
+    </button>
+    
+    <small>
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicOr">or</ng-container>
+      <ng-template #arabicOr>أو</ng-template>
+    </small>
+    
+    <button class="btn other-email my-4 ms-3" style="font-size:12px" (click)="reloadPage()">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicTryOtherEmail">Try login with other email</ng-container>
+      <ng-template #arabicTryOtherEmail>حاول تسجيل الدخول باستخدام بريد إلكتروني آخر</ng-template>
+    </button>
 
   </div>
-
 </div>

@@ -1,7 +1,9 @@
 <div class="container my-5 m-auto w-50">
-    <div class="product-form shadow-lg" style=" background-color: #fff;">
-
-        <h6 class="mb-2 p-4" style="color: #b83807;">Update Category</h6>
+    <div class="product-form shadow-lg" style="background-color: #fff;">
+        <h6 class="mb-2 p-4" style="color: #b83807;">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicHeader">Update Category</ng-container>
+            <ng-template #arabicHeader>تحديث الفئة</ng-template>
+        </h6>
 
         <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="alert text-danger">
             <ul>
@@ -10,55 +12,74 @@
         </div>
 
         <form (ngSubmit)="onSubmit(categoryForm)" #categoryForm="ngForm" enctype="multipart/form-data">
-
             <div class="row p-5">
 
                 <div class="mb-3">
                     <div class="form-floating">
-                        <input type="text" class="form-control"  [(ngModel)]="category.category_name" id="cTitle" placeholder="Your Category Title"
+                        <input type="text" class="form-control" [(ngModel)]="category.category_name" id="cTitle" 
+                            [placeholder]="currentLanguage === 'en' ? 'Your Category Title' : 'عنوان الفئة الخاص بك'"
                             name="category_name" ngModel required>
-                        <label for="category_name">Category Title</label>
+                        <label for="category_name">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryTitle">Category Title</ng-container>
+                            <ng-template #arabicCategoryTitle>عنوان الفئة</ng-template>
+                        </label>
                         <div *ngIf="submitted && categoryForm.controls['category_name']?.invalid" class="text-danger">
-                                Category title is required.
-                            </div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <textarea class="form-control" id="cDescription" placeholder="Category Description"
-                            style="height: 50px;" name="description" [(ngModel)]="category.description" required></textarea>
-                        <label for="cDescription">Category Description</label>
-                        <div *ngIf="submitted && categoryForm.controls['description']?.invalid" class="text-danger">
-                            Category description is required.
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryTitleError">Category title is required.</ng-container>
+                            <ng-template #arabicCategoryTitleError>عنوان الفئة مطلوب.</ng-template>
                         </div>
                     </div>
                 </div>
-                
-
 
                 <div class="mb-3">
                     <div class="form-floating">
-                        <label >current Image </label>
-                               <img width="150px" height="150px" [src]="category.image"/>
+                        <textarea class="form-control" id="cDescription" 
+                            [placeholder]="currentLanguage === 'en' ? 'Category Description' : 'وصف الفئة'"
+                            style="height: 50px;" name="description" [(ngModel)]="category.description"></textarea>
+                        <label for="cDescription">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryDescription">Category Description (optional)</ng-container>
+                            <ng-template #arabicCategoryDescription>وصف الفئة (اختيارى)</ng-template>
+                        </label>
+                    
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="form-floating">
-                        <input type="file" class="form-control" id="image" accept="image" multiple required (change)="onFileChange($event)">
-                        <label for="image">category image </label>
-                               
+                        <label>
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCurrentImage">Current Image</ng-container>
+                            <ng-template #arabicCurrentImage>الصورة الحالية</ng-template>
+                        </label>
+                        <img width="150px" height="150px" [src]="category.image"/>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="file" class="form-control" id="image" accept="image/*" multiple required (change)="onFileChange($event)">
+                        <label for="image">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryImageLabel">Category Image</ng-container>
+                            <ng-template #arabicCategoryImageLabel>صورة الفئة</ng-template>
+                        </label>
                     </div>
                 </div>
 
             </div>
-
+            <div class="container-my ">
+                <div *ngIf="disable">
+                    <ng-lottie [options]="lodingAnimaationOptions" width="100px" 
+                        (animationCreated)="loadingAnimation($event)">
+                    </ng-lottie>
+                </div>
+            </div>
+                   
+                   
             <div class="text-center">
-                <button type="submit" class="btn w-50 fw-bolder text-white" style="background-color: #b83807;">Udate
-                    Category</button>
+                <button type="submit" class="btn w-50 fw-bolder text-white" style="background-color: #b83807;"
+                [disabled]="disable">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicUpdateButton">Update Category</ng-container>
+                    <ng-template #arabicUpdateButton>تحديث الفئة</ng-template>
+                </button>
             </div>
         </form>
     </div>
-
 </div>

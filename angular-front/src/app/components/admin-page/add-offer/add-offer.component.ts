@@ -2,21 +2,49 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OfferService } from '../../../services/offer.service';
+import { AnimationOptions, LottieComponent } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
+        
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
 
 @Component({
   selector: 'app-add-offer',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule ,LottieComponent],
   templateUrl: './add-offer.component.html',
   styleUrls: ['./add-offer.component.css']
 })
 export class AddOfferComponent {
+  private lodingAnimaation: AnimationItem | undefined;
+  disable:boolean =false;
+  
+            lodingAnimaationOptions: AnimationOptions = {
+      path: 'animations/loading-main.json',
+      loop: true,
+      autoplay: true
+    };
+  
+            loadingAnimation(animationItem: AnimationItem): void {
+      this.lodingAnimaation = animationItem;
+  
+    }
   backendErrors: any = {};
   startDate: string | undefined;
   endDate: string | undefined;
   minEndDate: string | undefined;
   submitted = false;
-  constructor(private offerService: OfferService) { }
+  currentLanguage: string ='en';
+
+  constructor(	 private sharedService: SharedService,
+    private toastr :ToastrService,
+    private offerService: OfferService) { 
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
+
+    }
   @Output() linkClicked = new EventEmitter<string>();
 
   onStartDateChange() {
@@ -42,6 +70,7 @@ export class AddOfferComponent {
   onSubmit(form: any) {
     this.submitted = true;
     if (form.valid) {
+      this.disable = true;
       const formData = new FormData();
       formData.append('start_date', form.value.startDate);
       formData.append('end_date', form.value.endDate);
@@ -49,28 +78,33 @@ export class AddOfferComponent {
 
       this.offerService.addOffer(formData).subscribe(
         response => {
-          alert('added successfully');
-          console.log('done succesffully', response);
-          this.linkClicked.emit('all-seller-offers');
+          this.disable = false;
+
+          if (this.currentLanguage == 'en'){
+            this.toastr.success('added successfully');
+          }else{
+            this.toastr.success('تمت العمليه بنجاح');
+          }
+          this.linkClicked.emit('all-offers');
 
         }, error => {
-          console.log('some error happend', error);
+          this.disable = false;
+
           this.backendErrors = error.error.errors;
           if (error.status === 400) {
             this.backendErrors = error.error.errors;
 
-            console.log('Error: ' + error.error.errors);
 
             Object.keys(error.error.errors).forEach(key => {
-              console.log('Field:', key);
-
-              error.error.errors[key].forEach((message: String) => {
-                console.log('Error message:', message);
-              });
+         
             });
           }else{
-            console.log('faild to upload due to:',error);
 
+          }
+          if (this.currentLanguage == 'en'){
+            this.toastr.error('some error happend');
+          }else{
+            this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
           }
         }
       )

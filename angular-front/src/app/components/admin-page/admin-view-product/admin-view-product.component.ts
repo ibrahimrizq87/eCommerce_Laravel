@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ValueChangeEvent } from '@angular/forms';
 import { ProductService } from '../../../services/product.service';
 import { ReviewService } from '../../../services/review.service';
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
 
 @Component({
   selector: 'app-admin-view-product',
@@ -16,9 +18,11 @@ import { ReviewService } from '../../../services/review.service';
 })
 export class AdminViewProductComponent {
   product: any; 
+  currentSize: any;
+
   stars: number = 0;
   addedOffer: OfferItem[] = [];
-
+  currentLanguage: string ='en';
   coverImage: string = '';
   selectedImage: string = '';
   reviews: Feedback[] = [];
@@ -26,32 +30,68 @@ export class AdminViewProductComponent {
 
   @Output() linkClicked = new EventEmitter<string>();
   constructor(private productService: ProductService ,
-     private reviewService:ReviewService) { }
+    private sharedService: SharedService,
+		 private toastr :ToastrService,
+     private reviewService:ReviewService) {
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
+  
+      }
 
   onImageClick(image: string) {
     this.coverImage = image;
     this.selectedImage = image;
   }
-moveBack(){
-  this.linkClicked.emit('');
 
-}
+  changeSize(size:any){
+    this.currentSize = size;
+    this.product.price = size.price;
+    
+    let myproduct:Product = this.product;
+    myproduct.totalOffers=0;
+    myproduct.priceAfterOffers = myproduct.price;
+    myproduct.addedOffers.forEach(offerAdded => {
+      const endDate = new Date(offerAdded.offer.end_date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
+      if (endDate.getTime() >= today.getTime()) {
+        myproduct.totalOffers += offerAdded.offer.discount;
+        myproduct.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * myproduct.price);
+      }
+
+    });
+    this.product = myproduct;
+
+
+  }
 ngOnInit(): void {
   this.updateProducts();  
   this.updateReview();
 }
 
-
+selectedColor:any;
+selectImage(color: any): void {
+  this.selectedColor = color;
+  this.coverImage = color.image;
+}
 deleteReview(review:any){
   this.reviewService.deleteReview(review.id).subscribe(
     response=>{
-    alert('deleted successfully');
-    this.updateReview();
+      if (this.currentLanguage == 'en'){
+        this.toastr.success('deleted successfully');
+      }else{
+        this.toastr.success('تمت العمليه بنجاح');
+      }
+          this.updateReview();
 
     }, error =>{
-      console.log('error happed:::' , error);
-      alert('error happend');
+      if (this.currentLanguage == 'en'){
+        this.toastr.error('some error happend');
+      }else{
+        this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+      }
 
     }
   );
@@ -64,16 +104,17 @@ this.coverImage = this.product.cover_image;
 
 this.addedOffer = this.product.addedOffers;
 this.offers =[];
+this.currentSize = this.product.sizes[0];
 this.addedOffer.forEach(addedOffer => {
   this.offers.push(addedOffer.offer);
 })
 this.offers
-console.log('product: ', this.product);
+// console.log('product: ', this.product);
 this.coverImage = this.product.cover_image;
 
 
 
-console.log('my productdndk' ,this.product);
+// console.log('my productdndk' ,this.product);
   }else{
     this.linkClicked.emit('all-products');
 

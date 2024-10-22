@@ -2,7 +2,9 @@ import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { City } from '../../../services/city.service';
-
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
 @Component({
   selector: 'app-add-city',
   standalone: true,
@@ -20,8 +22,13 @@ export class AddCityComponent {
 
   @Output() linkClicked = new EventEmitter<string>();
 
-  constructor(private cityService: City) { }
-
+  constructor(private sharedService: SharedService,
+    private toastr :ToastrService,private cityService: City) { 
+      this.sharedService.language$.subscribe(language => {
+        this.currentLanguage = language;
+        });
+    }
+  currentLanguage: string ='en';
   backendErrors: any = {};
   getErrorMessages(): string[] {
     const errorMessages: string[] = [];
@@ -59,30 +66,25 @@ export class AddCityComponent {
       }
       this.cityService.addCity(formData).subscribe(
         response => {
-          alert('added successfully');
+          this.toastr.success('added successfully');
           this.linkClicked.emit('cities');
 
         }, error => {
 
           if (error.status === 422) {
             this.backendErrors = error.error.errors;
-            console.log('Error: ' + error.error.errors);
 
             Object.keys(error.error.errors).forEach(key => {
-              console.log('Field:', key);
 
               error.error.errors[key].forEach((message: String) => {
-                console.log('Error message:', message);
               });
             });
           }
-          alert('some error happend');
-          console.log("error happend:: ", error);
+          this.toastr.error('some error happend');
         }
       );
 
     } else {
-      console.error('Form is invalid');
     }
   }
 }

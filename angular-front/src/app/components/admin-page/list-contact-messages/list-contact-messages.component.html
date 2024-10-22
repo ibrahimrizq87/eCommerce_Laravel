@@ -1,11 +1,14 @@
 <div class="container">
-  <h6 class="ps-5 pt-5 pb-3" style="color:#b83807;">Contact Messages</h6>
+  <h6 class="ps-5 pt-5 pb-3" style="color:#b83807;">
+    <ng-container *ngIf="currentLanguage === 'en'; else arabicContactMessages">Contact Messages</ng-container>
+    <ng-template #arabicContactMessages>رسائل الاتصال</ng-template>
+  </h6>
   <div class="container">
     <div *ngIf="filteredMessages && filteredMessages.length > 0; else noProductsTemplate">
       <div class="mb-5 d-flex justify-content-center">
         <div class="input-group" style="width: 300px;">
-          <input class="form-control border rounded-pill" [(ngModel)]="searchTerm" type="search" placeholder="Search"
-            id="example-search-input">
+          <input class="form-control border rounded-pill" [(ngModel)]="searchTerm" type="search" 
+                 [placeholder]="currentLanguage === 'en' ? 'Search' : 'بحث'" id="example-search-input">
           <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
             <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
           </button>
@@ -15,11 +18,26 @@
         <table class="table text-center">
           <thead>
             <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Message</th>
-              <th scope="col">Action</th>
+              <th scope="col">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicName">Name</ng-container>
+                <ng-template #arabicName>الاسم</ng-template>
+              </th>
+              <th scope="col">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicEmail">Email</ng-container>
+                <ng-template #arabicEmail>البريد الإلكتروني</ng-template>
+              </th>
+              <th scope="col">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicPhone">Phone</ng-container>
+                <ng-template #arabicPhone>الهاتف</ng-template>
+              </th>
+              <th scope="col">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicMessage">Message</ng-container>
+                <ng-template #arabicMessage>الرسالة</ng-template>
+              </th>
+              <th scope="col">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
+                <ng-template #arabicAction>إجراء</ng-template>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -28,10 +46,10 @@
               <td style="width:200px;">{{message.email}}</td>
               <td style="width:200px;">{{message.phone}}</td>
               <td style="width:350px">{{message.message}}</td>
-    
               <td>
-                <button (click)="delete(message)" type="button" class="btn"><i class="fa-solid fa-trash"
-                    style="color:#b83807"></i></button>
+                <button (click)="delete(message)" type="button" class="btn">
+                  <i class="fa-solid fa-trash" style="color:#b83807"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -43,9 +61,13 @@
     </div>
   </div>
 </div>
+
 <ng-template #noProductsTemplate>
   <div class="container text-center p-5 shadow-lg">
     <img src="images/not-found.jpg" style="height:200px; width:250px;" alt="">
-    <h3 class="text-muted">No data available.</h3>
+    <h3 class="text-muted">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicNoData">No data available.</ng-container>
+      <ng-template #arabicNoData>لا توجد بيانات متاحة.</ng-template>
+    </h3>
   </div>
 </ng-template>

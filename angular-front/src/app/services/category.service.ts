@@ -77,10 +77,7 @@ export class CategoryService {
     
     updateCategory(categoryData: FormData, id: string): Observable<any> {
 
-console.log('form service')
-      categoryData.forEach((value, key) => {
-        console.log(`Key: ${key}, Value: ${value}`);
-      });
+
       return this.http.post(`${this.apiUrl}/update`, categoryData);
     }
 

@@ -7,6 +7,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+
+
 @Component({
   selector: 'app-products-in-offer',
   standalone: true,
@@ -23,6 +28,7 @@ export class ProductsInOfferComponent {
   offer: any;
   products: Product[] = [];
 
+  currentLanguage: string ='en';
 
 
   page: number = 1;
@@ -36,7 +42,14 @@ export class ProductsInOfferComponent {
   searchCriteria: string = 'name';
 
   constructor(
-    private productService: ProductService, private offerService: OfferService) { }
+    private sharedService: SharedService,
+    private toastr :ToastrService,
+    private productService: ProductService, private offerService: OfferService) {
+
+ this.sharedService.language$.subscribe(language => {
+  this.currentLanguage = language;
+  });
+     }
   ngOnInit(): void {
     this.getOffer();
 
@@ -48,7 +61,7 @@ export class ProductsInOfferComponent {
     if (this.offerService.getCurrentOffer()) {
       this.offer = this.offerService.getCurrentOffer();
     } else {
-      this.linkClicked.emit('all-seller-offers');
+      this.linkClicked.emit('all-offers');
 
     }
   }

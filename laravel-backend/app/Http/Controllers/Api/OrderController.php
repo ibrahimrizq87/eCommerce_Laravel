@@ -81,7 +81,6 @@ class OrderController extends Controller
     public function getOrders(Request $request)
     {
 
-        \Log::info('Request Data:', $request->all());
 
         $order_status = $request->input('status', 'waiting');
         
@@ -116,7 +115,6 @@ class OrderController extends Controller
             $query->whereBetween('created_at', [$startDate, $endDate]);   
              }
     
-        // $orders = $query->get();
         $orders = $query->paginate($itemsPerPage, ['*'], 'page', $page);
 
     
@@ -234,6 +232,11 @@ if ($request->payment == 'payNow'){
             $orderItem->quantity = $cartItem->quantity;
             $orderItem->product_id = $cartItem->product_id;
             $orderItem->order_id = $order->id;
+            $orderItem->size_id = $cartItem->size_id;
+            if($cartItem->color_id){
+            $orderItem->color_id = $cartItem->color_id;
+            }
+
             $orderItem->save();
         }
         CartItem::where('user_id', Auth::id())->delete();

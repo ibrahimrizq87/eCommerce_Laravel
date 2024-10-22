@@ -1,152 +1,297 @@
-<div class="container my-5 m-auto 100">
-    <div class="product-form shadow-lg" style=" background-color: #fff;">
+<div class="container my-5 m-auto">
+    <div class="product-form shadow-lg" style="background-color: #fff;">
+  
+      <h6 class="mb-4" style="color: #b83807;">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicTitle">Add Your Product</ng-container>
+        <ng-template #arabicTitle>أضف منتجك</ng-template>
+      </h6>
+  
+      <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger text-center">
+        <ul>
+          <li class="list-unstyled" *ngFor="let error of getErrorMessages()">{{ error }}</li>
+        </ul>
+      </div>
+  
+      <form #productForm="ngForm" (ngSubmit)="onSubmit(productForm)" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Product Title -->
+            <div class="mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="ptitle" placeholder="Your product name" 
+                  name="title" ngModel required>
+                <label for="ptitle">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicTitleLabel">Product name</ng-container>
+                  <ng-template #arabicTitleLabel>اسم المنتج</ng-template>
+                </label>
+                <div *ngIf="submitted && productForm.controls['title']?.invalid" class="text-danger">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicTitleError">Product title is required.</ng-container>
+                  <ng-template #arabicTitleError>اسم المنتج مطلوب.</ng-template>
+                </div>
+              </div>
+            </div>
+  
+          
+            <div class="mb-3">
+              <div class="form-floating">
+                <textarea class="form-control" id="pDescription" placeholder="Product Description" 
+                  style="height: 50px;" name="description" ngModel required></textarea>
+                <label for="pDescription">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDescLabel">Product Description</ng-container>
+                  <ng-template #arabicDescLabel>وصف المنتج</ng-template>
+                </label>
+                <div *ngIf="submitted && productForm.controls['description']?.invalid" class="text-danger">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDescError">Description is required.</ng-container>
+                  <ng-template #arabicDescError>الوصف مطلوب.</ng-template>
+                </div>
+              </div>
+            </div>
+  
+            <div class="my-3">
+              <div class="form-floating">
+                <select class="form-select" id="category" name="category" ngModel required>
+                  <option selected disabled>
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicSelectCategory">Select Category</ng-container>
+                    <ng-template #arabicSelectCategory>اختر الفئة</ng-template>
+                  </option>
+                  <option *ngFor="let element of categories" [value]="element.id">
+                    {{ element.category_name }}
+                  </option>
+                </select>
+                <label for="category">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryLabel">Category</ng-container>
+                  <ng-template #arabicCategoryLabel>الفئة</ng-template>
+                </label>
 
-        <h6 class="mb-4" style="color: #b83807;">Add Your Product</h6>
+                <div *ngIf="submitted && productForm.controls['category']?.invalid" class="text-danger">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDescError">Category is required.</ng-container>
+                  <ng-template #arabicDescError>الصنف مطلوب.</ng-template>
+                </div>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+              <div class="form-floating">
+                <input type="file" class="form-control" id="cover_image" accept="image/*" 
+                  (change)="onCoverImageSelect($event)" required>
+                <label for="cover_image">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicCoverLabel">Cover Image</ng-container>
+                  <ng-template #arabicCoverLabel>صورة الغلاف</ng-template>
+                </label>
+                <div *ngIf="submitted && productForm.controls['cover_image']?.invalid" class="text-danger">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDescError">cover_image is required.</ng-container>
+                  <ng-template #arabicDescError>صورة الغلاف مطلوب.</ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6">
+            <div class="mb-3">
+              <div class="form-floating">
+                <input type="number" class="form-control" id="stock" placeholder="Stock" 
+                  name="stock" ngModel required min="1">
+                <label for="stock">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicStockLabel">Stock</ng-container>
+                  <ng-template #arabicStockLabel>المخزون</ng-template>
+                </label>
+                <div *ngIf="submitted && productForm.controls['stock']?.invalid" class="text-danger">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDescError">stock is required.</ng-container>
+                  <ng-template #arabicDescError>المخزون مطلوب.</ng-template>
+                </div>
+              </div>
+            </div>
+  
+            <div class="mb-3">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="material" placeholder="Materials" 
+                  name="material" ngModel >
+                <label for="material">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicMaterialLabel">Materials (optional)</ng-container>
+                  <ng-template #arabicMaterialLabel>المواد (اختياى)</ng-template>
+                </label>
+                
+              </div>
+            </div>
+  
+            <div class="mt-3">
+              <div class="form-floating">
+                <input type="file" class="form-control" id="gallery" accept="image/*" multiple 
+                  (change)="onFileSelect($event)" required>
+                <label for="gallery">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicGalleryLabel">Product Gallery</ng-container>
+                  <ng-template #arabicGalleryLabel>معرض الصور</ng-template>
+                </label>
+              </div>
+            </div>
 
-        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger text-center">
-            <ul>
-                <li class="list-unstyled" *ngFor="let error of getErrorMessages()">{{ error }}</li>
-            </ul>
+            <div class="mt-3">
+              <div class="form-floating">
+                  <input type="file" class="form-control" id="video" accept="video" name="video" (change)="onVideoSelect($event)" ngModel>
+                  <label for="video">
+                      <ng-container *ngIf="currentLanguage === 'en'; else arabicProductVideo">Product Video (optional)</ng-container>
+                      <ng-template #arabicProductVideo>فيديو المنتج (اختياري)</ng-template>
+                  </label>
+              </div>
+          </div>
+          
+          </div>
         </div>
 
-        <form #productForm="ngForm" (ngSubmit)="onSubmit(productForm)" enctype="multipart/form-data">
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="ptitle" placeholder="Your product title"
-                                name="title" ngModel required>
-                            <label for="ptitle">Product Title</label>
-                            <div *ngIf="submitted && productForm.controls['title']?.invalid" class="text-danger">
-                                Product title is required.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="price" placeholder="Your product price"
-                                name="price" ngModel required min="1">
-                            <label for="price">Product Price</label>
-                            <div *ngIf="submitted && productForm.controls['price']?.invalid" class="text-danger">
-                                <div *ngIf="productForm.controls['price']?.errors?.['required']">
-                                    Product price is required.
-                                </div>
-                                <div *ngIf="productForm.controls['price']?.errors?.['min']">
-                                    Price must be greater than 0.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <textarea class="form-control" id="pDescription" placeholder="Product Description"
-                                style="height: 50px;" name="description" ngModel required></textarea>
-                            <label for="pDescription">Product Description</label>
-                            <div *ngIf="submitted && productForm.controls['description']?.invalid" class="text-danger">
-                                Product description is required.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="my-3">
-                        <div class="form-floating">
-                            <select class="form-select" id="category" name="category" ngModel required>
-                                <option selected disabled>Select Category</option>
-                                <option *ngFor="let element of categories" [value]="element.id">
-                                    {{element.category_name}}
-                                </option>
-                            </select>
-                            <label for="category">Category</label>
-                            <div *ngIf="submitted && productForm.controls['category']?.invalid" class="text-danger">
-                                Product category is required.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="file" class="form-control" id="cover_image" accept="image" multiple
-                                (change)="onCoverImageSelect($event)" required>
-                            <label for="cover_image">Cover image </label>
-                            <div *ngIf="submitted && !imageUploaded" class="text-danger">
-                                cover image is required.
-                            </div>
-                        </div>
-                    </div>
-
+        <div class="row ">
+          <div class="col-md-8">
+            <div class="row g-2">
+              <div class="col-md-7">
+                <div class="form-floating">
+                  <input type="text" class="form-control"
+                  [(ngModel)]="sizeText"
+                  id="size" placeholder="Product Size" name="size" ngModel  min="1">
+                  <label for="size">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicSizeLabel">Product Size</ng-container>
+                    <ng-template #arabicSizeLabel>حجم المنتج</ng-template>
+                  </label>
+             
                 </div>
-                <div class="col-md-6">
-
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="stock" placeholder="Your product price"
-                                name="stock" ngModel required min="1">
-                            <label for="stock">Product stock</label>
-                            <div *ngIf="submitted && productForm.controls['stock']?.invalid" class="text-danger">
-                                <div *ngIf="productForm.controls['stock']?.errors?.['required']">
-                                    Product stock is required.
-                                </div>
-                                <div *ngIf="productForm.controls['stock']?.errors?.['min']">
-                                    stock must be greater than 0.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="material" placeholder="Your product materials"
-                                name="material" ngModel required>
-                            <label for="material">Materials</label>
-                            <div *ngIf="submitted && productForm.controls['material']?.invalid" class="text-danger">
-                                <div *ngIf="productForm.controls['material']?.errors?.['required']">
-                                    Product material is required.
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="mb-3">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="size" placeholder="Your product materials"
-                                name="size" ngModel required>
-                            <label for="material">Size</label>
-                            <div *ngIf="submitted && productForm.controls['size']?.invalid" class="text-danger">
-                                <div *ngIf="productForm.controls['size']?.errors?.['required']">
-                                    Product size is required.
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="mt-3">
-                            <div class="form-floating">
-                                <input type="file" class="form-control" id="gallery" accept="image/*" multiple
-                                    (change)="onFileSelect($event)" required>
-                                <label for="gallery">Product Gallery</label>
-                                <div *ngIf="submitted && selectedFiles?.length === 0" class="text-danger">
-                                    At least one product image is required.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-3">
-                            <div class="form-floating">
-                                <input type="file" class="form-control" id="video" accept="video" name="video"
-                                    (change)="onVideoSelect($event)" ngModel>
-                                <label for="video">Product a Video (optional)</label>
-                            </div>
-                        </div>
-                    </div>
+              </div>
+          
+              <div class="col-md-3">
+                <div class="form-floating">
+                  <input type="number" class="form-control"
+                  [(ngModel)]="sizePrice"
+                  id="price" placeholder="Your product price" name="price" ngModel  >
+                  <label for="price">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicPriceLabel">Product Price</ng-container>
+                    <ng-template #arabicPriceLabel>سعر المنتج</ng-template>
+                  </label>
+                
                 </div>
+              </div>
+          
+              <div class="col-md-2 d-flex align-items-center">
+                <a (click)="addsize()" class="btn btn-primary w-100">Add</a>
+              </div>
             </div>
+          </div>
+          
+          <div class="col-md-4">
 
-            <div class="text-center">
-                <button type="submit" class="btn w-50 fw-bolder text-white" style="background-color: #b83807;">Add
-                    Product</button>
+            <ng-container *ngIf="sizes.length > 0; else sizeDrop">
+              <div class="dropdown w-100 mt-4">
+                <button 
+                  class="btn btn-secondary dropdown-toggle w-100" 
+                  type="button" 
+                  id="languageDropdown" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicLanguage">Sizes added size</ng-container>
+                  <ng-template #arabicLanguage>الاحجام المضافه</ng-template>
+                </button>
+                
+                <ul class="dropdown-menu w-100" aria-labelledby="languageDropdown">
+                  <li *ngFor="let size of sizes; let i = index" class="d-flex justify-content-between align-items-center mt-2">
+                    <span class="dropdown-item">{{ size.size.length > 20 ? (size.size | slice:0:20) + '...' : size.size }}
+                    </span>
+                    <i 
+                      (click)="deleteSize(i)" 
+                      class="fa-solid fa-trash px-2 fs-5" 
+                      style="color: rgb(173, 4, 4); cursor: pointer;">
+                    </i>
+                  </li>
+                </ul>
+                
+              </div>
+
+            </ng-container>
+            <ng-template #sizeDrop >
+              <div class="alert alert-danger">
+                you have to add at least one size if it is one size add "normal"
+              </div>
+            </ng-template>
+          
+            
+          
+          </div>
+        </div>
+
+        
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="row g-2">
+
+            
+          
+              <div class="col-md-12">
+                <div class="form-floating">
+               
+                  <input type="file" class="form-control" id="color" accept="image/*" multiple 
+                  (change)="onColorFileSelect($event)" >
+                 
+                <label for="color">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicCoverLabel">Color Image</ng-container>
+                  <ng-template #arabicCoverLabel>صورة </ng-template>
+                </label>
+                 
+                </div>
+              </div>
+          
             </div>
-        </form>
+          </div>
+          
+          <div class="col-md-6">
+
+            <ng-container *ngIf="selectedColorImages.length > 0; else colorDrop">
+              <div class="dropdown w-100 mt-4">
+                <button 
+                  class="btn btn-secondary dropdown-toggle w-100" 
+                  type="button" 
+                  id="languageDropdown" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicLanguage">Colors Images</ng-container>
+                  <ng-template #arabicLanguage>صور الالوان</ng-template>
+                </button>
+                
+             
+                <ul class="dropdown-menu w-100" aria-labelledby="languageDropdown">
+                  <li *ngFor="let file of selectedColorImages" class="d-flex justify-content-between align-items-center mt-2">
+                    <span>{{  file.name.length > 20 ? (file.name | slice:0:20) + '...' : file.name  }}  ({{ file.size / 1024 | number: '1.0-0' }} KB)</span>
+                    <i 
+                    (click)="removeImage(file)"
+                      class="fa-solid fa-trash px-2 fs-5" 
+                      style="color: rgb(173, 4, 4); cursor: pointer;">
+                    </i>
+                  </li>
+                </ul>
+              </div>
+
+            </ng-container>
+            <ng-template #colorDrop >
+              <div class="alert alert-warning">
+                you did not add a color yet
+              </div>
+            </ng-template>
+          
+            
+          
+          </div>
+        </div>
+  
+        <div class="container-my ">
+          <div *ngIf="disable">
+              <ng-lottie [options]="lodingAnimaationOptions" width="100px" 
+                  (animationCreated)="loadingAnimation($event)">
+              </ng-lottie>
+          </div>
+      </div>
+             
+                     <div class="text-center">
+          <button type="submit" class="btn w-50 fw-bolder text-white" style="background-color: #b83807;"
+          [disabled]="disable">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicSubmit">Add Product</ng-container>
+            <ng-template #arabicSubmit>إضافة المنتج</ng-template>
+          </button>
+        </div>
+      </form>
     </div>
-
-</div>
+  </div>
+  

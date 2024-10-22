@@ -90,8 +90,8 @@
                                         {{item.product.product_name}}
                                     </td>
                                     <td>{{item.quantity}}</td>
-                                    <td>{{item.product.priceAfterOffers}} $</td>
-                                    <td>{{item.product.priceAfterOffers * item.quantity}} $</td>
+                                    <td>{{item.product.priceAfterOffers}} <strong>ILS</strong></td>
+                                    <td>{{item.product.priceAfterOffers * item.quantity}} <strong>ILS</strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -102,7 +102,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalBeforeOffer">Total before offer:</ng-container>
                             <ng-template #arabicTotalBeforeOffer>إجمالي قبل العرض:</ng-template>
                         </div>
-                        <div>{{totalPrice}} $</div>
+                        <div>{{totalPrice}} <strong>ILS</strong></div>
                     </div>
                     <hr class="my-4">
             
@@ -111,7 +111,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicSavedByOffers">Saved by offers:</ng-container>
                             <ng-template #arabicSavedByOffers>المبلغ الذي تم توفيره من العروض:</ng-template>
                         </div>
-                        <div>{{totalOffers}} $</div>
+                        <div>{{totalOffers}} <strong>ILS</strong></div>
                     </div>
 
                     <hr *ngIf="selectedPaymentOption === 'delivery'" class="my-4">
@@ -121,7 +121,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicSavedByOffers">pay on delivery:</ng-container>
                             <ng-template #arabicSavedByOffers>دفع عند الاستلام:</ng-template>
                         </div>
-                        <div>{{payOnDelivery}} $</div>
+                        <div>{{payOnDelivery}} <strong>ILS</strong></div>
                     </div>
                     <hr class="my-4">
             
@@ -130,7 +130,7 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicTotal">Total:</ng-container>
                             <ng-template #arabicTotal>الإجمالي:</ng-template>
                         </div>
-                        <div>{{total}} $</div>
+                        <div>{{total}} <strong>ILS</strong></div>
                     </div>
             
                     <div class="mt-4">

@@ -51,3 +51,10 @@
     background-color: #231717;
     color: white;
 }
+
+.container-my > div {
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    height: 100%;            
+}

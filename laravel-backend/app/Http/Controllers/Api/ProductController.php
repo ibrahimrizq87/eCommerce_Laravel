@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 
 use App\Models\Offer;
+use App\Models\Color;
+use App\Models\Size;
+
 use App\Models\AddedOffer;
 
 use App\Models\WishList;
@@ -195,6 +198,9 @@ public function getMostSelledProducts()
 }
 
 
+
+
+
 public function index(Request $request)
 {
     $page = $request->input('page', 1);
@@ -204,11 +210,18 @@ public function index(Request $request)
     $priceFrom = $request->input('priceFrom', null);
     $priceTo = $request->input('priceTo', null);
 
+    // $query = Product::with(['category', 'user', 'images', 'addedOffers'])
+    //     ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+    //     ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
+    //     ->groupBy('products.id')
+    //     ->orderByDesc('total_ordered');
     $query = Product::with(['category', 'user', 'images', 'addedOffers'])
-        ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
-        ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
-        ->groupBy('products.id')
-        ->orderByDesc('total_ordered');
+    ->leftJoin('order_items', 'products.id', '=', 'order_items.product_id')
+    ->select('products.*', DB::raw('COALESCE(SUM(order_items.quantity), 0) as total_ordered'))
+    ->groupBy('products.id') 
+    ->orderByDesc('total_ordered')
+    ->orderBy('products.id');
+
 
 
         // return response()->json(['page' =>  $page,'itemsPerPage' =>  $itemsPerPage,
@@ -352,16 +365,21 @@ public function getAlldeleted(Request $request)
 
     public function updateProduct(Request $request)
     {
-    
+        
+
+       
         try {
             $validator = Validator::make($request->all(), [
                 'id' => 'required|exists:products,id',
 
                 'product_name' => 'required|string|max:255',
-                'size' => 'required|string|max:255',
-                'material' => 'required|string|max:255',
+                'material' => 'nullable|string|max:255',
                 'cover_image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048',
-
+                'colors' => 'nullable|array',
+                'colors.*' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
+                'sizes' => 'required|array',
+                'sizes.*.size' => 'required|string|max:255', 
+                'sizes.*.price' => 'required|numeric|min:0',
                 'price' => 'required|numeric',
                 'description' => 'nullable|string',
                 'images' => 'nullable|array',
@@ -408,7 +426,6 @@ public function getAlldeleted(Request $request)
             $video_path =$product->video;
             if ($request->hasFile('video')) {
 
-                
                     $path = $data['video'] ->store('videos', 'products');
                     $path= asset('uploads/products/' . $path); 
                     $video_path = $path;
@@ -433,9 +450,15 @@ public function getAlldeleted(Request $request)
 
             // $product->user_id = Auth::id();
             $product->category_id = $data['category_id']; 
-            $product->size = $data['size']; 
-            $product->material = $data['material']; 
-            $product->save();
+            $product->size = ''; 
+            if($data['material']){
+                $product->material = $data['material']; 
+
+            }else{
+                $product->material = ''; 
+
+            }
+                        $product->save();
 
             
 
@@ -470,7 +493,47 @@ foreach ($oldImages as $image) {
             }
          
 
+            if ($request->hasFile('colors')) {
 
+                // $oldImages = ProductImage::where('product_id' ,  $product->id )->delete();
+                $oldImages = Color::where('product_id', $product->id)->get(); // Retrieve the images
+                
+                foreach ($oldImages as $image) {
+                    $url = $image->image;
+                    $relativePath = str_replace(asset('uploads/products/') . '/', '', $url);
+                    // Storage::delete($image->path);  
+                    if (Storage::disk('products')->exists($relativePath)) {
+                        Storage::disk('products')->delete($relativePath);
+                    }
+                
+                    $image->delete();
+                }
+                
+                
+                                foreach ($data['colors'] as $image) {
+                                    $path = $image->store('colors', 'products');
+                                    $path= asset('uploads/products/' . $path); 
+                                    $productImage = new Color();
+                                    $productImage->product_id =  $product->id;
+                                    $productImage->image = $path;
+                                    $productImage->color = '';
+                                    $productImage->save();
+                                }
+                            }
+
+
+                            $product->sizes->each(function ($size) {
+                                $size->delete();
+                            });
+                            foreach ($data['sizes'] as $size) {
+                                // return response()->json(['error' => $size['price']], 500);
+    
+                    $sizeObject = new Size();
+                    $sizeObject->size = $size['size'];
+                    $sizeObject->price =  $size['price'];
+                    $sizeObject->product_id =  $product->id;
+                    $sizeObject->save();
+                }
     
             return response()->json(['message' => 'Product updates successfully', 'product' => $product], 201);
         } catch (\Exception $e) {
@@ -481,21 +544,24 @@ foreach ($oldImages as $image) {
 
     public function store(Request $request)
     {
-        // dd($request->headers->all());
-        // return response()->json(['data' => $request->all() ,'header' => $request->headers->all()],200);
-        // return response()->json(['data' => $request->all() ,'header' => $request->headers->all()],200);
-
+     
         try {
             $validator = Validator::make($request->all(), [
                 'product_name' => 'required|string|max:255',
-                'size' => 'required|string|max:255',
-                'material' => 'required|string|max:255',
+                // 'size' => 'required|string|max:255',
+                'material' => 'nullable|string|max:255',
                 'cover_image' => 'required|file|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
 
                 'price' => 'required|numeric',
                 'description' => 'nullable|string',
                 'images' => 'nullable|array',
                 'images.*' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
+                'colors' => 'nullable|array',
+                'colors.*' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
+                'sizes' => 'required|array',
+                'sizes.*.size' => 'required|string|max:255', 
+                'sizes.*.price' => 'required|numeric|min:0',
+
                 'video' => 'nullable|file|mimes:mp4,mkv,avi,webm|max:102400',
                 'stock' => 'required|integer',
                 'category_id' => 'required|integer|exists:categories,id',
@@ -533,12 +599,9 @@ foreach ($oldImages as $image) {
     
             $video_path ='';
             if ($request->hasFile('video')) {
-
-                
                     $path = $data['video'] ->store('videos', 'products');
                     $path= asset('uploads/products/' . $path); 
                     $video_path = $path;
-               
             }
             $image_path ='';
             if ($request->hasFile('cover_image')) {
@@ -560,8 +623,16 @@ foreach ($oldImages as $image) {
 
             $product->user_id = Auth::id();
             $product->category_id = $data['category_id']; 
-            $product->size = $data['size']; 
-            $product->material = $data['material']; 
+            $product->size = ''; 
+            // return response()->json(['error' => $product->price], 500);
+
+            if($data['material']){
+                $product->material = $data['material']; 
+
+            }else{
+                $product->material = ''; 
+
+            }
             $product->save();
 
             
@@ -579,7 +650,28 @@ foreach ($oldImages as $image) {
                     $productImage->save();
                 }
             }
-         
+
+            if ($request->hasFile('colors')) {
+                foreach ($data['colors'] as $image) {
+                    $path = $image->store('colors', 'products');
+                    $path= asset('uploads/products/' . $path); 
+                    $colorImage = new Color();
+                    $colorImage->color = "";
+                    $colorImage->product_id =  $product->id;
+                    $colorImage->image = $path;
+                    $colorImage->save();
+                }
+            }
+
+            foreach ($data['sizes'] as $size) {
+                            // return response()->json(['error' => $size['price']], 500);
+
+                $sizeObject = new Size();
+                $sizeObject->size = $size['size'];
+                $sizeObject->price =  $size['price'];
+                $sizeObject->product_id =  $product->id;
+                $sizeObject->save();
+            }
 
 
     

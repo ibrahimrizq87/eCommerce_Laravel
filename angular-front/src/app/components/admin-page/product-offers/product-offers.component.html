@@ -1,41 +1,78 @@
 <div class="container-fluid shadow-lg" style="height:100vh;">
-  <h6 class="p-4" style="color: #b83807;">Products offers</h6>
+  <h6 class="p-4" style="color: #b83807;">
+    <ng-container *ngIf="currentLanguage === 'en'; else arabicProductsOffers">Products offers</ng-container>
+    <ng-template #arabicProductsOffers>عروض المنتجات</ng-template>
+  </h6>
 
   <div class="mb-5 pb-5">
     <div class="input-group" style="width: 450px;">
-        <select [(ngModel)]="searchCriteria" (change)="changeCriteria()"   class="form-select me-2">
-            <option value="name">Search by Name</option>
-            <option value="category">Search by Category</option>
-            <option value="price">Search by Price Range</option>
-        </select>
-        <div *ngIf="searchCriteria !== 'price'; else priceRangeInput">
-            <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control border rounded-pill"  />
-        </div>
-        
-        <ng-template #priceRangeInput>
-            <input type="number" [(ngModel)]="priceFrom" placeholder="From" class="form-control border rounded-pill"  style="width: 100px;" />
-            <input type="number" [(ngModel)]="priceTo" placeholder="To" class="form-control border rounded-pill"  style="width: 100px;" />
-        </ng-template>
+      <select [(ngModel)]="searchCriteria" (change)="changeCriteria()" class="form-select me-2">
+        <option value="name">
+          <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByName">Search by Name</ng-container>
+          <ng-template #arabicSearchByName>البحث حسب الاسم</ng-template>
+        </option>
+        <option value="category">
+          <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByCategory">Search by Category</ng-container>
+          <ng-template #arabicSearchByCategory>البحث حسب الفئة</ng-template>
+        </option>
+        <option value="price">
+          <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByPrice">Search by Price Range</ng-container>
+          <ng-template #arabicSearchByPrice>البحث حسب نطاق السعر</ng-template>
+        </option>
+      </select>
+      <div *ngIf="searchCriteria !== 'price'; else priceRangeInput">
+        <input type="text" [(ngModel)]="searchTerm" 
+               placeholder="{{ currentLanguage === 'en' ? 'Search products...' : 'ابحث عن المنتجات...' }}" 
+               class="form-control border rounded-pill" />
+      </div>
+      
+      <ng-template #priceRangeInput>
+        <input type="number" [(ngModel)]="priceFrom" 
+               placeholder="{{ currentLanguage === 'en' ? 'From' : 'من' }}" 
+               class="form-control border rounded-pill" style="width: 100px;" />
+        <input type="number" [(ngModel)]="priceTo" 
+               placeholder="{{ currentLanguage === 'en' ? 'To' : 'إلى' }}" 
+               class="form-control border rounded-pill" style="width: 100px;" />
+      </ng-template>
 
-        <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
-            <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
-        </button>
+      <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
+        <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
+      </button>
     </div>
-</div>
+  </div>
 
   <div class="container">
     <table class="table text-center">
       <thead>
         <tr>
-          <th scope="col">image</th>
-          <th scope="col">Product Name</th>
-          <th scope="col">Price</th>
-          <th scope="col">Offered Price</th>
-          <th scope="col">Total offers</th>
-          <th scope="col">Stock</th>   
+          <th scope="col">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicImage">Image</ng-container>
+            <ng-template #arabicImage>صورة</ng-template>
+          </th>
+          <th scope="col">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicProductName">Product Name</ng-container>
+            <ng-template #arabicProductName>اسم المنتج</ng-template>
+          </th>
+          <th scope="col">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicPrice">Price</ng-container>
+            <ng-template #arabicPrice>السعر</ng-template>
+          </th>
+          <th scope="col">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicOfferedPrice">Offered Price</ng-container>
+            <ng-template #arabicOfferedPrice>سعر العرض</ng-template>
+          </th>
+          <th scope="col">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicTotalOffers">Total Offers</ng-container>
+            <ng-template #arabicTotalOffers>إجمالي العروض</ng-template>
+          </th>
+          <th scope="col">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicStock">Stock</ng-container>
+            <ng-template #arabicStock>المخزون</ng-template>
+          </th>   
           <th scope="col">
             <input class="form-check-input" type="checkbox" (change)="selectAllProducts($event)">
-            Select All
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicSelectAll">Select All</ng-container>
+            <ng-template #arabicSelectAll>اختر الكل</ng-template>
           </th>
         </tr>
       </thead>
@@ -54,21 +91,28 @@
           </td>
         </tr>
       </tbody>
-      <div class="d-flex justify-content-center my-4">
-        <mat-paginator [length]="totalProducts"
-          [pageSize]="itemsPerPage"
-          [pageSizeOptions]="[5, 10, 25, 100]"
-          aria-label="Select page"
-          (page)="onPageChange($event)">
-            </mat-paginator>
-    </div>
     </table>
 
+    <div class="d-flex justify-content-center my-4">
+      <mat-paginator [length]="totalProducts"
+        [pageSize]="itemsPerPage"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page"
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </div>
+
     <div *ngIf="addError" class="alert alert-warning text-center" role="alert">
-<strong>      you have to add at least one product 
-</strong>    </div>
+      <strong>
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAddError">You have to add at least one product.</ng-container>
+        <ng-template #arabicAddError>يجب عليك إضافة منتج واحد على الأقل.</ng-template>
+      </strong>
+    </div>
     <div class="text-center my-4">
-      <button (click)="addProducts()" class="btn my-4"> Add offer </button>
+      <button (click)="addProducts()" class="btn my-4">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAddOffer">Add offer</ng-container>
+        <ng-template #arabicAddOffer>إضافة عرض</ng-template>
+      </button>
     </div>
   </div>
 </div>

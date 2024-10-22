@@ -4,6 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DeliveryService } from '../../../services/delivery.service';
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../../services/language.service';
+ 
+
+
 @Component({
   selector: 'app-deliveries',
   standalone: true,
@@ -19,6 +24,8 @@ export class DeliveriesComponent {
   deliveries: any[] | null[] = [];
   filterDeliveries: any[] | null[] = [];
   page: number = 1;
+  currentLanguage: string ='en';
+
   itemsPerPage: number = 20;
   totalItems: number = 0;
   currentPage: number = 1;
@@ -26,7 +33,16 @@ export class DeliveriesComponent {
   totalCustomers: number = 0;
 
   @Output() linkClicked = new EventEmitter<string>();
-  constructor(private deliveryService: DeliveryService) { }
+  constructor(	 private sharedService: SharedService,
+    private toastr :ToastrService,private deliveryService: DeliveryService) { 
+
+
+ this.sharedService.language$.subscribe(language => {
+  this.currentLanguage = language;
+  });
+
+
+    }
 
 
 
@@ -61,7 +77,7 @@ export class DeliveriesComponent {
     },
       error => {
 
-        console.error('some error happend:', error);
+        // console.error('some error happend:', error);
 
       });
   }

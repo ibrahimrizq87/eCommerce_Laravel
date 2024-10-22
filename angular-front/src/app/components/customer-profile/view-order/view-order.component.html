@@ -29,6 +29,27 @@
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicQuantity">Quantity</ng-container>
                         <ng-template #arabicQuantity>الكمية</ng-template>
                     </th>
+
+                    <th scope="col">
+                        <p class="mb-0">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicColor">Size</ng-container>
+                            <ng-template #arabicColor>الحجم</ng-template>
+                        </p>
+                    </th>
+               
+                    
+                    <th scope="col">
+                        <p class="mb-0">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabiccolor">color</ng-container>
+                            <ng-template #arabiccolor>اللون</ng-template>
+                        </p>
+                    </th>
+                    <th scope="col">
+                        <p class="mb-0">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSubTotal">Total</ng-container>
+                            <ng-template #arabicSubTotal>المجموع</ng-template>
+                        </p>
+                    </th>
                     <th scope="col">
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
                         <ng-template #arabicAction>الإجراء</ng-template>
@@ -43,7 +64,15 @@
                     </td>
                     <td>{{item.product.priceAfterOffers}}</td>
                     <td>{{item.quantity}}</td>
-               
+                 
+                    
+                    <td><p class="ps-2 mb-0">{{item.size.size}}</p></td>
+                    <td><img *ngIf="item.color" class="ps-2 mb-0" height="50px" [src]="item.color.image">
+                        <p *ngIf="!item.color">...</p></td>
+
+                        <td>{{item.product.priceAfterOffers *item.quantity }} <strong>ILS</strong></td>
+
+
                     <td>
                         <button type="button" class="btn me-1" style="color:rgb(2, 0, 0);" (click)="viewProduct(item.product)">
                             <i class="fa-solid fa-eye fs-4"></i>

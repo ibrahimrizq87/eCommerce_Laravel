@@ -3,6 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+
+
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../services/language.service';
+ 
+	
+
+
+
 @Component({
   selector: 'app-reset-password',
   standalone: true,
@@ -15,16 +24,25 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   styleUrl: './reset-password.component.css'
 })
 export class ResetPasswordComponent {
+  currentLanguage: string ='en';
 
   message: string = '';
   token: string | null = null;
   email: string | null = null;
   constructor(
+    private sharedService: SharedService,
+    private toastr :ToastrService,
     private userService: UserService,
     private router: Router,
     private route: ActivatedRoute,
 
-  ) { }
+  ) {
+
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+
+   }
   ngOnInit(): void {
    
     this.route.queryParams.subscribe(params => {
@@ -43,12 +61,12 @@ export class ResetPasswordComponent {
 
       formData.append('token',  this.token as string);
       formData.append('email', this.email as string);
-      console.log( this.token as string);
-      console.log( this.email as string);
+      // console.log( this.token as string);
+      // console.log( this.email as string);
 
       this.userService.resetPassword(formData).subscribe(
         response => {
-          console.log(response);
+          // console.log(response);
           this.openModal();
           this.message = 'All done, lets go to the wbsite';
 
@@ -66,7 +84,7 @@ export class ResetPasswordComponent {
               this.message = 'some error happend while sending an email please try again later';
 
           }
-          console.error('An unexpected error occurred:', error);
+          // console.error('An unexpected error occurred:', error);
 
          
 

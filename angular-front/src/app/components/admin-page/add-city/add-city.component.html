@@ -1,57 +1,80 @@
 <div class="container my-5 m-auto w-50">
-    <div class="product-form shadow-lg" style=" background-color: #fff;">
-
-        <h6 class="mb-2 p-4" style="color: #b83807;">Add a New City</h6>
-
-        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger text-center">
-            <ul>
-                <li class="list-unstyled" *ngFor="let error of getErrorMessages()">{{ error }}</li>
-            </ul>
+    <div class="product-form shadow-lg" style="background-color: #fff;">
+  
+      <!-- Form Header -->
+      <h6 class="mb-2 p-4" style="color: #b83807;">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicTitle">Add a New City</ng-container>
+        <ng-template #arabicTitle>إضافة مدينة جديدة</ng-template>
+      </h6>
+  
+      <!-- Error Messages -->
+      <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger text-center">
+        <ul>
+          <li class="list-unstyled" *ngFor="let error of getErrorMessages()">{{ error }}</li>
+        </ul>
+      </div>
+  
+      <!-- Form -->
+      <form (ngSubmit)="onSubmit(categoryForm)" #categoryForm="ngForm" enctype="multipart/form-data">
+        <div class="row p-5">
+  
+          <!-- City Name Field -->
+          <div class="mb-3">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="cTitle" placeholder="Your city name"
+                name="name" ngModel required>
+              <label for="name">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicCityName">City Name</ng-container>
+                <ng-template #arabicCityName>اسم المدينة</ng-template>
+              </label>
+              <div *ngIf="submitted && categoryForm.controls['name']?.invalid" class="text-danger">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicNameError">City Name is required.</ng-container>
+                <ng-template #arabicNameError>اسم المدينة مطلوب.</ng-template>
+              </div>
+            </div>
+          </div>
+  
+          <!-- City Description Field -->
+          <div class="mb-3">
+            <div class="form-floating">
+              <textarea class="form-control" id="cDescription" placeholder="City Description" 
+                style="height: 50px;" name="description" ngModel required></textarea>
+              <label for="cDescription">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">City Description</ng-container>
+                <ng-template #arabicDescription>وصف المدينة</ng-template>
+              </label>
+              <div *ngIf="submitted && categoryForm.controls['description']?.invalid" class="text-danger">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicDescriptionError">City description is required.</ng-container>
+                <ng-template #arabicDescriptionError>وصف المدينة مطلوب.</ng-template>
+              </div>
+            </div>
+          </div>
+  
+          <!-- City Image Field -->
+          <div class="mb-3">
+            <div class="form-floating">
+              <input type="file" class="form-control" id="image" accept="image/*" multiple required (change)="onFileChange($event)">
+              <label for="image">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicImageLabel">City Image</ng-container>
+                <ng-template #arabicImageLabel>صورة المدينة</ng-template>
+              </label>
+              <div *ngIf="submitted && !imageUploaded" class="text-danger">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicImageError">Image is required.</ng-container>
+                <ng-template #arabicImageError>الصورة مطلوبة.</ng-template>
+              </div>
+            </div>
+          </div>
+  
         </div>
-
-        <form (ngSubmit)="onSubmit(categoryForm)" #categoryForm="ngForm" enctype="multipart/form-data">
-
-            <div class="row p-5">
-
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="cTitle" placeholder="Your city name"
-                            name="name" ngModel required>
-                        <label for="name">City Name</label>
-                        <div *ngIf="submitted && categoryForm.controls['category_name']?.invalid" class="text-danger">
-                            City Name is required.
-                            </div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <textarea class="form-control" id="cDescription" placeholder="Category Description"
-                            style="height: 50px;" name="description" ngModel required></textarea>
-                        <label for="cDescription">City Description</label>
-                        <div *ngIf="submitted && categoryForm.controls['description']?.invalid" class="text-danger">
-                            City description is required.
-                            </div>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="form-floating">
-                        <input type="file" class="form-control" id="image" accept="image" multiple required (change)="onFileChange($event)">
-                        <label for="image">City image </label>
-                                <div *ngIf="submitted && !imageUploaded" class="text-danger">
-                                 image is required.
-                            </div> 
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="text-center ">
-                <button type="submit" class="btn w-50 fw-bolder text-white mb-5" style="background-color: #b83807;">Add
-                    City</button>
-            </div>
-        </form>
+  
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button type="submit" class="btn w-50 fw-bolder text-white mb-5" style="background-color: #b83807;">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicButton">Add City</ng-container>
+            <ng-template #arabicButton>إضافة المدينة</ng-template>
+          </button>
+        </div>
+      </form>
     </div>
-
-</div>
+  </div>
+  

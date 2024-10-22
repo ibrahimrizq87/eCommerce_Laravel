@@ -49,9 +49,9 @@ export class CustomerHeaderComponent {
       },
       error => {
         if (error.status === 400 || error.status === 500) {
-          console.error('A specific error occurred:', error);
+          // console.error('A specific error occurred:', error);
         } else {
-          console.error('An unexpected error occurred:', error);
+          // console.error('An unexpected error occurred:', error);
         }
       }
     );

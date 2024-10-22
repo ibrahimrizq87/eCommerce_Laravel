@@ -6,12 +6,16 @@ import { FormsModule } from '@angular/forms';
 import { CustomerService } from '../../../services/customer.service';
 import { ToastrService } from 'ngx-toastr';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+import { SharedService } from '../../../services/language.service';
+ 
+	 
 
 
 @Component({
   selector: 'app-sellers-orders-to-be-done',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     NgxPaginationModule,
    FormsModule,
    MatPaginatorModule
@@ -21,13 +25,8 @@ import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
   styleUrl: './sellers-orders-to-be-done.component.css'
 })
 export class SellersOrdersToBeDoneComponent {
- 
-
-
-
-
-
   @Output() linkClicked = new EventEmitter<string>();
+  currentLanguage: string ='en';
 
   orders:any [] = [];
   page: number = 1;              
@@ -45,25 +44,28 @@ export class SellersOrdersToBeDoneComponent {
     private orderService:OrderService,
     private customerService:CustomerService,
     private toastrService:ToastrService,
-
+    private sharedService: SharedService,
     
-  ){}
+  ){
 
-
-
-  onPageChange(event: PageEvent) {
-    this.currentPage = event.pageIndex+1; 
-    this.itemsPerPage = event.pageSize; 
-    this.updateOrders();
+ this.sharedService.language$.subscribe(language => {
+  this.currentLanguage = language;
+  });
   }
+
+
+
 
   ngOnInit(): void {
     this.updateOrders();
 }
 
-craft(item:any){
-
+onPageChange(event: PageEvent) {
+  this.currentPage = event.pageIndex+1; 
+  this.itemsPerPage = event.pageSize; 
+  this.updateOrders();
 }
+
 getCustomer(order:any){
   this.customerService.getCustomerById(order.user.id).subscribe(
     response=>{
@@ -73,7 +75,7 @@ getCustomer(order:any){
       this.linkClicked.emit("show-customer"); 
 
     },error=>{
-      console.log('error getting data:',error);
+      // console.log('error getting data:',error);
     }
   );
 }
@@ -82,24 +84,38 @@ deleteOrder(order:any){
   this.orderService.deleteOrder(order.id).subscribe(
       (response) => {
         this.updateOrders();
-        this.toastrService.success('deleted successfully');
+        if (this.currentLanguage == 'en'){
+          this.toastrService.success('deleted successfully');
+        }else{
+          this.toastrService.success('تم الحذف بنجاح.');
+        }
       },
       (error) => {
-          alert('an error happened try again later');
+        // this.toastrService.error('an error happened try again later');
           if (error.status === 401) {
               sessionStorage.removeItem('authToken');
               sessionStorage.setItem('loginSession', 'true');
               this.updateOrders();
               
             }else if(error.status === 403){
-              this.toastrService.error('can not delete a payed order');
+              if (this.currentLanguage == 'en'){
+                this.toastrService.error('can not delete a payed order');
+              }else{
+                this.toastrService.error('لا يمكن حذف طلب مدفوع.');
+              }
     
             }else{
     
-              this.toastrService.error('an erro happend try again later');
+
+              if (this.currentLanguage == 'en'){
+                this.toastrService.error('an erro happend try again later');
+              }else{
+                this.toastrService.error('حدث خطأ، يرجى المحاولة لاحقًا.');
+              }
             }            }
   );
 }
+
 viewOrder(order:any){
       this.orderService.setCurrentOrder(order);
       sessionStorage.setItem('return-to' , 'seller-orders-to-b-done');
@@ -108,11 +124,17 @@ viewOrder(order:any){
 deliveryed(order:any){
   this.orderService.updateOrderStatus({'id':order.id , 'status': 'delivered'}).subscribe(
     response=>{
-      alert('updated successfully');
-      this.updateOrders();
+      if (this.currentLanguage == 'en'){
+        this.toastrService.success('updated successfully');
+      }else{
+        this.toastrService.success('تمت العمليه بنجاح');
+      }      this.updateOrders();
     },error=>{
-      alert('an error happend');
-      console.log('anerror happend:' , error);
+      if (this.currentLanguage == 'en'){
+        this.toastrService.error('some error happend');
+      }else{
+        this.toastrService.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+      }
     }
   );
 }
@@ -120,19 +142,25 @@ deliveryed(order:any){
 search() {
   if (this.searchCriteria === 'date') {
       if (!this.startDate || !this.endDate) {
-          this.toastrService.error("Start and End dates are required.");
+        if (this.currentLanguage == 'en')
+          {
+            this.toastrService.error("Start and End dates are required.");
+
+          }else{
+            this.toastrService.error("تاريخ البدء وتاريخ الانتهاء مطلوبان.");
+
+          }
           return;
       }
       if (new Date(this.startDate) >= new Date(this.endDate)) {
-          this.toastrService.error("Start Date must be less than End Date.");
-          return;
-      }
-  }
-
-  if (this.searchCriteria === 'total') {
-     
-      if (this.priceFrom >= this.priceTo) {
-        this.toastrService.error("From price must be less than To price.");
+          if (this.currentLanguage == 'en')
+            {
+              this.toastrService.error("Start Date must be less than End Date.");
+  
+            }else{
+              this.toastrService.error("يجب أن يكون تاريخ البدء أقل من تاريخ الانتهاء.");
+  
+            }
           return;
       }
   }

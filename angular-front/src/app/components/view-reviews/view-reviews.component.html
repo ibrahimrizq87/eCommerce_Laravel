@@ -11,10 +11,6 @@
             <div class="d-flex flex-row my-3">
               <div class="text-warning mb-1 me-2">
                   <i class="fa fa-star"  *ngFor="let item of [].constructor(review.rating); let i = index"></i>
-                  <!-- <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i>
-                  <i class="fa fa-star"></i> -->
-                  
                   <i class="far fa-star" *ngFor="let item of [].constructor(5-review.rating); let i = index"></i>
                   <span class="ms-1">
                       {{review.rating}}

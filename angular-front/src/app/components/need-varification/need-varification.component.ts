@@ -4,15 +4,23 @@ import { Router } from '@angular/router';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
 
+import { ToastrService } from 'ngx-toastr';
+import { SharedService } from '../../services/language.service';
+import { CommonModule } from '@angular/common';
+ 
+	 
+
+
 @Component({
   selector: 'app-need-varification',
   standalone: true,
-  imports: [LottieComponent],
+  imports: [LottieComponent,CommonModule],
   templateUrl: './need-varification.component.html',
   styleUrl: './need-varification.component.css'
 })
 export class NeedVarificationComponent {
   private successAnimationItem: AnimationItem | undefined;
+  currentLanguage: string ='en';
 
   successAnimationOptions: AnimationOptions = {
     path: 'animations/email.json',
@@ -27,25 +35,39 @@ export class NeedVarificationComponent {
   user: any;
   isLogged: Boolean = false;
   constructor(
+    private sharedService: SharedService,
+		 private toastr :ToastrService,
     private userService: UserService,
     private router: Router
-  ) { }
+  ) { 
+    this.sharedService.language$.subscribe(language => {
+      this.currentLanguage = language;
+      });
+
+  }
 
   resendVerificationEmail() {
     this.userService.resendVarification(localStorage.getItem('tockenForVarification')).subscribe(
       response => {
-        alert(response.message);
+        if (this.currentLanguage == 'en'){
+          this.toastr.success('sent successfully');
+        }else{
+          this.toastr.success('تمت العمليه بنجاح');
+        }
         
     console.log(response);
         },error => {    
-          alert('error happend');
-
-          console.log('error happend::: ',error);
+          if (this.currentLanguage == 'en'){
+            this.toastr.error('some error happend');
+          }else{
+            this.toastr.error('لقد حدثت مشكله تحقق من اتصال الانترنت');
+          }
+          
 
 
       }
     );
-    console.log('Resending verification email...');
+    // console.log('Resending verification email...');
   }
 
   ngOnInit(): void {

@@ -25,27 +25,20 @@ import { SharedService } from '../../services/language.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  private logInAnimationItem: AnimationItem | undefined;
-  private successAnimationItem: AnimationItem | undefined;
+  private lodingAnimaation: AnimationItem | undefined;
+disable:boolean =false;
 
-  logInAnimationOptions: AnimationOptions = {
-     path: 'animations/craft.json',
-     loop: true,
-     autoplay: true
-   };
- 
-  logInAnimationCreated(animationItem: AnimationItem): void {
-     this.logInAnimationItem = animationItem;
-   }
- 
-   successAnimationOptions: AnimationOptions = {
-    path: 'animations/success.json', // Correct path
-    loop: false,
+  lodingAnimaationOptions: AnimationOptions = {
+    path: 'animations/loading-main.json',
+    loop: true,
     autoplay: true
   };
-   successAnimationCreated(animationItem: AnimationItem): void {
-    this.successAnimationItem = animationItem;
+
+          loadingAnimation(animationItem: AnimationItem): void {
+    this.lodingAnimaation = animationItem;
+
   }
+
   loginErrorBool:boolean  =false;
   sessionError:boolean  =false;
   loginError :string ='';
@@ -106,7 +99,7 @@ export class LoginComponent {
           response => {
 
             this.user = response.data;
-            console.log(this.user)
+            // console.log(this.user)
             if (this.user.email_verified_at){
               window.location.href = '/home';
             }else{
@@ -117,7 +110,7 @@ export class LoginComponent {
           },
           error => {
             if (error.status === 400 || error.status === 500) {
-              console.error('A specific error occurred:', error);
+              // console.error('A specific error occurred:', error);
             } else if (error.status === 401) {
 
               sessionStorage.removeItem('authToken');
@@ -125,7 +118,7 @@ export class LoginComponent {
               
 
             } else {
-              console.error('An unexpected error occurred:', error);
+              // console.error('An unexpected error occurred:', error);
             }
           }
         );
@@ -137,14 +130,16 @@ export class LoginComponent {
   }
 
   onSubmit(loginForm: any) {
+   
     this.loginErrorBool = false;
     this.loginError = '';
     this.submitted = true;
     if (loginForm.valid) {
+      this.disable=true;
       const formData = new FormData();
 
       const deviceName = getDeviceName();
-      console.log(deviceName);
+      // console.log(deviceName);
 
       if (deviceName) {
         formData.append('device_name', deviceName);
@@ -159,48 +154,60 @@ export class LoginComponent {
       this.userService.login(formData).subscribe(
         response => {
           const token = response.token;
+          this.disable=false;
 
-          if(response.user.email_verified_at){
-            if(response.status == 'banned'){
-              sessionStorage.setItem('banned', 'true')
-              this.router.navigate(['/banned']);
+       if(response.user.role == 'admin'){
+        sessionStorage.setItem('authToken', token);
+        sessionStorage.setItem('logged', 'true');
+        localStorage.removeItem('needVarification');
+        localStorage.removeItem('tockenForVarification');
 
-            }else{
-              sessionStorage.setItem('authToken', token);
-              sessionStorage.setItem('logged', 'true');
-              localStorage.removeItem('needVarification');
-              localStorage.removeItem('tockenForVarification');
-  
-              window.location.href = '/home';
-            }
+        window.location.href = '/home';
+       }else{
+        if(response.user.user.email_verified_at){
+          if(response.status == 'banned'){
+            sessionStorage.setItem('banned', 'true')
+            this.router.navigate(['/banned']);
 
-           
-  
           }else{
-            localStorage.setItem('needVarification', 'true');
-            localStorage.setItem('tockenForVarification', token);
+            sessionStorage.setItem('authToken', token);
+            sessionStorage.setItem('logged', 'true');
+            localStorage.removeItem('needVarification');
+            localStorage.removeItem('tockenForVarification');
 
-            window.location.href = '/varification';
-
+            window.location.href = '/home';
           }
+
+         
+
+        }else{
+          localStorage.setItem('needVarification', 'true');
+          localStorage.setItem('tockenForVarification', token);
+
+          window.location.href = '/varification';
+
+        }
+       }
           
 
 
         },
         error => {
+          this.disable=false;
+          // console.log('error happend:' , error);
           if (error.status === 400) {
             this.backendErrors = error.error.errors;
 
-            console.error('Registration failed:', error);
-            console.log('Error: ' + error.error.errors);
+            // console.error('Registration failed:', error);
+            // console.log('Error: ' + error.error.errors);
 
-            Object.keys(error.error.errors).forEach(key => {
-              console.log('Field:', key);
+            // Object.keys(error.error.errors).forEach(key => {
+            //   console.log('Field:', key);
 
-              error.error.errors[key].forEach((message: String) => {
-                console.log('Error message:', message);
-              });
-            });
+            //   error.error.errors[key].forEach((message: String) => {
+            //     console.log('Error message:', message);
+            //   });
+            // });
           } else if(error.status === 401){
             this.loginErrorBool = true;
             this.loginError = 'password is not correct, try again later';
@@ -209,12 +216,12 @@ export class LoginComponent {
             this.loginError = 'email dose not exists, make suer to enter the correct email';
 
           }else {
-            console.error('An unexpected error occurred:', error);
+            // console.error('An unexpected error occurred:', error);
           }
         }
       );
     } else {
-      console.error('Form is invalid');
+      // console.error('Form is invalid');
     }
   }
   openModal() {
