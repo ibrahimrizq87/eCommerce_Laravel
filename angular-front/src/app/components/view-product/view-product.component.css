@@ -247,3 +247,274 @@ video {
 .myImage {
     transition: all 0.3s ease-in-out; 
 }
+
+
+
+
+.size-selector {
+    width: 100%;
+  }
+  
+  .size-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Spacing between items */
+    width: 100%;
+  }
+  
+  .size-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  /* Hover effect */
+  .size-item:hover {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+  
+  /* Selected size style */
+  .size-item.selected {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .size-price {
+    font-style: italic;
+    color: #555;
+  }
+  .single-size-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Space between title and content */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fafafa;
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+  
+  /* Hover effect to give it a polished feel */
+  .single-size-container:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .size-title {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .size-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .size-text {
+    font-size: 1rem;
+    color: #3d180a;
+    font-weight: bold;
+  }
+  
+
+  .ordered-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Space between title and content */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fafafa;
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+  
+  /* Subtle hover effect */
+  .ordered-container:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ordered-title {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .ordered-content {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Spacing between text and unit */
+  }
+  
+  .ordered-text {
+    font-size: 1rem;
+    color: #3d180a;
+    font-weight: bold;
+  }
+  
+  .ordered-unit {
+    font-size: 1rem;
+    color: #666;
+  }
+  .product-info-container {
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: box-shadow 0.2s;
+  }
+  
+  /* Price Styling */
+  .product-price {
+    font-size: 1.5rem;
+    color: #28a745;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .original-price-container {
+    margin-bottom: 10px;
+  }
+  
+  .original-price {
+    font-size: 1rem;
+    color: #dc3545;
+  }
+  
+  /* Description Styling */
+  .product-description {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 15px 0;
+  }
+  
+  /* Materials Section */
+  .materials-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .materials-label {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .materials-content {
+    font-size: 14px;
+    color: #666;
+  }
+  
+
+  /* Product Header Container */
+.product-header {
+  margin-bottom: 15px;
+}
+
+/* Product Name Styling */
+.product-name {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+/* Meta Section (Ratings, Offers, and Stock) */
+.product-meta {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+  font-size: 14px;
+}
+
+/* Rating Stars */
+.rating i {
+  font-size: 16px;
+  margin-right: 2px;
+}
+
+.rating span {
+  color: #666;
+  font-weight: 500;
+}
+
+/* Offer Percentage Badge */
+.offer-percentage p {
+  background-color: #ffc857;
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Divider */
+.divider {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* Stock Information */
+.stock-info {
+  color: #555;
+  font-weight: 500;
+}
+
+.review-textarea {
+    min-height: 150px;
+    resize: none;
+  }
+  
+  .review-form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .section-title {
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  
+  .card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body img {
+    border: 2px solid #f1f1f1;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .text-warning .fa-star,
+  .text-warning .far.fa-star {
+    margin-right: 3px;
+    font-size: 1.2rem;
+  }
+  

@@ -168,7 +168,10 @@
               </div>
           
               <div class="col-md-2 d-flex align-items-center">
-                <a (click)="addsize()" class="btn btn-primary w-100">Add</a>
+                <a (click)="addsize()" class="btn btn-primary w-100">
+                  <ng-container *ngIf="currentLanguage === 'en'; else bt">Add</ng-container>
+                  <ng-template #bt>أضيف</ng-template>
+                </a>
               </div>
             </div>
           </div>
@@ -204,7 +207,9 @@
             </ng-container>
             <ng-template #sizeDrop >
               <div class="alert alert-danger">
-                you have to add at least one size if it is one size add "normal"
+               
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicErroAlert"> you have to add at least one size if it is one size add "..."</ng-container>
+                <ng-template #arabicErroAlert>يجب ان تضيف على الاقل حجم واحد او اضف ...</ng-template>
               </div>
             </ng-template>
           
@@ -227,8 +232,8 @@
                   (change)="onColorFileSelect($event)" >
                  
                 <label for="color">
-                  <ng-container *ngIf="currentLanguage === 'en'; else arabicCoverLabel">Color Image</ng-container>
-                  <ng-template #arabicCoverLabel>صورة </ng-template>
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicColorLabel">Color Image</ng-container>
+                  <ng-template #arabicColorLabel>صور الالوان </ng-template>
                 </label>
                  
                 </div>
@@ -267,7 +272,9 @@
             </ng-container>
             <ng-template #colorDrop >
               <div class="alert alert-warning">
-                you did not add a color yet
+              
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicWarningAlert">   you did not add a color yet</ng-container>
+                <ng-template #arabicWarningAlert>لم تضيف اى لون حتى الان</ng-template>
               </div>
             </ng-template>
           

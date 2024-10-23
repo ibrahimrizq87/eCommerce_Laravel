@@ -302,6 +302,9 @@ export class ViewProductComponent {
       this.productService.getRelatedProducts(this.product.category.id).subscribe(
         response => {
           this.products = response.data;
+          this.products =  this.products.filter(product => product.id !== this.product.id);
+
+          console.log( this.products );
           this.products.forEach(product => {
             product.priceAfterOffers = product.price;
             product.totalOffers = 0;

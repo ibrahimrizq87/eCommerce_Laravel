@@ -71,9 +71,12 @@ export class CartComponent {
       this.cartService.updateItem({ 'stock': item.quantity + 1 }, item.id).subscribe(
         response => {
           item.quantity++;
-          this.totalPrice += (item.product.price);
-          this.totalPriceAfterOffers += (item.product.priceAfterOffers);
-          this.totalOffers += (item.product.price - item.product.priceAfterOffers);
+          this.totalPrice += Number(item.product.price);
+          this.totalPriceAfterOffers += Number(item.product.priceAfterOffers);
+          this.totalOffers += Number(item.product.price - item.product.priceAfterOffers);
+          // this.totalPrice += (item.product.price);
+          // this.totalPriceAfterOffers += (item.product.priceAfterOffers);
+          // this.totalOffers += (item.product.price - item.product.priceAfterOffers);
 
         }, error => {
           if (this.currentLanguage == 'en') {

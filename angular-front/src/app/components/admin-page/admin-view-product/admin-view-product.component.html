@@ -1,204 +1,219 @@
 <div class="container shadow-lg m-auto">
-    <div class="row mx-3 py-4">
-        <div class="col-xl-6 d-flex">
-            <div class="col-md-2">
-                <a class="mt-2 sm-img item-thumb" (click)="onImageClick(product.cover_image)">
-                    <img width="70" height="70" class="rounded-2 " [src]="product.cover_image"
-                        style="object-fit: contain;" 
-                        [ngClass]="{'border border-primary': selectedImage === product.cover_image, 'selected-image': selectedImage === product.cover_image}" />
-                </a>
-                <a *ngFor="let image of product.images" class="sm-img item-thumb" (click)="onImageClick(image.image)">
-                    <img class="rounded-2" [src]="image.image"
-                        style="object-fit: contain; width:70px; height:70px; margin-top: 10px;" 
-                        [ngClass]="{'border border-primary': selectedImage === image.image, 'selected-image': selectedImage === image.image}" />
-                </a>
-            </div>
-            <div class="col-12 col-md-4">
-                <img class="big-img" [src]="coverImage"  style="object-fit: contain;" alt="">
-            </div>
+<div class="row">
+    <div class="col-lg-6 d-flex">
+        <div class="col-md-2 ">
+            <a class="pt-2 sm-img item-thumb" (click)="onImageClick(product.cover_image)">
 
-              
+                <img width="70" height="70" class="rounded-2" [src]="product.cover_image"
+                style="object-fit: contain; margin-top: 10px;"
+                    [ngClass]="{'border border-primary': selectedImage === product.cover_image, 'selected-image': selectedImage === product.cover_image}" />
+            </a>
+            <a *ngFor="let image of product.images" class=" sm-img item-thumb"
+                (click)="onImageClick(image.image)">
+                <img width="70" height="70" class="rounded-2" [src]="image.image" style="object-fit: contain; margin-top: 10px;"
+                    [ngClass]="{'border border-primary': selectedImage === image.image, 'selected-image': selectedImage === image.image}" />
+            </a>
         </div>
+        <div class="col-12 col-md-4">
+            <img class="big-img" [src]="coverImage" alt="" style="object-fit: contain;">
 
-        <div class="col-xl-6 ps-4">
-            <p style="font-size: 18px;">
-                <strong>
-                    <ng-container *ngIf="currentLanguage === 'en'; else arabicProductName">
-                        {{ product.product_name }}
-                    </ng-container>
-                    <ng-template #arabicProductName>اسم المنتج</ng-template>
-                </strong>
+        </div>
+    </div>
+    <div class="col-lg-6 p-4">
+        <div class="product-header">
+            <!-- Product Name -->
+            <p class="product-name">
+              <strong>{{ product.product_name }}</strong>
             </p>
-
-            <ul class="nav d-flex">
-                <div class="text-warning mb-1 me-2">
-                    <i class="fa fa-star" *ngFor="let item of [].constructor(stars); let i = index"></i>
-                    <i class="far fa-star" *ngFor="let item of [].constructor(5-stars); let i = index"></i>
-                    <span class="ms-1">{{stars}}</span>
-                </div>
-
-                <span style="font-size: 12px;" class="px-2">
-                    <div>
-                        <p style="background-color: #ffc857; color: #000; padding: 3px 7px; border-radius: 5px; font-weight: bold; font-size: 14px;">
-                            {{ product.totalOffers }}%
-                        </p>
-                    </div>
-                </span>
-
-                <span style="font-size: 12px;" class="px-2">|</span>
-
-                <span style="font-size: 12px;">
-                    <ng-container *ngIf="currentLanguage === 'en'; else arabicStock">
-                        In Stock: {{ product.stock }}
-                    </ng-container>
-                    <ng-template #arabicStock>المخزون: {{ product.stock }}</ng-template>
-                </span>
+          
+            <!-- Product Meta Information -->
+            <ul class="nav d-flex align-items-center product-meta">
+              <!-- Star Ratings -->
+              <div class="rating text-warning d-flex align-items-center me-3">
+                <i class="fa fa-star" *ngFor="let _ of [].constructor(stars); let i = index"></i>
+                <i class="far fa-star" *ngFor="let _ of [].constructor(5 - stars); let i = index"></i>
+                <span class="ms-1">{{ stars }}</span>
+              </div>
+          
+              <!-- Offer Percentage -->
+              <div class="offer-percentage">
+                <p>{{ product.totalOffers }}%</p>
+              </div>
+          
+              <!-- Divider -->
+              <span class="divider mx-2">|</span>
+          
+              <!-- Stock Information -->
+              <span class="stock-info">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicStock">
+                  {{ product.stock }}: In Stock
+                </ng-container>
+                <ng-template #arabicStock>
+                  {{ product.stock }}: في المخزون
+                </ng-template>
+              </span>
             </ul>
+          </div>
 
-            <p class="pt-3"><strong>{{ product.priceAfterOffers }} <strong>ILS</strong></strong></p>
-            <div *ngIf="product.priceAfterOffers !== product.price">
-                <p class="price mb-1 text-decoration-line-through">{{ product.price }} <strong>ILS</strong></p>
+
+        <div class="product-info-container">
+            <p class="product-price">
+              <strong>{{ product.priceAfterOffers }} <span>ILS</span></strong>
+            </p>
+          
+            <div *ngIf="product.priceAfterOffers != product.price" class="original-price-container">
+              <p class="original-price text-decoration-line-through">
+                {{ product.price }} <strong>ILS</strong>
+              </p>
             </div>
-
-            <p class="w-75" style="font-size: 14px;">{{ product.description }}</p>
-
-            <hr class="my-3">
-            <p><strong>
-                <ng-container *ngIf="currentLanguage === 'en'; else arabicMaterials">Materials:</ng-container>
-                <ng-template #arabicMaterials>المواد:</ng-template>
-            </strong> {{ product.material }}</p>
-
+          
+            <p class="product-description">
+              {{ product.description }}
+            </p>
+          
+            <hr class="divider">
+          
+            <div *ngIf="product.material" class="materials-container">
+              <div class="materials-label">
+                <strong>
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicMaterials">Materials:</ng-container>
+                  <ng-template #arabicMaterials>المواد:</ng-template>
+                </strong>
+              </div>
+              <div class="materials-content">
+                <span>{{ product.material }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <ng-container *ngIf="product.sizes.length > 1; else oneSize">
+            <div class="d-flex flex-column align-items-start size-selector mt-4 mb-4">
+              <div class="size-title mb-2">
+                <strong>Choose Size:</strong>
+              </div>
+              
+              <!-- Size List -->
+              <div class="size-list">
+                <div 
+                  *ngFor="let size of product.sizes; let i = index" 
+                  class="size-item" 
+                  [ngClass]="{'selected': size.size === currentSize.size}" 
+                  (click)="changeSize(size)">
+                  <span>{{ size.size }}</span>
+                  <span class="size-price">Price: {{ size.price }}</span>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          
+          <ng-template #oneSize>
+            <div class="single-size-container mt-4 mb-4">
+              <div class="size-title">
+                <strong>
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicSize">Size:</ng-container>
+                  <ng-template #arabicSize>الحجم :</ng-template>
+                </strong>
+              </div>
+              
+              <div class="size-content">
+                <span class="size-text">{{ currentSize.size }}</span>
+              </div>
+            </div>
+          </ng-template>
+          
         
-            <ng-container *ngIf="product.sizes.length > 1; else oneSize">
-                <div class="d-flex align-items-center">
-                  <div class="me-3">
-                    <strong>Choose Size:</strong>
-                  </div>
-                  <div class="dropdown w-80 mt-4 mb-4">
-                    <button 
-                      class="btn btn-secondary dropdown-toggle w-100" 
-                      type="button" 
-                      id="languageDropdown" 
-                      data-bs-toggle="dropdown" 
-                      aria-expanded="false">
-                      {{ currentSize.size }}
-                    </button>
-              
-                    <ul class="dropdown-menu w-100" aria-labelledby="languageDropdown">
-                      <li 
-                        *ngFor="let size of product.sizes; let i = index" 
-                        style="color: #000;"
-                        class="d-flex justify-content-between align-items-center mt-2">
-                        <a 
-                          (click)="changeSize(size)" 
-                          style="cursor: pointer; color: #000;" 
-                          class="dropdown-item text-wrap">
-                          {{ size.size }} || Price: {{ size.price }}
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </ng-container>
-              
-            <ng-template #oneSize>
-                <div>
-                    <div class="label">
-                        <strong>
-                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSize">Size:</ng-container>
-                            <ng-template #arabicSize>الحجم : </ng-template>
-                        </strong>
-                    </div>
-                    <div class="content">
-                        <span>{{currentSize.size}}</span>
-                    </div>
-                </div>
-            </ng-template>
-            
-      
-            
-            <div *ngIf="product.total_ordered">
-                <div class="label">
+  
+
+        <div *ngIf="product.total_ordered" class="ordered-container mt-4 mb-4">
+            <div class="ordered-title">
+              <strong>
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicOrdered">Ordered:</ng-container>
+                <ng-template #arabicOrdered>تم الطلب:</ng-template>
+              </strong>
+            </div>
+          
+            <div class="ordered-content">
+              <span class="ordered-text">{{ product.total_ordered }}</span>
+              <span class="ordered-unit">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicTimes">times</ng-container>
+                <ng-template #arabicTimes>مرات</ng-template>
+              </span>
+            </div>
+          </div>
+          
+
+
+               <ng-container *ngIf="product.colors.length>0">
+                <div class="mt-4">
                     <strong>
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicOrdered">Ordered:</ng-container>
-                        <ng-template #arabicOrdered>تم الطلب:</ng-template>
+                        choose color
                     </strong>
                 </div>
-                <div class="content">
-                    <span>{{product.total_ordered}}  </span>
-                    <ng-container *ngIf="currentLanguage === 'en'; else arabicTimes">times</ng-container>
-                    <ng-template #arabicTimes>مرات</ng-template>
-                </div>
+
+            <div class="d-flex align-items-center">
+             
+          
+              <div class="selectImage w-100 mb-4 border shadow rounded d-flex align-items-center">
+                <img 
+                  *ngFor="let color of product.colors" 
+                  [src]="color.image" 
+                  height="50px" 
+                  class="m-2 myImage" 
+                  alt="" 
+                  [class.selected]="selectedColor && selectedColor.id === color.id" 
+                  (click)="selectImage(color)">
+              </div>
             </div>
-
-
-                   <ng-container *ngIf="product.colors.length>0">
-                    <div class="mt-4">
-                        <strong>
-                            choose color
-                        </strong>
-                    </div>
-
-                <div class="d-flex align-items-center">
-                 
-                  <!-- <div class="dropdown w-100  mb-4 border shadow rounded d-flex align-items-center">
-                 <img *ngFor="let color of colors" [src]="color.image" height="50px" class="m-2" alt="">
-                  </div> -->
-                  <div class="selectImage w-100 mb-4 border shadow rounded d-flex align-items-center">
-                    <img 
-                      *ngFor="let color of product.colors" 
-                      [src]="color.image" 
-                      height="50px" 
-                      class="m-2 myImage" 
-                      alt="" 
-                      [class.selected]="selectedColor && selectedColor.id === color.id" 
-                      (click)="selectImage(color)">
-                  </div>
-                </div>
-              </ng-container>
-      
-
-        </div>
+          </ng-container>
+          
+        
+  
     </div>
-
-    <div class="container my-5 mb-5 pb-5">
-        <h6 class="py-2">
-            <ng-container *ngIf="currentLanguage === 'en'; else arabicReviews">All Reviews</ng-container>
-            <ng-template #arabicReviews>كل التقييمات</ng-template>
-        </h6>
-
-        <div class="container w-75 border border-1 p-4 my-3 mb-5">
-            <div class="container bg-white mb-5">
-                <div>
-                    <p class="px-5 pt-5" style="font-size: 18px;">
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicReviewHeading">Reviews</ng-container>
-                        <ng-template #arabicReviewHeading>التقييمات</ng-template>
-                    </p>
-                </div>
-
-                <div *ngIf="reviews" class="container card border-0">
-                    <div class="card-body" *ngFor="let review of reviews">
-                        <img [src]="review.user.image" class="rounded-circle" style="height:50px; width:50px" alt="">
-                        <h5 class="card-title d-inline">{{ review.user.name }}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{ review.user.last_name }}</h6>
-                        <div class="pt-3">
-                            <div class="d-flex flex-row my-3">
-                                <div class="text-warning mb-1 me-2">
-                                    <i class="fa fa-star" *ngFor="let item of [].constructor(review.rating); let i = index"></i>
-                                    <i class="far fa-star" *ngFor="let item of [].constructor(5-review.rating); let i = index"></i>
-                                    <span class="ms-1">{{ review.rating }}</span>
-                                </div>
-                            </div>
-                            <p class="card-text py-2">{{ review.feedback }}</p>
-                        </div>
-                        <hr>
-                        <button (click)="deleteReview(review)">
-                            <ng-container *ngIf="currentLanguage === 'en'; else arabicDelete">Delete</ng-container>
-                            <ng-template #arabicDelete>حذف</ng-template>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 </div>
+<div class="container my-5 pb-5 reviews-section">
+    <!-- Reviews Header -->
+    <h6 class="section-title">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicReviews">All Reviews</ng-container>
+      <ng-template #arabicReviews>كل التقييمات</ng-template>
+    </h6>
+  
+    <!-- Reviews Container -->
+    <div class="review-list border rounded p-4 my-4 mx-auto" style="max-width: 800px;">
+        <p class="review-heading">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicReviewHeading">Reviews</ng-container>
+        <ng-template #arabicReviewHeading>التقييمات</ng-template>
+      </p>
+  
+      <div *ngIf="reviews" class="card border-0">
+        <div class="card-body p-4" *ngFor="let review of reviews" class="review-item">
+          <div class="d-flex align-items-center mb-3">
+            <img [src]="review.user.image" class="user-image rounded-circle" alt="{{ review.user.name }}">
+            <div class="ms-3">
+              <h5 class="user-name">{{ review.user.name }}</h5>
+              <h6 class="user-lastname text-muted">{{ review.user.last_name }}</h6>
+            </div>
+          </div>
+  
+
+          <div class="d-flex align-items-center my-2 rating-section">
+            <div class="text-warning">
+              <i class="fa fa-star" *ngFor="let _ of [].constructor(review.rating)"></i>
+              <i class="far fa-star" *ngFor="let _ of [].constructor(5 - review.rating)"></i>
+            </div>
+            <span class="ms-2 rating-value">{{ review.rating }}</span>
+          </div>
+  
+          <p class="review-feedback">{{ review.feedback }}</p>
+  
+          <hr>
+  
+          <button (click)="deleteReview(review)" class="btn btn-outline-danger btn-sm mt-2">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicDelete">Delete</ng-container>
+            <ng-template #arabicDelete>حذف</ng-template>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

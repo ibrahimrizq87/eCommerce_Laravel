@@ -71,7 +71,7 @@
 
         <div *ngFor="let item of cartItems" class="row shadow-lg text-center p-3 mt-3 align-items-center">
             <div class="col-2 d-flex align-items-center justify-content-center">
-                <img [src]="item.product.cover_image" style="height:70px; width:70px; object-fit: cover; padding-right:10px;" alt="">
+                <img [src]="item.product.cover_image" style="height:70px; width:70px; object-fit: cover; padding-right:10px; object-fit: contain;" alt="">
                 <span class="ms-2">{{item.product.product_name}}</span>
             </div>
 
