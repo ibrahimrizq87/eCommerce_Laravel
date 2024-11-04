@@ -184,6 +184,32 @@ export class ViewProductComponent {
 
 
 
+  zoomStyle: { [key: string]: string } = {};
+
+  onMouseMove(event: MouseEvent) {
+    const imageWrapper = (event.target as HTMLElement).parentElement!;
+    const { offsetX, offsetY } = event;
+    const { offsetWidth, offsetHeight } = imageWrapper;
+
+    // Calculate the position percentage inside the image
+    const xPercent = (offsetX / offsetWidth) * 100;
+    const yPercent = (offsetY / offsetHeight) * 100;
+
+    // Set the zoom effect dynamically
+    this.zoomStyle = {
+      transform: 'scale(2)', // Adjust zoom level
+      transformOrigin: `${xPercent}% ${yPercent}%`
+    };
+  }
+
+  onMouseLeave() {
+    // Reset zoom when the mouse leaves
+    this.zoomStyle = {
+      transform: 'scale(1)',
+      transformOrigin: 'center'
+    };
+  }
+
 
   addToWishList() {
     const formData = new FormData();

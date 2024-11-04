@@ -76,6 +76,9 @@ export class CheckoutComponent {
       this.total = this.totalPriceAfterOffers +this.payOnDelivery;
     }
   }
+  goBack(){
+    this.router.navigate(['/cart']);
+  }
   onSubmit(form:any){
     this.submitted = true;
     if (this.totalPrice<=0){

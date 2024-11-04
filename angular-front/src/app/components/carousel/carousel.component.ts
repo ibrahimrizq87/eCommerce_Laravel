@@ -100,6 +100,55 @@ export class CarouselComponent {
 
   }
 
+  addBuyNow(product: any) {
+    if (!product.sizes[0]) {
+      this.toastr.error('size must be set');
+      return;
+    }
+    let obj: any = { 'product_id': product.id, 'quantity': 1, "size": product.sizes[0].id };
+    if (product.colors.length > 0) {
+      obj.color = product.colors[0].id;
+    }
+    this.cartService.addItem(obj).subscribe(
+      response => {
+
+        if (this.currentLanguage == 'en') {
+          this.toastr.success('added successfully to your cart');
+        } else {
+          this.toastr.success('تمت الإضافة بنجاح إلى سلتك');
+        }
+
+        this.router.navigate(['/checkout']);
+
+      }, error => {
+
+        // console.log('error Happend::', error);
+        if (error.status === 401) {
+
+          sessionStorage.removeItem('authToken');
+          sessionStorage.setItem('loginSession', 'true');
+
+          this.router.navigate(['/login']);
+        } else if (error.status === 403) {
+          if (this.currentLanguage == 'en') {
+            this.toastr.warning("this product is already in your cart\n check your cart");
+          } else {
+            this.toastr.success('هذا المنتج موجود بالفعل في سلتك.\nتحقق من سلتك');
+          }
+          this.router.navigate(['/checkout']);
+
+        } else {
+          if (this.currentLanguage == 'en') {
+            this.toastr.success('added successfully');
+          } else {
+            this.toastr.success('تمت العمليه بنجاح');
+          }
+        }
+      }
+
+    );
+  }
+
 
 
   addToCart(product: any) {
@@ -119,7 +168,7 @@ export class CarouselComponent {
           this.toastr.success('تمت الاضافة الى العربة بنجاح');
 
         }
-        this.router.navigate(['/cart']);
+        // this.router.navigate(['/cart']);
 
       }, error => {
 

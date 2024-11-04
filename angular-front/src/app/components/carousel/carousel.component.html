@@ -49,6 +49,13 @@
                             </ng-template>
                         </a>
                     </div>
+
+                    <div class="d-flex justify-content-center mt-1">
+                        <a (click)="addBuyNow(product)" class="btn  mx-2" style="background-color: #ffc857; color: #000;">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabiBuyNow">Buy Now</ng-container>
+                            <ng-template #arabiBuyNow>اشترى الأن</ng-template>
+                        </a>
+                    </div>
                 </div>
             </div>
         </ng-template>

@@ -14,10 +14,23 @@
                         [ngClass]="{'border border-primary': selectedImage === image.image, 'selected-image': selectedImage === image.image}" />
                 </a>
             </div>
-            <div class="col-12 col-md-4">
-                <img class="big-img" [src]="coverImage" alt="" style="object-fit: contain;">
-
+            
+            <div class="col-12 col-md-4 product-image-container">
+              <div 
+                class="image-wrapper"
+                (mousemove)="onMouseMove($event)" 
+                (mouseleave)="onMouseLeave()"
+              >
+                <img
+                  class="big-img"
+                  [src]="coverImage"
+                  alt="Product Image"
+                  [ngStyle]="zoomStyle"
+                />
+              </div>
             </div>
+            
+            
         </div>
         <div class="col-lg-6 p-4">
             <div class="product-header">
@@ -55,57 +68,6 @@
                 </ul>
               </div>
               
-            <!-- <p style="font-size: 18px;">
-                <strong>{{product.product_name}}</strong>
-            </p>
-            
-            <ul class="nav d-flex">
-                <div class="text-warning mb-1 me-2">
-                    <i class="fa fa-star" *ngFor="let item of [].constructor(stars); let i = index"></i>
-                    <i class="far fa-star" *ngFor="let item of [].constructor(5-stars); let i = index"></i>
-                    <span class="ms-1">{{stars}}</span>
-                </div>
-                
-                <span style="font-size: 12px;" class="px-2">
-                    <div>
-                        <p style="background-color: #ffc857; color: #000; padding: 3px 7px; border-radius: 5px; font-weight: bold; font-size: 14px;">
-                            {{product.totalOffers}}%
-                        </p>
-                    </div>
-                </span>
-                <span style="font-size: 12px;" class="px-2">|</span>
-                <span style="font-size: 12px;">
-                    <ng-container *ngIf="currentLanguage === 'en'; else arabicStock">
-                        {{product.stock}}: In Stock
-                    </ng-container>
-                    <ng-template #arabicStock>
-                        {{product.stock}}: في المخزون
-                    </ng-template>
-                </span>
-            </ul> -->
-<!--         
-            <p class="pt-3"><strong>{{product.priceAfterOffers}} <strong>ILS</strong></strong></p>
-            
-            <div *ngIf="product.priceAfterOffers != product.price">
-                <p class="price mb-1 text-decoration-line-through">{{ product.price }} <strong>ILS</strong></p>
-            </div>
-        
-            <p class="w-75" style="font-size: 14px;">
-                {{ product.description }}
-            </p>
-            
-            <hr class="my-3">
-            <div *ngIf="product.material">
-                <div class="label">
-                    <strong>
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicMaterials">Materials:</ng-container>
-                        <ng-template #arabicMaterials>المواد:</ng-template>
-                    </strong>
-                </div>
-                <div class="content">
-                    <span>{{product.material}}</span>
-                </div>
-            </div> -->
             <div class="product-info-container">
                 <!-- Price Section -->
                 <p class="product-price">
@@ -176,21 +138,6 @@
               
             
       
-<!--             
-            <div *ngIf="product.total_ordered">
-                <div class="label">
-                    <strong>
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicOrdered">Ordered:</ng-container>
-                        <ng-template #arabicOrdered>تم الطلب:</ng-template>
-                    </strong>
-                </div>
-                <div class="content">
-                    <span>{{product.total_ordered}}  </span>
-                    <ng-container *ngIf="currentLanguage === 'en'; else arabicTimes">times</ng-container>
-                    <ng-template #arabicTimes>مرات</ng-template>
-                </div>
-            </div> -->
-
             <div *ngIf="product.total_ordered" class="ordered-container mt-4 mb-4">
                 <div class="ordered-title">
                   <strong>
@@ -219,9 +166,6 @@
 
                 <div class="d-flex align-items-center">
                  
-                  <!-- <div class="dropdown w-100  mb-4 border shadow rounded d-flex align-items-center">
-                 <img *ngFor="let color of colors" [src]="color.image" height="50px" class="m-2" alt="">
-                  </div> -->
                   <div class="selectImage w-100 mb-4 border shadow rounded d-flex align-items-center">
                     <img 
                       *ngFor="let color of product.colors" 
@@ -254,6 +198,8 @@
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicBuyNow">Buy now</ng-container>
                         <ng-template #arabicBuyNow>اشتري الآن</ng-template>
                     </button>
+
+                    
                     <a (click)="addToWishList()">
                         <i class="me-1 fa fa-heart fa-lg pt-2" 
                            [ngClass]="{'fa-heart-selected': addToWish}"
@@ -287,27 +233,7 @@
                         {{ currentLanguage === 'ar' ? 'التقييمات' : 'Reviews' }} 
                     </p>
                 </div>
-                <!-- <div *ngIf="reviews" class="container card">
-                    <div class="card-body" *ngFor="let review of reviews">
-                        <img [src]="review.user.image" class="rounded-circle" style="height:50; width:50px" alt="">
-                        <h5 class="card-title d-inline">{{review.user.name}}</h5>
-                        <h6 class="card-subtitle mb-2 text-body-secondary">{{review.user.last_name}}</h6>
-                        <div class="pt-3">
-                            <div class="d-flex flex-row my-3">
-                                <div class="text-warning mb-1 me-2">
-                                    <i class="fa fa-star" *ngFor="let item of [].constructor(review.rating); let i = index"></i>
-                                    <i class="far fa-star" *ngFor="let item of [].constructor(5-review.rating); let i = index"></i>
-                                    <span class="ms-1">{{review.rating}}</span>
-                                </div>
-                            </div>
-                            <p class="card-text py-2">{{review.feedback}}</p>
-                        </div>
-                        <hr>
-                        <button *ngIf="user && user.id == review.user.id" (click)="deleteReview(review)">
-                            {{ currentLanguage === 'ar' ? 'احذف' : 'Delete' }}
-                        </button>
-                    </div>
-                </div> -->
+               
                 <div *ngIf="reviews" class="container my-5">
                     <div *ngFor="let review of reviews" class="card mb-4 shadow-sm p-4 border-0 rounded">
                       <div class="d-flex align-items-center mb-3">
