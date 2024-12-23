@@ -55,18 +55,17 @@ class CartItemController extends Controller
     $product = Product::find($request->product_id);
     if(!$product){
         return response()->json(['errors' => "product not found"], 404);
-
     }
+
     $size = Size::find($request->size);
     if(!$size){
-        return response()->json(['errors' => "size not found"], 404);
-
+       return response()->json(['errors' => "size not found"], 404);
     }
+
   if($request->color>0){
     $color = Color::find($request->color);
     if(!$color){
         return response()->json(['errors' => "color not found"], 404);
-
     }
   }
     

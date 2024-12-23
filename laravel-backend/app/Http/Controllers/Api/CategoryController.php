@@ -21,6 +21,28 @@ class CategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
+
+    public function getAllParent()
+    {
+
+        $categories = Category::where('parent_id' , null)->get();
+        return CategoryResource::collection($categories);
+    }
+
+
+    public function getAllsubCategories()
+    {
+        $categories = Category::where('parent_id' , '!=',null)->get();
+        return CategoryResource::collection($categories);
+    }
+
+
+    public function getByParent($parent_id)
+    {
+        $categories = Category::where('parent_id' ,$parent_id)->get();
+        return CategoryResource::collection($categories);
+    }
+
  
     public function store(Request $request)
     {

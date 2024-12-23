@@ -73,10 +73,10 @@
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <p class="card-title">{{product.product_name.length > 35 ? (product.product_name | slice:0:35) + '...' : product.product_name }}</p>
                                 <div class="d-flex justify-content-around">
-                                    <div>
+                                    <div >
                                         <p class="price mb-1"><b>{{product.priceAfterOffers}} <strong>ILS</strong></b></p>
                                     </div>
-                                    <div>
+                                    <div *ngIf="product.priceAfterOffers != product.price">
                                         <p class="price mb-1 text-decoration-line-through">{{product.price}} <strong>ILS</strong></p>
                                     </div>
                                 </div>
@@ -122,7 +122,7 @@
                                     <div>
                                         <p class="price mb-1"><b>{{product.priceAfterOffers}} <strong>ILS</strong></b></p>
                                     </div>
-                                    <div>
+                                    <div *ngIf="product.priceAfterOffers != product.price">
                                         <p class="price mb-1 text-decoration-line-through">{{product.price}} <strong>ILS</strong></p>
                                     </div>
                                 </div>

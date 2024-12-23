@@ -695,7 +695,12 @@ foreach ($oldImages as $image) {
     public function destroy(Product $product)
     {
 
+
+        
+        return response()->json(['message' => $product->cartItems , 403]);
+
         $product->delete();
+
         return response()->json(['message' => 'Product soft deleted successfully.']);
     }
     
@@ -715,7 +720,7 @@ foreach ($oldImages as $image) {
     public function forceDestroy($id)
     {
         $product = Product::withTrashed()->find($id);
-    
+            // return response()->json(['message' => $product->cartItems , 403]);
         if (!$product) {
             return response()->json(['message' => 'Product not found.'], 404);
         }

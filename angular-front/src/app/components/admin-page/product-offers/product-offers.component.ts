@@ -109,7 +109,8 @@ this.offer=this.offerService.getCurrentOffer();
   
   
     getProducts(): void {
-      this.productService.getProducts(this.currentPage, this.itemsPerPage, this.searchCriteria, this.searchTerm, this.priceFrom, this.priceTo)
+
+      this.productService.getProductsForOffers(this.currentPage, this.itemsPerPage, this.searchCriteria, this.searchTerm, this.priceFrom, this.priceTo)
         .subscribe(response => {
           this.products = response.data; 
           this.totalProducts = response.total; 
@@ -132,7 +133,7 @@ this.offer=this.offerService.getCurrentOffer();
           });
   
       },error=>{
-          // console.log('error>>>>>>>>>>>>>>>>' , error);
+          console.log('error>>>>>>>>>>>>>>>>' , error);
         });
     }
     
@@ -173,7 +174,7 @@ addProducts(){
       }else{
         this.toastr.success('تمت العمليه بنجاح');
       }
-      this.linkClicked.emit('all-seller-offers');
+      this.linkClicked.emit('all-offers');
 
     },
     error => {

@@ -22,6 +22,7 @@ export class AddCategoryComponent {
   submitted: boolean = false;
   imageUploaded = false;
   currentLanguage: string = 'en';
+  categories:any;
   private lodingAnimaation: AnimationItem | undefined;
   disable:boolean =false;
   
@@ -37,7 +38,12 @@ export class AddCategoryComponent {
     }
   
   @Output() linkClicked = new EventEmitter<string>();
+  
 
+
+  ngOnInit(): void {
+    this.getCategories();
+  }
   constructor(private sharedService: SharedService,
     private toastr: ToastrService,
     private categoryService: CategoryService) {
@@ -67,6 +73,17 @@ export class AddCategoryComponent {
 
   }
 
+  getCategories(){
+    this.categories = this.categoryService.getAllCategory();
+    if (this.categories.length < 1) {
+      this.categoryService.getAllCategories().subscribe(response => {
+        this.categories = response.data;
+      }, error => {
+        console.log('failure is: ', error);
+      });
+
+    }
+  }
   onSubmit(categoryForm: any) {
     this.submitted = true;
     if (categoryForm.valid && this.imageUploaded) {
@@ -79,6 +96,7 @@ export class AddCategoryComponent {
         formData.append(key, categoryForm.value[key]);
       });
 
+      formData.append('parent_id', categoryForm.value.category);
 
 
       if (this.selectedFile) {

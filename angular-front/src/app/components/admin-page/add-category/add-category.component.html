@@ -1,4 +1,4 @@
-<div class="container my-5 m-auto w-50">
+<div class="container my-5 m-auto text-center">
     <div class="product-form shadow-lg" style="background-color: #fff;">
         <h6 class="mb-2 p-4" style="color: #b83807;">
             <ng-container *ngIf="currentLanguage === 'en'; else arabicTitle">
@@ -19,7 +19,8 @@
                 <div class="mb-3">
                     <div class="form-floating">
                         <input type="text" class="form-control" id="cTitle" name="category_name" 
-                               placeholder="Your Category Title" ngModel required>
+                               placeholder="Your Category Title" ngModel required
+                               maxlength="50">
                         <label for="category_name">
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicLabelTitle">
                                 Category Title
@@ -31,6 +32,14 @@
                                 Category title is required.
                             </ng-container>
                             <ng-template #arabicErrorTitle>عنوان الفئة مطلوب.</ng-template>
+
+                            <ng-container *ngIf="categoryForm.controls['category_name']?.errors?.['maxlength']">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicErrorMaxTitle">
+                                    Category title must not exceed 50 characters.
+                                </ng-container>
+                                <ng-template #arabicErrorMaxTitle>يجب ألا يزيد عنوان الفئة عن 50 حرفًا.</ng-template>
+                            </ng-container>
+
                         </div>
                     </div>
                 </div>
@@ -39,14 +48,43 @@
                 <div class="mb-3">
                     <div class="form-floating">
                         <textarea class="form-control" id="cDescription" name="description" 
-                                  placeholder="Category Description" style="height: 50px;" ngModel ></textarea>
+                                  placeholder="Category Description" style="height: 50px;" ngModel 
+                                  maxlength="145"></textarea>
                         <label for="cDescription">
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryDescription">Category Description (optional)</ng-container>
                             <ng-template #arabicCategoryDescription>وصف الفئة (اختيارى)</ng-template>
                         </label>
+
+                        <div *ngIf="submitted && categoryForm.controls['description']?.invalid" class="text-danger">
+                                <ng-container *ngIf="currentLanguage === 'en'; else arabicErrorMaxDescription">
+                                    Category description must not exceed 145 characters.
+                                </ng-container>
+                                <ng-template #arabicErrorMaxDescription>يجب ألا يزيد وصف الفئة عن 145 حرفًا.</ng-template>
+                        </div>
                    
                     </div>
                 </div>
+
+
+            <div class="my-3">
+                <div class="form-floating">
+                  <select class="form-select" id="category" name="category" ngModel required>
+                    <option selected disabled>
+                      <ng-container *ngIf="currentLanguage === 'en'; else arabicSelectCategory">Select Category</ng-container>
+                      <ng-template #arabicSelectCategory>اختر الفئة</ng-template>
+                    </option>
+                    <option *ngFor="let element of categories" [value]="element.id">
+                      {{ element.category_name }}
+                    </option>
+                  </select>
+                  <label for="category">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryLabel">Category</ng-container>
+                    <ng-template #arabicCategoryLabel>الفئة</ng-template>
+                  </label>
+  
+                 
+                </div>
+              </div>
 
                 <!-- Category Image -->
                 <div class="mb-3">
@@ -68,6 +106,9 @@
                     </div>
                 </div>
             </div>
+
+
+
 
             <div class="container-my ">
                 <div *ngIf="disable">

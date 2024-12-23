@@ -80,6 +80,38 @@ export class CategoryService {
 
       return this.http.post(`${this.apiUrl}/update`, categoryData);
     }
+   
+    getParentCategories(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.get(this.apiUrl+'/parent', { headers });
+    }
+
+    getSubCategories(): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.get(this.apiUrl+'/sub-catogory', { headers });
+    }
+
+
+    getCategoriesByParent(id:string): Observable<any> {
+      const authToken = sessionStorage.getItem('authToken');
+
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${authToken}`
+      });
+
+      return this.http.get(this.apiUrl+'/by-parent/'+id, { headers });
+    }
+
 
 }
 

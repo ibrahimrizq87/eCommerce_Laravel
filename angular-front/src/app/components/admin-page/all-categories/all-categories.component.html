@@ -40,6 +40,11 @@
                 <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">Description</ng-container>
                 <ng-template #arabicDescription>الوصف</ng-template>
               </th>
+
+              <th scope="col">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">type</ng-container>
+                <ng-template #arabicDescription>النوع</ng-template>
+              </th>
               <th scope="col">
                 <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
                 <ng-template #arabicAction>إجراء</ng-template>
@@ -57,6 +62,8 @@
                 </p>
               </td>
               <td>{{ category.description }}</td>
+              <td *ngIf="category.parent_id">{{ category.description }}</td>
+
               <td>
                 <button (click)="updateCategory(category)" class="border-0 bg-transparent">
                   <i class="fa-solid fa-pen-to-square fs-5" style="cursor: pointer; color:#ce8d00"></i>

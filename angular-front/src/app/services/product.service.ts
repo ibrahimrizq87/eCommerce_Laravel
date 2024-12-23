@@ -67,6 +67,28 @@ export class ProductService {
     //   return this.http.get('api/products', { params });
     // }
 
+    
+
+    getProductsForOffers(page: number, itemsPerPage: number, searchCriteria: string, searchTerm: string, priceFrom: number, priceTo: number): Observable<any> {
+      let params = new HttpParams()
+        .set('page', page.toString())
+        .set('itemsPerPage', itemsPerPage.toString());
+    
+      if (searchCriteria && searchTerm) {
+        params = params.set('searchCriteria', searchCriteria).set('searchTerm', searchTerm);
+      }
+    
+      // if (priceFrom !== null) {
+      // }
+      if (priceTo >0) {
+        params = params.set('priceFrom', priceFrom.toString());
+        params = params.set('priceTo', priceTo.toString());
+      }
+    
+      return this.http.get(this.apiUrl+"/for-offers", { params });
+    }
+    
+
     getProducts(page: number, itemsPerPage: number, searchCriteria: string, searchTerm: string, priceFrom: number, priceTo: number): Observable<any> {
       let params = new HttpParams()
         .set('page', page.toString())

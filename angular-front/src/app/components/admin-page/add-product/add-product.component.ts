@@ -68,15 +68,14 @@ export class AddProductComponent {
 
 
   ngOnInit(): void {
-    this.categories = this.categoryService.getAllCategory();
-    if (this.categories.length < 1) {
-      this.categoryService.getAllCategories().subscribe(response => {
+   
+      this.categoryService.getSubCategories().subscribe(response => {
         this.categories = response.data;
       }, error => {
         console.log('failure is: ', error);
       });
 
-    }
+    
   }
   deleteSize(index: number) {
 

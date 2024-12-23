@@ -9,37 +9,81 @@
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+<div class="row">
 
-        <div class="collapse navbar-collapse" id="navbarNav">
+
+    <div class="collapse navbar-collapse " id="navbarNav">
+        <div class="w-100 d-flex justify-content-center">
+            <ul class="navbar-nav text-center">
+                <li class="nav-item nav-item-main">
+                    <a routerLink="/home" class="nav-link nav-link-main" aria-current="page">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicHome">Home</ng-container>
+                        <ng-template #arabicHome>الرئيسية</ng-template>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/contact" class="nav-link nav-link-main" aria-current="page">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicContact">Contact</ng-container>
+                        <ng-template #arabicContact>الاتصال</ng-template>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/category" class="nav-link nav-link-main" aria-current="page">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicCategory">Category</ng-container>
+                        <ng-template #arabicCategory>الفئة</ng-template>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/products" class="nav-link nav-link-main" aria-current="page">
+                        <ng-container *ngIf="currentLanguage === 'en'; else arabicProducts">Products</ng-container>
+                        <ng-template #arabicProducts>المنتجات</ng-template>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <!-- <div class="collapse navbar-collapse " id="navbarNav">
             <div class="w-100 d-flex justify-content-center">
                 <ul class="navbar-nav text-center">
-                    <li class="nav-item">
+                    <li  *ngFor="let category of categories" class="nav-item">
                         <a routerLink="/home" class="nav-link" aria-current="page">
-                            <ng-container *ngIf="currentLanguage === 'en'; else arabicHome">Home</ng-container>
-                            <ng-template #arabicHome>الرئيسية</ng-template>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a routerLink="/contact" class="nav-link" aria-current="page">
-                            <ng-container *ngIf="currentLanguage === 'en'; else arabicContact">Contact</ng-container>
-                            <ng-template #arabicContact>الاتصال</ng-template>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a routerLink="/category" class="nav-link" aria-current="page">
-                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCategory">Category</ng-container>
-                            <ng-template #arabicCategory>الفئة</ng-template>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a routerLink="/products" class="nav-link" aria-current="page">
-                            <ng-container *ngIf="currentLanguage === 'en'; else arabicProducts">Products</ng-container>
-                            <ng-template #arabicProducts>المنتجات</ng-template>
+                            {{category.category_name}}
                         </a>
                     </li>
                 </ul>
             </div>
+        </div> -->
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="w-100 d-flex justify-content-center">
+                <ul class="navbar-nav text-center">
+                    <!-- Loop through the first 4 categories -->
+                    <li *ngFor="let category of categories.slice(0, 4)" class="nav-item">
+                        <a routerLink="/category/{{category.id}}" class="nav-link" aria-current="page">
+                            {{ category.category_name }}
+                        </a>
+                    </li>
+        
+                    <!-- "More" dropdown for additional categories -->
+                    <li *ngIf="categories.length > 5" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="moreCategoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="moreCategoriesDropdown">
+                            <li *ngFor="let category of categories.slice(4)">
+                                <a routerLink="/category/{{category.id}}" class="dropdown-item">
+                                    {{ category.category_name }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
+        
+    </div>
+</div>
 
 
         <div class="d-none d-lg-flex align-items-center justify-content-lg-start me-5">

@@ -140,6 +140,13 @@ export class AllOffersComponent {
     today.setHours(0, 0, 0, 0);
     return end >= today;
   }
+
+  didOfferStart(startDate: string): boolean {
+    const start = new Date(startDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return start <= today;
+  }
   updateOffers() {
     this.offerService.getAllOffers().subscribe(
       response => {

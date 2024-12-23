@@ -67,6 +67,7 @@ export class AllProductsComponent {
         }        this.getProducts();  
 
       },error=>{
+        console.log('error happend:: ',error);
         if (this.currentLanguage == 'en'){
           this.toastr.error('some error happend');
         }else{

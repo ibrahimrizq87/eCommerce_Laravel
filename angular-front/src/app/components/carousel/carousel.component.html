@@ -32,7 +32,7 @@
                         <div>
                             <p class="price mb-1"><b>{{product.priceAfterOffers}} <strong>ILS</strong></b></p>
                         </div>
-                        <div>
+                        <div *ngIf="product.priceAfterOffers != product.price">
                             <p class="price mb-1 text-decoration-line-through">{{product.price}} <strong>ILS</strong></p>
                         </div>
                     </div>

@@ -24,7 +24,7 @@ export class UpdateCategoryComponent {
   backendErrors: any = {};
   category:any;
   currentLanguage: string ='en';
-
+  categories:any;
   private lodingAnimaation: AnimationItem | undefined;
   disable:boolean =false;
   
@@ -80,6 +80,18 @@ export class UpdateCategoryComponent {
 }
 
 
+getCategories(){
+  this.categories = this.categoryService.getAllCategory();
+  if (this.categories.length < 1) {
+    this.categoryService.getAllCategories().subscribe(response => {
+      this.categories = response.data;
+    }, error => {
+      console.log('failure is: ', error);
+    });
+
+  }
+}
+
 onSubmit(categoryForm: any) {
   this.submitted = true;
   if (categoryForm.valid ) {
@@ -94,6 +106,7 @@ onSubmit(categoryForm: any) {
 
     });
     formData.append('id', this.category.id);
+    formData.append('parent_id', categoryForm.value.category);
 
 
 

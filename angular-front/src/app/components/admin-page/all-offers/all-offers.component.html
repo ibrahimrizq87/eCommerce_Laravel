@@ -77,12 +77,25 @@
           <td>{{ offer.end_date }}</td>
           <td>
             <span [ngClass]="{ 'active': isOfferActive(offer.end_date), 'ended': !isOfferActive(offer.end_date) }">
-              {{ isOfferActive(offer.end_date) ? (currentLanguage === 'en' ? 'Active' : 'نشط') : (currentLanguage === 'en' ? 'Ended' : 'منتهي') }}
+              {{
+                isOfferActive(offer.end_date) && didOfferStart(offer.start_date) ? 
+                    (currentLanguage === 'en' ? 'Active' : 'نشط') 
+                : 
+                isOfferActive(offer.end_date) ? 
+                (currentLanguage === 'en' ? 'Not Started Yet' : 'لم يبدأ بعد')
+
+                : 
+                (currentLanguage === 'en' ? 'Ended' : 'منتهي') 
+
+            }}
             </span>
           </td>
           <td>
-            <i (click)="addProductsToOffer(offer)" class="fa-solid fa-plus px-2 fs-5" style="cursor: pointer; color: rgb(4, 92, 4);"></i>
-            <i (click)="getProducts(offer)" class="fa-solid fa-list px-2 fs-5" style="cursor: pointer;"></i>
+            <!-- <i (click)="addProductsToOffer(offer)" class="fa-solid fa-plus px-2 fs-5" style="cursor: pointer; color: rgb(4, 92, 4);"></i>
+            <i (click)="getProducts(offer)" class="fa-solid fa-list px-2 fs-5" style="cursor: pointer;"></i> -->
+
+            <i *ngIf="isOfferActive(offer.end_date) && didOfferStart(offer.start_date)" (click)="addProductsToOffer(offer)" class="fa-solid fa-plus px-2 fs-5" style="cursor: pointer; color: rgb(4, 92, 4);"></i>
+            <i *ngIf="isOfferActive(offer.end_date) && didOfferStart(offer.start_date)" (click)="getProducts(offer)" class="fa-solid fa-list px-2 fs-5" style="cursor: pointer;"></i>
             <i (click)="deleteOffer(offer)" class="fa-solid fa-trash px-2 fs-5" style="color: rgb(173, 4, 4); cursor: pointer;"></i>
           </td>
         </tr>
