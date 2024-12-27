@@ -1,0 +1,75 @@
+<div class="container my-5 m-auto text-center">
+    <div class="product-form shadow-lg" style="background-color: #fff;">
+        <h6 class="mb-2 p-4" style="color: #b83807;">
+            <ng-container *ngIf="currentLanguage === 'en'; else arabicTitle">
+                Add a New Ads
+            </ng-container>
+            <ng-template #arabicTitle>إضافة اعلان جديدة</ng-template>
+        </h6>
+
+        <div *ngIf="submitted && backendErrors && getErrorMessages().length > 0" class="text-danger text-center">
+            <ul>
+                <li class="list-unstyled" *ngFor="let error of getErrorMessages()">{{ error }}</li>
+            </ul>
+        </div>
+
+        <form (ngSubmit)="onSubmit(categoryForm)" #categoryForm="ngForm" enctype="multipart/form-data">
+            <div class="row p-5">
+
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="ad_description" name="ad_description" 
+                               placeholder="Your Category Title" ngModel 
+                               maxlength="150">
+                        <label for="ad_description">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicLabelTitle">
+                                ad content
+                                </ng-container>
+                            <ng-template #arabicLabelTitle> محتوى الاعلان</ng-template>
+                        </label>
+                       
+                    </div>
+                </div>
+
+
+            
+
+
+       
+
+                <div class="mb-3">
+                    <div class="form-floating">
+                        <input type="file" class="form-control" id="image" accept="image/*"  
+                               (change)="onFileChange($event)">
+                        <label for="image">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicLabelImage">
+                                ad Image
+                            </ng-container>
+                            <ng-template #arabicLabelImage>صورة الاعلان</ng-template>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="container-my ">
+                <div *ngIf="disable">
+                    <ng-lottie [options]="lodingAnimaationOptions" width="100px" 
+                        (animationCreated)="loadingAnimation($event)">
+                    </ng-lottie>
+                </div>
+            </div>
+                        <div class="text-center">
+                <button type="submit" class="btn w-50 fw-bolder text-white mb-5" style="background-color: #b83807;"
+                [disabled]="disable">
+                    <ng-container *ngIf="currentLanguage === 'en'; else arabicButtonText">
+                        Add ad
+                    </ng-container>
+                    <ng-template #arabicButtonText>إضافة الاعلان </ng-template>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

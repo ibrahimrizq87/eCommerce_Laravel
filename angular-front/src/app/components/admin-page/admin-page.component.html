@@ -21,6 +21,8 @@
       <app-show-customer-information *ngIf="activeComponent === 'show-customer'" (linkClicked)="showComponent($event)"></app-show-customer-information>
       <app-add-product *ngIf="activeComponent === 'add-product'" (linkClicked)="showComponent($event)" ></app-add-product>
       <app-update-product *ngIf="activeComponent === 'update-product'" (linkClicked)="showComponent($event)"></app-update-product>
+      <app-add-ads *ngIf="activeComponent === 'add-ads'" (linkClicked)="showComponent($event)"></app-add-ads>
+      <app-all-ads *ngIf="activeComponent === 'all-ads'" (linkClicked)="showComponent($event)"></app-all-ads>
 
       <app-add-offer *ngIf="activeComponent === 'add-offer'" (linkClicked)="showComponent($event)"></app-add-offer>
       <app-products-in-offer *ngIf="activeComponent === 'product-in-offer'"></app-products-in-offer>

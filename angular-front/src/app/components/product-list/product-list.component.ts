@@ -1,5 +1,5 @@
 
-import { Component, NgModule, TemplateRef } from '@angular/core';
+import { Component, TemplateRef } from '@angular/core';
 import { CommonModule, NgIfContext } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,9 @@ import { FormsModule } from '@angular/forms';
 import { SharedService } from '../../services/language.service';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 import { ToastrService } from 'ngx-toastr';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -19,18 +22,27 @@ import { ToastrService } from 'ngx-toastr';
     CommonModule,
     RouterModule,
     CustomerHeaderComponent,
-    MatPaginatorModule
+    MatPaginatorModule,
+    CarouselModule
   ],
 
 
 
   templateUrl: './product-list.component.html',
+  styleUrl: './product-list.component.css'
+
 })
 
 export class ProductListComponent {
   products: Product[] = [];
+  subCategories:any;
   currentLanguage: string = 'en';
   category: any;
+  selectedId: number | null = null;
+  selectedsuBId: number | null = null;
+
+  
+  categories:any [] |null [] =[];
 
   page: number = 1;
   itemsPerPage: number = 20;
@@ -41,9 +53,25 @@ export class ProductListComponent {
   priceTo: number  = 0;
   totalProducts: number = 0;
   searchCriteria: string = 'name';
-  
+  isShowCategories=false;
   noProductsTemplate: TemplateRef<NgIfContext<any>> | null | undefined;
-
+  customOptions: OwlOptions = {
+    loop: true, 
+    margin: 10, 
+    nav: true, 
+    navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'], 
+    responsive: {
+      0: {
+        items: 1
+      },
+      600: {
+        items: 3
+      },
+      1000: {
+        items: 5 
+      }
+    }
+  };
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
@@ -58,7 +86,36 @@ export class ProductListComponent {
       this.currentLanguage = language;
     });
   }
+  parents: any;
 
+  getCategories(){
+    this.categoryService.getParentCategories().subscribe(response => {
+      this.parents = response.data;
+    }, error => {
+      console.log('failure is: ', error);
+    });
+  }
+
+  onItemClick(parent: any): void {
+    this.selectedId = parent.id;
+
+    this.categoryService.getCategoriesByParent(parent.id).subscribe(response => {
+   this.subCategories = response.data;
+          }, error => {
+      console.log('failure is: ', error);
+    });
+
+  }
+  onSubItemClick(parent: any): void {
+    this.selectedsuBId = parent.id;
+    this.searchTerm= parent.category_name;
+    this.searchCriteria = 'category';
+ this.getProducts();
+
+  }
+  showCategories(){
+this.isShowCategories = !this.isShowCategories;
+  }
   getProducts(): void {
     this.productService.getProducts(this.currentPage, this.itemsPerPage, this.searchCriteria, this.searchTerm, this.priceFrom, this.priceTo)
       .subscribe(response => {
@@ -217,6 +274,7 @@ if (product.colors.length>0){
   ngOnInit(): void {
     this.checkCategoty();
     this.getProducts();
+    this. getCategories();
   }
 
   checkCategoty(){

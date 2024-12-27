@@ -1,44 +1,113 @@
 <div class="container my-5 p-auto m-auto">
 
-    <div *ngIf="products && products.length > 0; else noProductsTemplate">
-        <div>
-            <div class="input-group my-3" style="width: 450px;">
-                <select [(ngModel)]="searchCriteria" (change)="changeCriteria()" class="form-select rounded-5">
-                    <option value="name">
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByName">Search by Name</ng-container>
-                        <ng-template #arabicSearchByName>البحث بالاسم</ng-template>
-                    </option>
-                    <option value="category">
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByCategory">Search by Category</ng-container>
-                        <ng-template #arabicSearchByCategory>البحث بالفئة</ng-template>
-                    </option>
-                    <option value="price">
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByPrice">Search by Price Range</ng-container>
-                        <ng-template #arabicSearchByPrice>البحث حسب النطاق السعري</ng-template>
-                    </option>
-                </select>
-                <div *ngIf="searchCriteria !== 'price'; else priceRangeInput" class="mx-2">
-                    <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control border rounded-pill" style="max-width: fit-content;" />
+    <div *ngIf="isShowCategories">
+                 
+        <div class="parent-container text-center my-5">
+            <owl-carousel-o [options]="customOptions">
+              <ng-template carouselSlide *ngFor="let parent of parents">
+                <div 
+                  class="parent-card" 
+                  [ngClass]="{ 'selected': parent.id === selectedId }" 
+                  (click)="onItemClick(parent)"
+                >
+                  <img 
+                    *ngIf="parent.image" 
+                    [src]="parent.image" 
+                    alt="Parent Image" 
+                    class="parent-image"
+                  >
+                  <img 
+                    *ngIf="!parent.image" 
+                    src="images/barakah submark.png" 
+                    alt="Parent Image" 
+                    class="parent-image"
+                  >
+                  <p class="parent-name mt-3">{{ parent.category_name }}</p>
                 </div>
-
-                <ng-template #priceRangeInput>
-                    <span style="padding-top:8px; padding-right:10px; padding-left:10px">
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicFrom">From</ng-container>
-                        <ng-template #arabicFrom>من</ng-template>
-                    </span>
-                    <input type="number" [(ngModel)]="priceFrom" placeholder="From" class="form-control border rounded-pill" style="max-width: fit-content;" />
-                    <span style="padding-top:8px; padding-right:10px; padding-left:10px">
-                        <ng-container *ngIf="currentLanguage === 'en'; else arabicTo">To</ng-container>
-                        <ng-template #arabicTo>إلى</ng-template>
-                    </span>
-                    <input type="number" [(ngModel)]="priceTo" placeholder="To" class="form-control border rounded-pill" style="max-width: fit-content;" />
-                </ng-template>
-
-                <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
-                    <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
-                </button>
+              </ng-template>
+            </owl-carousel-o>
+      
             </div>
-        </div>
+    
+    
+        <div *ngIf="subCategories && subCategories.length > 0 " class="parent-container text-center my-5">
+            <owl-carousel-o [options]="customOptions">
+              <ng-template carouselSlide *ngFor="let parent of subCategories">
+                <div 
+                  class="parent-card" 
+                  [ngClass]="{ 'selected': parent.id === selectedsuBId }" 
+                  (click)="onSubItemClick(parent)"
+                >
+                  <img 
+                    *ngIf="parent.image" 
+                    [src]="parent.image" 
+                    alt="Parent Image" 
+                    class="parent-image"
+                  >
+                  <img 
+                    *ngIf="!parent.image" 
+                    src="images/barakah submark.png" 
+                    alt="Parent Image" 
+                    class="parent-image"
+                  >
+                  <p class="parent-name mt-3">{{ parent.category_name }}</p>
+                </div>
+              </ng-template>
+            </owl-carousel-o>
+      
+            </div>
+            </div>
+    
+            <div class="container d-flex flex-wrap">
+                <div class="col-lg-9 col-md-8 col-sm-12 d-flex flex-grow-1  my-3 ">
+                    <select [(ngModel)]="searchCriteria" (change)="changeCriteria()" class="form-select rounded-5">
+                        <option value="name">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByName">Search by Name</ng-container>
+                            <ng-template #arabicSearchByName>البحث بالاسم</ng-template>
+                        </option>
+                        <option value="category">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByCategory">Search by Category</ng-container>
+                            <ng-template #arabicSearchByCategory>البحث بالفئة</ng-template>
+                        </option>
+                        <option value="price">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSearchByPrice">Search by Price Range</ng-container>
+                            <ng-template #arabicSearchByPrice>البحث حسب النطاق السعري</ng-template>
+                        </option>
+                    </select>
+                    <div *ngIf="searchCriteria !== 'price'; else priceRangeInput" class="mx-2">
+                        <input type="text" [(ngModel)]="searchTerm" placeholder="Search products..." class="form-control border rounded-pill" style="max-width: fit-content;" />
+                    </div>
+    
+                    <ng-template #priceRangeInput>
+                        <span style="padding-top:8px; padding-right:10px; padding-left:10px">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicFrom">From</ng-container>
+                            <ng-template #arabicFrom>من</ng-template>
+                        </span>
+                        <input type="number" [(ngModel)]="priceFrom" placeholder="From" class="form-control border rounded-pill" style="max-width: fit-content;" />
+                        <span style="padding-top:8px; padding-right:10px; padding-left:10px">
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicTo">To</ng-container>
+                            <ng-template #arabicTo>إلى</ng-template>
+                        </span>
+                        <input type="number" [(ngModel)]="priceTo" placeholder="To" class="form-control border rounded-pill" style="max-width: fit-content;" />
+                    </ng-template>
+    
+                    <button class="btn border-0 rounded-pill" type="button" style="margin-left: -1px;">
+                        <i (click)="search()" class="fa fa-search" style="color: #FF3A20;"></i>
+                    </button>
+                </div>
+                <div class="col-lg-3 col-md-4 col-sm-12 my-3 border-start ">
+                    <a class="ms-3 btn btn-success" (click)='showCategories()'>
+                        <ng-container *ngIf="currentLanguage === 'en'; else showCat">show categories</ng-container>
+                        <ng-template #showCat>عرض الفئات</ng-template>
+                    </a>
+                </div>
+            </div>
+    
+
+    <div *ngIf="products && products.length > 0; else noProductsTemplate">
+
+        
+
 
 
         <div class="container shadow-lg my-5 p-5 m-auto">

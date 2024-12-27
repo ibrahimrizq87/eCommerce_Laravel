@@ -15,10 +15,10 @@
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicOrderDate">Order Date</ng-container>
                         <ng-template #arabicOrderDate>تاريخ الطلب</ng-template>
                     </th>
-                    <th scope="col">
+                    <!-- <th scope="col">
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicPayment">Payment</ng-container>
                         <ng-template #arabicPayment>الدفع</ng-template>
-                    </th>
+                    </th> -->
                     <th scope="col">
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicStatus">Status</ng-container>
                         <ng-template #arabicStatus>الحالة</ng-template>
@@ -34,13 +34,13 @@
                     <td>{{ order.total | currency }}</td>
                     <td>{{ order.created_at | date:'dd/MM/yyyy' }}</td>
                     
-                    <td [ngClass]="{
+                    <!-- <td [ngClass]="{
                         'text-muted': order.payment_status === 'not_payed' && order.payment === 'onDelivery',
                         'text-success': order.payment_status === 'payed',
                         'text-warning': order.payment_status === 'not_payed' && order.payment === 'stripe',
                       }">
-                    
-                    <ng-container *ngIf="currentLanguage === 'en'; else arabicPaymentStatus">
+                     -->
+                    <!-- <ng-container *ngIf="currentLanguage === 'en'; else arabicPaymentStatus">
                         {{ order.payment_status === 'not_payed' && order.payment === 'onDelivery' 
                             ? 'Payment on Delivery' 
                             : order.payment_status === 'payed' 
@@ -49,8 +49,8 @@
                                 ? 'Needs to be paid'
                                 : 'Unknown Payment Status'
                         }}
-                    </ng-container>
-                    <ng-template #arabicPaymentStatus>
+                    </ng-container> -->
+                    <!-- <ng-template #arabicPaymentStatus>
                         {{ order.payment_status === 'not_payed' && order.payment === 'onDelivery' 
                             ? 'الدفع عند التسليم' 
                             : order.payment_status === 'payed' 
@@ -59,8 +59,8 @@
                                 ? 'يجب الدفع'
                                 : 'حالة دفع غير معروفة'
                         }}
-                    </ng-template>
-                  </td>
+                    </ng-template> -->
+                  <!-- </td> -->
 
                     <td>
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicOrderStatus">{{ order.status }}</ng-container>

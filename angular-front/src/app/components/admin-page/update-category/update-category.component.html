@@ -64,14 +64,13 @@
 
             <div class="my-3">
                 <div class="form-floating">
-                  <select class="form-select" id="category" name="category" ngModel required>
-                    <option selected disabled>
-                      <ng-container *ngIf="currentLanguage === 'en'; else arabicSelectCategory">Select Category</ng-container>
-                      <ng-template #arabicSelectCategory>اختر الفئة</ng-template>
-                    </option>
-                    <option *ngFor="let element of categories" [value]="element.id">
-                      {{ element.category_name }}
-                    </option>
+                  <select class="form-select" id="category" name="category"  [(ngModel)]="category.parent_id" >
+                 
+                        <option *ngFor="let element of categories" 
+                        [ngValue]="element.id"
+                                >
+                          {{ element.category_name }}
+                        </option>
                   </select>
                   <label for="category">
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicCategoryLabel">Category</ng-container>
@@ -82,13 +81,22 @@
                 </div>
               </div>
               
-                <div class="mb-3">
+                <div class="mb-3" *ngIf="category.image">
                     <div class="form-floating">
                         <label>
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicCurrentImage">Current Image</ng-container>
                             <ng-template #arabicCurrentImage>الصورة الحالية</ng-template>
                         </label>
-                        <img width="150px" height="150px" [src]="category.image"/>
+                        <img  width="150px" height="150px" [src]="category.image"/>
+                    </div>
+                </div>
+                <div class="mb-3" *ngIf="!category.image">
+                    <div class="form-floating" >
+                        <label>
+                            <ng-container *ngIf="currentLanguage === 'en'; else arabicCurrentImage">Current Image</ng-container>
+                            <ng-template #arabicCurrentImage>الصورة الحالية</ng-template>
+                        </label>
+                        <img  width="150px" height="150px" src= "images/barakah submark.png" />
                     </div>
                 </div>
 
@@ -112,7 +120,7 @@
             </div>
                    
                    
-            <div class="text-center">
+            <div class="text-center mb-3">
                 <button type="submit" class="btn w-50 fw-bolder text-white" style="background-color: #b83807;"
                 [disabled]="disable">
                     <ng-container *ngIf="currentLanguage === 'en'; else arabicUpdateButton">Update Category</ng-container>

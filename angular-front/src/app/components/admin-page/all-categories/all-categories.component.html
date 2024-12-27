@@ -40,6 +40,10 @@
                 <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">Description</ng-container>
                 <ng-template #arabicDescription>الوصف</ng-template>
               </th>
+              <th scope="col">
+                <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">main or sub</ng-container>
+                <ng-template #arabicDescription>رئيسية / فرعية</ng-template>
+              </th>
 
               <th scope="col">
                 <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">type</ng-container>
@@ -53,16 +57,21 @@
           </thead>
           <tbody>
             <tr *ngFor="let category of filteredCategories | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
-              <td scope="col">
+              <td scope="col" *ngIf="category.image">
                 <img [src]="category.image" style="height:50px;width:50px;object-fit: cover;" alt="">
               </td>
+              <td scope="col" *ngIf="!category.image">
+                <img src= "images/barakah submark.png" style="height:50px;width:50px;object-fit: cover;" alt="">
+              </td>
+             
               <td style="font-size: 14px;">
                 <p class="product">
                   <strong>{{ category.category_name }}</strong>
                 </p>
               </td>
               <td>{{ category.description }}</td>
-              <td *ngIf="category.parent_id">{{ category.description }}</td>
+              <td *ngIf="!category.parent_id">رئيسية</td>
+              <td *ngIf="category.parent_id" style="color:green"> فرعية </td>
 
               <td>
                 <button (click)="updateCategory(category)" class="border-0 bg-transparent">

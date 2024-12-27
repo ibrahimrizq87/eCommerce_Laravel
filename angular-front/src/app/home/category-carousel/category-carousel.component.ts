@@ -44,7 +44,7 @@ categories:any [] |null [] =[];
     
     
     ngOnInit(): void {
-      this.categoryService.getAllCategories().subscribe(response => {
+      this.categoryService.getSubCategories().subscribe(response => {
         // console.log(response);
         this.categories = response.data;
      

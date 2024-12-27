@@ -1,4 +1,49 @@
+
 <div class="container shadow-lg my-5 p-5 m-auto">
+  <div class="parent-container text-center my-5">
+    <h3>
+     <ng-container *ngIf="currentLanguage === 'en'; else catName">
+       Main Categories
+   </ng-container>
+   <ng-template #catName>
+       الفئات الرئيسية
+   </ng-template>
+  </h3>
+   </div>
+
+
+   <div class="parent-container text-center my-5">
+    <owl-carousel-o [options]="customOptions">
+      <ng-template carouselSlide *ngFor="let parent of parents">
+        <div 
+          class="parent-card" 
+          [ngClass]="{ 'selected': parent.id === selectedId }" 
+          (click)="onItemClick(parent)"
+        >
+          <img 
+            *ngIf="parent.image" 
+            [src]="parent.image" 
+            alt="Parent Image" 
+            class="parent-image"
+          >
+          <img 
+            *ngIf="!parent.image" 
+            src="images/barakah submark.png" 
+            alt="Parent Image" 
+            class="parent-image"
+          >
+          <p class="parent-name mt-3">{{ parent.category_name }}</p>
+        </div>
+      </ng-template>
+    </owl-carousel-o>
+  </div>
+  </div>
+
+<div *ngIf="categories && categories.length > 0; else noCategory" class="container shadow-lg my-5 p-5 m-auto">
+
+
+  
+
   <div>
     <div class="input-group" style="width: 300px;">
 
@@ -14,7 +59,10 @@
     <div class="col-md-3 mt-5"
       *ngFor="let element of filteredCategories | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
       <a (click)="onCategoryClick(element)" class="card h-100 category-card">
-        <img src="{{element.image}}" class="card-img" style="height:220px; object-fit:cover;" alt="...">
+        <img *ngIf="element.image" src="{{element.image}}" class="card-img" style="height:220px; object-fit:cover;" alt="...">
+        <img *ngIf="!element.image" src= "images/barakah submark.png" class="card-img" style="height:220px; object-fit:cover;" alt="...">
+
+        
         <div class="card-img-overlay">
           <p class="card-title" style="font-size:20px;"><strong>{{element.category_name}}</strong></p>
           <p class="card-text">{{ element.description.length > 150 ? (element.description | slice:0:150) + '...' :
@@ -32,3 +80,20 @@
     <pagination-controls (pageChange)="page = $event"></pagination-controls>
   </div>
 </div>
+
+
+
+<ng-template #noCategory>
+  <div class="container text-center p-5 shadow-lg">
+    <img src="images/not-found.jpg" style="height:200px; width:250px;" alt="">
+    <h3 class="text-muted">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicNoProducts">No subcategories available in this main category.</ng-container>
+        <ng-template #arabicNoProducts>لا توجد فئات فرعية فى هذه الفئة الرئيسية بعد .</ng-template>
+    </h3>
+    <p class="text-muted">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicCheckLater">Please check  explore other categories!</ng-container>
+        <ng-template #arabicCheckLater>يرجى التحقق لاحقًا أو استكشاف الفئات الأخرى!</ng-template>
+    </p>
+  
+  </div>
+</ng-template>

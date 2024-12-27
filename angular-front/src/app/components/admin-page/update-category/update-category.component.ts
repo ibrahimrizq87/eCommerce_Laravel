@@ -69,6 +69,8 @@ export class UpdateCategoryComponent {
 
   ngOnInit(): void {
 
+    this.getCategories();
+
   
   this.category =this.categoryService.getSelectedCategory();
   if(this.category){
@@ -81,15 +83,14 @@ export class UpdateCategoryComponent {
 
 
 getCategories(){
-  this.categories = this.categoryService.getAllCategory();
-  if (this.categories.length < 1) {
-    this.categoryService.getAllCategories().subscribe(response => {
-      this.categories = response.data;
-    }, error => {
-      console.log('failure is: ', error);
-    });
+  this.categoryService.getParentCategories().subscribe(response => {
+    this.categories = response.data;
+    // console.log(this.categories);
+    // console.log(this.category);
 
-  }
+  }, error => {
+    console.log('failure is: ', error);
+  });
 }
 
 onSubmit(categoryForm: any) {
@@ -106,7 +107,9 @@ onSubmit(categoryForm: any) {
 
     });
     formData.append('id', this.category.id);
-    formData.append('parent_id', categoryForm.value.category);
+if( categoryForm.value.category){
+  formData.append('parent_id', categoryForm.value.category);
+}
 
 
 

@@ -38,6 +38,12 @@
         <ng-template #arabicAllCategories>كل الفئات</ng-template>
       </li>
     </a>
+    <a>
+      <li class="my-4" (click)="onLinkClick('all-ads')" [ngClass]="{'active': selected === 'all-ads'}">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAllAds">All Ads</ng-container>
+        <ng-template #arabicAllAds>كل الاعلانات</ng-template>
+      </li>
+    </a>
 
     <a>
       <li class="my-4" (click)="onLinkClick('all-customers')" [ngClass]="{'active': selected === 'all-customers'}">

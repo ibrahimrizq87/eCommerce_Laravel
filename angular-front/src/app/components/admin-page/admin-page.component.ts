@@ -28,12 +28,16 @@ import { AddDeliveryComponent } from './add-delivery/add-delivery.component';
 import { DeliveriesComponent } from './deliveries/deliveries.component';
 import { ViewDeliveryComponent } from './view-delivery/view-delivery.component';
 import { DeletedOrdersComponent } from './deleted-orders/deleted-orders.component';
+import { AllAdsComponent } from './all-ads/all-ads.component';
+import { AddAdsComponent } from './add-ads/add-ads.component';
 
 
 @Component({
   selector: 'app-admin-page',
   standalone: true,
   imports: [
+    AddAdsComponent,
+    AllAdsComponent,
     DeletedOrdersComponent,
     ViewDeliveryComponent,
     DeliveriesComponent,

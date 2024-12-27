@@ -1,0 +1,68 @@
+<div class="container">
+    <h6 class="ps-5 pt-5 pb-3" style="color:#b83807;">
+      <ng-container *ngIf="currentLanguage === 'en'; else arabicCategories">All Categories</ng-container>
+      <ng-template #arabicCategories>جميع الاعلانات</ng-template>
+    </h6>
+  
+    <div class="text-center my-3">
+      <button class="btn add" (click)="addCategory()">
+        <ng-container *ngIf="currentLanguage === 'en'; else arabicAddCategory">Add Category</ng-container>
+        <ng-template #arabicAddCategory>إضافة اعلان</ng-template>
+      </button>
+    </div>
+  
+    <div class="container">
+      <div>
+     
+        <div class="container mt-2">
+          <table class="table text-center">
+            <thead>
+              <tr>
+                <th scope="col">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicImage">Image</ng-container>
+                  <ng-template #arabicImage>صورة</ng-template>
+                </th>
+                <th scope="col">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicDescription">Description</ng-container>
+                  <ng-template #arabicDescription>الوصف</ng-template>
+                </th>
+              
+                <th scope="col">
+                  <ng-container *ngIf="currentLanguage === 'en'; else arabicAction">Action</ng-container>
+                  <ng-template #arabicAction>إجراء</ng-template>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of filteredCategories | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+                <td scope="col" *ngIf="category.image">
+                  <img [src]="category.image" style="height:50px;width:50px;object-fit: cover;" alt="">
+                </td>
+                <td scope="col" *ngIf="!category.image">
+                  <img src= "images/barakah submark.png" style="height:50px;width:50px;object-fit: cover;" alt="">
+                </td>
+               
+              
+                <td>{{ category.ad_description }}</td>
+                
+  
+                <td>
+                
+                  <a (click)="deleteCategory(category)" style="cursor:pointer;">
+                    <i class="fa-solid fa-trash px-3 fs-5" style="color:rgb(173, 4, 4)"></i>
+                  </a>
+                </td> 
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        <div class="d-flex justify-content-center my-2">
+          <pagination-controls (pageChange)="page = $event"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  
+   
+  </div>
+  

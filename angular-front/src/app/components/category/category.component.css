@@ -44,3 +44,58 @@
 .btn {
   border-left: none; 
 }
+
+
+
+.owl-nav button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #000;
+  cursor: pointer;
+}
+
+.owl-nav button.owl-prev {
+  left: -20px;
+}
+
+.owl-nav button.owl-next {
+  right: -20px;
+}
+
+.owl-nav button:hover {
+  color: #b83807;
+}
+.parent-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.parent-card {
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+}
+
+.parent-card.selected .parent-image {
+  border-color: #ffc857;
+  transform: scale(1.1);
+}
+
+.parent-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+.parent-card:hover .parent-image {
+  transform: scale(1.05);
+}

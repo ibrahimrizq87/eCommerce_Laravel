@@ -11,6 +11,9 @@ import { CartService } from '../../../services/cart.service';
 import { SharedService } from '../../../services/language.service';
 import { FooterComponent } from '../../footer/footer.component';
 import { ToastrService } from 'ngx-toastr';
+import { OwlOptions } from 'ngx-owl-carousel-o';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { AdService } from '../../../services/ad.service';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +27,8 @@ import { ToastrService } from 'ngx-toastr';
     RouterModule,
     CarouselComponent,
     CategoryCarouselComponent,
-    ProductCarouselComponent
+    ProductCarouselComponent,
+    CarouselModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -32,17 +36,54 @@ import { ToastrService } from 'ngx-toastr';
 export class HomeComponent {
   products: Product[] = [];
   currentLanguage: string = 'en';
+
+
+
+
+    customOptions: OwlOptions = {
+      loop: true,
+      autoplay: true,
+      autoplayTimeout: 3000,
+      autoplayHoverPause: true,
+      mouseDrag: true,
+      touchDrag: true,
+      navSpeed: 400,
+      navText: ['<', '>'],
+      responsive: {
+        0: { items: 1 },
+        600: { items: 2 },
+        1000: { items: 4 },
+        1400: { items: 5 }
+      },
+      nav: false,
+      dots: false
+    };
   constructor(private productService: ProductService,
     private router: Router,
     private sharedService: SharedService,
     private toastr: ToastrService,
-    private cartService: CartService
+    private cartService: CartService,
+    private adService:AdService
   ) {
     this.sharedService.language$.subscribe(language => {
       this.currentLanguage = language;
     });
   }
+
+ads:any;
+  updateAds(){
+    this.adService.getAllAds().subscribe(response => {
+      this.ads = response;
+         
+  
+    },
+    error => {
+      
+
+    });
+  }
   ngOnInit(): void {
+    this.updateAds();
     this.updateProducts();
   }
   viewProduct(product: any) {
@@ -54,6 +95,7 @@ export class HomeComponent {
     this.productService.getMostOfferedProducts().subscribe(
       response => {
         this.products = response.data;
+        console.log(this.products);
         this.products.forEach(product => {
           product.priceAfterOffers = product.price;
           product.totalOffers = 0;
@@ -71,7 +113,7 @@ export class HomeComponent {
           });
         });
       }, error => {
-        // console.log('an error happpend ::' , error)
+        console.log('an error happpend ::' , error)
       }
     );
   }

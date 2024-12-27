@@ -6,23 +6,31 @@ import { ToastrService } from 'ngx-toastr';
 import { SharedService } from '../../../services/language.service';
 import { AnimationOptions, LottieComponent } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
+import { AdService } from '../../../services/ad.service';
+
+
 
 @Component({
-  selector: 'app-add-category',
+  selector: 'app-add-ads',
   standalone: true,
   imports: [CommonModule,
     FormsModule,
     LottieComponent
   ],
-  templateUrl: './add-category.component.html',
-  styleUrl: './add-category.component.css'
+  templateUrl: './add-ads.component.html',
+  styleUrl: './add-ads.component.css'
 })
-export class AddCategoryComponent {
+export class AddAdsComponent {
+
+  backendErrors: any = {};
+
   selectedFile: File | null = null;
   submitted: boolean = false;
   imageUploaded = false;
   currentLanguage: string = 'en';
   categories:any;
+  @Output() linkClicked = new EventEmitter<string>();
+
   private lodingAnimaation: AnimationItem | undefined;
   disable:boolean =false;
   
@@ -37,22 +45,21 @@ export class AddCategoryComponent {
   
     }
   
-  @Output() linkClicked = new EventEmitter<string>();
   
 
 
-  ngOnInit(): void {
-    this.getCategories();
-  }
   constructor(private sharedService: SharedService,
     private toastr: ToastrService,
-    private categoryService: CategoryService) {
+    private adService: AdService) {
     this.sharedService.language$.subscribe(language => {
       this.currentLanguage = language;
     });
   }
+  onFileChange(event: any) {
+    this.selectedFile = event.target.files[0];
+    this.imageUploaded = event.target.files && event.target.files.length > 0;
 
-  backendErrors: any = {};
+  }
   getErrorMessages(): string[] {
     const errorMessages: string[] = [];
     if (this.backendErrors) {
@@ -65,26 +72,6 @@ export class AddCategoryComponent {
     return errorMessages;
   }
 
-
-
-  onFileChange(event: any) {
-    this.selectedFile = event.target.files[0];
-    this.imageUploaded = event.target.files && event.target.files.length > 0;
-
-  }
-
-  getCategories(){
-    // this.categories = this.categoryService.getAllCategory();
-    this.categoryService.getParentCategories().subscribe(response => {
-      this.categories = response.data;
-    }, error => {
-      console.log('failure is: ', error);
-    });
-    // if (this.categories.length < 1) {
-     
-
-    // }
-  }
   onSubmit(categoryForm: any) {
     this.submitted = true;
     if (categoryForm.valid) {
@@ -93,17 +80,17 @@ export class AddCategoryComponent {
 
 
 
-      Object.keys(categoryForm.value).forEach(key => {
-        formData.append(key, categoryForm.value[key]);
-      });
+  
+      formData.append('ad_description', categoryForm.value['ad_description'] || '');
 
-      formData.append('parent_id', categoryForm.value.category);
+      
 
 
       if (this.selectedFile) {
         formData.append('image', this.selectedFile);
       }
-      this.categoryService.addCategory(formData).subscribe(
+
+      this.adService.addAd(formData).subscribe(
         response => {
           this.disable = false;
 
@@ -112,7 +99,7 @@ export class AddCategoryComponent {
           }else{
             this.toastr.success('تمت العمليه بنجاح');
           }
-          this.linkClicked.emit('all-categories');
+          this.linkClicked.emit('all-ads');
 
         }, error => {
           this.disable = false;
@@ -123,7 +110,11 @@ export class AddCategoryComponent {
               error.error.errors[key].forEach((message: String) => {
               });
             });
+          }else if(error.status === 403){
+            this.toastr.error('يجب ادخال صوره او وصف للاعلان');
+
           }
+          console.log(error )
           if (this.currentLanguage == 'en'){
             this.toastr.error('some error happend');
           }else{
