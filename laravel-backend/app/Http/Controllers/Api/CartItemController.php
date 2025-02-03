@@ -166,7 +166,6 @@ if ($exists) {
      */
     public function destroy(CartItem $cartItem)
     {
-        
         $cartItem->delete();
         return response()->json(['message' => 'CartItem  deleted successfully.']);
     }

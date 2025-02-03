@@ -68,10 +68,10 @@
             <table *ngIf="orders && orders.length > 0; else noProductsTemplate" class="table text-center">
                 <thead>
                     <tr>
-                        <th scope="col">
+                        <!-- <th scope="col">
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicTotal">Total</ng-container>
                             <ng-template #arabicTotal>إجمالي</ng-template>
-                        </th>
+                        </th> -->
                         <th scope="col">
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicOrderedAt">Ordered At</ng-container>
                             <ng-template #arabicOrderedAt>تم الطلب في</ng-template>
@@ -80,10 +80,10 @@
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicPayment">Payment</ng-container>
                             <ng-template #arabicPayment>الدفع</ng-template>
                         </th>
-                        <th scope="col">
+                        <!-- <th scope="col">
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicAdditionalMoney">Additional Money</ng-container>
                             <ng-template #arabicAdditionalMoney>أموال إضافية</ng-template>
-                        </th>
+                        </th> -->
                         <th scope="col">
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicFinalTotal">Final Total</ng-container>
                             <ng-template #arabicFinalTotal>الإجمالي النهائي</ng-template>
@@ -100,7 +100,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of orders">
-                        <td>{{ item.payment === 'onDelivery' ? item.total - 10 : item.total }} <strong>ILS</strong></td>
+                        <!-- <td>{{ item.payment === 'onDelivery' ? item.total - 10 : item.total }} <strong>ILS</strong></td> -->
                         <td>{{ item.created_at }}</td>
 
                         <td [ngClass]="{
@@ -127,7 +127,7 @@
                                     : 'حالة الدفع غير معروفة' }}
                             </ng-template>
                         </td>
-                        <td>{{ item.payment === 'onDelivery' ? '10' : '0' }} <strong>ILS</strong></td>
+                        <!-- <td>{{ item.payment === 'onDelivery' ? '10' : '0' }} <strong>ILS</strong></td> -->
                         <td>{{ item.total }} <strong>ILS</strong></td>
                         <td>
                             <button type="button" class="btn me-1" (click)="getCustomer(item)">

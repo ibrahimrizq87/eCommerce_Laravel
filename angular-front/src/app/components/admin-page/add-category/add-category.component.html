@@ -68,7 +68,7 @@
 
             <div class="my-3">
                 <div class="form-floating">
-                  <select class="form-select" id="category" name="category" ngModel required>
+                  <select class="form-select" id="category" name="category" ngModel >
                     <option selected disabled>
                       <ng-container *ngIf="currentLanguage === 'en'; else arabicSelectCategory">Select Category</ng-container>
                       <ng-template #arabicSelectCategory>اختر الفئة</ng-template>
@@ -89,7 +89,7 @@
                 <!-- Category Image -->
                 <div class="mb-3">
                     <div class="form-floating">
-                        <input type="file" class="form-control" id="image" accept="image/*" multiple required 
+                        <input type="file" class="form-control" id="image" accept="image/*" multiple  
                                (change)="onFileChange($event)">
                         <label for="image">
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicLabelImage">

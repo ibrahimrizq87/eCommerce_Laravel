@@ -31,7 +31,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let order of orders">
-                    <td>{{ order.total | currency }}</td>
+                    <td>{{ order.total + ' ILS' }}</td>
                     <td>{{ order.created_at | date:'dd/MM/yyyy' }}</td>
                     
                     <!-- <td [ngClass]="{
@@ -71,10 +71,10 @@
                         <button type="button" class="btn me-1" style="color:#000" (click)="viewOrder(order)">
                             <i class="fa-solid fa-eye fs-4"></i>
                         </button>
-                        <button type="button" class="btn me-1" style="color: #007c00" (click)="payForOrder(order)" 
+                        <!-- <button type="button" class="btn me-1" style="color: #007c00" (click)="payForOrder(order)" 
                                 [disabled]="order.payment_status === 'canceled' || order.payment_status === 'payed'">
                             <img src="images/payment.png" alt="" style="width:30px; height:30px;">
-                        </button>
+                        </button> -->
                         <button type="button" class="btn me-1" style="color: #991f00 ;"  
                                 (click)="deleteOrder(order)" [disabled]="order.status !== 'waiting' || order.payment_status === 'payed'">
                             <i class="fa-solid fa-trash-can fs-4"></i>

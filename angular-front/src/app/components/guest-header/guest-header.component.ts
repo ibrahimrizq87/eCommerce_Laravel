@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedService } from '../../services/language.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-guest-header',
@@ -14,7 +17,7 @@ export class GuestHeaderComponent {
 
 
 
-constructor(private sharedService:SharedService){
+constructor(private sharedService:SharedService ,private http: HttpClient){
 
 }
 
@@ -24,6 +27,7 @@ constructor(private sharedService:SharedService){
     this.loadLanguage();
 
   }
+
 
   changeLanguage(lang: string) {
     this.currentLanguage = lang;

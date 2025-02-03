@@ -292,7 +292,7 @@ export class ViewProductComponent {
 
       if (endDate.getTime() >= today.getTime()) {
         myproduct.totalOffers += offerAdded.offer.discount;
-        myproduct.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * myproduct.price);
+        // myproduct.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * myproduct.price);
       }
 
     });

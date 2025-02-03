@@ -116,9 +116,9 @@ updateOrderItems(){
 
 
       });
-      if (this.order.payment =='onDelivery'){
-        this.totalPriceAfterOffers+=this.payOnDelivery;
-      }
+      // if (this.order.payment =='onDelivery'){
+      //   this.totalPriceAfterOffers+=this.payOnDelivery;
+      // }
 
     },error=>{
       if(error.status === 404){

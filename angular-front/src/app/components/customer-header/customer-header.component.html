@@ -55,32 +55,6 @@
             </div>
         </div> -->
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="w-100 d-flex justify-content-center">
-                <ul class="navbar-nav text-center">
-                    <!-- Loop through the first 4 categories -->
-                    <li *ngFor="let category of categories.slice(0, 4)" class="nav-item">
-                        <a routerLink="/category/{{category.id}}" class="nav-link" aria-current="page">
-                            {{ category.category_name }}
-                        </a>
-                    </li>
-        
-                    <!-- "More" dropdown for additional categories -->
-                    <li *ngIf="categories.length > 5" class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="moreCategoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            More
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="moreCategoriesDropdown">
-                            <li *ngFor="let category of categories.slice(4)">
-                                <a routerLink="/category/{{category.id}}" class="dropdown-item">
-                                    {{ category.category_name }}
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
         
     </div>
 </div>

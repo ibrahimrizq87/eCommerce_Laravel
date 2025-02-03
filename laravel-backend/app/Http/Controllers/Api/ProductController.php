@@ -525,16 +525,27 @@ foreach ($oldImages as $image) {
                             $product->sizes->each(function ($size) {
                                 $size->delete();
                             });
+
+
+                            $lowestPrice = $product->price;
+
+                                            // return response()->json(['error' => $size['price']], 500);
+                              
                             foreach ($data['sizes'] as $size) {
                                 // return response()->json(['error' => $size['price']], 500);
-    
+                                if($lowestPrice > $size['price']){
+                                    $lowestPrice =$size['price'];
+                                }
                     $sizeObject = new Size();
                     $sizeObject->size = $size['size'];
                     $sizeObject->price =  $size['price'];
                     $sizeObject->product_id =  $product->id;
                     $sizeObject->save();
                 }
-    
+
+
+                $product->price =$lowestPrice;
+                $product->save();
             return response()->json(['message' => 'Product updates successfully', 'product' => $product], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -663,9 +674,13 @@ foreach ($oldImages as $image) {
                 }
             }
 
+            $lowestPrice = $product->price;
+
             foreach ($data['sizes'] as $size) {
                             // return response()->json(['error' => $size['price']], 500);
-
+                if($lowestPrice > $size['price']){
+                    $lowestPrice =$size['price'];
+                }
                 $sizeObject = new Size();
                 $sizeObject->size = $size['size'];
                 $sizeObject->price =  $size['price'];
@@ -673,8 +688,8 @@ foreach ($oldImages as $image) {
                 $sizeObject->save();
             }
 
-
-    
+            $product->price = $lowestPrice;
+            $product->save();
             return response()->json(['message' => 'Product created successfully', 'product' => $product], 201);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

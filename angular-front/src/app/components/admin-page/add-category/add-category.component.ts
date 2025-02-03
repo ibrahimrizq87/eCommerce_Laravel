@@ -97,7 +97,10 @@ export class AddCategoryComponent {
         formData.append(key, categoryForm.value[key]);
       });
 
-      formData.append('parent_id', categoryForm.value.category);
+      if (categoryForm.value.category) {
+        formData.append('parent_id', categoryForm.value.category);
+      }
+
 
 
       if (this.selectedFile) {

@@ -117,17 +117,17 @@
                         <div><p>-{{ totalOffers }} <strong>ILS</strong></p></div>
                     </div>                    
                    
-                    <hr *ngIf="order.payment=== 'onDelivery'" class="my-4">
+                    <!-- <hr *ngIf="order.payment=== 'onDelivery'" class="my-4"> -->
             
                
 
-                    <div  *ngIf="order.payment === 'onDelivery'" class="d-flex justify-content-around">
+                    <!-- <div  *ngIf="order.payment === 'onDelivery'" class="d-flex justify-content-around">
                         <div><strong>
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicSavedByOffers">pay on delivery:</ng-container>
                             <ng-template #arabicSavedByOffers>دفع عند الاستلام:</ng-template>
                         </strong></div>
                         <div>{{payOnDelivery}} <strong>ILS</strong></div>
-                    </div>  
+                    </div>   -->
                     <hr>
                     <div class="d-flex justify-content-around">
                         <div><strong>

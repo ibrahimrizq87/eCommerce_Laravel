@@ -43,8 +43,9 @@
                 </td>
                
               
-                <td>{{ category.ad_description }}</td>
-                
+                <td *ngIf="category.ad_description" >{{ category.ad_description.length > 20 ? (category.ad_description | slice:0:20) + '...' : category.ad_description }}</td>
+                <td *ngIf="!category.ad_description" > لا يوجد وصف لهذا الاعلان</td>
+
   
                 <td>
                 

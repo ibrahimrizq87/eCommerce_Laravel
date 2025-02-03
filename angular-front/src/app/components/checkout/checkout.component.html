@@ -39,13 +39,13 @@
 
 
 
-                <div *ngIf="selectedPaymentOption === 'delivery'; else pay" class="text-center mt-3">
+                <div class="text-center mt-3">
                     <button class="btn-order" type="submit">
                         <ng-container *ngIf="currentLanguage === 'en'; else arabicPlaceOrder">Place order</ng-container>
                         <ng-template #arabicPlaceOrder>تقديم الطلب</ng-template>
                     </button>
                 </div>
-                <ng-template #pay>
+                <!-- <ng-template #pay>
                     <div class="text-center mt-3">
                         <button class="btn-pay" type="submit">
                             <img src="images/payment.png" alt="" style="margin-right: 10px; width:20px; height:20px;">
@@ -53,7 +53,7 @@
                             <ng-template #arabicPlaceOrder>الدفع الان</ng-template>
                         </button>
                     </div>
-                </ng-template>
+                </ng-template> -->
 
 
                 <button class="btn btn-outline-dark mt-5" style="background-color: #4e4e4e;" (click)="goBack()">
@@ -121,15 +121,6 @@
                         <div>{{totalOffers}} <strong>ILS</strong></div>
                     </div>
 
-                    <hr *ngIf="selectedPaymentOption === 'delivery'" class="my-4">
-            
-                    <div *ngIf="selectedPaymentOption === 'delivery'" class="d-flex align-items-center justify-content-between">
-                        <div >
-                            <ng-container *ngIf="currentLanguage === 'en'; else arabicSavedByOffers">pay on delivery:</ng-container>
-                            <ng-template #arabicSavedByOffers>دفع عند الاستلام:</ng-template>
-                        </div>
-                        <div>{{payOnDelivery}} <strong>ILS</strong></div>
-                    </div>
                     <hr class="my-4">
             
                     <div class="d-flex align-items-center justify-content-between">
@@ -140,7 +131,7 @@
                         <div>{{total}} <strong>ILS</strong></div>
                     </div>
             
-                    <div class="mt-4">
+                    <!-- <div class="mt-4">
                         <h6>
                             <ng-container *ngIf="currentLanguage === 'en'; else arabicPaymentOptions">Payment Options</ng-container>
                             <ng-template #arabicPaymentOptions>خيارات الدفع</ng-template>
@@ -161,7 +152,7 @@
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             

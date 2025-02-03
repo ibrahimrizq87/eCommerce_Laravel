@@ -35,7 +35,7 @@ export class CheckoutComponent {
 
   totalOffers: number = 0;
   currentLanguage: string ='en';
-  selectedPaymentOption: string = 'payNow';
+  selectedPaymentOption: string = 'delivery';
 
   private successAnimationItem: AnimationItem | undefined;
   constructor(
@@ -73,7 +73,7 @@ export class CheckoutComponent {
       this.total = this.totalPriceAfterOffers; 
     } else if (selectedOption === 'delivery') {
 
-      this.total = this.totalPriceAfterOffers +this.payOnDelivery;
+      this.total = this.totalPriceAfterOffers;
     }
   }
   goBack(){
@@ -109,7 +109,7 @@ export class CheckoutComponent {
         'phone': form.value['phone'] , 
         'address':form.value['address'],
         'total' :this.total ,
-        'payment' :this.selectedPaymentOption 
+        'payment' :'delivery' 
         }
       ).subscribe(
         response=>{
@@ -117,21 +117,21 @@ export class CheckoutComponent {
 
           
             const isPayed = response.pay;
-          if(isPayed){
-            if (this.currentLanguage == 'en'){
-              this.toastr.success("order added successfully proceed to payment");
-            }else{
-              this.toastr.success("تمت العملية بنجاح اكمل عملية الدفع");
+          // if(isPayed){
+          //   if (this.currentLanguage == 'en'){
+          //     this.toastr.success("order added successfully proceed to payment");
+          //   }else{
+          //     this.toastr.success("تمت العملية بنجاح اكمل عملية الدفع");
 
-            }
-            const url = response.url;
-            window.open(url, '_blank');
-            this.paymentService.setUrlPayment(url);
+          //   }
+          //   const url = response.url;
+          //   window.open(url, '_blank');
+          //   this.paymentService.setUrlPayment(url);
            
-            this.router.navigate(['/need-to-pay']);
+          //   this.router.navigate(['/need-to-pay']);
 
 
-          }else{
+          // }else{
             if (this.currentLanguage == 'en'){
               this.toastr.success("order added successfully payment on delivery");
             }else{
@@ -140,8 +140,7 @@ export class CheckoutComponent {
             }
           
             this.router.navigate(['/order']);
-          }
-    
+          
 
           // console.log('order added::',response);
         },error=>{

@@ -125,7 +125,8 @@ this.isShowCategories = !this.isShowCategories;
         this.products.forEach(product => {
           product.priceAfterOffers = product.price;
           product.totalOffers = 0;
-
+          console.log("price" ,product.price);
+          console.log("price after offers" ,product.priceAfterOffers);
           product.addedOffers.forEach(offerAdded => {
             const endDate = new Date(offerAdded.offer.end_date);
             const today = new Date();
@@ -133,7 +134,8 @@ this.isShowCategories = !this.isShowCategories;
 
             if (endDate.getTime() >= today.getTime()) {
               product.totalOffers += offerAdded.offer.discount;
-              product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
+              // product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
+              product.priceAfterOffers -= parseFloat(((offerAdded.offer.discount / 100) * product.price).toFixed(2));
 
             }
 
@@ -296,7 +298,8 @@ if (product.colors.length>0){
           this.products.forEach(product => {
             product.priceAfterOffers = product.price;
             product.totalOffers = 0;
-
+            console.log("price" ,product.price);
+            console.log("price after offers" ,product.priceAfterOffers);
             product.addedOffers.forEach(offerAdded => {
               const endDate = new Date(offerAdded.offer.end_date);
               const today = new Date();
@@ -304,8 +307,8 @@ if (product.colors.length>0){
 
               if (endDate.getTime() >= today.getTime()) {
                 product.totalOffers += offerAdded.offer.discount;
-                product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
-
+// product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
+product.priceAfterOffers -= parseFloat(((offerAdded.offer.discount / 100) * product.price).toFixed(2));
               }
 
             });
@@ -328,6 +331,9 @@ if (product.colors.length>0){
           this.products = response.data;
           this.products.forEach(product => {
             product.priceAfterOffers = product.price;
+            console.log("price" ,product.price);
+            console.log("price after offers" ,product.priceAfterOffers);
+
             product.totalOffers = 0;
 
             product.addedOffers.forEach(offerAdded => {
@@ -337,8 +343,9 @@ if (product.colors.length>0){
 
               if (endDate.getTime() >= today.getTime()) {
                 product.totalOffers += offerAdded.offer.discount;
-                product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
-              }
+product.priceAfterOffers -= Math.floor((offerAdded.offer.discount / 100) * product.price);
+// product.priceAfterOffers -= parseFloat(((offerAdded.offer.discount / 100) * product.price).toFixed(2));    
+          }
 
             });
           });

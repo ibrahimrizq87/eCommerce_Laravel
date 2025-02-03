@@ -74,7 +74,7 @@
                   <strong>{{ product.priceAfterOffers }} <span>ILS</span></strong>
                 </p>
               
-                <div *ngIf="product.priceAfterOffers != product.price" class="original-price-container">
+                <div *ngIf="product.priceAfterOffers < product.price" class="original-price-container">
                   <p class="original-price text-decoration-line-through">
                     {{ product.price }} <strong>ILS</strong>
                   </p>
@@ -371,7 +371,7 @@
                                 <div class="ms-2">
                                   <span class="ps-2 me-2">{{myProduct.product_name}}</span>
                                   <p class="ps-2 me-2">{{myProduct.priceAfterOffers}} <strong>ILS</strong>
-                                    <span class="text-decoration-line-through ps-3">{{myProduct.price}} <strong>ILS</strong></span>
+                                    <span *ngIf="myProduct.priceAfterOffers < myProduct.price" class="text-decoration-line-through ps-3">{{myProduct.price}} <strong>ILS</strong></span>
                                   </p>
                                 </div>
                               </ng-container>
